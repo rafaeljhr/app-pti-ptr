@@ -89,13 +89,37 @@ CREATE TABLE armazem (
 );
 
 
+CREATE TABLE categoria (
+    id integer NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+
+    CONSTRAINT pk_categoria_id
+        PRIMARY KEY (id)
+);
+
+
+CREATE TABLE subcategoria (
+    id integer NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    id_categoria integer NOT NULL,
+
+    CONSTRAINT pk_subcategoria_id
+        PRIMARY KEY (id),
+
+    CONSTRAINT fk_subcategoria_id_categoria
+        FOREIGN KEY (id_categoria)
+        REFERENCES categoria(id)
+);
+
+
 CREATE TABLE produto (
     id integer NOT NULL AUTO_INCREMENT,
     preco DECIMAL(10, 2) NOT NULL,
     nome VARCHAR(30) NOT NULL,
     data_produção_do_produto DATE NOT NULL,
     data_insercao_no_site DATE NOT NULL,
-    poluicao_gerada_por_dia DECIMAL(10,2) NOT NULL, -- poluicao dioxido de carbono (gramas/cm3)
+    -- poluicao dioxido de carbono (gramas/cm3)
+    poluicao_gerada_por_dia DECIMAL(10,2) NOT NULL,
     info_arbitraria VARCHAR(300) NOT NULL,
     id_armazem integer NOT NULL,
     telemovel_fornecedor VARCHAR(9),
@@ -142,11 +166,14 @@ CREATE TABLE recursos_consumidos (
 	id integer NOT NULL AUTO_INCREMENT,
     nome_do_recurso VARCHAR(100) NOT NULL,
     quantidade integer NOT NULL,
-    id_produto integer, -- pode ser nulo se este recurso consumido for destinado a um evento ou armazem
-    id_evento integer, -- pode ser nulo se este recurso consumido for destinado a um produto ou armazem
-    id_armazem integer, -- pode ser nulo se este recurso consumido for destinado a um produto ou evento
+    -- pode ser nulo se este recurso consumido for destinado a um evento ou armazem
+    id_produto integer,
+    -- pode ser nulo se este recurso consumido for destinado a um produto ou armazem
+    id_evento integer,
+    -- pode ser nulo se este recurso consumido for destinado a um produto ou evento
+    id_armazem integer,
 	
-    CONSTRAINT pk_armazem_id
+    CONSTRAINT pk_recursos_consumidos_id
     PRIMARY KEY (id),
 
     CONSTRAINT fk_recursos_consumidos_id_produto
@@ -188,27 +215,4 @@ CREATE TABLE encomenda (
     CONSTRAINT fk_encomenda_telemovel_transportadora
         FOREIGN KEY (telemovel_transportadora)
         REFERENCES transportadora(telemovel)
-);
-
-
-CREATE TABLE categoria (
-    id integer NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-
-    CONSTRAINT pk_categoria_id
-        PRIMARY KEY (id)
-);
-
-
-CREATE TABLE subcategoria (
-    id integer NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    id_categoria integer NOT NULL,
-
-    CONSTRAINT pk_subcategoria_id
-        PRIMARY KEY (id),
-
-    CONSTRAINT fk_subcategoria_id_categoria
-        FOREIGN KEY (id_categoria)
-        REFERENCES categoria(id)
 );
