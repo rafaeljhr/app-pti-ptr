@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS subcategoria;
-DROP TABLE IF EXISTS categoria;
 DROP TABLE IF EXISTS encomenda;
 DROP TABLE IF EXISTS recursos_consumidos;
 DROP TABLE IF EXISTS eventos_da_cadeia_logistica_do_produto;
 DROP TABLE IF EXISTS produto;
+DROP TABLE IF EXISTS subcategoria;
+DROP TABLE IF EXISTS categoria;
 DROP TABLE IF EXISTS armazem;
 DROP TABLE IF EXISTS fornecedor;
 DROP TABLE IF EXISTS consumidor;
@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS transportadora;
 
 
 CREATE TABLE transportadora (
-    telemovel VARCHAR(9) NOT NULL,
+    telemovel VARCHAR(9),
     nome VARCHAR(20) NOT NULL,
     nif VARCHAR(9) NOT NULL UNIQUE,
     morada_fiscal VARCHAR(200) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE transportadora (
 
 
 CREATE TABLE base (
-    morada VARCHAR(200) NOT NULL,
+    morada VARCHAR(200),
 	telemovel VARCHAR(9) NOT NULL,
 
     CONSTRAINT pk_transportadora_morada
@@ -37,7 +37,7 @@ CREATE TABLE base (
 
 
 CREATE TABLE metodo_transporte (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     morada VARCHAR(200) NOT NULL,
     nome VARCHAR(20) NOT NULL, 
     consumo NUMERIC NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE metodo_transporte (
 
 
 CREATE TABLE consumidor (
-    nome VARCHAR(20) NOT NULL,
+    nome VARCHAR(20),
     telemovel VARCHAR(9) NOT NULL,
     NIF NUMERIC(9) NOT NULL UNIQUE,
     morada VARCHAR(200) NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE consumidor (
 
 
 CREATE TABLE fornecedor (
-    morada_fiscal VARCHAR(100) NOT NULL,
+    morada_fiscal VARCHAR(100),
     nome VARCHAR(30) NOT NULL,
     NIF VARCHAR(9) NOT NULL UNIQUE,
     telemovel VARCHAR(9) NOT NULL UNIQUE,
@@ -75,7 +75,7 @@ CREATE TABLE fornecedor (
 
 
 CREATE TABLE armazem (
-	id integer NOT NULL AUTO_INCREMENT,
+	id integer AUTO_INCREMENT,
     morada VARCHAR(100) NOT NULL,
     recursos_consumidos_por_dia DECIMAL(10, 2) NOT NULL,
     telemovel_fornecedor VARCHAR(9),
@@ -90,7 +90,7 @@ CREATE TABLE armazem (
 
 
 CREATE TABLE categoria (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
 
     CONSTRAINT pk_categoria_id
@@ -99,7 +99,7 @@ CREATE TABLE categoria (
 
 
 CREATE TABLE subcategoria (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     id_categoria integer NOT NULL,
 
@@ -113,7 +113,7 @@ CREATE TABLE subcategoria (
 
 
 CREATE TABLE produto (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     preco DECIMAL(10, 2) NOT NULL,
     nome VARCHAR(30) NOT NULL,
     data_produção_do_produto DATE NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE produto (
 
 
 CREATE TABLE eventos_da_cadeia_logistica_do_produto (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     poluicao_gerada DECIMAL(10,2) NOT NULL,
     descricao_do_evento VARCHAR(300) NOT NULL,
     id_produto integer NOT NULL,
@@ -156,14 +156,14 @@ CREATE TABLE eventos_da_cadeia_logistica_do_produto (
     CONSTRAINT pk_cadeia_logistica_produto_id
         PRIMARY KEY (id),
 
-    CONSTRAINT fk_recursos_consumidos_id_produto
+    CONSTRAINT fk_eventos_id_produto
         FOREIGN KEY (id_produto)
         REFERENCES produto(id)
 );
 
 
 CREATE TABLE recursos_consumidos (
-	id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     nome_do_recurso VARCHAR(100) NOT NULL,
     quantidade integer NOT NULL,
     -- pode ser nulo se este recurso consumido for destinado a um evento ou armazem
@@ -189,17 +189,17 @@ CREATE TABLE recursos_consumidos (
         REFERENCES armazem(id)
 );
 
-
+DROP TABLE IF EXISTS encomenda;
 CREATE TABLE encomenda (
-    id integer NOT NULL AUTO_INCREMENT,
+    id integer AUTO_INCREMENT,
     preco DECIMAL(10, 2) NOT NULL,
     morada_de_entrega VARCHAR(200) NOT NULL,
     quantidade integer NOT NULL,
     data_realizada DATETIME NOT NULL,
     data_finalizada DATETIME,
-    telemovel_consumidor integer NOT NULL,
+    telemovel_consumidor VARCHAR(9) NOT NULL,
     id_produto integer NOT NULL,
-    telemovel_transportadora integer NOT NULL,
+    telemovel_transportadora VARCHAR(9) NOT NULL,
 
     CONSTRAINT pk_encomenda_id
         PRIMARY KEY (id),
