@@ -1,0 +1,44 @@
+.form-container{
+	position:relative;
+    top: 20vh;
+	background: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px #000;
+	
+}
+
+.form-pesquisa{
+	position:relative;
+	width: 400px;
+    top: 7vh;
+	background: #fff;
+	padding: 30px;
+	border-radius: 10px;
+	border: 2px solid #6c757d;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	
+}
+
+.resultado_procura{
+	display: inline-block;
+	height: 50vh;
+	overflow: auto;
+	position: relative;
+}
+
+.div_resultado{
+	position: relative;
+	top: 15vh;
+	width: 100%;
+	text-align: center;
+}
+
+.butao_logout{
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	
+}
