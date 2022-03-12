@@ -10,13 +10,13 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link" href="{{ url('/ ') }}">HOME</a>
+            <a class="nav-link" href="{{ route('home-url') }}">HOME</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{ url('/about') }}">ABOUT</a>
+            <a class="nav-link" href="{{ route('about-url') }}">ABOUT</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{ url('/contact') }}">CONTACT</a>
+            <a class="nav-link" href="{{ route('contact-url') }}">CONTACT</a>
             </li>
         </ul>
     </div>
