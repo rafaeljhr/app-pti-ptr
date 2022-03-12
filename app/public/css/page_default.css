@@ -1,10 +1,10 @@
 .bg-img{
     background-image: url("../images/backgrounds/2.png"); 
-    height:91%;
+    height:90%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
-    
+    background-size: cover;   
+    overflow: hidden;
 }
 
 body, html {
@@ -26,13 +26,11 @@ body, html {
     height: 80px;
 }
 
-
-
 .footer {
     position: relative;
     text-align: center;
     background-color: antiquewhite;
     color: black;
     margin-bottom: 0px;
-    height: 9%;
+    height: 10%;
 }
