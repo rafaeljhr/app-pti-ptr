@@ -1,0 +1,36 @@
+@keyframes frases_change {
+    0% {background: url(../images/frases/frase1.png);}
+    35% {background: url(../images/frases/frase2.png);} 
+    60% {background: url(../images/frases/frase3.png);} 
+    80% {background: url(../images/frases/frase4.png);} 
+    100% {background: url(../images/frases/frase5.png);} 
+}
+
+
+.main-logo{ 
+    position:relative;
+    float:left;
+    margin: 0 10px 0 20px;
+    width: 190px;
+    height: 65px;
+}
+
+.login {
+    margin: 0 20px 0 0;
+}
+
+.navbar {
+    height: 80px;
+}
+
+.divBackground {
+    width: 100%;
+    position: relative;
+}
+
+.footer {
+    position: relative;
+    text-align: center;
+    color: black;
+    margin-bottom: 0;
+}

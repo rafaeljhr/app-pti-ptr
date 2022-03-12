@@ -1,5 +1,5 @@
 <?php
-$dbhost = "localhost";
+$dbhost = "20.91.202.89";
 $dbuser = "oAdminDestaSituacao";
 $dbpass = "uma Password mesmo muito forte 123!";
 $dbname = "asw020";
