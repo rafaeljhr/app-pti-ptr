@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Models\fornecedor;
+use App\Models\transportadora;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\consumidorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::apiResource('/consumidor', consumidorController::class);
+
+
+
+
+
+Route::get('/fornecedor', function () {
+    return fornecedor::all();
+});
+
+Route::get('/fornecedor/{id}', function($id) {
+    return fornecedor::find($id);
+});
+
+
+Route::get('/transportadora', function () {
+    return transportadora::all();
+});
+
+Route::get('/transportadora/{id}', function($id) {
+    return transportadora::find($id);
 });
