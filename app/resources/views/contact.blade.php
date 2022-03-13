@@ -5,5 +5,4 @@
     @parent
     @include('includes.contactus')
     
-    
 @endsection

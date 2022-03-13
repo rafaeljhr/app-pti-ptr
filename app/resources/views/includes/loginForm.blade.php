@@ -1,4 +1,4 @@
-<div class="container py-5 h-100">
+<div class="container py-5">
     <form class="form-signin">
         <div class="limit-width mx-auto">  
             <img class="logo" src="images/logo.png" alt="EcoSmart Logo">

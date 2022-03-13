@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="css/aboutUs.css">
 <div class="container">
 
-
   <div class="row">
     <div class="col">
     <div class="card">

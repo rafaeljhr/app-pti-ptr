@@ -1,15 +1,17 @@
-.bg-img{
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+  
+#content-wrap {
     background-image: url("../images/backgrounds/2.png"); 
-    height:90%;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;   
     overflow: hidden;
+    padding-bottom: 6rem; /* Footer height */
 }
 
-body, html {
-    height: 100vh;
-}
 .main-logo{ 
     position:relative;
     float:left;
@@ -27,10 +29,11 @@ body, html {
 }
 
 .footer {
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     text-align: center;
-    background-color: antiquewhite;
+    background-color: lightgreen;
     color: black;
-    margin-bottom: 0px;
-    height: 10%;
+    height: 6rem;
 }
