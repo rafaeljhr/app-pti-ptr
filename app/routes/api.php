@@ -2,7 +2,7 @@
 
 use App\Models\fornecedor;
 use App\Models\transportadora;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\consumidorController;
 
@@ -21,9 +21,17 @@ use App\Http\Controllers\api\consumidorController;
 //     return $request->user();
 // });
 
-Route::apiResource('/consumidor', consumidorController::class);
 
 
+
+
+Route::resource('consumidor', consumidorController::class)->only([
+    'store', 'index', 'show', 'update', 'destroy'
+]);
+  
+// Route::resource('/consumidor', consumidorController::class)->only([
+//     'index', 'show', 'update', 'destroy'
+// ])->middleware('jwt');
 
 
 

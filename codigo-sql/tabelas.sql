@@ -16,6 +16,9 @@ CREATE TABLE transportadora (
     id integer AUTO_INCREMENT,
     telefone VARCHAR(9) NOT NULL,
     nome VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    api_token VARCHAR(200) NOT NULL,
     nif VARCHAR(9) NOT NULL UNIQUE,
     morada_fiscal VARCHAR(200) NOT NULL,
 
@@ -59,7 +62,7 @@ CREATE TABLE consumidor (
     id integer AUTO_INCREMENT,
     nome VARCHAR(200) NOT NULL,
     telemovel VARCHAR(9) NOT NULL UNIQUE,
-    nif NUMERIC(9) NOT NULL,
+    nif VARCHAR(9) NOT NULL UNIQUE,
     morada VARCHAR(200) NOT NULL,
 
     CONSTRAINT pk_consumidor_id
@@ -71,7 +74,7 @@ CREATE TABLE fornecedor (
     id integer AUTO_INCREMENT,
     morada_fiscal VARCHAR(200) NOT NULL,
     nome VARCHAR(200) NOT NULL,
-    nif VARCHAR(9) NOT NULL,
+    nif VARCHAR(9) NOT NULL UNIQUE,
     telemovel VARCHAR(9) NOT NULL UNIQUE,
 
     CONSTRAINT pk_fornecedor_id

@@ -10,10 +10,19 @@ class consumidor extends Model
     protected $table = 'consumidor';
     use HasFactory;
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'telefone',
         'nome',
+        'email',
+        'password',
+        'telemovel',
         'nif',
-        'morada'
+        'morada',
+        'api_token',
     ];
 }

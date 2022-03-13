@@ -33,4 +33,3 @@ Route::get('/signin', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('register-url');
-

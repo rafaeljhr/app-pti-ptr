@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '8d4394986daf5e72d98a086cfbafeb01025210ae',
+        'reference' => 'c2bc75792d6058f581a74f608efd6a622b914fad',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -20,12 +20,12 @@
             'dev_requirement' => false,
         ),
         'auth0/auth0-php' => array(
-            'pretty_version' => '7.9.0',
-            'version' => '7.9.0.0',
+            'pretty_version' => '7.9.2',
+            'version' => '7.9.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../auth0/auth0-php',
             'aliases' => array(),
-            'reference' => '0611fbabcb802ac63533f1c0ff5bd765e22f4aa3',
+            'reference' => '95cdd4f09122f14d0b0246fe8c51287ece63f98a',
             'dev_requirement' => false,
         ),
         'auth0/login' => array(
@@ -203,12 +203,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => '1.8.3',
+            'version' => '1.8.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
+            'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
             'dev_requirement' => false,
         ),
         'hamcrest/hamcrest-php' => array(
@@ -427,7 +427,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '8d4394986daf5e72d98a086cfbafeb01025210ae',
+            'reference' => 'c2bc75792d6058f581a74f608efd6a622b914fad',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -746,21 +746,6 @@
             'dev_requirement' => false,
         ),
         'psr/http-client-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
-        'psr/http-factory' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(),
-            'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
-            'dev_requirement' => false,
-        ),
-        'psr/http-factory-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',

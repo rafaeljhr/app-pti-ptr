@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\consumidor;
+use Illuminate\Support\Str;
 
 class consumidorController extends Controller
 {
@@ -26,20 +27,25 @@ class consumidorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+
     {
         $request->validate([
-            'telefone' => 'required|max:9',
-            'nome' => 'required|max: 200',
-            'nif' => 'required|max: 9',
-            'morada' => 'required|max: 200'
-
-          ]);
+            'nome' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'telemovel' => 'required',
+            'nif' => 'required',
+            'morada' => 'required'
+        ]);
       
         $newConsumidor = new consumidor([
-        'telefone' => $request->get('telefone'),
         'nome' => $request->get('nome'),
+        'email' => $request->get('email'),
+        'password' => $request->get('password'),
+        'telemovel' => $request->get('telemovel'),
         'nif' => $request->get('nif'),
-        'morada' => $request->get('morada')
+        'morada' => $request->get('morada'),
+        'api_token' => Str::random(60)
         ]);
     
         $newConsumidor->save();
@@ -55,8 +61,19 @@ class consumidorController extends Controller
      */
     public function show($id)
     {
-        $consumidor = consumidor::findOrFail($id);
-        return response()->json($consumidor);
+
+        $user_json = explode("+", $id);
+        $user_id = $user_json[0];
+        $get_user_token = $user_json[1];
+        
+        $consumidor = consumidor::findOrFail($user_id);
+
+        $consumidor_json = json_decode($consumidor->toJson());
+        $real_user_token=$consumidor_json->api_token;
+
+        
+
+        // return response()->json($consumidor);
     }
 
     /**
@@ -71,10 +88,10 @@ class consumidorController extends Controller
         $consumidor = consumidor::findOrFail($id);
 
         $request->validate([
-            'telefone' => 'required|max:9',
-            'nome' => 'required|max: 200',
-            'nif' => 'required|max: 9',
-            'morada' => 'required|max: 200'
+            'telefone' => 'required',
+            'nome' => 'required',
+            'nif' => 'required',
+            'morada' => 'required'
         ]);
 
         $consumidor->telefone = $request->get('telefone');
