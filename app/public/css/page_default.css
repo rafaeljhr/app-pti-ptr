@@ -1,16 +1,16 @@
 #page-container {
     position: relative;
     min-height: 100vh;
-}
-  
-#content-wrap {
+    height: 90%;
+    width: 100%;
     background-image: url("../images/backgrounds/2.png"); 
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;   
     overflow: hidden;
-    padding-bottom: 6rem; /* Footer height */
 }
+  
+
 
 .main-logo{ 
     position:relative;
@@ -35,5 +35,5 @@
     text-align: center;
     background-color: lightgreen;
     color: black;
-    height: 6rem;
+    height: 10%;
 }
