@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse flex-row-reverse login">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">SIGN IN</a>
+                <a class="nav-link" href="{{ route('signin-url') }}">SIGN IN</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('register-url') }}">REGISTER</a>
