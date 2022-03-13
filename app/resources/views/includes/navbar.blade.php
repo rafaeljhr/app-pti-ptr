@@ -27,7 +27,7 @@
                 <a class="nav-link" href="#">SIGN IN</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">REGISTER</a>
+                <a class="nav-link" href="{{ route('register-url') }}">REGISTER</a>
             </li>
         </ul>
     </div>

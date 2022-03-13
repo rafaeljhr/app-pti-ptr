@@ -1,12 +1,15 @@
-@keyframes frases_change {
-    0% {background: url(../images/frases/frase1.png);}
-    35% {background: url(../images/frases/frase2.png);} 
-    60% {background: url(../images/frases/frase3.png);} 
-    80% {background: url(../images/frases/frase4.png);} 
-    100% {background: url(../images/frases/frase5.png);} 
+.bg-img{
+    background-image: url("../images/backgrounds/2.png"); 
+    height:90%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;   
+    overflow: hidden;
 }
 
-
+body, html {
+    height: 100vh;
+}
 .main-logo{ 
     position:relative;
     float:left;
@@ -23,14 +26,11 @@
     height: 80px;
 }
 
-.divBackground {
-    width: 100%;
-    position: relative;
-}
-
 .footer {
     position: relative;
     text-align: center;
+    background-color: antiquewhite;
     color: black;
-    margin-bottom: 0;
+    margin-bottom: 0px;
+    height: 10%;
 }

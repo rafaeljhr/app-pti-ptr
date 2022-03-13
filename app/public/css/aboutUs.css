@@ -1,0 +1,11 @@
+.container {
+    padding: 0 16px;
+    text-align: center;
+  }
+
+.card {
+    border-style: solid;
+    border-color: black;
+    margin: 8px;
+    
+  }

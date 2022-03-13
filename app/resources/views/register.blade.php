@@ -3,7 +3,8 @@
 @section('background')
     
     @parent
-    @include('includes.contactus')
-    
+    @include('includes.registerForm') 
     
 @endsection
+
+
