@@ -1,0 +1,145 @@
+version: 2.1
+
+commands:
+  prepare:
+    steps:
+      - checkout
+      - run:
+          name: Perform composer self-update
+          command: sudo composer self-update
+      - restore-cache
+      - run:
+          name: Enable code coverage
+          command: |
+            sudo apt update
+            sudo apt install libonig-dev
+            sudo pecl install pcov
+            sudo docker-php-ext-enable pcov
+            sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            sudo docker-php-ext-install posix
+            sudo docker-php-ext-install pcntl
+            sudo docker-php-ext-install mbstring
+      - run:
+          name: Install composer dependencies
+          command: composer install --no-interaction --prefer-dist
+      - run:
+          name: Update composer dependencies
+          command: composer update --prefer-dist --no-interaction
+      - save-cache
+
+  save-cache:
+    steps:
+      - persist_to_workspace:
+          root: .
+          paths:
+            - composer.*
+            - .snyk
+      - save_cache:
+          key: composer-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+
+  restore-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - composer-v1-{{ .Environment.CIRCLE_JOB }}-{{ checksum "composer.json" }}
+            - composer-v1-{{ .Environment.CIRCLE_JOB }}
+
+  run-php-codesniffer:
+    steps:
+      - run:
+          name: Run code quality analysis (PHP CodeSniffer)
+          command: php ./vendor/bin/phpcs
+
+  run-phpstan:
+    steps:
+      - run:
+          name: Run static code analysis (PHPStan)
+          command: php ./vendor/bin/phpstan analyze
+
+  run-phpunit:
+    steps:
+      - run:
+          name: Run unit tests (PHPUnit)
+          command: php ./vendor/bin/phpunit --stop-on-failure --coverage-clover=build/coverage/coverage.xml --coverage-xml=build/coverage/coverage-xml --log-junit=build/coverage/junit.xml
+      - persist_to_workspace:
+          root: .
+          paths:
+            - src
+            - tests
+            - infection.json.dist
+            - phpunit.xml.dist
+            - build
+            - vendor
+
+jobs:
+  run-unit-tests:
+    parameters:
+      php:
+        type: string
+    docker:
+      - image: circleci/php:<< parameters.php >>
+    steps:
+      - prepare
+      - run-php-codesniffer
+      - run-phpstan
+      - run-phpunit
+
+  run-security-tests:
+    docker:
+      - image: snyk/snyk-cli:composer
+    steps:
+      - attach_workspace:
+          at: .
+      - run: snyk test
+      - run:
+          command: snyk monitor --org=auth0-sdks --project-name=laravel-auth0
+          when: always
+
+  run-codecov-uploader:
+    docker:
+      - image: circleci/php:7.4
+    steps:
+      - attach_workspace:
+          at: .
+      - restore-cache
+      - run:
+          name: Download and validate Codecov uploader
+          command: |
+            curl https://keybase.io/codecovsecurity/pgp_keys.asc | gpg --import
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM
+            curl -Os https://uploader.codecov.io/latest/linux/codecov.SHA256SUM.sig
+            gpg --verify codecov.SHA256SUM.sig codecov.SHA256SUM
+            shasum -a 256 -c codecov.SHA256SUM
+            chmod +x codecov
+      - run:
+          name: Upload coverage reports to Codecov
+          command: ./codecov -t ${CODECOV_TOKEN} -f ./build/coverage/coverage.xml
+
+workflows:
+  run-tests:
+    jobs:
+      - run-unit-tests:
+          name: run-phpunit-7.3
+          php: "7.3"
+      - run-unit-tests:
+          name: run-phpunit-7.4
+          php: "7.4"
+      - run-unit-tests:
+          name: run-phpunit-8.0
+          php: "8.0"
+      - run-security-tests:
+          filters:
+            branches:
+              only:
+                - main
+          context: snyk-env
+          requires: [run-phpunit-7.3]
+      - run-codecov-uploader:
+          filters:
+            branches:
+              only:
+                - main
+          requires: [run-phpunit-7.4]

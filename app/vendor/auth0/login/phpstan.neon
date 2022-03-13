@@ -1,0 +1,10 @@
+parameters:
+    level: 2
+
+    paths:
+        - src
+
+    ignoreErrors:
+        - '#Call to static method#'
+
+    reportUnmatchedIgnoredErrors: false
