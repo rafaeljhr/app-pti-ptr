@@ -1,0 +1,10 @@
+.logo {
+    max-width: 50%;
+    height: auto;
+}
+
+
+.limit-width {
+    max-width: 40%;
+    max-height: 50%;
+}
