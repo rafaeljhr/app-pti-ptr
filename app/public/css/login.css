@@ -4,7 +4,12 @@
 }
 
 
+
 .limit-width {
-    max-width: 40%;
-    max-height: 50%;
+    max-width: 50%;
+    background-color: forestgreen;
+    border-radius: 2rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    border: 5px solid rgba(0,0,0,.2);
+    padding: 20px;
 }
