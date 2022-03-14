@@ -6,18 +6,18 @@
             <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades!</h1>
 
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="optionConsumidor">
-                <label class="form-check-label" for="inlineRadio1">Consumidor</label>
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="optionConsumidor" checked>
+                <label class="form-check-label text-light" for="inlineRadio1">Consumidor</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="transportadoraSelect" value="optionTransportadora">
-                <label class="form-check-label" for="inlineRadio1">Transportadora</label>
+                <label class="form-check-label text-light" for="inlineRadio1">Transportadora</label>
             </div>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fornecedorSelect" value="optionFornecedor">
-                <label class="form-check-label" for="inlineRadio1">Fornecedora</label>
+                <label class="form-check-label text-light" for="inlineRadio1">Fornecedora</label>
             </div>
             <div>
             <label for="loginName" class="sr-only text-light"><h4>Email</h4></label>
