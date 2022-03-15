@@ -8,7 +8,7 @@
             <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades!</h1>
 
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="tonsumidor">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="consumidor">
                 <label class="form-check-label" for="inlineRadio1">Consumidor</label>
             </div>
 
