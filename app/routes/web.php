@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
-});
-
+})->name('home-url');
 
 Route::get('/about', function () {
     return view('about');
-});
+})->name('about-url');
 
 Route::get('/contact', function () {
     return view('contact');
-});
+})->name('contact-url');
+
+Route::get('/signin', function () {
+    return view('signin');
+})->name('signin-url');
+
+Route::get('/register', function () {
+    return view('register');
+})->name('register-url');
+
+Route::post('/signin/submit', [LoginController::class, 'submit'])->name('login-auth');

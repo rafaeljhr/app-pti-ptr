@@ -13,118 +13,124 @@ DROP TABLE IF EXISTS transportadora;
 
 
 CREATE TABLE transportadora (
-    telemovel VARCHAR(9),
-    nome VARCHAR(20) NOT NULL,
+    id integer AUTO_INCREMENT,
+    telefone VARCHAR(9) NOT NULL,
+    nome VARCHAR(200) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    api_token VARCHAR(200) NOT NULL,
     nif VARCHAR(9) NOT NULL UNIQUE,
     morada_fiscal VARCHAR(200) NOT NULL,
 
-    CONSTRAINT pk_transportadora_telemovel
-        PRIMARY KEY (telemovel)
+    CONSTRAINT pk_transportadora_id
+        PRIMARY KEY (id)
 );
 
 
 CREATE TABLE base (
-    morada VARCHAR(200),
-	telemovel VARCHAR(9) NOT NULL,
+    id integer AUTO_INCREMENT,
+    morada VARCHAR(200) NOT NULL,
+    telefone VARCHAR(9) NOT NULL UNIQUE,
+	transportadora_id integer NOT NULL,
 
-    CONSTRAINT pk_transportadora_morada
-        PRIMARY KEY (morada),
+    CONSTRAINT pk_base_id
+        PRIMARY KEY (id),
 		
-	CONSTRAINT fk_base_telemovel_transportadora
-        FOREIGN KEY (telemovel) 
-        REFERENCES transportadora(telemovel)
+	CONSTRAINT fk_base_id_transportadora
+        FOREIGN KEY (transportadora_id) 
+        REFERENCES transportadora(id)
 );
 
 
 CREATE TABLE metodo_transporte (
     id integer AUTO_INCREMENT,
-    morada VARCHAR(200) NOT NULL,
-    nome VARCHAR(20) NOT NULL, 
+    base_id integer NOT NULL,
+    nome VARCHAR(200) NOT NULL, 
     consumo NUMERIC NOT NULL,
-    tipoCombustivel VARCHAR(20) NOT NULL,
+    tipoCombustivel VARCHAR(200) NOT NULL,
 
     CONSTRAINT pk_metodo_transporte_id
         PRIMARY KEY (id),
 
-    CONSTRAINT fk_metodo_transporte_morada
-        FOREIGN KEY (morada) 
-        REFERENCES base(morada)
+    CONSTRAINT fk_metodo_transporte_base_id
+        FOREIGN KEY (base_id) 
+        REFERENCES base(id)
 );
 
 
 CREATE TABLE consumidor (
-    nome VARCHAR(20),
-    telemovel VARCHAR(9) NOT NULL,
-    NIF NUMERIC(9) NOT NULL UNIQUE,
+    id integer AUTO_INCREMENT,
+    nome VARCHAR(200) NOT NULL,
+    telemovel VARCHAR(9) NOT NULL UNIQUE,
+    nif VARCHAR(9) NOT NULL UNIQUE,
     morada VARCHAR(200) NOT NULL,
 
-    CONSTRAINT pk_consumidor_telemovel
-        PRIMARY KEY (telemovel)
+    CONSTRAINT pk_consumidor_id
+        PRIMARY KEY (id)
 );
 
 
 CREATE TABLE fornecedor (
-    morada_fiscal VARCHAR(100),
-    nome VARCHAR(30) NOT NULL,
-    NIF VARCHAR(9) NOT NULL UNIQUE,
+    id integer AUTO_INCREMENT,
+    morada_fiscal VARCHAR(200) NOT NULL,
+    nome VARCHAR(200) NOT NULL,
+    nif VARCHAR(9) NOT NULL UNIQUE,
     telemovel VARCHAR(9) NOT NULL UNIQUE,
 
-    CONSTRAINT pk_fornecedor_telemovel
-        PRIMARY KEY (telemovel)
+    CONSTRAINT pk_fornecedor_id
+        PRIMARY KEY (id)
 );
 
 
 CREATE TABLE armazem (
 	id integer AUTO_INCREMENT,
-    morada VARCHAR(100) NOT NULL,
+    morada VARCHAR(200) NOT NULL,
     recursos_consumidos_por_dia DECIMAL(10, 2) NOT NULL,
-    telemovel_fornecedor VARCHAR(9),
+    id_fornecedor integer,
 	
     CONSTRAINT pk_armazem_id
     PRIMARY KEY (id),
 
-    CONSTRAINT fk_armazem_telemovel_fornecedor
-        FOREIGN KEY (telemovel_fornecedor)
-        REFERENCES fornecedor(telemovel)
+    CONSTRAINT fk_armazem_id_fornecedor
+        FOREIGN KEY (id_fornecedor)
+        REFERENCES fornecedor(id)
 );
 
 
 CREATE TABLE categoria (
-    id integer AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
+    nome VARCHAR(200),
 
-    CONSTRAINT pk_categoria_id
-        PRIMARY KEY (id)
+    CONSTRAINT pk_categoria_nome
+        PRIMARY KEY (nome)
 );
 
 
 CREATE TABLE subcategoria (
-    id integer AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    id_categoria integer NOT NULL,
+    nome VARCHAR(200) NOT NULL,
+    nome_categoria VARCHAR(200) NOT NULL,
 
-    CONSTRAINT pk_subcategoria_id
-        PRIMARY KEY (id),
+    CONSTRAINT pk_subcategoria_nome
+        PRIMARY KEY (nome),
 
-    CONSTRAINT fk_subcategoria_id_categoria
-        FOREIGN KEY (id_categoria)
-        REFERENCES categoria(id)
+    CONSTRAINT fk_subcategoria_nome_categoria
+        FOREIGN KEY (nome_categoria)
+        REFERENCES categoria(nome)
 );
 
 
 CREATE TABLE produto (
     id integer AUTO_INCREMENT,
     preco DECIMAL(10, 2) NOT NULL,
-    nome VARCHAR(30) NOT NULL,
+    nome VARCHAR(200) NOT NULL,
     data_produção_do_produto DATE NOT NULL,
     data_insercao_no_site DATE NOT NULL,
     -- poluicao dioxido de carbono (gramas/cm3)
     poluicao_gerada_por_dia DECIMAL(10,2) NOT NULL,
-    info_arbitraria VARCHAR(300) NOT NULL,
+    info_arbitraria VARCHAR(255) NOT NULL,
     id_armazem integer NOT NULL,
-    telemovel_fornecedor VARCHAR(9),
-    id_categoria integer NOT NULL,
-    id_subcategoria integer NOT NULL,
+    id_fornecedor integer NOT NULL,
+    nome_categoria VARCHAR(200) NOT NULL,
+    nome_subcategoria VARCHAR(200) NOT NULL,
 
     CONSTRAINT pk_produto_id
         PRIMARY KEY (id),
@@ -133,24 +139,24 @@ CREATE TABLE produto (
         FOREIGN KEY (id_armazem)
         REFERENCES armazem(id),
 
-    CONSTRAINT fk_produto_telemovel_fornecedor
-        FOREIGN KEY (telemovel_fornecedor)
-        REFERENCES fornecedor(telemovel),
+    CONSTRAINT fk_produto_telemovel_nif
+        FOREIGN KEY (id_fornecedor)
+        REFERENCES fornecedor(id),
 
-    CONSTRAINT fk_produto_id_categoria
-        FOREIGN KEY (id_categoria)
-        REFERENCES categoria(id),
+    CONSTRAINT fk_produto_nome_categoria
+        FOREIGN KEY (nome_categoria)
+        REFERENCES categoria(nome),
 
-    CONSTRAINT fk_produto_id_subcategoria
-        FOREIGN KEY (id_subcategoria)
-        REFERENCES subcategoria(id)
+    CONSTRAINT fk_produto_nome_subcategoria
+        FOREIGN KEY (nome_subcategoria)
+        REFERENCES subcategoria(nome)
 );
 
 
 CREATE TABLE eventos_da_cadeia_logistica_do_produto (
     id integer AUTO_INCREMENT,
     poluicao_gerada DECIMAL(10,2) NOT NULL,
-    descricao_do_evento VARCHAR(300) NOT NULL,
+    descricao_do_evento VARCHAR(255) NOT NULL,
     id_produto integer NOT NULL,
 
     CONSTRAINT pk_cadeia_logistica_produto_id
@@ -164,7 +170,7 @@ CREATE TABLE eventos_da_cadeia_logistica_do_produto (
 
 CREATE TABLE recursos_consumidos (
     id integer AUTO_INCREMENT,
-    nome_do_recurso VARCHAR(100) NOT NULL,
+    nome_do_recurso VARCHAR(200) NOT NULL,
     quantidade integer NOT NULL,
     -- pode ser nulo se este recurso consumido for destinado a um evento ou armazem
     id_produto integer,
@@ -189,7 +195,6 @@ CREATE TABLE recursos_consumidos (
         REFERENCES armazem(id)
 );
 
-DROP TABLE IF EXISTS encomenda;
 CREATE TABLE encomenda (
     id integer AUTO_INCREMENT,
     preco DECIMAL(10, 2) NOT NULL,
@@ -197,22 +202,22 @@ CREATE TABLE encomenda (
     quantidade integer NOT NULL,
     data_realizada DATETIME NOT NULL,
     data_finalizada DATETIME,
-    telemovel_consumidor VARCHAR(9) NOT NULL,
+    id_consumidor integer NOT NULL,
     id_produto integer NOT NULL,
-    telemovel_transportadora VARCHAR(9) NOT NULL,
+    id_transportadora integer NOT NULL,
 
     CONSTRAINT pk_encomenda_id
         PRIMARY KEY (id),
 
-    CONSTRAINT fk_encomenda_telemovel_consumidor
-        FOREIGN KEY (telemovel_consumidor)
-        REFERENCES consumidor(telemovel),
+    CONSTRAINT fk_encomenda_id_consumidor
+        FOREIGN KEY (id_consumidor)
+        REFERENCES consumidor(id),
     
     CONSTRAINT fk_encomenda_id_produto
         FOREIGN KEY (id_produto)
         REFERENCES produto(id),
 
-    CONSTRAINT fk_encomenda_telemovel_transportadora
-        FOREIGN KEY (telemovel_transportadora)
-        REFERENCES transportadora(telemovel)
+    CONSTRAINT fk_encomenda_id_transportadora
+        FOREIGN KEY (id_transportadora)
+        REFERENCES transportadora(id)
 );

@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'v8.6.11',
-        'version' => '8.6.11.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'c2bc75792d6058f581a74f608efd6a622b914fad',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -17,6 +17,33 @@
             'install_path' => __DIR__ . '/../asm89/stack-cors',
             'aliases' => array(),
             'reference' => '73e5b88775c64ccc0b84fb60836b30dc9d92ac4a',
+            'dev_requirement' => false,
+        ),
+        'auth0/auth0-php' => array(
+            'pretty_version' => '7.9.2',
+            'version' => '7.9.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../auth0/auth0-php',
+            'aliases' => array(),
+            'reference' => '95cdd4f09122f14d0b0246fe8c51287ece63f98a',
+            'dev_requirement' => false,
+        ),
+        'auth0/login' => array(
+            'pretty_version' => '6.5.0',
+            'version' => '6.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../auth0/login',
+            'aliases' => array(),
+            'reference' => 'a324411c5e85e05dfec21a683b84c1f8aca2a7bf',
+            'dev_requirement' => false,
+        ),
+        'auth0/php-jwt' => array(
+            'pretty_version' => '3.3.4',
+            'version' => '3.3.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../auth0/php-jwt',
+            'aliases' => array(),
+            'reference' => 'a0daa1a728cf85230843ebb8c1183047fe493284',
             'dev_requirement' => false,
         ),
         'brick/math' => array(
@@ -176,12 +203,12 @@
             'dev_requirement' => false,
         ),
         'guzzlehttp/psr7' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
+            'pretty_version' => '1.8.3',
+            'version' => '1.8.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
-            'reference' => '089edd38f5b8abba6cb01567c2a8aaa47cec4c72',
+            'reference' => '1afdd860a2566ed3c2b0b4a3de6e23434a79ec85',
             'dev_requirement' => false,
         ),
         'hamcrest/hamcrest-php' => array(
@@ -395,12 +422,12 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'v8.6.11',
-            'version' => '8.6.11.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'c2bc75792d6058f581a74f608efd6a622b914fad',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -724,21 +751,6 @@
                 0 => '1.0',
             ),
         ),
-        'psr/http-factory' => array(
-            'pretty_version' => '1.0.1',
-            'version' => '1.0.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(),
-            'reference' => '12ac7fcd07e5b077433f5f2bee95b3a771bf61be',
-            'dev_requirement' => false,
-        ),
-        'psr/http-factory-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
         'psr/http-message' => array(
             'pretty_version' => '1.0.1',
             'version' => '1.0.1.0',
@@ -766,8 +778,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(
