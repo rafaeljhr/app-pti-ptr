@@ -1,0 +1,9 @@
+11/3-16/3:
+Francisco - 30h - 5h/dia
+Pedro - 27h - 4.5h/dia
+Miguel - 30h - 5h/dia
+Rafael - 36h - 6h/dia
+Toni - 30h - 5h/dia
+Gonçalo - 24h - 4h/dia 
+Total: 177
+Horas previstas: 144

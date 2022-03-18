@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\consumidorController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,3 +52,4 @@ Route::get('/transportadora', function () {
 Route::get('/transportadora/{id}', function($id) {
     return transportadora::find($id);
 });
+
