@@ -22,7 +22,7 @@ class consumidorController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     *_
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -71,7 +71,6 @@ class consumidorController extends Controller
         $consumidor_json = json_decode($consumidor->toJson());
         $real_user_token=$consumidor_json->api_token;
 
-        
 
         // return response()->json($consumidor);
     }
