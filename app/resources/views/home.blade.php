@@ -1,4 +1,4 @@
-@extends('layouts.page_default')
+@extends('layouts.home_page')
 
 @section('background')
     @parent
