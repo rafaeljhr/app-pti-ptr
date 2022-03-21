@@ -18,6 +18,15 @@ class ConfigCacheCommand extends Command
     protected $name = 'config:cache';
 
     /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     */
+    protected static $defaultName = 'config:cache';
+
+    /**
      * The console command description.
      *
      * @var string
@@ -71,7 +80,7 @@ class ConfigCacheCommand extends Command
             throw new LogicException('Your configuration files are not serializable.', 0, $e);
         }
 
-        $this->info('Configuration cached successfully!');
+        $this->info('Configuration cached successfully.');
     }
 
     /**
