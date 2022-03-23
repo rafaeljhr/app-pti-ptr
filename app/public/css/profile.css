@@ -1,0 +1,12 @@
+.logo {
+    max-width: 50%;
+    height: auto;
+}
+
+.form-div {
+    max-width: 60%;
+    background-color: forestgreen;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    border: 2px solid rgba(0,0,0,.2);
+}

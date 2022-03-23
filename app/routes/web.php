@@ -34,4 +34,8 @@ Route::get('/register', function () {
     return view('register');
 })->name('register-url');
 
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile-url');
+
 Route::post('/signin/submit', [LoginController::class, 'submit'])->name('login-auth');
