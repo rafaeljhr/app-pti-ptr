@@ -41,6 +41,7 @@
                     <label for="inputTelConsumer" class="sr-only text-light">Telemóvel</label>
                     <input type="text" id="inputTelConsumer" class="form-control form-control-sm mb-2" placeholder="987654321" size="9" required="" autofocus="">
                 </div>
+                
                 <div class="col">
                     <label for="inputNIFConsumer" class="sr-only text-light">NIF</label>
                     <input type="text" id="inputNIFConsumer" class="form-control form-control-sm mb-2" placeholder="123456789" size="9" required="" autofocus="">
@@ -108,7 +109,7 @@
     let app = Vue.createApp({
         data: function() {
             return {
-                clienteConsumidor: true
+                clientConsumer: true
             }
         }
     })

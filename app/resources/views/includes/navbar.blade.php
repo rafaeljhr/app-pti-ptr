@@ -3,7 +3,7 @@
 Session_start();
 session()->forget('loggedIn');
 Session::put('loggedIn', 'yes');
-Session::put('Utilizador', 'fornecedora');
+Session::put('userType', 'consumidor');
 echo Session::get('loggedIn'); 
 ?>
 
