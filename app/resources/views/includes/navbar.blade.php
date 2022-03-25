@@ -1,3 +1,13 @@
+
+<?php
+/* Session_start();
+session()->forget('loggedIn');
+Session::put('loggedIn', 'yes');
+Session::put('Utilizador', 'fornecedora');
+echo Session::get('loggedIn'); */
+?>
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     
     <img src="images/logo6.png" class="main-logo">
@@ -21,6 +31,40 @@
         </ul>
     </div>
 
+
+    @if(Session::get('loggedIn') == 'yes')
+    <div class="collapse navbar-collapse flex-row-reverse login">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      Perfil
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">Conta</a></li>
+                      @if(Session::get('Utilizador') == 'fornecedora')
+                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                      <li><a class="dropdown-item" href="#">Inventário</a></li>
+                      @endif
+                      @if(Session::get('Utilizador') == 'transportadora')
+                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                      <li><a class="dropdown-item" href="#">Bases de veiculos</a></li>
+                      @endif
+                      @if(Session::get('Utilizador') == 'consumidor')
+                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                      @endif
+                    </ul>
+                  </div>
+            </li>
+            <li class="nav-item">
+                {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    @endif
+    @if(Session::get('loggedIn') == null)
     <div class="collapse navbar-collapse flex-row-reverse login">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -31,5 +75,6 @@
             </li>
         </ul>
     </div>
+    @endif
 
 </nav>
