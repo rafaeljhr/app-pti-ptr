@@ -1,10 +1,10 @@
 
 <?php
-/* Session_start();
+Session_start();
 session()->forget('loggedIn');
 Session::put('loggedIn', 'yes');
-Session::put('Utilizador', 'fornecedora');
-echo Session::get('loggedIn'); */
+Session::put('userType', 'consumidor');
+echo Session::get('loggedIn'); 
 ?>
 
 
@@ -41,7 +41,7 @@ echo Session::get('loggedIn'); */
                       Perfil
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="#">Conta</a></li>
+                      <li><a class="dropdown-item" href="{{ route('profile-url') }}">Conta</a></li>
                       @if(Session::get('Utilizador') == 'fornecedora')
                       <li><a class="dropdown-item" href="#">Encomendas</a></li>
                       <li><a class="dropdown-item" href="#">Inventário</a></li>
