@@ -1,13 +1,13 @@
 
 <?php
 Session_start();
-session()->forget('loggedIn');
+//session()->forget('loggedIn');
 // Session::put('loggedIn', 'yes');
 // Session::put('userType', 'consumidor');
 // echo Session::get('loggedIn'); 
 /* session()->forget('loggedIn'); */
 /* Session::put('loggedIn', 'yes'); */
-/* Session::put('Utilizador', 'fornecedora');
+/* Session::put('Utilizador', 'fornecedor');
 echo Session::get('loggedIn');  */
 ?>
 
@@ -36,7 +36,7 @@ echo Session::get('loggedIn');  */
     </div>
 
 
-    @if(Session::get('loggedIn') == 'yes')
+    @if(Session::get('userType') == 'consumidor' || Session::get('userType') == 'fornecedor' || Session::get('userType') == 'transportadora')
     <div class="collapse navbar-collapse flex-row-reverse login">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -46,15 +46,15 @@ echo Session::get('loggedIn');  */
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                       <li><a class="dropdown-item" href="{{ route('profile-url') }}">Conta</a></li>
-                      @if(Session::get('Utilizador') == 'fornecedora')
+                      @if(Session::get('userType') == 'fornecedor')
                       <li><a class="dropdown-item" href="#">Encomendas</a></li>
                       <li><a class="dropdown-item" href="#">Inventário</a></li>
                       @endif
-                      @if(Session::get('Utilizador') == 'transportadora')
+                      @if(Session::get('userType') == 'transportador')
                       <li><a class="dropdown-item" href="#">Encomendas</a></li>
                       <li><a class="dropdown-item" href="#">Bases de veiculos</a></li>
                       @endif
-                      @if(Session::get('Utilizador') == 'consumidor')
+                      @if(Session::get('userType') == 'consumidor')
                       <li><a class="dropdown-item" href="#">Encomendas</a></li>
                       @endif
                     </ul>
@@ -68,7 +68,7 @@ echo Session::get('loggedIn');  */
     </div>
 
     @endif
-    @if(Session::get('loggedIn') == null)
+    @if(Session::get('userType') == null)
     <div class="collapse navbar-collapse flex-row-reverse login">
         <ul class="navbar-nav">
             <li class="nav-item">

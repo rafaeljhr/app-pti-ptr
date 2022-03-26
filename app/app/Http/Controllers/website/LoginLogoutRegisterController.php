@@ -1,13 +1,17 @@
 <?php
 
+
 namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\consumidor;
+use App\Models\Consumidor;
 use App\Models\fornecedor;
 use App\Models\Transportadora;
 use Illuminate\Support\Str;
+use Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginLogoutRegisterController extends Controller
 {
@@ -20,7 +24,40 @@ class LoginLogoutRegisterController extends Controller
 
         // $request->get('telefone');
 
-        return $request->input();
+        $accountType = $request->get('inlineRadioOptions');
+        $email = $request->get('usernameLogin');
+        $password = $request->get('passwordLogin');
+
+        if ($accountType == "consumidor") {
+
+            $consumidor = Consumidor::where('email', $email)->first();
+
+            if (!$consumidor || !Hash::check($password, $consumidor->password)) {
+                Session::put('failed_login', "yes");
+                return redirect('/signin');
+
+            } else {
+                Session::put('failed_login', "no");
+                Session::put('userType', 'consumidor');
+                Session::put('user_email', $consumidor->email);
+                Session::put('user_nome', $consumidor->nome);
+                Session::put('user_telemovel', $consumidor->telemovel);
+                Session::put('user_nif', $consumidor->nif);
+                Session::put('user_morada', $consumidor->morada);
+                
+                return redirect('/');
+            }
+
+
+        } elseif ($accountType == "fornecedor") {
+
+
+            return $request->input();
+        } else { 
+
+            return $request->input();
+        }
+        
     }
 
 
@@ -28,8 +65,8 @@ class LoginLogoutRegisterController extends Controller
     // Delete a consumidor/transportadora/fornecedor
     public function logout()
     {
-
-        // AQUI É DAR WIPE À SESSÃO E FAZER REDIRECT PARA A INDEX.HTML
+        Session::flush();
+        return redirect('/');
     }
 
 

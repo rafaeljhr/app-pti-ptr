@@ -39,10 +39,10 @@ Route::get('/profile', function () {
 })->name('profile-url');
 
 // Route::get('/logout', function () {
-//     // Session::flush();
+//     Session::flush();
 //     return redirect('/');
 // })->name('logout');
 
 Route::post('/register', [LoginLogoutRegisterController::class, 'register'])->name('register');
-Route::post('/logout', [LoginLogoutRegisterController::class, 'logout'])->name('logout');
+Route::get('/logout', [LoginLogoutRegisterController::class, 'logout'])->name('logout');
 Route::post('/login', [LoginLogoutRegisterController::class, 'login'])->name('login');    

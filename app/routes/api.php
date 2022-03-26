@@ -22,7 +22,7 @@ use App\Http\Controllers\TransportadoraController;
 Route::post('/login', [AuthController::class, 'login']);
 
 // Consumidor
-Route::post('/register/consumidor', [ConsumidorController::class, 'register']);
+Route::post('/register/consumidor', [ConsumidorController::class, 'consumidorRegister']);
 Route::get('/consumidor', [ConsumidorController::class, 'index']);
 Route::get('/consumidor/{id}/', [ConsumidorController::class, 'show']);
 
