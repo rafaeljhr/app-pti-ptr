@@ -6,7 +6,6 @@ use App\Models\Consumidor;
 use App\Http\Controllers\ConsumidorController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\TransportadoraController;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +22,7 @@ use App\Http\Controllers\AuthController;
 Route::post('/login', [AuthController::class, 'login']);
 
 // Consumidor
-Route::post('/register/consumidor', [ConsumidorController::class, 'register']);
+Route::post('/register/consumidor', [ConsumidorController::class, 'consumidorRegister']);
 Route::get('/consumidor', [ConsumidorController::class, 'index']);
 Route::get('/consumidor/{id}/', [ConsumidorController::class, 'show']);
 

@@ -4,12 +4,10 @@
 @section('background')
     
     @parent
-    @if ($errors->any())
+    @if (Session::has('failed_login'))
     <div class="alert alert-danger">
         <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
+            <li>Deu um erro</li>
         </ul>
     </div>
     @endif
