@@ -1,10 +1,10 @@
 
 <?php
-/* Session_start();
-session()->forget('loggedIn');
-Session::put('loggedIn', 'yes');
-Session::put('Utilizador', 'fornecedora');
-echo Session::get('loggedIn'); */
+Session_start();
+/* session()->forget('loggedIn'); */
+/* Session::put('loggedIn', 'yes'); */
+/* Session::put('Utilizador', 'fornecedora');
+echo Session::get('loggedIn');  */
 ?>
 
 
@@ -58,7 +58,7 @@ echo Session::get('loggedIn'); */
             </li>
             <li class="nav-item">
                 {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="{{ route('logout') }}">Logout</a>
             </li>
         </ul>
     </div>

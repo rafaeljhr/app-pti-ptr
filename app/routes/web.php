@@ -34,4 +34,10 @@ Route::get('/register', function () {
     return view('register');
 })->name('register-url');
 
+
+Route::get('/logout', function () {
+    Session::flush();
+    return redirect('/');
+})->name('logout');
+
 Route::post('/signin/submit', [LoginController::class, 'submit'])->name('login-auth');
