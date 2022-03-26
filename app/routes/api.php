@@ -6,7 +6,6 @@ use App\Models\Consumidor;
 use App\Http\Controllers\ConsumidorController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\TransportadoraController;
-use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------

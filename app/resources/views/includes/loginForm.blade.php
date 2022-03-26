@@ -1,5 +1,5 @@
 <div class="container py-5">
-    <form class="form-signin" method="post" action="{{ route('login-auth') }}">
+    <form class="form-signin" method="post" action="{{ route('login') }}">
         @csrf
         
         <div class="limit-width mx-auto">  

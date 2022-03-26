@@ -2,9 +2,9 @@
 <?php
 Session_start();
 session()->forget('loggedIn');
-Session::put('loggedIn', 'yes');
-Session::put('userType', 'consumidor');
-echo Session::get('loggedIn'); 
+// Session::put('loggedIn', 'yes');
+// Session::put('userType', 'consumidor');
+// echo Session::get('loggedIn'); 
 /* session()->forget('loggedIn'); */
 /* Session::put('loggedIn', 'yes'); */
 /* Session::put('Utilizador', 'fornecedora');

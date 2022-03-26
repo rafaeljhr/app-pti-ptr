@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\website\LoginLogoutRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +38,11 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-Route::get('/logout', function () {
-    Session::flush();
-    return redirect('/');
-})->name('logout');
+// Route::get('/logout', function () {
+//     // Session::flush();
+//     return redirect('/');
+// })->name('logout');
 
-Route::post('/signin/submit', [LoginController::class, 'submit'])->name('login-auth');
+Route::post('/register', [LoginLogoutRegisterController::class, 'register'])->name('register');
+Route::post('/logout', [LoginLogoutRegisterController::class, 'logout'])->name('logout');
+Route::post('/login', [LoginLogoutRegisterController::class, 'login'])->name('login');    
