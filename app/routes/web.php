@@ -38,4 +38,9 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
+Route::get('/logout', function () {
+    Session::flush();
+    return redirect('/');
+})->name('logout');
+
 Route::post('/signin/submit', [LoginController::class, 'submit'])->name('login-auth');

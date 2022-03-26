@@ -11,6 +11,10 @@ Session::put('userNIF', '251191699');
 Session::put('userAdress', 'Av. Fernando Ricardo Ribeiro Leitão No7 6oD');
 Session::put('userPassword', '1234');
 echo Session::get('loggedIn'); 
+/* session()->forget('loggedIn'); */
+/* Session::put('loggedIn', 'yes'); */
+/* Session::put('Utilizador', 'fornecedora');
+echo Session::get('loggedIn');  */
 ?>
 
 
@@ -64,7 +68,7 @@ echo Session::get('loggedIn');
             </li>
             <li class="nav-item">
                 {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="{{ route('logout') }}">Logout</a>
             </li>
         </ul>
     </div>
