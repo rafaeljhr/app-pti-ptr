@@ -19,10 +19,6 @@ class LoginLogoutRegisterController extends Controller
     // Get an existing consumidor/transportadora/fornecedor
     public function login(Request $request)
     {
-        // $consumidores = consumidor::all();
-        // return response()->json($consumidores);
-
-        // $request->get('telefone');
 
         $accountType = $request->get('inlineRadioOptions');
         $email = $request->get('usernameLogin');
@@ -37,7 +33,7 @@ class LoginLogoutRegisterController extends Controller
                 return redirect('/signin');
 
             } else {
-                Session::put('failed_login', "no");
+                session()->forget('failed_login');
                 Session::put('userType', 'consumidor');
                 Session::put('user_email', $consumidor->email);
                 Session::put('user_nome', $consumidor->nome);
