@@ -11,6 +11,13 @@ $userPassword = Session::get('userPassword');
 if (Session::get('userType') == 'consumidor') {
     $clientConsumer = true;
 }
+
+/*
+Função para limpar a session
+function deleteUser() {
+    Session::flush();
+}
+*/
 ?>
 
 <div class="container">
@@ -93,8 +100,12 @@ if (Session::get('userType') == 'consumidor') {
                         </div>
                     </div>
 
-                    <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
-                    <button v-show="editable" type="button" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
+                    <div class="my-2">
+                        <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
+                        <button v-show="editable" type="button" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
+                    </div>
+                    
+                    <button type="button" class="btn btn-danger">Apagar Conta</button>
 
                 </div>
             </form>
