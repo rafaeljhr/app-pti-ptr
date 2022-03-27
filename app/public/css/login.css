@@ -3,6 +3,25 @@
     height: auto;
 }
 
+
+.alert{
+    
+    top: 25px;
+}
+
+
+.form-group{
+
+    padding: 10px;
+
+} 
+
+.form-label{
+
+    color: white;
+}
+
+
 .limit-width {
     max-width: 50%;
     background-color: forestgreen;

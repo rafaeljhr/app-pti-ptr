@@ -3,30 +3,37 @@
         @csrf
         
         <div class="limit-width mx-auto">  
-            <img class="logo" src="images/logo.png" alt="EcoSmart Logo">
+            <img class="logo" src="images/logo4.png" alt="EcoSmart Logo">
 
             <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades!</h1>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="consumidor">
-                <label class="form-check-label" for="inlineRadio1">Consumidor</label>
+
+            <div class="form-group row">
+                <select class="form-select" name="selectedOption" aria-label="Default select example">
+                    <option selected value="consumidor">Consumidor</option>
+                    <option value="transportadora">Transportadora</option>
+                    <option value="fornecedor">Fornecedora</option>
+                </select>
             </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="transportadoraSelect" value="transportadora">
-                <label class="form-check-label" for="inlineRadio1">Transportadora</label>
+            
+
+            <div class="form-group row">
+                <label for="loginName" class="col-sm-2 col-form-label"><h6 class="form-label">Email</h3></label>
+                <div class="col-sm-10">
+                  <input type="text" name ="usernameLogin" class="form-control" id="loginName" placeholder="Nome de utilizador">
+                </div>
             </div>
 
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fornecedorSelect" value="fornecedor">
-                <label class="form-check-label" for="inlineRadio1">Fornecedora</label>
+            <div class="form-group row">
+                <label for="loginName" class="col-sm-2 col-form-label"><h6 class="form-label">Password</h3></label>
+                <div class="col-sm-10">
+                  <input type="password" name ="passwordLogin" class="form-control" id="password" placeholder="Password">
+                </div>
             </div>
-            <div>
-            <label for="loginName" class="sr-only text-light"><h4>Email</h4></label>
-            <input type="text" name="usernameLogin" id="loginName" class="form-control form-control-lg" placeholder="Nome de utilizador" autofocus="">
-            </div>
-            <label for="password" class="sr-only text-light"><h4>Password</h4></label>
-            <input type="password" name="passwordLogin" id="password" class="form-control form-control-lg" placeholder="Password"  autofocus="">
+
+            
+            
 
             <button class="btn btn-lg btn-secondary btn-block mt-3" type="submit">Entrar</button>
         </div>
