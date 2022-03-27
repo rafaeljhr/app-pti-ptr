@@ -6,90 +6,52 @@
 
         <h1 class="h3 mb-4 font-weight-normal">Junte-se ao grupo EcoSmart!</h1>
 
-        <h2 class="h4 mb-2 font-weight-normal text-light">Eu sou um/a:</h1>
+        <h2 class="h4 mb-2 font-weight-normal text-light">Eu sou um/a:</h2>
         
         <form class="form-signin" method="post" action="{{ route('register-controller') }}">
             @csrf
-
             <div class="form-group row px-3">
-                <select class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
-                    <option @click="clientConsumer = true" selected value="consumidor">Consumidor</option>
-                    <option @click="clientConsumer = false" value="transportadora">Transportadora</option>
-                    <option @click="clientConsumer = false" value="fornecedor">Fornecedora</option>
+                <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
+                    <option selected value="consumidor">Consumidor</option>
+                    <option value="transportadora">Transportadora</option>
+                    <option value="fornecedor">Fornecedora</option>
                 </select>
             </div>
 
-            <div class="form-group" v-show="clientConsumer">
+            <div class="form-group">
                 <div class="row">
                     <div class="col">
-                        <label for="inputNameConsumer" class="sr-only text-light">Nome</label>
-                        <input type="text" name ="inputNameConsumer" id="inputNameConsumer" class="form-control form-control-sm mb-2" placeholder="João Carvalho">
+                        <label for="nome" class="sr-only text-light">Nome</label>
+                        <input required type="text" name ="name" id="name" class="form-control form-control-sm mb-2" placeholder="Introduza o seu nome">
                     </div>
                     <div class="col">
-                        <label for="inputEmailConsumer" class="sr-only text-light">Email</label>
-                        <input type="email" name ="inputEmailConsumer" id="inputEmailConsumer" class="form-control form-control-sm mb-2" placeholder="eco@smart.com">
+                        <label for="email" class="sr-only text-light">Email</label>
+                        <input required type="email" name ="email" id="email" class="form-control form-control-sm mb-2" placeholder="Introduz o seu email">
                     </div>                    
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <label for="inputTelConsumer" class="sr-only text-light">Telemóvel</label>
-                        <input type="text" name ="inputTelConsumer" id="inputTelConsumer" class="form-control form-control-sm mb-2" placeholder="987654321" size="9">
+                        <label for="phone_number" class="sr-only text-light">Telemóvel</label>
+                        <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-sm mb-2" placeholder="Introduza o seu número" minlength="9" maxlength="9">
                     </div>
                     
                     <div class="col">
-                        <label for="inputNIFConsumer" class="sr-only text-light">NIF</label>
-                        <input type="text" name ="inputNIFConsumer" id="inputNIFConsumer" class="form-control form-control-sm mb-2" placeholder="123456789" size="9">
+                        <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
+                        <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
+                        <input required type="text" name ="nif" id="nif" class="form-control form-control-sm mb-2" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
                     </div>                 
                 </div>
                 
                 <div class="row form-group">
                     <div class="col">
-                        if consumid
-                        <label for="inputAdressConsumer" class="sr-only text-light">Morada</label>
-                        if 
-                        <input type="text" name ="inputAdressConsumer" id="inputAdressConsumer" class="form-control form-control-sm mb-2" placeholder="Rua Avenida Nº7 6ºE" maxlength="200">
-                    </div>
-                    <div class="col">
-                        <label for="passwordConsumer" class="sr-only text-light">Password</label>
-                        <input type="password" name ="passwordConsumer" id="passwordConsumer" class="form-control form-control-sm mb-2" placeholder="**********">
-                    </div>                    
-                </div>
-            </div>
-
-
-            
-            <div class="form-group" v-show="!clientConsumer">
-                <div class="row">
-                    <div class="col">
-                        <label for="inputNameNonConsumer" class="sr-only text-light">Nome</label>
-                        <input type="text" name ="inputNameNonConsumer" id="inputNameNonConsumer" class="form-control form-control-sm mb-2" placeholder="JC S.A">
-                    </div>
-                    <div class="col">
-                        <label for="inputEmailNonConsumer" class="sr-only text-light">Email</label>
-                        <input type="email" name ="inputEmailNonConsumer" id="inputEmailNonConsumer" class="form-control form-control-sm mb-2" placeholder="eco@smart.com">
-                    </div>                    
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <label for="inputTelNonConsumer" class="sr-only text-light">Telemóvel</label>
-                        <input type="text" name ="inputTelNonConsumer" id="inputTelNonConsumer" class="form-control form-control-sm mb-2" placeholder="987654321" size="9">
-                    </div>
-                    <div class="col">
-                        <label for="inputNIFNonConsumer" class="sr-only text-light">NIF da Empresa</label>
-                        <input type="text" name ="inputNIFNonConsumer" id="inputNIFNonConsumer" class="form-control form-control-sm mb-2" placeholder="123456789" size="9">
-                    </div>                    
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <label for="inputAdressNonConsumer" class="sr-only text-light">Morada Fiscal</label>
-                        <input type="text" name ="inputAdressNonConsumer" id="inputAdressNonConsumer" class="form-control form-control-sm mb-2" placeholder="R. Sebastião e Mendes  50 e 51A" maxlength="200">
+                        <label v-if="clientConsumer" for="adress" class="sr-only text-light">Morada</label>
+                        <label v-else for="adress" class="sr-only text-light">Morada Fiscal</label>
+                        <input required type="text" name ="adress" id="adress" class="form-control form-control-sm mb-2" placeholder="Introduza a sua morada" maxlength="200">
                     </div>
                     <div class="col">
                         <label for="password" class="sr-only text-light">Password</label>
-                        <input type="password" name ="password" id="password" class="form-control form-control-sm mb-2" placeholder="**********">
+                        <input required type="password" name ="password" id="password" class="form-control form-control-sm mb-2" placeholder="Introduza a sua password">
                     </div>                    
                 </div>
             </div>
@@ -104,6 +66,15 @@
         data: function() {
             return {
                 clientConsumer: true
+            }
+        },
+        methods: {
+            switchSelect(event) {
+                if (event.target.value == "consumidor") {
+                    this.clientConsumer = true;
+                } else {
+                    this.clientConsumer = false;
+                }
             }
         }
     })
