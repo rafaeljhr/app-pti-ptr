@@ -20,7 +20,7 @@ class LoginLogoutRegisterController extends Controller
     public function login(Request $request)
     {
 
-        $accountType = $request->get('inlineRadioOptions');
+        $accountType = $request->get('selectedOption');
         $email = $request->get('usernameLogin');
         $password = $request->get('passwordLogin');
 
