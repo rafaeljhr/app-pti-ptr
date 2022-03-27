@@ -8,7 +8,8 @@
 
         <h2 class="h4 mb-2 font-weight-normal text-light">Eu sou um/a:</h1>
         
-        <form class="form-signin" method="post" action="{{ route('register') }}">
+        <form class="form-signin" method="post" action="{{ route('register-controller') }}">
+            @csrf
 
             <div class="form-group row px-3">
                 <select class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">

@@ -68,7 +68,7 @@ echo Session::get('loggedIn');  */
             </li>
             <li class="nav-item">
                 {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                <a class="nav-link" href="{{ route('logout') }}">Logout</a>
+                <a class="nav-link" href="{{ route('logout-controller') }}">Logout</a>
             </li>
         </ul>
     </div>

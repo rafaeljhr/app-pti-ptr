@@ -14,6 +14,12 @@ use App\Http\Controllers\website\LoginLogoutRegisterController;
 |
 */
 
+
+
+// ##############
+// NAVBAR ROUTES
+// ##############
+
 Route::get('/', function () {
     return view('home');
 })->name('home-url');
@@ -38,11 +44,12 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-// Route::get('/logout', function () {
-//     Session::flush();
-//     return redirect('/');
-// })->name('logout');
 
-Route::post('/register', [LoginLogoutRegisterController::class, 'register'])->name('register');
-Route::get('/logout', [LoginLogoutRegisterController::class, 'logout'])->name('logout');
-Route::post('/login', [LoginLogoutRegisterController::class, 'login'])->name('login');    
+
+// ###################
+// CONTROLLERS ROUTES
+// ###################
+
+Route::post('/register-controller', [LoginLogoutRegisterController::class, 'register'])->name('register-controller');
+Route::get('/logout-controller', [LoginLogoutRegisterController::class, 'logout'])->name('logout-controller');
+Route::post('/login-controller', [LoginLogoutRegisterController::class, 'login'])->name('login-controller');
