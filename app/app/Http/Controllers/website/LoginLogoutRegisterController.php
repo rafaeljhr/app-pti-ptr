@@ -69,16 +69,58 @@ class LoginLogoutRegisterController extends Controller
 
     // Register a consumidor/transportadora/fornecedor
     public function register(Request $request)
-
     {
-        // $request->validate([
-        //     'nome' => 'required',
-        //     'email' => 'required',
-        //     'password' => 'required',
-        //     'telemovel' => 'required',
-        //     'nif' => 'required',
-        //     'morada' => 'required'
-        // ]);
+        return $request->input();
+        $accountType = $request->get('selectedOption');
+
+        if ($accountType == "consumidor") {
+
+            $newConsumidor = new consumidor([
+            'nome' => $request->get('inputNameConsumer'),
+            'telemovel' => $request->get('inputTelConsumer'),
+            'nif' => $request->get('inputNIFConsumer'),
+            'morada' => $request->get('inputAdressConsumer'),
+            'email' => $request->get('inputEmailConsumer'),
+            'password' => bcrypt($request->get('passwordConsumer')),
+            'api_token' => Str::random(60)
+            ]);
+
+
+        } elseif ($accountType == "fornecedor") {
+
+            $newFornecedor = new consumidor([
+            'nome' => $request->get('inputNameConsumer'),
+            'telemovel' => $request->get('inputTelConsumer'),
+            'nif' => $request->get('inputNIFConsumer'),
+            'morada' => $request->get('inputAdressConsumer'),
+            'email' => $request->get('inputEmailConsumer'),
+            'password' => bcrypt($request->get('passwordConsumer')),
+            'api_token' => Str::random(60)
+            ]);
+
+
+            return $request->input();
+
+        } elseif ($accountType == "transportadora") {
+
+            $newTransportadora = new consumidor([
+            'nome' => $request->get('inputNameConsumer'),
+            'telemovel' => $request->get('inputTelConsumer'),
+            'nif' => $request->get('inputNIFConsumer'),
+            'morada' => $request->get('inputAdressConsumer'),
+            'email' => $request->get('inputEmailConsumer'),
+            'password' => bcrypt($request->get('passwordConsumer')),
+            'api_token' => Str::random(60)
+            ]);
+
+
+            return $request->input();
+            
+        } else { 
+
+            return $request->input();
+        }
+
       
         // $newConsumidor = new consumidor([
         // 'nome' => $request->get('nome'),
