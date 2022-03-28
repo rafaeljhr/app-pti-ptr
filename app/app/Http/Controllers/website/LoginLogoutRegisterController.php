@@ -76,42 +76,26 @@ class LoginLogoutRegisterController extends Controller
         if ($accountType == "consumidor") {
 
             $newConsumidor = new consumidor([
-            'nome' => $request->get('inputNameConsumer'),
-            'telemovel' => $request->get('inputTelConsumer'),
-            'nif' => $request->get('inputNIFConsumer'),
-            'morada' => $request->get('inputAdressConsumer'),
-            'email' => $request->get('inputEmailConsumer'),
-            'password' => bcrypt($request->get('passwordConsumer')),
+            'nome' => $request->get('name'),
+            'telemovel' => $request->get('phone_number'),
+            'nif' => $request->get('nif'),
+            'morada' => $request->get('address'),
+            'email' => $request->get('email'),
+            'password' => bcrypt($request->get('password')),
             'api_token' => Str::random(60)
             ]);
 
 
         } elseif ($accountType == "fornecedor") {
 
-            $newFornecedor = new consumidor([
-            'nome' => $request->get('inputNameConsumer'),
-            'telemovel' => $request->get('inputTelConsumer'),
-            'nif' => $request->get('inputNIFConsumer'),
-            'morada' => $request->get('inputAdressConsumer'),
-            'email' => $request->get('inputEmailConsumer'),
-            'password' => bcrypt($request->get('passwordConsumer')),
-            'api_token' => Str::random(60)
-            ]);
+            
 
 
             return $request->input();
 
         } elseif ($accountType == "transportadora") {
 
-            $newTransportadora = new consumidor([
-            'nome' => $request->get('inputNameConsumer'),
-            'telemovel' => $request->get('inputTelConsumer'),
-            'nif' => $request->get('inputNIFConsumer'),
-            'morada' => $request->get('inputAdressConsumer'),
-            'email' => $request->get('inputEmailConsumer'),
-            'password' => bcrypt($request->get('passwordConsumer')),
-            'api_token' => Str::random(60)
-            ]);
+            
 
 
             return $request->input();
