@@ -53,3 +53,4 @@ Route::get('/profile', function () {
 Route::post('/register-controller', [LoginLogoutRegisterController::class, 'register'])->name('register-controller');
 Route::get('/logout-controller', [LoginLogoutRegisterController::class, 'logout'])->name('logout-controller');
 Route::post('/login-controller', [LoginLogoutRegisterController::class, 'login'])->name('login-controller');
+Route::post('/profile-controller', [ProfileController::class, 'profile'])->name('profile-controller');

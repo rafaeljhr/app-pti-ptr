@@ -20,81 +20,59 @@ function deleteUser() {
 */
 ?>
 
-<div class="container">
+<div class="container py-5">
     
     <div class="form-div mx-auto my-2 px-3">  
-        <img class="logo" src="images/logo.png" alt="EcoSmart Logo">
+        <img class="logo" src="images/logo6.png" alt="EcoSmart Logo">
 
         <h1 class="h3 mb-4 font-weight-normal">Os Meus Dados</h1>
 
         <div class="px-4 py-4">
-            <form>
-            
+            <form method="post" action="{{ route('profile-controller') }}">
                 <div class="prof-info">
                     <div class="row" >                    
                         <div class="col-sm ">
-                            <label for="nome" class="form-label">Nome</label>
-                            <input type="text" name="nome" class="form-control mb-3" placeholder="Nome" aria-label="Nome do Utilizador"
+                            <label for="nome" class="form-label text-light">Nome</label>
+                            <input type="text" name="nome" class="form-control mb-3" placeholder="Introduza o seu nome" aria-label="Nome do Utilizador"
                             aria-describedby="Nome do Utilizador" v-model="userName" :disabled="editable == false">
                         </div>
     
                         <div class="col-sm">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label text-light">Email</label>
                             <div class="input-group mb-3">
-                                <input name="email" type="email" class="form-control" placeholder="eco@smart.com" aria-label="Email do Utilizador"
+                                <input name="email" type="email" class="form-control" placeholder="Introduza o seu email" aria-label="Email do Utilizador"
                                     aria-describedby="Email do Utilizador" v-model="userEmail" :disabled="editable == false">
                             </div>
                         </div>
     
                         <div class="col-sm">
-                            <label for="telemovel" class="form-label">Telemóvel</label>
+                            <label for="telemovel" class="form-label text-light">Telemóvel</label>
                             <div class="input-group mb-3">
-                                <input name="telemovel" type="text" class="form-control" placeholder="987654321" aria-label="Telemóvel do Utilizador"
-                                    aria-describedby="Telemóvel do Utilizador" v-model="userTel" :disabled="editable == false">
+                                <input name="telemovel" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
+                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" v-model="userTel" :disabled="editable == false">
                             </div>
                         </div>
-                    
                     </div>
     
                     <div v-show="clientConsumer" class="row">              
                         <div class="col-sm">
-                            <label for="nifConsumidor" class="form-label">NIF</label>
-                            <input type="text" name="nifConsumidor" class="form-control mb-3" placeholder="123456789" aria-label="NIF do Utilizador"
-                            aria-describedby="NIF do Utilizador" v-model="userNIF" :disabled="editable == false">
+                            <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
+                            <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
+                            <input type="text" name="nifConsumidor" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
+                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" v-model="userNIF" :disabled="editable == false">
                         </div>
     
                         <div class="col-sm">
-                            <label for="morada" class="form-label">Morada</label>
-                            <input type="text" name="morada" class="form-control mb-3" placeholder="Rua Eco Smart Nº4 Lote 4" aria-label="Morada do Utilizador"
+                            <label v-if="clientConsumer" for="adress" class="sr-only text-light">Morada</label>
+                            <label v-else for="adress" class="sr-only text-light">Morada Fiscal</label>
+                            <input type="text" name="morada" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
                             aria-describedby="Morada do Utilizador" v-model="userAdress" :disabled="editable == false">
                         </div>
     
                         <div class="col-sm">
-                            <label for="password" class="form-label">Password</label>
+                            <label for="password" class="form-label text-light">Password</label>
                             <div class="input-group mb-3">
-                                <input name="password" type="password" class="form-control" placeholder="*********" aria-label="Password do Utilizador"
-                                    aria-describedby="Password do Utilizador" v-model="userPassword" :disabled="editable == false">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div v-show="!clientConsumer" class="row">              
-                        <div class="col-sm">
-                            <label for="nifConsumidor" class="form-label">NIF da Empresa</label>
-                            <input type="text" name="nifConsumidor" class="form-control mb-3" placeholder="123456789" aria-label="NIF da Empresa"
-                            aria-describedby="NIF do Utilizador" v-model="userNIF" :disabled="editable == false">
-                        </div>
-    
-                        <div class="col-sm">
-                            <label for="morada" class="form-label">Morada Fiscal</label>
-                            <input type="text" name="morada" class="form-control mb-3" placeholder="Rua Eco Smart Nº4 Lote 4" aria-label="Morada Fiscal da Empresa"
-                            aria-describedby="Morada do Utilizador" v-model="userAdress" :disabled="editable == false">
-                        </div>
-    
-                        <div class="col-sm">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="input-group mb-3">
-                                <input name="password" type="password" class="form-control" placeholder="*********" aria-label="Password da Empresa"
+                                <input name="password" type="password" class="form-control" placeholder="Introduza a sua password" aria-label="Password do Utilizador"
                                     aria-describedby="Password do Utilizador" v-model="userPassword" :disabled="editable == false">
                             </div>
                         </div>
@@ -102,13 +80,13 @@ function deleteUser() {
 
                     <div class="my-2">
                         <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
-                        <button v-show="editable" type="button" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
+                        <button v-show="editable" type="submit" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
                     </div>
-                    
-                    <button type="button" class="btn btn-danger">Apagar Conta</button>
-
                 </div>
             </form>
+
+            <button type="button" class="btn btn-danger">Apagar Conta</button>
+
         </div>
     </div>    
 </div>

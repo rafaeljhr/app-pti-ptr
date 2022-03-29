@@ -2,7 +2,7 @@
 
     <div class="form-div mx-auto my-2 px-3">  
 
-        <img class="logo" src="images/logo.png" alt="EcoSmart Logo">
+        <img class="logo" src="images/logo4.png" alt="EcoSmart Logo">
 
         <h1 class="h3 mb-4 font-weight-normal">Junte-se ao grupo EcoSmart!</h1>
 
