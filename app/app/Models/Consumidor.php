@@ -11,13 +11,13 @@ class Consumidor extends Model
 	protected $table = 'consumidor';
 
     protected $fillable = [
-        'nome', 'telemovel', 'nif', 'morada', 'email', 'password'
+        'nome', 'telefone', 'nif', 'morada', 'email', 'password'
     ];
 
     protected $hidden = [
         'password',
         'nif',
-        'telemovel',
+        'telefone',
         'morada',
         'updated_at',
         'created_at',

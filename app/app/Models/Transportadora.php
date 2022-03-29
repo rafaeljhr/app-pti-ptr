@@ -11,7 +11,7 @@ class Transportadora extends Model
     protected $table = 'transportadora';
 
     protected $fillable = [
-        'morada_fiscal', 'telemovel', 'nif', 'nome', 'email', 'password'
+        'morada', 'telefone', 'nif', 'nome', 'email', 'password'
     ];
 
     protected $hidden = [

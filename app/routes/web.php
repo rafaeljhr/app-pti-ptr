@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\website\LoginLogoutRegisterController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,12 +45,22 @@ Route::get('/profile', function () {
 })->name('profile-url');
 
 
+// ###################
+// API ROUTES CALLS
+// ###################
+
+Route::get('/api/consumidor', function () {
+    return view('profile');
+})->name('profile-url');
+
+
 
 // ###################
 // CONTROLLERS ROUTES
 // ###################
 
-Route::post('/register-controller', [LoginLogoutRegisterController::class, 'register'])->name('register-controller');
-Route::get('/logout-controller', [LoginLogoutRegisterController::class, 'logout'])->name('logout-controller');
-Route::post('/login-controller', [LoginLogoutRegisterController::class, 'login'])->name('login-controller');
-Route::post('/profile-controller', [ProfileController::class, 'profile'])->name('profile-controller');
+Route::post('/register-controller', [UserController::class, 'register'])->name('register-controller');
+Route::get('/logout-controller', [UserController::class, 'logout'])->name('logout-controller');
+Route::post('/login-controller', [UserController::class, 'login'])->name('login-controller');
+Route::post('/edit-profile-controller', [UserController::class, 'update'])->name('edit-profile-controller');
+Route::post('/delete-profile-controller', [UserController::class, 'delete'])->name('delete-profile-controller');
