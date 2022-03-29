@@ -1,3 +1,15 @@
+<script>
+    let app = Vue.createApp({
+        data: function() {
+            return {
+                clientConsumer: true
+            }
+        }
+    })
+
+    app.mount('.app')
+</script>
+
 <template>
     <div class="container py-5">
 
@@ -100,16 +112,6 @@
         </div>
     </div>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      clientConsumer: true
-    }
-  }
-}
-</script>
 
 <style scoped>
     .logo {

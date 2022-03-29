@@ -44,10 +44,6 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-Route::get('/testVue', function () {
-    return view('testVue');
-})->name('testVue-url');
-
 
 
 // ###################
