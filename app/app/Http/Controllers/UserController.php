@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Consumidor;
 use App\Models\Fornecedor;
 use App\Models\Transportadora;
-use Illuminate\Support\Str;
 use Session;
 use Illuminate\Support\Facades\Hash;
 
