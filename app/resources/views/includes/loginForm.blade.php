@@ -19,9 +19,20 @@
             
 
             <div class="form-group row">
+                {{-- <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
+                <div class="input-group">
+                <div class="input-group-text">@</div>
+                <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Username">
+                </div> --}}
+
+
+
                 <label for="loginName" class="col-sm-2 col-form-label"><h6 class="form-label">Email</h3></label>
                 <div class="col-sm-10">
+                  <div class="input-group">
+                  <div class="input-group-text">@</div>
                   <input type="text" name ="usernameLogin" class="form-control" id="loginName" placeholder="Nome de utilizador">
+                  </div>
                 </div>
             </div>
 
