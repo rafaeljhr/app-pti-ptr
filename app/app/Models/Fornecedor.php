@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
-class fornecedor extends Model
+class Fornecedor extends Model
 {
     protected $table = 'fornecedor';
 
     protected $fillable = [
-        'morada_fiscal', 'telemovel', 'nif', 'nome', 'email', 'password'
+        'morada', 'telefone', 'nif', 'nome', 'email', 'password'
     ];
 
     protected $hidden = [

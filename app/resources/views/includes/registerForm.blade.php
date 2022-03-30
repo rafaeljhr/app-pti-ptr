@@ -45,8 +45,8 @@
                 
                 <div class="row form-group">
                     <div class="col">
-                        <label v-if="clientConsumer" for="adress" class="sr-only text-light">Morada</label>
-                        <label v-else for="adress" class="sr-only text-light">Morada Fiscal</label>
+                        <label v-if="clientConsumer" for="address" class="sr-only text-light">Morada</label>
+                        <label v-else for="address" class="sr-only text-light">Morada Fiscal</label>
                         <input required type="text" name ="address" id="address" class="form-control form-control-sm mb-2" placeholder="Introduza a sua morada" maxlength="200">
                     </div>
                     <div class="col">
