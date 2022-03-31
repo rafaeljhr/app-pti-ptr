@@ -17,74 +17,49 @@ echo Session::get('loggedIn');  */
 echo Session::get('loggedIn');  */
 ?>
 
+<link rel="stylesheet" href="css/page_default.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    
-    <img src="images/logo6.png" class="main-logo">
+<header class="site-header sticky-top py-1">
+    <nav class="container d-flex flex-column flex-md-row justify-content-between">  
+        <img src="images/logo6.png" class="main-logo" width="140">
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('home-url') }}">HOME</a>
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('about-url') }}">SOBRE</a>
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
+        @if(Session::get('loggedIn') == 'yes')
+        <a class="py-2 d-none d-md-inline-block">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Perfil
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Conta</a></li>
+                        @if(Session::get('Utilizador') == 'fornecedora')
+                        <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                        <li><a class="dropdown-item" href="#">Inventário</a></li>
+                        @endif
+                        @if(Session::get('Utilizador') == 'transportadora')
+                        <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                        <li><a class="dropdown-item" href="#">Bases de veiculos</a></li>
+                        @endif
+                        @if(Session::get('Utilizador') == 'consumidor')
+                        <li><a class="dropdown-item" href="#">Encomendas</a></li>
+                        @endif
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+        </a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link" href="{{ route('home-url') }}">HOME</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ route('about-url') }}">SOBRE</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{ route('contact-url') }}">CONTACTOS</a>
-            </li>
-        </ul>
-    </div>
-
-
-    @if(Session::get('userType') == 'consumidor' || Session::get('userType') == 'fornecedor' || Session::get('userType') == 'transportadora')
-    <div class="collapse navbar-collapse flex-row-reverse login">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                      Perfil
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="{{ route('profile-url') }}">Conta</a></li>
-                      @if(Session::get('userType') == 'fornecedor')
-                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
-                      <li><a class="dropdown-item" href="#">Inventário</a></li>
-                      @endif
-                      @if(Session::get('userType') == 'transportador')
-                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
-                      <li><a class="dropdown-item" href="#">Bases de veiculos</a></li>
-                      @endif
-                      @if(Session::get('userType') == 'consumidor')
-                      <li><a class="dropdown-item" href="#">Encomendas</a></li>
-                      @endif
-                    </ul>
-                  </div>
-            </li>
-            <li class="nav-item">
-                {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                <a class="nav-link" href="{{ route('logout-controller') }}">Logout</a>
-            </li>
-        </ul>
-    </div>
-
-    @endif
-    @if(Session::get('userType') == null)
-    <div class="collapse navbar-collapse flex-row-reverse login">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('signin-url') }}">ENTRAR</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('register-url') }}">REGISTAR</a>
-            </li>
-        </ul>
-    </div>
-    @endif
-
-</nav>
+        @endif
+        @if(Session::get('loggedIn') == null)
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('signin-url') }}">ENTRAR</a>
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('register-url') }}">REGISTAR</a>
+        @endif
+    </nav>
+</header>
+       
