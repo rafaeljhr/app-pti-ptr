@@ -1,20 +1,20 @@
 
 <?php
-Session_start();/* 
+Session_start();
 /* session()->forget('loggedIn');
-Session::put('loggedIn', 'yes'); */
-Session::put('userType', 'fornecedor');
-/* Session::put('userName', 'João Carvalho');
+Session::put('loggedIn', 'yes');
+
+Session::put('userName', 'João Carvalho');
 Session::put('userEmail', 'jcarvalho@gmail.com');
 Session::put('userTel', '910219301');
 Session::put('userNIF', '251191699');
 Session::put('userAdress', 'Av. Fernando Ricardo Ribeiro Leitão No7 6oD');
 Session::put('userPassword', '1234');
-echo Session::get('loggedIn');  */  
-/* session()->forget('loggedIn'); */
-/* Session::put('loggedIn', 'yes'); */
-/* Session::put('Utilizador', 'fornecedor');
-echo Session::get('loggedIn');  */
+echo Session::get('loggedIn');   
+session()->forget('loggedIn');  */
+/* Session::put('loggedIn', 'yes'); 
+Session::put('Utilizador', 'fornecedora'); */
+/* echo Session::get('loggedIn');  */
 ?>
 
 <link rel="stylesheet" href="css/page_default.css">
@@ -27,7 +27,7 @@ echo Session::get('loggedIn');  */
         <a class="py-2 d-none d-md-inline-block" href="{{ route('about-url') }}">SOBRE</a>
         <a class="py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
         @if(Session::get('loggedIn') == 'yes')
-        <a class="py-2 d-none d-md-inline-block">
+       
                 <li class="nav-item">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -51,9 +51,9 @@ echo Session::get('loggedIn');  */
                 </li>
                 <li class="nav-item">
                     {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                    <a class="nav-link" href="#">Logout</a>
+                    <a class="nav-link" href="{{ route('logout-controller') }}">Logout</a>
                 </li>
-        </a>
+        
 
         @endif
         @if(Session::get('loggedIn') == null)

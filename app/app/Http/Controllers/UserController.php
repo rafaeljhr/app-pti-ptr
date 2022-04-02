@@ -18,7 +18,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
 
-        $accountType = $request->get('selectedOption');
+        $accountType = $request->get('inlineRadioOptions');
         $email = $request->get('usernameLogin');
         $password = $request->get('passwordLogin');
 
@@ -32,6 +32,7 @@ class UserController extends Controller
 
             } else {
                 session()->forget('failed_login');
+                Session::put('loggedIn', 'yes');
                 Session::put('userType', 'consumidor');
                 Session::put('user_email', $consumidor->email);
                 Session::put('user_nome', $consumidor->nome);
