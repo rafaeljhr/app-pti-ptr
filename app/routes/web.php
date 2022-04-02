@@ -45,6 +45,12 @@ Route::get('/profile', function () {
 })->name('profile-url');
 
 
+/* !Temporario! */
+Route::get('/inventory', function () {
+    return view('inventory');
+})->name('inventory-url');
+/* !Temporario! */
+
 // ###################
 // API ROUTES CALLS
 // ###################
@@ -58,6 +64,8 @@ Route::get('/api/consumidor', function () {
 // ###################
 // CONTROLLERS ROUTES
 // ###################
+/* depois mexe altera o que quiseres rafa G */
+/* Route::post('/fornecedor-controller', [FornecedorController::class, "inventarioDisplay"])->name('inventory-controller'); */
 
 Route::post('/register-controller', [UserController::class, 'register'])->name('register-controller');
 Route::get('/logout-controller', [UserController::class, 'logout'])->name('logout-controller');
