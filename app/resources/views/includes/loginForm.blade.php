@@ -19,11 +19,7 @@
             
 
             <div class="form-group row">
-                {{-- <label class="visually-hidden" for="autoSizingInputGroup">Username</label>
-                <div class="input-group">
-                <div class="input-group-text">@</div>
-                <input type="text" class="form-control" id="autoSizingInputGroup" placeholder="Username">
-                </div> --}}
+                
 
 
 
