@@ -1,15 +1,26 @@
+<link rel="stylesheet" href="css/login.css">
+
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
         <div class="row align-items-center g-lg-5 py-5">
           <div class="col-lg-7 text-center text-lg-start">
-            <img src="images/logo5.png" width="700" alt="">
-            <p class="col-lg-10 fs-4">Bem-vindo à loja mais saudável. A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
-              considerando todos os custos associados. A saúde do planeta é muito importante!
+            <img src="images/logo5.png" width="600" alt="">
+            <p class="col-lg-10 fs-4">A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
+              considerando todos os custos associados.
             </p>
           </div>
-          <div class="col-md-10 mx-auto col-lg-5" method="post" action="{{ route('login-controller') }}">
-            <form class="p-4 p-md-5 border rounded-3 bg-light">
+          <div class="col-md-10 mx-auto col-lg-5" >
+            <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="{{ route('login-controller') }}">
+              @csrf
               <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades da EcoSmart Store!</h1>
-              <div class="form-check form-check-inline">
+
+
+              <select class="form-select mb-3" name ="inlineRadioOptions" aria-label="Default select example">
+                <option selected>Selecione o tipo de conta</option>
+                <option value="consumidor">Consumidor</option>
+                <option value="transportadora">Transportadora</option>
+                <option value="fornecedor">Fornecedor</option>
+              </select>
+              {{-- <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="consumidor">
                 <label class="form-check-label" for="inlineRadio1">Consumidor</label>
                 </div>
@@ -22,7 +33,7 @@
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fornecedorSelect" value="fornecedor">
                     <label class="form-check-label" for="inlineRadio1">Fornecedora</label>
-                </div>
+                </div> --}}
 
               <div class="form-floating mb-3">
                 <input type="text" name="usernameLogin" id="loginName" class="form-control"  placeholder="Nome de utilizador">
@@ -37,7 +48,7 @@
                   <input type="checkbox" value="remember-me"> Lembrar-me
                 </label>
               </div>
-              <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
+              <button class="w-100 btn btn-lg btn-color" type="submit">Entrar</button>
               <hr class="my-4">
               
             </form>
