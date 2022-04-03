@@ -1,67 +1,92 @@
-<div class="container py-5">
 
-    <div class="form-div mx-auto my-2 px-3">  
+<link rel="stylesheet" href="css/page_default.css">
+<link rel="stylesheet" href="bootstrap.min.css">
 
-        <img class="logo" src="images/logo4.png" alt="EcoSmart Logo">
 
-        <h1 class="h3 mb-4 font-weight-normal">Junte-se ao grupo EcoSmart!</h1>
+    <section class="h-100">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card card-registration my-4">
+                <div class="row g-0">
+                  <div class="col-xl-6 d-none d-xl-block">
+                    <img src="images/foto3.png" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="card-body p-md-5 text-black">
+                      <h3 class="mb-5 text-uppercase">JUNTA-TE AO GRUPO ECOSMART!</h3>
+                      <h2 class="h4 mb-2 font-weight-normal">Eu sou um/a:</h2>
 
-        <h2 class="h4 mb-2 font-weight-normal text-light">Eu sou um/a:</h2>
+                      <form v-show="clienteConsumidor" class="form-signin" method="post" action="{{ route('register-controller') }}">
+                        @csrf
+                        <div class="row">
+                          <div class="form-outline mb-4">
+                            <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
+                                <option selected value="consumidor">Consumidor</option>
+                                <option value="transportadora">Transportadora</option>
+                                <option value="fornecedor">Fornecedora</option>
+                            </select>
+                          </div>
+                        </div>
+                      
+                        <div class="row"> 
+                          <div class="form-outline mb-4">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input required type="text" name ="name" id="name" class="form-control form-control-lg" placeholder="Introduza o seu nome">
+                          </div>
+                        </div>
         
-        <form class="form-signin" method="post" action="{{ route('register-controller') }}">
-            @csrf
-            <div class="form-group row px-3">
-                <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
-                    <option selected value="consumidor">Consumidor</option>
-                    <option value="transportadora">Transportadora</option>
-                    <option value="fornecedor">Fornecedora</option>
-                </select>
+                        <div class="row">
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <label for="phone_number" class="form-label">Telemóvel</label>
+                              <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-lg" placeholder="Introduza o seu número" minlength="9" maxlength="9">
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <label v-if="clientConsumer" for="nif" class="form-label">NIF</label>
+                              <label v-else for="nif" class="form-label">NIF da Empresa</label>
+                              <input required type="text" name ="nif" id="nif" class="form-control form-control-lg" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
+                            </div>
+                          </div>
+                        </div>
+      
+                        <div class="form-outline mb-4">
+                           <label v-if="clientConsumer" for="address" class="form-label">Morada</label>
+                           <label v-else for="address" class="form-label">Morada Fiscal</label>  
+                           <input required type="text" id="address" name="address" class="form-control form-control-lg" placeholder="Introduza a sua morada" autofocus="">  
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <label for="email" class="form-label">Email</label>
+                          <input required type="email" name ="email" id="email" class="form-control form-control-lg" placeholder="Introduz o seu email">
+                        </div>
+  
+                        <div class="row">
+                          <div class="form-outline mb-4">
+                            <label for="passwordConsumer" class="form-label">Password</label>
+                            <input type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autofocus="">
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <button type="button" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
+                        </div>
+                        
+                      </form>
+                      
+
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+    </section>
 
-            <div class="form-group">
-                <div class="row">
-                    <div class="col">
-                        <label for="nome" class="sr-only text-light">Nome</label>
-                        <input required type="text" name ="name" id="name" class="form-control form-control-sm mb-2" placeholder="Introduza o seu nome">
-                    </div>
-                    <div class="col">
-                        <label for="email" class="sr-only text-light">Email</label>
-                        <input required type="email" name ="email" id="email" class="form-control form-control-sm mb-2" placeholder="Introduz o seu email">
-                    </div>                    
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <label for="phone_number" class="sr-only text-light">Telemóvel</label>
-                        <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-sm mb-2" placeholder="Introduza o seu número" minlength="9" maxlength="9">
-                    </div>
-                    
-                    <div class="col">
-                        <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
-                        <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
-                        <input required type="text" name ="nif" id="nif" class="form-control form-control-sm mb-2" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
-                    </div>                 
-                </div>
-                
-                <div class="row form-group">
-                    <div class="col">
-                        <label v-if="clientConsumer" for="address" class="sr-only text-light">Morada</label>
-                        <label v-else for="address" class="sr-only text-light">Morada Fiscal</label>
-                        <input required type="text" name ="address" id="address" class="form-control form-control-sm mb-2" placeholder="Introduza a sua morada" maxlength="200">
-                    </div>
-                    <div class="col">
-                        <label for="password" class="sr-only text-light">Password</label>
-                        <input required type="password" name ="password" id="password" class="form-control form-control-sm mb-2" placeholder="Introduza a sua password">
-                    </div>                    
-                </div>
-            </div>
-
-            <button class="btn btn-lg btn-secondary btn-block my-2" type="submit">Registar</button>
-        </form>
-    </div>
-</div>
-
-<script>
+<!-- <script>
     let app = Vue.createApp({
         data: function() {
             return {
@@ -81,3 +106,4 @@
 
     app.mount('.app')
 </script>
+ -->

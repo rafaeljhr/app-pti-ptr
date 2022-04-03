@@ -3,7 +3,7 @@
  */
 
  .site-header {
-    background-color: rgba(0, 0, 0, .85);
+    background-color: rgba(0, 0, 0, .80);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
   }
@@ -78,10 +78,6 @@
     user-select: none;
 }
 
-
-
-
-
 .not_button{
     display: block;
     width: 100%;
@@ -147,8 +143,9 @@
       font-size: 3.5rem;
     }
   
-.esquerda {
-    text-align: start;
+
 }
 
+body {
+  background-color: #dfdfdf!important;
 }

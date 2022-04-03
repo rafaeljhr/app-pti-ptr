@@ -7,7 +7,7 @@
         <div class="row">
         <div class="col-md-3 contact-col">
             <div class="contact-info">
-            <img src="https://image.ibb.co/kUASdV/contact-image.png" alt="image"/>
+            <img src="https://image.ibb.co/kUASdV/contact-image.png" class="d-flex justify-content-center" alt="image"/>
             <h2>Contacte-nos</h2>
             <h4>Estamos aqui para ajudar no que precisar!</h4>
             </div>
