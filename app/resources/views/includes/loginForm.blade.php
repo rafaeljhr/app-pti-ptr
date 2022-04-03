@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="css/login.css">
 
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        <div class="row align-items-center g-lg-5 py-5">
+        <div id="borderDiv" class="row align-items-center g-lg-5 mt-2 py-2">
           <div class="col-lg-7 text-center text-lg-start">
             <img src="images/logo5.png" width="600" alt="">
             <p class="col-lg-10 fs-4">A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
