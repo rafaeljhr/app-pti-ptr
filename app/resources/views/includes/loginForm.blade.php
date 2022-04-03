@@ -1,9 +1,11 @@
+<link rel="stylesheet" href="css/login.css">
+
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
         <div class="row align-items-center g-lg-5 py-5">
           <div class="col-lg-7 text-center text-lg-start">
-            <img src="images/logo5.png" width="700" alt="">
-            <p class="col-lg-10 fs-4">Bem-vindo à loja mais saudável. A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
-              considerando todos os custos associados. A saúde do planeta é muito importante!
+            <img src="images/logo5.png" width="600" alt="">
+            <p class="col-lg-10 fs-4">A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
+              considerando todos os custos associados.
             </p>
           </div>
           <div class="col-md-10 mx-auto col-lg-5">
@@ -37,7 +39,7 @@
                   <input type="checkbox" value="remember-me"> Lembrar-me
                 </label>
               </div>
-              <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
+              <button class="w-100 btn btn-lg btn-color" type="submit">Entrar</button>
               <hr class="my-4">
               
             </form>

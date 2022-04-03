@@ -1,110 +1,92 @@
-<div class="container">
-    
-    <div class="form-div mx-auto my-2 px-3">  
-        <img class="logo" src="images/logo.png" alt="EcoSmart Logo">
 
-        <h1 class="h3 mb-4 font-weight-normal">Junte-se ao grupo EcoSmart!</h1>
+<link rel="stylesheet" href="css/page_default.css">
+<link rel="stylesheet" href="bootstrap.min.css">
 
-        <h2 class="h4 mb-2 font-weight-normal text-light">Eu sou um/a:</h1>
 
-        <div class="row px-3">
-            <div class="form-check form-check-inline col">
-                <input @click="clienteConsumidor = true" class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="optionConsumidor" checked>
-                <label class="form-check-label text-light" for="inlineRadio1">Consumidor/a</label>
-            </div>
+    <section class="h-100">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card card-registration my-4">
+                <div class="row g-0">
+                  <div class="col-xl-6 d-none d-xl-block">
+                    <img src="images/foto3.png" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="card-body p-md-5 text-black">
+                      <h3 class="mb-5 text-uppercase">JUNTA-TE AO GRUPO ECOSMART!</h3>
+                      <h2 class="h4 mb-2 font-weight-normal">Eu sou um/a:</h2>
 
-            <div class="form-check form-check-inline col">
-                <input @click="clienteConsumidor = false" class="form-check-input" type="radio" name="inlineRadioOptions" id="transportadoraSelect" value="optionTransportadora">
-                <label class="form-check-label text-light" for="inlineRadio1">Transportador/a</label>
-            </div>
-
-            <div class="form-check form-check-inline col">
-                <input @click="clienteConsumidor = false" class="form-check-input" type="radio" name="inlineRadioOptions" id="fornecedorSelect" value="optionFornecedor">
-                <label class="form-check-label text-light" for="inlineRadio1">Fornecedor/a</label>
-            </div>
-        </div>
-
-        <form v-show="clienteConsumidor" class="form-signin">
-            <div class="row">
-                <div class="col">
-                    <label for="inputNameConsumer" class="sr-only text-light">Nome</label>
-                    <input type="text" id="inputNameConsumer" class="form-control form-control-sm mb-2" placeholder="João Carvalho" required="" autofocus="">
-                </div>
-                <div class="col">
-                    <label for="inputEmailConsumer" class="sr-only text-light">Email</label>
-                    <input type="email" id="inputEmailConsumer" class="form-control form-control-sm mb-2" placeholder="eco@smart.com" required="" autofocus="">
-                </div>                    
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    <label for="inputTelConsumer" class="sr-only text-light">Telemóvel</label>
-                    <input type="text" id="inputTelConsumer" class="form-control form-control-sm mb-2" placeholder="987654321" size="9" required="" autofocus="">
-                </div>
-                <div class="col">
-                    <label for="inputNIFConsumer" class="sr-only text-light">NIF</label>
-                    <input type="text" id="inputNIFConsumer" class="form-control form-control-sm mb-2" placeholder="123456789" size="9" required="" autofocus="">
-                </div>                    
-            </div>
-            
-            <div class="row">
-                <div class="col">
-                    <label for="inputAdressConsumer" class="sr-only text-light">Morada</label>
-                    <input type="text" id="inputAdressConsumer" class="form-control form-control-sm mb-2" placeholder="Rua Avenida Nº7 6ºE" maxlength="200" required="" autofocus="">
-                </div>
-                <div class="col">
-                    <label for="passwordConsumer" class="sr-only text-light">Password</label>
-                    <input type="password" id="passwordConsumer" class="form-control form-control-sm mb-2" placeholder="**********" required="" autofocus="">
-                </div>                    
-            </div>
+                      <form v-show="clienteConsumidor" class="form-signin" method="post" action="{{ route('register-controller') }}">
+                        @csrf
+                        <div class="row">
+                          <div class="form-outline mb-4">
+                            <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
+                                <option selected value="consumidor">Consumidor</option>
+                                <option value="transportadora">Transportadora</option>
+                                <option value="fornecedor">Fornecedora</option>
+                            </select>
+                          </div>
+                        </div>
+                      
+                        <div class="row"> 
+                          <div class="form-outline mb-4">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input required type="text" name ="name" id="name" class="form-control form-control-lg" placeholder="Introduza o seu nome">
+                          </div>
+                        </div>
         
-            <button class="btn btn-lg btn-secondary btn-block my-2" type="submit">Registar</button>
-        </form>
-    
-    
-        <form v-show="!clienteConsumidor" class="form-signin">
-            <div class="limit-width mx-auto">
-                
-                <div class="row">
-                    <div class="col">
-                        <label for="inputNameNonConsumer" class="sr-only text-light">Nome</label>
-                        <input type="text" id="inputNameNonConsumer" class="form-control form-control-sm mb-2" placeholder="JC S.A" required="" autofocus="">
-                    </div>
-                    <div class="col">
-                        <label for="inputEmailNonConsumer" class="sr-only text-light">Email</label>
-                        <input type="email" id="inputEmailNonConsumer" class="form-control form-control-sm mb-2" placeholder="eco@smart.com" required="" autofocus="">
-                    </div>                    
-                </div>
+                        <div class="row">
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <label for="phone_number" class="form-label">Telemóvel</label>
+                              <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-lg" placeholder="Introduza o seu número" minlength="9" maxlength="9">
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                              <label v-if="clientConsumer" for="nif" class="form-label">NIF</label>
+                              <label v-else for="nif" class="form-label">NIF da Empresa</label>
+                              <input required type="text" name ="nif" id="nif" class="form-control form-control-lg" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
+                            </div>
+                          </div>
+                        </div>
+      
+                        <div class="form-outline mb-4">
+                           <label v-if="clientConsumer" for="address" class="form-label">Morada</label>
+                           <label v-else for="address" class="form-label">Morada Fiscal</label>  
+                           <input required type="text" id="address" name="address" class="form-control form-control-lg" placeholder="Introduza a sua morada" autofocus="">  
+                        </div>
+  
+                        <div class="form-outline mb-4">
+                          <label for="email" class="form-label">Email</label>
+                          <input required type="email" name ="email" id="email" class="form-control form-control-lg" placeholder="Introduz o seu email">
+                        </div>
+  
+                        <div class="row">
+                          <div class="form-outline mb-4">
+                            <label for="passwordConsumer" class="form-label">Password</label>
+                            <input type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autofocus="">
+                          </div>
+                        </div>
 
-                <div class="row">
-                    <div class="col">
-                        <label for="inputTelNonConsumer" class="sr-only text-light">Telemóvel</label>
-                        <input type="text" id="inputTelNonConsumer" class="form-control form-control-sm mb-2" placeholder="987654321" size="9" required="" autofocus="">
-                    </div>
-                    <div class="col">
-                        <label for="inputNIFNonConsumer" class="sr-only text-light">NIF da Empresa</label>
-                        <input type="text" id="inputNIFNonConsumer" class="form-control form-control-sm mb-2" placeholder="123456789" size="9" required="" autofocus="">
-                    </div>                    
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <label for="inputAdressNonConsumer" class="sr-only text-light">Morada Fiscal</label>
-                        <input type="text" id="inputAdressNonConsumer" class="form-control form-control-sm mb-2" placeholder="R. Sebastião e Mendes  50 e 51A" maxlength="200" required="" autofocus="">
-                    </div>
-                    <div class="col">
-                        <label for="password" class="sr-only text-light">Password</label>
-                        <input type="password" id="password" class="form-control form-control-sm mb-2" placeholder="**********" required="" autofocus="">
-                    </div>                    
-                </div>
+                        <div class="row">
+                          <button type="button" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
+                        </div>
+                        
+                      </form>
+                      
 
-                <button class="btn btn-lg btn-secondary btn-block my-2" type="submit">Registar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </form>
-    </div>
-</div>
+          </div>
+        </div>
+    </section>
 
-<script>
+<!-- <script>
     let app = Vue.createApp({
         data: function() {
             return {
@@ -115,3 +97,4 @@
 
     app.mount('.app')
 </script>
+ -->
