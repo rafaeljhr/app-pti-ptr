@@ -1,5 +1,4 @@
 <?php
-$clientConsumer = false;
 
 $userName = Session::get('user_nome');
 $userEmail = Session::get('user_email');
@@ -9,14 +8,10 @@ $userAdress = Session::get('user_morada');
 
 if (Session::get('userType') == 'consumidor') {
     $clientConsumer = true;
+} else {
+    $clientConsumer = false;
 }
 
-/*
-Função para limpar a session
-function deleteUser() {
-    Session::flush();
-}
-*/
 ?>
 
 <div class="container py-5">

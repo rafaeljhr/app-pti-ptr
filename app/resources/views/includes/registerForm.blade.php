@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="css/page_default.css">
-<link rel="stylesheet" href="bootstrap.min.css">
-
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
     <section class="h-100">
         <div class="container py-5 h-100">
@@ -16,7 +15,7 @@
                       <h3 class="mb-5 text-uppercase">JUNTA-TE AO GRUPO ECOSMART!</h3>
                       <h2 class="h4 mb-2 font-weight-normal">Eu sou um/a:</h2>
 
-                      <form v-show="clienteConsumidor" class="form-signin" method="post" action="{{ route('register-controller') }}">
+                      <form class="form-signin" method="post" action="{{ route('register-controller') }}">
                         @csrf
                         <div class="row">
                           <div class="form-outline mb-4">
@@ -74,8 +73,6 @@
                         </div>
                         
                       </form>
-                      
-
                     </div>
                   </div>
                 </div>
@@ -85,7 +82,7 @@
         </div>
     </section>
 
-<!-- <script>
+<script>
     let app = Vue.createApp({
         data: function() {
             return {
@@ -105,4 +102,3 @@
 
     app.mount('.app')
 </script>
- -->
