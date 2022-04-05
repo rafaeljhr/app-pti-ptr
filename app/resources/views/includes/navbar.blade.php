@@ -28,7 +28,7 @@ Session::put('Utilizador', 'fornecedora'); */
         <a class="py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
         @if(Session::get('loggedIn') == 'yes')
        
-            <li class="nav-item">
+            <li class="py-2 d-none d-md-inline-block">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Perfil
@@ -49,12 +49,10 @@ Session::put('Utilizador', 'fornecedora'); */
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
-                <a class="nav-link" href="{{ route('logout-controller') }}">Logout</a>
-            </li>
-        
 
+            {{-- <a class="nav-link" href="{{ route('logout') }}">Logout</a> --}}
+            <a class="py-2 d-none d-md-inline-block" href="{{ route('logout-controller') }}">LOGOUT</a>
+          
         @endif
         @if(Session::get('loggedIn') == null)
         <a class="py-2 d-none d-md-inline-block" href="{{ route('signin-url') }}">ENTRAR</a>
