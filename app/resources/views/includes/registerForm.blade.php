@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="row">
-                          <button type="button" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
+                          <button type="submit" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
                         </div>
                         
                       </form>

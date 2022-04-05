@@ -14,6 +14,8 @@ if (Session::get('userType') == 'consumidor') {
 
 ?>
 
+<link rel="stylesheet" href="css/profile.css">
+
 <div class="container py-5">
     
     <div class="form-div mx-auto my-2 px-3">  
@@ -29,14 +31,14 @@ if (Session::get('userType') == 'consumidor') {
                         <div class="col-sm ">
                             <label for="name" class="form-label text-light">Nome</label>
                             <input type="text" name="name" class="form-control mb-3" placeholder="Introduza o seu nome" aria-label="Nome do Utilizador"
-                            aria-describedby="Nome do Utilizador" v-model="userName" :disabled="!editable">
+                            aria-describedby="Nome do Utilizador" ref="userName" value="<?=$userName?>" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
                             <label for="email" class="form-label text-light">Email</label>
                             <div class="input-group mb-3">
                                 <input name="email" type="email" class="form-control" placeholder="Introduza o seu email" aria-label="Email do Utilizador"
-                                    aria-describedby="Email do Utilizador" v-model="userEmail" :disabled="!editable">
+                                    aria-describedby="Email do Utilizador" value="<?=$userEmail?>" :disabled="!editable">
                             </div>
                         </div>
     
@@ -44,7 +46,7 @@ if (Session::get('userType') == 'consumidor') {
                             <label for="phone_number" class="form-label text-light">Telemóvel</label>
                             <div class="input-group mb-3">
                                 <input name="phone_number" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
-                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" v-model="userTel" :disabled="!editable">
+                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" value="<?=$userTel?>" :disabled="!editable">
                             </div>
                         </div>
                     </div>
@@ -54,14 +56,14 @@ if (Session::get('userType') == 'consumidor') {
                             <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
                             <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
                             <input type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
-                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" v-model="userNIF" :disabled="!editable">
+                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" value="<?=$userNIF?>" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
                             <label v-if="clientConsumer" for="address" class="sr-only text-light">Morada</label>
                             <label v-else for="address" class="sr-only text-light">Morada Fiscal</label>
                             <input type="text" name="address" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
-                            aria-describedby="Morada do Utilizador" v-model="userAdress" :disabled="!editable">
+                            aria-describedby="Morada do Utilizador" value="<?=$userAdress?>" :disabled="!editable">
                         </div>
     
                         <div v-show="editable" class="col-sm">
@@ -76,8 +78,8 @@ if (Session::get('userType') == 'consumidor') {
 
                     <div class="my-2">
                         <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
+                        <button v-show="editable" type="submit" class="btn btn-primary me-3" @click="editable = !editable">Guardar Alterações</button>
                         <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
-                        <button v-show="editable" type="submit" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
                     </div>
                 </div>
             </form>

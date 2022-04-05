@@ -1,19 +1,14 @@
 let app = Vue.createApp({
     data: function() {
         return {
-            clientConsumer: @json($clientConsumer),
-            userName: @json($userName),
-            userEmail: @json($userEmail),
-            userTel: @json($userTel),
-            userNIF: @json($userNIF),
-            userAdress: @json($userAdress),
+            clientConsumer: true,
+            userName: "",
             editable: false
         }
     },
     methods: {
         cancelChanges() {
-            editable = !editable;
-            console.log("CANCELOU");
+            this.editable = !this.editable;
         }
     },
 })
