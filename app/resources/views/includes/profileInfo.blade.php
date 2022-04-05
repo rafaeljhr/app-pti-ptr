@@ -29,14 +29,14 @@ if (Session::get('userType') == 'consumidor') {
                         <div class="col-sm ">
                             <label for="name" class="form-label text-light">Nome</label>
                             <input type="text" name="name" class="form-control mb-3" placeholder="Introduza o seu nome" aria-label="Nome do Utilizador"
-                            aria-describedby="Nome do Utilizador" v-model="userName" :disabled="editable == false">
+                            aria-describedby="Nome do Utilizador" v-model="userName" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
                             <label for="email" class="form-label text-light">Email</label>
                             <div class="input-group mb-3">
                                 <input name="email" type="email" class="form-control" placeholder="Introduza o seu email" aria-label="Email do Utilizador"
-                                    aria-describedby="Email do Utilizador" v-model="userEmail" :disabled="editable == false">
+                                    aria-describedby="Email do Utilizador" v-model="userEmail" :disabled="!editable">
                             </div>
                         </div>
     
@@ -44,7 +44,7 @@ if (Session::get('userType') == 'consumidor') {
                             <label for="phone_number" class="form-label text-light">Telemóvel</label>
                             <div class="input-group mb-3">
                                 <input name="phone_number" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
-                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" v-model="userTel" :disabled="editable == false">
+                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" v-model="userTel" :disabled="!editable">
                             </div>
                         </div>
                     </div>
@@ -54,21 +54,21 @@ if (Session::get('userType') == 'consumidor') {
                             <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
                             <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
                             <input type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
-                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" v-model="userNIF" :disabled="editable == false">
+                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" v-model="userNIF" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
                             <label v-if="clientConsumer" for="address" class="sr-only text-light">Morada</label>
                             <label v-else for="address" class="sr-only text-light">Morada Fiscal</label>
                             <input type="text" name="address" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
-                            aria-describedby="Morada do Utilizador" v-model="userAdress" :disabled="editable == false">
+                            aria-describedby="Morada do Utilizador" v-model="userAdress" :disabled="!editable">
                         </div>
     
-                        <div class="col-sm">
-                            <label for="password" class="form-label text-light">Password</label>
+                        <div v-show="editable" class="col-sm">
+                            <label for="password" class="form-label text-light">Mudar Password</label>
                             <div class="input-group mb-3">
-                                <input name="password" type="password" class="form-control" placeholder="Introduza a sua password" aria-label="Password do Utilizador"
-                                     aria-describedby="Password do Utilizador" :disabled="editable == false"> 
+                                <input name="password" type="password" class="form-control" placeholder="Introduza a sua nova password" aria-label="Password do Utilizador"
+                                     aria-describedby="Password do Utilizador" :disabled="!editable"> 
                                      {{-- Não faz sentido mostrar aqui a password do Utilizador. Se fosse guardada na sessão, estaria na forma de hash! --}}
                             </div>
                         </div>
@@ -76,6 +76,7 @@ if (Session::get('userType') == 'consumidor') {
 
                     <div class="my-2">
                         <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
+                        <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
                         <button v-show="editable" type="submit" class="btn btn-secondary" @click="editable = !editable">Guardar Alterações</button>
                     </div>
                 </div>
@@ -90,20 +91,4 @@ if (Session::get('userType') == 'consumidor') {
     </div>    
 </div>
 
-<script>
-    let app = Vue.createApp({
-        data: function() {
-            return {
-                clientConsumer: @json($clientConsumer),
-                userName: @json($userName),
-                userEmail: @json($userEmail),
-                userTel: @json($userTel),
-                userNIF: @json($userNIF),
-                userAdress: @json($userAdress),
-                editable: false
-            }
-        }
-    })
-
-    app.mount('.app')
-</script>
+<script src="../resources/js/components/profile.js"></script>
