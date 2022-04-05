@@ -7,3 +7,4 @@
     @include('includes.inventoryPage') 
     
 @endsection
+

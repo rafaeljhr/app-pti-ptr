@@ -3,34 +3,49 @@
 
 
 
-<div class="backgroundSee"></div>
+<div v-show="fundoDiv" class="backgroundSee"></div>
 
 
-<div class="forForm">
-    <button type="button" class="btn-close" id="button-close-div" aria-label="Close"></button>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+<div v-show="fundoDiv" class="forForm">
+    <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+
+    <label for="image" class="form-label">Imagem do seu produto:</label>
+    <div class="input-group mb-3">       
+        <input type="file" class="form-control" name="image" id="image" aria-label="file" aria-describedby="basic-addon1" required>
       </div>
       
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-        <span class="input-group-text" id="basic-addon2">@example.com</span>
-      </div>
-      
-      <label for="basic-url" class="form-label">Your vanity URL</label>
+        <span class="input-group-text" id="addon-wrapping">Name</span>
+        <input type="text" class="form-control" name="nomeProduto" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
+      </div>  
       <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+        <span class="input-group-text">£</span>
+        <span class="input-group-text">0.00</span>
+        <input type="text" class="form-control" name="precoProduto" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
       </div>
-      
+
+      <label for="image" class="form-label">Data de fabrico do produto:</label>
       <div class="input-group mb-3">
-        <span class="input-group-text">$</span>
-        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-        <span class="input-group-text">.00</span>
+        
+         
+        <input  name="dataProduto" class="form-control" type="date" required>
+        
+      
+      </div>
+
+      <div class="input-group mb-3">
+        
+         
+        <span class="input-group-text">Informação adicional</span>
+        <textarea class="form-control" aria-label="With textarea"></textarea>
+        
+      
       </div>
       
-    
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Submeter</button>
+      
 </div>
 
-<button type="button" class="btn btn-dark" id="btn-id" {{-- onclick="" --}}>Dark</button>
+<button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+<script src="../resources/js/components/inventory.js"></script>
+
