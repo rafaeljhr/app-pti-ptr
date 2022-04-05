@@ -8,18 +8,19 @@ use App\Http\Controllers\TransportadoraController;
 use App\Http\Controllers\ArmazemController;
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\Base_TransportadoraController;
+use App\Http\Controllers\AuthController;
 
 //**********    Recursos Publicos  ************
 
-//Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 //***************************  Consumidor ***************************//
-Route::post('/consumidor', [ConsumidorController::class, 'consumidorRegister']);
+Route::post('/consumidores', [ConsumidorController::class, 'consumidorRegister']);
 Route::get('/consumidores', [ConsumidorController::class, 'index']);
 Route::get('/consumidores/{id}/', [ConsumidorController::class, 'show']);
 
 //***************************  Fornecedor ***************************//
-Route::post('/fornecedor', [FornecedorController::class, 'register']);
+Route::post('/fornecedores', [FornecedorController::class, 'register']);
 Route::get('/fornecedores', [FornecedorController::class, 'index']);
 Route::get('/fornecedores/{id}', [FornecedorController::class, 'show']);
 
@@ -29,7 +30,7 @@ Route::get('/fornecedores/{id}/produto/{id_product}', [ProdutoController::class,
 
 
 //***************************  Transportadora ***************************//
-Route::post('/transportadora', [TransportadoraController::class, 'register']);
+Route::post('/transportadoras', [TransportadoraController::class, 'register']);
 Route::get('/transportadoras', [TransportadoraController::class, 'index']);
 Route::get('/transportadoras/{id}', [TransportadoraController::class, 'show']);
 
