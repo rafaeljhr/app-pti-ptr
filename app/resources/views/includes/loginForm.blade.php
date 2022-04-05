@@ -15,25 +15,12 @@
 
 
               <select class="form-select mb-3" name ="inlineRadioOptions" aria-label="Default select example">
-                <option selected>Selecione o tipo de conta</option>
-                <option value="consumidor">Consumidor</option>
+               
+                <option selected value="consumidor">Consumidor</option>
                 <option value="transportadora">Transportadora</option>
                 <option value="fornecedor">Fornecedor</option>
               </select>
-              {{-- <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="consumidorSelect" value="consumidor">
-                <label class="form-check-label" for="inlineRadio1">Consumidor</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="transportadoraSelect" value="transportadora">
-                    <label class="form-check-label" for="inlineRadio1">Transportadora</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fornecedorSelect" value="fornecedor">
-                    <label class="form-check-label" for="inlineRadio1">Fornecedora</label>
-                </div> --}}
+            
 
               <div class="form-floating mb-3">
                 <input type="text" name="usernameLogin" id="loginName" class="form-control"  placeholder="Nome de utilizador">
