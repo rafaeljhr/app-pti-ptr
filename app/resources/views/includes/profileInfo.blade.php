@@ -51,29 +51,36 @@ if (Session::get('userType') == 'consumidor') {
                         </div>
                     </div>
     
-                    <div v-show="clientConsumer" class="row">              
+                    <div class="row">              
                         <div class="col-sm">
-                            <label v-if="clientConsumer" for="nif" class="sr-only text-light">NIF</label>
-                            <label v-else for="nif" class="sr-only text-light">NIF da Empresa</label>
+                            @if ($clientConsumer) 
+                                <label for="nif" class="sr-only text-light">NIF</label>
+                            @else
+                                <label for="nif" class="sr-only text-light">NIF da Empresa</label>
+                            @endif
+                            
                             <input type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
                             aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" value="<?=$userNIF?>" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
-                            <label v-if="clientConsumer" for="address" class="sr-only text-light">Morada</label>
-                            <label v-else for="address" class="sr-only text-light">Morada Fiscal</label>
+                            @if ($clientConsumer)
+                                <label for="address" class="sr-only text-light">Morada</label>
+                            @else
+                                <label for="address" class="sr-only text-light">Morada Fiscal</label>
+                            @endif
+                            
                             <input type="text" name="address" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
                             aria-describedby="Morada do Utilizador" value="<?=$userAdress?>" :disabled="!editable">
                         </div>
     
-                        <div v-show="editable" class="col-sm">
+                        {{-- <div v-show="editable" class="col-sm">
                             <label for="password" class="form-label text-light">Mudar Password</label>
                             <div class="input-group mb-3">
                                 <input name="password" type="password" class="form-control" placeholder="Introduza a sua nova password" aria-label="Password do Utilizador"
                                      aria-describedby="Password do Utilizador" :disabled="!editable"> 
-                                     {{-- Não faz sentido mostrar aqui a password do Utilizador. Se fosse guardada na sessão, estaria na forma de hash! --}}
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="my-2">

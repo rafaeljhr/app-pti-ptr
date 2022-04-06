@@ -1,7 +1,6 @@
 let app = Vue.createApp({
     data: function() {
         return {
-            clientConsumer: true,
             userName: "",
             editable: false
         }
