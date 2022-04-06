@@ -72,3 +72,4 @@
           <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
         </div>
       </footer>
+      <script src="../resources/js/components/inventory.js"></script>
