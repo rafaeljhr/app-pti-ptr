@@ -23,16 +23,16 @@
                   Products
                 </h6>
                 <p>
-                  <a href="#!" class="text-reset">Angular</a>
+                  <a href="#!" class="text-reset">Loja</a>
                 </p>
                 <p>
-                  <a href="#!" class="text-reset">React</a>
+                  <a href="#!" class="text-reset">Produtos</a>
                 </p>
                 <p>
-                  <a href="#!" class="text-reset">Vue</a>
+                  <a href="#!" class="text-reset">Mais Vistos</a>
                 </p>
                 <p>
-                  <a href="#!" class="text-reset">Laravel</a>
+                  <a href="#!" class="text-reset">Novos Produtos</a>
                 </p>
               </div>
 
@@ -69,6 +69,6 @@
         </section>
         <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
           © 2021 Copyright:
-          <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+          <a class="text-reset fw-bold" href="https://eco-smart-store.rafaeljhr.pt/">eco-smart-store.pt</a>
         </div>
       </footer>

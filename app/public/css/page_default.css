@@ -101,7 +101,7 @@
 .backgroundSee{
 
     position: fixed;
-    display: none;
+
     top: 0;
     left: 0;
     z-index: 5;
@@ -112,16 +112,15 @@
 }
 
 .forForm{
-    display: none;
+ 
     background-color: white;
     border: solid;
     position: fixed;
-    /* width: 50%;
-    height: 50%; */
     padding: 10px;
-    top: 35%;
-    left: 40%;
+    top: 25%;
+    left: 22%;
     z-index: 9;
+    width: 55%;
     
 }
 
@@ -147,5 +146,5 @@
 }
 
 body {
-  background-color: #dfdfdf!important;
+  background-color: #e2dfdf!important;
 }

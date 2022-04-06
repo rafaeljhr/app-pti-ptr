@@ -10,3 +10,7 @@
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     border: 2px solid rgba(0,0,0,.2);
 }
+
+input[disabled] {
+    color: grey;
+ }

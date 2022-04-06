@@ -54,6 +54,7 @@ class UserController extends Controller
 
             } else {
                 session()->forget('failed_login');
+                Session::put('loggedIn', 'yes');
                 Session::put('userType', 'fornecedor');
                 Session::put('user_email', $fornecedor->email);
                 Session::put('user_nome', $fornecedor->nome);
@@ -75,6 +76,7 @@ class UserController extends Controller
 
             } else {
                 session()->forget('failed_login');
+                Session::put('loggedIn', 'yes');
                 Session::put('userType', 'transportadora');
                 Session::put('user_email', $transportadora->email);
                 Session::put('user_nome', $transportadora->nome);

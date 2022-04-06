@@ -1,7 +1,5 @@
-
 <link rel="stylesheet" href="css/page_default.css">
-<link rel="stylesheet" href="bootstrap.min.css">
-
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
     <section class="h-100">
         <div class="container py-5 h-100">
@@ -10,14 +8,14 @@
               <div class="card card-registration my-4">
                 <div class="row g-0">
                   <div class="col-xl-6 d-none d-xl-block">
-                    <img src="images/foto3.png" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
+                    <img src="images/registar2.jpg" class="img-fluid" style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;"/>
                   </div>
                   <div class="col-xl-6">
                     <div class="card-body p-md-5 text-black">
                       <h3 class="mb-5 text-uppercase">JUNTA-TE AO GRUPO ECOSMART!</h3>
                       <h2 class="h4 mb-2 font-weight-normal">Eu sou um/a:</h2>
 
-                      <form v-show="clienteConsumidor" class="form-signin" method="post" action="{{ route('register-controller') }}">
+                      <form class="form-signin" method="post" action="{{ route('register-controller') }}">
                         @csrf
                         <div class="row">
                           <div class="form-outline mb-4">
@@ -71,12 +69,10 @@
                         </div>
 
                         <div class="row">
-                          <button type="button" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
+                          <button type="submit" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
                         </div>
                         
                       </form>
-                      
-
                     </div>
                   </div>
                 </div>
@@ -86,24 +82,4 @@
         </div>
     </section>
 
-<!-- <script>
-    let app = Vue.createApp({
-        data: function() {
-            return {
-                clientConsumer: true
-            }
-        },
-        methods: {
-            switchSelect(event) {
-                if (event.target.value == "consumidor") {
-                    this.clientConsumer = true;
-                } else {
-                    this.clientConsumer = false;
-                }
-            }
-        }
-    })
-
-    app.mount('.app')
-</script>
- -->
+<script src="../resources/js/components/register.js"></script>
