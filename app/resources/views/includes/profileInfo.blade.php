@@ -15,6 +15,7 @@ if (Session::get('userType') == 'consumidor') {
 ?>
 
 <link rel="stylesheet" href="css/profile.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <div class="container py-5">
     
@@ -92,5 +93,7 @@ if (Session::get('userType') == 'consumidor') {
         </div>
     </div>    
 </div>
+
+@include('includes.footer')
 
 <script src="../resources/js/components/profile.js"></script>

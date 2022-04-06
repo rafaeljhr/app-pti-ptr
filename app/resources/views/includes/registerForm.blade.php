@@ -82,4 +82,6 @@
         </div>
     </section>
 
+    @include('includes.footer')
+
 <script src="../resources/js/components/register.js"></script>
