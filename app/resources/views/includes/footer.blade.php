@@ -72,3 +72,4 @@
           <a class="text-reset fw-bold" href="https://eco-smart-store.rafaeljhr.pt/">eco-smart-store.pt</a>
         </div>
       </footer>
+      <script src="../resources/js/components/inventory.js"></script>

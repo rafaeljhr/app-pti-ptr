@@ -56,7 +56,16 @@ Route::get('/inventory', function () {
 // CONTROLLERS ROUTES
 // ###################
 /* depois mexe altera o que quiseres rafa G */
-/* Route::post('/fornecedor-controller', [FornecedorController::class, "inventarioDisplay"])->name('inventory-controller'); */
+
+// Ir buscar os produtos do fornecedor, meter na session (quando clica inventario no dropdown menu)
+Route::post('/inventory-controller', [ProductsController::class, "getAllProducts"])->name('inventory-controller');
+
+Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
+Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
+Route::post('/product-edit-controller', [ProductsController::class, "productEdit"])->name('product-edit-controller');
+Route::post('/product-add-event-controller', [ProductsController::class, "productAddEvent"])->name('product-add-event-controller');
+Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
+
 
 Route::post('/register-controller', [UserController::class, 'register'])->name('register-controller');
 Route::get('/logout-controller', [UserController::class, 'logout'])->name('logout-controller');

@@ -121,7 +121,12 @@
     left: 22%;
     z-index: 9;
     width: 55%;
+
     
+}
+
+.row{
+  margin: 15px;
 }
 
 #btn-id{
