@@ -23,8 +23,8 @@
             
 
               <div class="form-floating mb-3">
-                <input type="text" name="usernameLogin" id="loginName" class="form-control"  placeholder="Nome de utilizador">
-                <label for="loginName">Nome de utilizador</label>
+                <input type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
+                <label for="loginEmail">Email</label>
               </div>
               <div class="form-floating mb-3">
                 <input type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">

@@ -18,7 +18,29 @@ if (Session::get('userType') == 'consumidor') {
 <link rel="stylesheet" href="css/bootstrap.min.css">
 
 <div class="container py-5">
-    
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Atenção!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem a certeza que deseja apagar a sua conta?</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <form method="post" action="{{ route('delete-profile-controller') }}">
+                @csrf
+                <button type="submit" class="btn btn-danger">Confirmar</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+ 
     <div class="form-div mx-auto my-2 px-3">  
         <img class="logo" src="images/logo6.png" alt="EcoSmart Logo">
 
@@ -87,16 +109,13 @@ if (Session::get('userType') == 'consumidor') {
                     <div class="my-2">
                         <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = !editable">Editar Dados</button>
                         <button v-show="editable" type="submit" class="btn btn-primary me-3" @click="editable = !editable">Guardar Alterações</button>
-                        <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
+                        <button v-show="editable" type="button" class="btn btn-secondary" @click="editable = !editable">Cancelar Alterações</button>
                     </div>
                 </div>
             </form>
 
-            <form method="post" action="{{ route('delete-profile-controller') }}">
-                @csrf
-                <button type="submit" class="btn btn-danger">Apagar Conta</button>
-            </form>
-
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Apagar Conta</button>
         </div>
     </div>    
 </div>

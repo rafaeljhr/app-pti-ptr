@@ -2,14 +2,10 @@ let app = Vue.createApp({
     data: function() {
         return {
             userName: "",
-            editable: false
+            editable: false,
+            deleteConfirm: false
         }
-    },
-    methods: {
-        cancelChanges() {
-            this.editable = !this.editable;
-        }
-    },
+    }
 })
 
 app.mount('.app')
