@@ -47,5 +47,5 @@
 </div>
 
 <button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-<script src="../resources/js/components/inventory.js"></script>
+<script src="./js/inventory.js"></script>
 

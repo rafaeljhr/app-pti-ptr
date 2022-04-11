@@ -63,7 +63,7 @@ if (Session::get('userType') == 'consumidor') {
                             <label for="email" class="form-label text-light">Email</label>
                             <div class="input-group mb-3">
                                 <input name="email" type="email" class="form-control" placeholder="Introduza o seu email" aria-label="Email do Utilizador"
-                                    aria-describedby="Email do Utilizador" value="<?=$userEmail?>" :disabled="!editable">
+                                    aria-describedby="Email do Utilizador" ref="userEmail" value="<?=$userEmail?>" :disabled="!editable">
                             </div>
                         </div>
     
@@ -71,7 +71,7 @@ if (Session::get('userType') == 'consumidor') {
                             <label for="telefone" class="form-label text-light">Telemóvel</label>
                             <div class="input-group mb-3">
                                 <input name="telefone" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
-                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" value="<?=$userTel?>" :disabled="!editable">
+                                    aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" ref="userTel" value="<?=$userTel?>" :disabled="!editable">
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@ if (Session::get('userType') == 'consumidor') {
                             @endif
                             
                             <input type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
-                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" value="<?=$userNIF?>" :disabled="!editable">
+                            aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" ref="userNIF" value="<?=$userNIF?>" :disabled="!editable">
                         </div>
     
                         <div class="col-sm">
@@ -96,7 +96,7 @@ if (Session::get('userType') == 'consumidor') {
                             @endif
                             
                             <input type="text" name="morada" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
-                            aria-describedby="Morada do Utilizador" value="<?=$userAdress?>" :disabled="!editable">
+                            aria-describedby="Morada do Utilizador" ref="userAdress" value="<?=$userAdress?>" :disabled="!editable">
                         </div>
     
                         {{-- <div v-show="editable" class="col-sm">
@@ -111,7 +111,7 @@ if (Session::get('userType') == 'consumidor') {
                     <div class="my-2">
                         <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = true">Editar Dados</button>
                         <button v-show="editable" type="submit" class="btn btn-primary me-3">Guardar Alterações</button>
-                        <button v-show="editable" type="button" class="btn btn-secondary" @click="editable = false">Cancelar Alterações</button>
+                        <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
                     </div>
                 </div>
             </form>
