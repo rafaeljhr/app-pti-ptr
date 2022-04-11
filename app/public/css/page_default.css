@@ -135,6 +135,9 @@
     float: right;
 }
 
+.but-pad{
+  padding:40px;
+}
 
 
 #button-close-div{

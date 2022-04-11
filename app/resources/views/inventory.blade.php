@@ -1,5 +1,5 @@
 <?php
-$arrayTest = array(array("name" => "Teste nome","description" => "teste descricao" ));
+$arrayTest = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTest);
 ?>
 @extends('layouts.page_default')
@@ -70,7 +70,7 @@ Session::put('cadeiasLogisticas', $arrayTest);
   @for($i = 0; $i < sizeOf(session()->get('cadeiasLogisticas')); $i++)
   
 
-  <div class="card" style="width: 18rem;">
+  <div class="card"  style="width: 18rem;">
     
     <div class="card-body">
       <h5 class="card-title"><?php echo session()->get('cadeiasLogisticas')[$i]["name"] ?></h5>
@@ -118,10 +118,10 @@ Session::put('cadeiasLogisticas', $arrayTest);
 
     <div class="row">
       <div class="col">
-        <button @click="previousStep()" class="w-100 btn btn-lg btn-primary" type="submit">Passo anterior</button>
+        <button @click="previousStep()" class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Passo anterior</button>
       </div>
       <div class="col">
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Submeter</button>
+        <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
       </div>
     </div>
 
