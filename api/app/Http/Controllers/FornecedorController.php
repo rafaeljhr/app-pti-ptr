@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Fornecedor;
+use App\Models\fornecedor;
 use Illuminate\Http\Request;
 
 class FornecedorController extends Controller
@@ -14,7 +14,7 @@ class FornecedorController extends Controller
      */
     public function index()
     {
-        return Fornecedor::all();
+        return fornecedor::all();
     }
 
     /**
@@ -34,7 +34,7 @@ class FornecedorController extends Controller
             'password'=>'required|string',
         ]);
 
-        $fornecedor = Fornecedor::create([
+        $fornecedor = fornecedor::create([
             'nome' => $request->nome,
             'telefone' => $request->telefone,
             'nif' => $request->nif,
@@ -61,7 +61,7 @@ class FornecedorController extends Controller
      */
     public function show($id)
     {
-        return Fornecedor::findOrFail($id);
+        return fornecedor::findOrFail($id);
     }
 
     /**
@@ -76,7 +76,7 @@ class FornecedorController extends Controller
         $user_id = auth()->user()->id;
 
         if ($user_id == $id) {
-            $fornecedor = Fornecedor::findOrFail($id);
+            $fornecedor = fornecedor::findOrFail($id);
 
             $fornecedor->update($request->all());
     
@@ -103,7 +103,7 @@ class FornecedorController extends Controller
         $user_id = auth()->user()->id;
 
         if ($user_id == $id) {
-            return Fornecedor::destroy($id);
+            return fornecedor::destroy($id);
         }
 
         $response = [
@@ -123,7 +123,7 @@ class FornecedorController extends Controller
      */
     public function show_inventory($id)
     {
-        $fornecedor = Fornecedor::findOrFail($id);
+        $fornecedor = fornecedor::findOrFail($id);
 
         return $fornecedor->produto;
     }
@@ -133,7 +133,7 @@ class FornecedorController extends Controller
         $user_id = auth()->user()->id;
 
         if ($user_id == $id) {
-            $fornecedor = Fornecedor::findOrFail($id);
+            $fornecedor = fornecedor::findOrFail($id);
 
             return $fornecedor->armazem;
         }
