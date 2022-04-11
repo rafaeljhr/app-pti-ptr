@@ -84,4 +84,4 @@
 
     @include('includes.footer')
 
-<script src="../resources/js/components/register.js"></script>
+<script src="./js/register.js"></script>
