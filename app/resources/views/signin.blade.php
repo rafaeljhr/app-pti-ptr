@@ -29,7 +29,6 @@
 
 
               <select class="form-select mb-3" name ="inlineRadioOptions" aria-label="Default select example">
-               
                 <option selected value="consumidor">Consumidor</option>
                 <option value="transportadora">Transportadora</option>
                 <option value="fornecedor">Fornecedor</option>
