@@ -101,8 +101,9 @@ class UserController extends Controller
     // Delete a consumidor/transportadora/fornecedor
     public function logout()
     {
+        session()->forget('loggedIn');
         Session::flush();
-        return redirect('/');
+        return redirect('/signin');
     }
 
 
