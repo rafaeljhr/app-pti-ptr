@@ -124,4 +124,4 @@ if (Session::get('userType') == 'consumidor') {
 
 @include('includes.footer')
 
-<script src="../resources/js/components/profile.js"></script>
+<script src="./js/profile.js"></script>

@@ -52,8 +52,6 @@ Route::get('/inventory', function () {
 /* !Temporario! */
 
 
-
-
 // ###################
 // CONTROLLERS ROUTES
 // ###################
