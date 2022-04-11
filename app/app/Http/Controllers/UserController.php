@@ -36,7 +36,7 @@ class UserController extends Controller
                 Session::put('userType', 'consumidor');
                 Session::put('user_email', $consumidor->email);
                 Session::put('user_nome', $consumidor->nome);
-                Session::put('user_telemovel', $consumidor->telefone);
+                Session::put('user_telefone', $consumidor->telefone);
                 Session::put('user_nif', $consumidor->nif);
                 Session::put('user_morada', $consumidor->morada);
                 
@@ -58,7 +58,7 @@ class UserController extends Controller
                 Session::put('userType', 'fornecedor');
                 Session::put('user_email', $fornecedor->email);
                 Session::put('user_nome', $fornecedor->nome);
-                Session::put('user_telemovel', $fornecedor->telefone);
+                Session::put('user_telefone', $fornecedor->telefone);
                 Session::put('user_nif', $fornecedor->nif);
                 Session::put('user_morada', $fornecedor->morada);
                 
@@ -80,7 +80,7 @@ class UserController extends Controller
                 Session::put('userType', 'transportadora');
                 Session::put('user_email', $transportadora->email);
                 Session::put('user_nome', $transportadora->nome);
-                Session::put('user_telemovel', $transportadora->telefone);
+                Session::put('user_telefone', $transportadora->telefone);
                 Session::put('user_nif', $transportadora->nif);
                 Session::put('user_morada', $transportadora->morada);
                 
@@ -137,7 +137,7 @@ class UserController extends Controller
             Session::put('userType', 'consumidor');
             Session::put('user_email', $newConsumidor->email);
             Session::put('user_nome', $newConsumidor->nome);
-            Session::put('user_telemovel', $newConsumidor->telefone);
+            Session::put('user_telefone', $newConsumidor->telefone);
             Session::put('user_nif', $newConsumidor->nif);
             Session::put('user_morada', $newConsumidor->morada);
         
@@ -157,7 +157,7 @@ class UserController extends Controller
             Session::put('userType', 'fornecedor');
             Session::put('user_email', $newFornecedor->email);
             Session::put('user_nome', $newFornecedor->nome);
-            Session::put('user_telemovel', $newFornecedor->telefone);
+            Session::put('user_telefone', $newFornecedor->telefone);
             Session::put('user_nif', $newFornecedor->nif);
             Session::put('user_morada', $newFornecedor->morada);
 
@@ -177,7 +177,7 @@ class UserController extends Controller
             Session::put('userType', 'transportadora');
             Session::put('user_email', $newTransportadora->email);
             Session::put('user_nome', $newTransportadora->nome);
-            Session::put('user_telemovel', $newTransportadora->telefone);
+            Session::put('user_telefone', $newTransportadora->telefone);
             Session::put('user_nif', $newTransportadora->nif);
             Session::put('user_morada', $newTransportadora->morada);
 
@@ -214,7 +214,7 @@ class UserController extends Controller
             
             Session::put('user_email', $consumidor->email);
             Session::put('user_nome', $consumidor->nome);
-            Session::put('user_telemovel', $consumidor->telemovel);
+            Session::put('user_telefone', $consumidor->telefone);
             Session::put('user_nif', $consumidor->nif);
             Session::put('user_morada', $consumidor->morada);
 
@@ -225,7 +225,7 @@ class UserController extends Controller
 
             Session::put('user_email', $fornecedor->email);
             Session::put('user_nome', $fornecedor->nome);
-            Session::put('user_telemovel', $fornecedor->telemovel);
+            Session::put('user_telefone', $fornecedor->telefone);
             Session::put('user_nif', $fornecedor->nif);
             Session::put('user_morada', $fornecedor->morada);
 
@@ -236,7 +236,7 @@ class UserController extends Controller
 
             Session::put('user_email', $transportadora->email);
             Session::put('user_nome', $transportadora->nome);
-            Session::put('user_telemovel', $transportadora->telemovel);
+            Session::put('user_telefone', $transportadora->telefone);
             Session::put('user_nif', $transportadora->nif);
             Session::put('user_morada', $transportadora->morada);
 

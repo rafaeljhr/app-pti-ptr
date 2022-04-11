@@ -8,7 +8,7 @@
 
     $userName = Session::get('user_nome');
     $userEmail = Session::get('user_email');
-    $userTel = Session::get('user_telemovel');
+    $userTel = Session::get('user_telefone');
     $userNIF = Session::get('user_nif');
     $userAdress = Session::get('user_morada');
 
