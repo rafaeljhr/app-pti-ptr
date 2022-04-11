@@ -51,13 +51,6 @@ Route::get('/inventory', function () {
 })->name('inventory-url');
 /* !Temporario! */
 
-// ###################
-// API ROUTES CALLS
-// ###################
-
-Route::get('/api/consumidor', function () {
-    return view('profile');
-})->name('profile-url');
 
 
 
