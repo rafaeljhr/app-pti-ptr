@@ -124,9 +124,26 @@
 
     
 }
+.cadeiaLogistica{
+ 
+  background-color: white;
+  border: solid;
+  position: fixed;
+  padding: 10px;
+  top: 15%;
+  left: 2%;
+  z-index: 9;
+  width: 20%;
+
+  
+}
 
 .row{
   margin: 15px;
+}
+
+#addCadeia{
+  width: 10%;
 }
 
 #btn-id{
@@ -135,6 +152,9 @@
     float: right;
 }
 
+.but-pad{
+  padding:40px;
+}
 
 
 #button-close-div{
