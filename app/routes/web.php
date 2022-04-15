@@ -2,19 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-
+use App\Http\Controllers\ProductsController;
 
 // ##############
 // NAVBAR ROUTES
@@ -44,21 +32,17 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-
-/* !Temporario! */
 Route::get('/inventory', function () {
     return view('inventory');
-})->name('inventory-url');
-/* !Temporario! */
+})->name('inventory');
 
 
-// ###################
-// CONTROLLERS ROUTES
-// ###################
-/* depois mexe altera o que quiseres rafa G */
+// #######################
+// PRODUCTS RELATED ROUTES
+// #######################
 
 // Ir buscar os produtos do fornecedor, meter na session (quando clica inventario no dropdown menu)
-Route::post('/inventory-controller', [ProductsController::class, "getAllProducts"])->name('inventory-controller');
+Route::get('/inventory-controller', [ProductsController::class, "getAllProducts"])->name('inventory-controller');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
@@ -66,6 +50,10 @@ Route::post('/product-edit-controller', [ProductsController::class, "productEdit
 Route::post('/product-add-event-controller', [ProductsController::class, "productAddEvent"])->name('product-add-event-controller');
 Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
 
+
+// ####################
+// USERS RELATED ROUTES
+// ####################
 
 Route::post('/register-controller', [UserController::class, 'register'])->name('register-controller');
 Route::get('/logout-controller', [UserController::class, 'logout'])->name('logout-controller');

@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Consumidor;
 use App\Models\Fornecedor;
 use App\Models\Transportadora;
-use Session;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -27,18 +26,19 @@ class UserController extends Controller
             $consumidor = Consumidor::where('email', $email)->first();
 
             if (!$consumidor || !Hash::check($password, $consumidor->password)) {
-                Session::put('failed_login', "yes");
+                session()->put('failed_login', "yes");
                 return redirect('/signin');
 
             } else {
                 session()->forget('failed_login');
-                Session::put('loggedIn', 'yes');
-                Session::put('userType', 'consumidor');
-                Session::put('user_email', $consumidor->email);
-                Session::put('user_nome', $consumidor->nome);
-                Session::put('user_telefone', $consumidor->telefone);
-                Session::put('user_nif', $consumidor->nif);
-                Session::put('user_morada', $consumidor->morada);
+                session()->put('loggedIn', 'yes');
+                session()->put('userType', 'consumidor');
+                session()->put('user_id', $consumidor->id);
+                session()->put('user_email', $consumidor->email);
+                session()->put('user_nome', $consumidor->nome);
+                session()->put('user_telefone', $consumidor->telefone);
+                session()->put('user_nif', $consumidor->nif);
+                session()->put('user_morada', $consumidor->morada);
                 
                 return redirect('/');
             }
@@ -49,18 +49,19 @@ class UserController extends Controller
             $fornecedor = Fornecedor::where('email', $email)->first();
 
             if (!$fornecedor || !Hash::check($password, $fornecedor->password)) {
-                Session::put('failed_login', "yes");
+                session()->put('failed_login', "yes");
                 return redirect('/signin');
 
             } else {
                 session()->forget('failed_login');
-                Session::put('loggedIn', 'yes');
-                Session::put('userType', 'fornecedor');
-                Session::put('user_email', $fornecedor->email);
-                Session::put('user_nome', $fornecedor->nome);
-                Session::put('user_telefone', $fornecedor->telefone);
-                Session::put('user_nif', $fornecedor->nif);
-                Session::put('user_morada', $fornecedor->morada);
+                session()->put('loggedIn', 'yes');
+                session()->put('userType', 'fornecedor');
+                session()->put('user_id', $fornecedor->id);
+                session()->put('user_email', $fornecedor->email);
+                session()->put('user_nome', $fornecedor->nome);
+                session()->put('user_telefone', $fornecedor->telefone);
+                session()->put('user_nif', $fornecedor->nif);
+                session()->put('user_morada', $fornecedor->morada);
                 
                 return redirect('/');
             }
@@ -71,18 +72,19 @@ class UserController extends Controller
             $transportadora = Transportadora::where('email', $email)->first();
 
             if (!$transportadora || !Hash::check($password, $transportadora->password)) {
-                Session::put('failed_login', "yes");
+                session()->put('failed_login', "yes");
                 return redirect('/signin');
 
             } else {
                 session()->forget('failed_login');
-                Session::put('loggedIn', 'yes');
-                Session::put('userType', 'transportadora');
-                Session::put('user_email', $transportadora->email);
-                Session::put('user_nome', $transportadora->nome);
-                Session::put('user_telefone', $transportadora->telefone);
-                Session::put('user_nif', $transportadora->nif);
-                Session::put('user_morada', $transportadora->morada);
+                session()->put('loggedIn', 'yes');
+                session()->put('userType', 'transportadora');
+                session()->put('user_id', $transportadora->id);
+                session()->put('user_email', $transportadora->email);
+                session()->put('user_nome', $transportadora->nome);
+                session()->put('user_telefone', $transportadora->telefone);
+                session()->put('user_nif', $transportadora->nif);
+                session()->put('user_morada', $transportadora->morada);
                 
                 return redirect('/');
             }
@@ -101,7 +103,7 @@ class UserController extends Controller
     // Delete a consumidor/transportadora/fornecedor
     public function logout()
     {
-        Session::flush();
+        session()->flush();
         return redirect('/');
     }
 
@@ -133,13 +135,14 @@ class UserController extends Controller
                 'password' => bcrypt($request->get('password'))
             ]);
     
-            Session::put('loggedIn', 'yes');
-            Session::put('userType', 'consumidor');
-            Session::put('user_email', $newConsumidor->email);
-            Session::put('user_nome', $newConsumidor->nome);
-            Session::put('user_telefone', $newConsumidor->telefone);
-            Session::put('user_nif', $newConsumidor->nif);
-            Session::put('user_morada', $newConsumidor->morada);
+            session()->put('loggedIn', 'yes');
+            session()->put('userType', 'consumidor');
+            session()->put('user_id', $newConsumidor->id);
+            session()->put('user_email', $newConsumidor->email);
+            session()->put('user_nome', $newConsumidor->nome);
+            session()->put('user_telefone', $newConsumidor->telefone);
+            session()->put('user_nif', $newConsumidor->nif);
+            session()->put('user_morada', $newConsumidor->morada);
         
 
         } elseif ($accountType == "fornecedor") {
@@ -153,13 +156,14 @@ class UserController extends Controller
                 'password' => bcrypt($request->get('password'))
             ]);
     
-            Session::put('loggedIn', 'yes');
-            Session::put('userType', 'fornecedor');
-            Session::put('user_email', $newFornecedor->email);
-            Session::put('user_nome', $newFornecedor->nome);
-            Session::put('user_telefone', $newFornecedor->telefone);
-            Session::put('user_nif', $newFornecedor->nif);
-            Session::put('user_morada', $newFornecedor->morada);
+            session()->put('loggedIn', 'yes');
+            session()->put('userType', 'fornecedor');
+            session()->put('user_id', $newFornecedor->id);
+            session()->put('user_email', $newFornecedor->email);
+            session()->put('user_nome', $newFornecedor->nome);
+            session()->put('user_telefone', $newFornecedor->telefone);
+            session()->put('user_nif', $newFornecedor->nif);
+            session()->put('user_morada', $newFornecedor->morada);
 
 
         } elseif ($accountType == "transportadora") {
@@ -173,13 +177,14 @@ class UserController extends Controller
                 'password' => bcrypt($request->get('password'))
             ]);
     
-            Session::put('loggedIn', 'yes');
-            Session::put('userType', 'transportadora');
-            Session::put('user_email', $newTransportadora->email);
-            Session::put('user_nome', $newTransportadora->nome);
-            Session::put('user_telefone', $newTransportadora->telefone);
-            Session::put('user_nif', $newTransportadora->nif);
-            Session::put('user_morada', $newTransportadora->morada);
+            session()->put('loggedIn', 'yes');
+            session()->put('userType', 'transportadora');
+            session()->put('user_id', $newTransportadora->id);
+            session()->put('user_email', $newTransportadora->email);
+            session()->put('user_nome', $newTransportadora->nome);
+            session()->put('user_telefone', $newTransportadora->telefone);
+            session()->put('user_nif', $newTransportadora->nif);
+            session()->put('user_morada', $newTransportadora->morada);
 
             
         } else { 
@@ -197,7 +202,7 @@ class UserController extends Controller
     // Update the information of a consumidor/transportadora/fornecedor
     public function update(Request $request)
     {
-        
+        // return $request->input();
         $request->validate([
             'nome'=>'sometimes|required|string',
             'telefone'=>'sometimes|required|string',
@@ -207,38 +212,42 @@ class UserController extends Controller
             'password'=>'sometimes|required|string',
         ]);
 
-        if (Session::get('userType') == "consumidor") {
+        if (session()->get('userType') == "consumidor") {
 
-            $consumidor = Consumidor::where('email', Session::get('user_email'))->first();
+            $consumidor = Consumidor::where('email', session()->get('user_email'))->first();
             $consumidor->update($request->all());
             
-            Session::put('user_email', $consumidor->email);
-            Session::put('user_nome', $consumidor->nome);
-            Session::put('user_telefone', $consumidor->telefone);
-            Session::put('user_nif', $consumidor->nif);
-            Session::put('user_morada', $consumidor->morada);
+            session()->put('user_id', $consumidor->id);
+            session()->put('user_email', $consumidor->email);
+            session()->put('user_nome', $consumidor->nome);
+            session()->put('user_telefone', $consumidor->telefone);
+            session()->put('user_nif', $consumidor->nif);
+            session()->put('user_morada', $consumidor->morada);
 
-        } elseif (Session::get('userType') == "fornecedor") {
+        } elseif (session()->get('userType') == "fornecedor") {
 
-            $fornecedor = Consumidor::where('email', Session::get('user_email'))->first();
+            $fornecedor = Fornecedor::where('email', session()->get('user_email'))->first();
+
             $fornecedor->update($request->all());
 
-            Session::put('user_email', $fornecedor->email);
-            Session::put('user_nome', $fornecedor->nome);
-            Session::put('user_telefone', $fornecedor->telefone);
-            Session::put('user_nif', $fornecedor->nif);
-            Session::put('user_morada', $fornecedor->morada);
+            session()->put('user_id', $fornecedor->id);
+            session()->put('user_email', $fornecedor->email);
+            session()->put('user_nome', $fornecedor->nome);
+            session()->put('user_telefone', $fornecedor->telefone);
+            session()->put('user_nif', $fornecedor->nif);
+            session()->put('user_morada', $fornecedor->morada);
 
-        } elseif (Session::get('userType') == "transportadora") {
+        } elseif (session()->get('userType') == "transportadora") {
 
-            $transportadora = Consumidor::where('email', Session::get('user_email'))->first();
+            $transportadora = Transportadora::where('email', session()->get('user_email'))->first();
             $transportadora->update($request->all());
 
-            Session::put('user_email', $transportadora->email);
-            Session::put('user_nome', $transportadora->nome);
-            Session::put('user_telefone', $transportadora->telefone);
-            Session::put('user_nif', $transportadora->nif);
-            Session::put('user_morada', $transportadora->morada);
+            session()->put('user_id', $transportadora->id);
+            session()->put('user_email', $transportadora->email);
+            session()->put('user_nome', $transportadora->nome);
+            session()->put('user_telefone', $transportadora->telefone);
+            session()->put('user_nif', $transportadora->nif);
+            session()->put('user_morada', $transportadora->morada);
 
         } else {
             print "Erro no update dos dados do utilizador! O userType da sessão é diferente de transportadora/fornecedor/consumidor !";
@@ -255,28 +264,27 @@ class UserController extends Controller
     // Delete a consumidor/transportadora/fornecedor
     public function delete()
     {
-        if (Session::get('userType') == "consumidor") {
+        if (session()->get('userType') == "consumidor") {
 
-            $consumidor = Consumidor::where('email', Session::get('user_email'))->first();
+            $consumidor = Consumidor::where('email', session()->get('user_email'))->first();
             $consumidor->delete();
 
-        } elseif (Session::get('userType') == "fornecedor") {
+        } elseif (session()->get('userType') == "fornecedor") {
 
-            $fornecedor = Fornecedor::where('email', Session::get('user_email'))->first();
+            $fornecedor = Fornecedor::where('email', session()->get('user_email'))->first();
             $fornecedor->delete();
 
-        } elseif (Session::get('userType') == "transportadora") {
+        } elseif (session()->get('userType') == "transportadora") {
 
-            $transportadora = Transportadora::where('email', Session::get('user_email'))->first();
+            $transportadora = Transportadora::where('email', session()->get('user_email'))->first();
             $transportadora->delete();
 
         } else {
             print "Erro no delete do utilizador! O userType da sessão é diferente de transportadora/fornecedor/consumidor !";
             print "";
-            return $request->input();
         }
 
-        Session::flush();
+        session()->flush();
         return redirect('/');
     }
 
