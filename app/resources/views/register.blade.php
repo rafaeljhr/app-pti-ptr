@@ -20,7 +20,7 @@
                         <h3 class="mb-5 text-uppercase">JUNTA-TE AO GRUPO ECOSMART!</h3>
                         <h2 class="h4 mb-2 font-weight-normal">Eu sou um/a:</h2>
 
-                        <form class="form-signin" method="post" action="{{ route('register-controller') }}">
+                        <form class="form-signin" method="post"  action="{{ route('register-controller') }}">
                             @csrf
                             <div class="row">
                             <div class="form-outline mb-4">
@@ -65,11 +65,17 @@
                             <label for="email" class="form-label">Email</label>
                             <input required type="email" name ="email" id="email" class="form-control form-control-lg" placeholder="Introduz o seu email">
                             </div>
-    
+                            
                             <div class="row">
                             <div class="form-outline mb-4">
-                                <label for="passwordConsumer" class="form-label">Password</label>
-                                <input type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autofocus="">
+                                <label for="password" class="form-label">Password</label>
+                                <ul>
+                                    <li>Pelo menos 8 caracteres</li>
+                                    <li>Pelo menos um número</li>
+                                    <li>Pelo menos uma letra maiúscula</li>
+                                    <li>Pelo menos um caracter especial</li>
+                                </ul>
+                                <input v-model="password" @input="checkPassword()" type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autocomplete="off">
                             </div>
                             </div>
 
