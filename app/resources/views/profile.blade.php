@@ -27,12 +27,12 @@
 
     <div class="container py-5">
 
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- Modal Apagar Conta -->
+        <div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Atenção!</h5>
+                    <h5 class="modal-title" id="modalApagarLabel">Atenção!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -44,6 +44,38 @@
                     @csrf
                     <button type="submit" class="btn btn-danger">Confirmar</button>
                 </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal Mudar Password -->
+        <div class="modal fade" id="modalMudarPass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMudarPassLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMudarPassLabel">Alterar Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePass" method="post" action="{{ route('update-password-controller') }}">
+                        @csrf
+                        <label for="oldPass" class="form-label">Password Atual:</label>
+                        <input type="password" name="oldPass" class="form-control mb-3" placeholder="Introduza a sua password atual" aria-label="Password Atual"
+                        aria-describedby="Nome do Utilizador">
+
+                        <label for="newPass1" class="form-label">Nova Password:</label>
+                        <input type="password" name="newPass1" class="form-control mb-3" placeholder="Introduza a sua nova password" aria-label="Nova Password"
+                        aria-describedby="Nova Password">
+
+                        <label for="newPass2" class="form-label">Confirme Nova Password:</label>
+                        <input type="password" name="newPass2" class="form-control mb-3" placeholder="Confirme a sua nova password" aria-label="Confirmar Nova Password"
+                        aria-describedby="Confrimar Nova Password">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="changePass" class="btn btn-danger">Confirmar</button>
                 </div>
             </div>
             </div>
@@ -105,25 +137,24 @@
                                 aria-describedby="Morada do Utilizador" ref="userAdress" value="<?=$userAdress?>" :disabled="!editable">
                             </div>
         
-                            {{-- <div v-show="editable" class="col-sm">
-                                <label for="password" class="form-label text-light">Mudar Password</label>
-                                <div class="input-group mb-3">
-                                    <input name="password" type="password" class="form-control" placeholder="Introduza a sua nova password" aria-label="Password do Utilizador"
-                                        aria-describedby="Password do Utilizador" :disabled="!editable"> 
-                                </div>
-                            </div> --}}
+                            <div class="col-sm mt-4">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
+                            </div>
                         </div>
 
-                        <div class="my-2">
+                        <div class="position-relative my-2">
                             <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = true">Editar Dados</button>
                             <button v-show="editable" type="submit" class="btn btn-primary me-3">Guardar Alterações</button>
                             <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Conta</button>
                         </div>
+
+                        
                     </div>
                 </form>
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Apagar Conta</button>
+            
             </div>
         </div>    
     </div>

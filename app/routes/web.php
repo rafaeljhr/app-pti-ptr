@@ -60,3 +60,4 @@ Route::get('/logout-controller', [UserController::class, 'logout'])->name('logou
 Route::post('/login-controller', [UserController::class, 'login'])->name('login-controller');
 Route::post('/edit-profile-controller', [UserController::class, 'update'])->name('edit-profile-controller');
 Route::post('/delete-profile-controller', [UserController::class, 'delete'])->name('delete-profile-controller');
+Route::post('/update-password-controller', [UserController::class, 'changePassword'])->name('update-password-controller');
