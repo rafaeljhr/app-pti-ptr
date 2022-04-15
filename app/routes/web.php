@@ -36,6 +36,10 @@ Route::get('/inventory', function () {
     return view('inventory');
 })->name('inventory');
 
+Route::get('/products', function () {
+    return view('products');
+})->name('products');
+
 
 // #######################
 // PRODUCTS RELATED ROUTES
@@ -47,8 +51,19 @@ Route::get('/inventory-controller', [ProductsController::class, "getAllProducts"
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
 Route::post('/product-edit-controller', [ProductsController::class, "productEdit"])->name('product-edit-controller');
+
 Route::post('/product-add-event-controller', [ProductsController::class, "productAddEvent"])->name('product-add-event-controller');
+Route::post('/product-edit-event-controller', [ProductsController::class, "productEditEvent"])->name('product-edit-event-controller');
 Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
+
+
+// #######################
+// ARMAZENS RELATED ROUTES
+// #######################
+
+Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
+Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
+Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
 
 
 // ####################

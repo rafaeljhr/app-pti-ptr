@@ -60,7 +60,7 @@ class ProductsController extends Controller
             'info_arbitraria'=>'required|string',
             'data_producao_do_produto'=>'required|string',
             'data_insercao_no_site'=>'required|string',
-            'poluicao_gerada_por_dia'=>'required|string',
+            'poluicao_gerada_por_dia'=>'integer',
         ]);
 
         $newProduto = Produto::create([
