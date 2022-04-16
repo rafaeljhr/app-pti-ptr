@@ -35,6 +35,7 @@
                             <div class="row"> 
                             <div class="form-outline mb-4">
                                 <label for="nome" class="form-label">Nome</label>
+                                <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
                                 <input required type="text" name ="name" id="name" class="form-control form-control-lg" placeholder="Introduza o seu nome">
                             </div>
                             </div>
@@ -43,6 +44,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-outline">
                                 <label for="phone_number" class="form-label">Telemóvel</label>
+                                <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
                                 <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-lg" placeholder="Introduza o seu número" minlength="9" maxlength="9">
                                 </div>
                             </div>
@@ -50,6 +52,7 @@
                                 <div class="form-outline">
                                 <label v-if="clientConsumer" for="nif" class="form-label">NIF</label>
                                 <label v-else for="nif" class="form-label">NIF da Empresa</label>
+                                <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
                                 <input required type="text" name ="nif" id="nif" class="form-control form-control-lg" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
                                 </div>
                             </div>
@@ -57,12 +60,14 @@
         
                             <div class="form-outline mb-4">
                             <label v-if="clientConsumer" for="address" class="form-label">Morada</label>
-                            <label v-else for="address" class="form-label">Morada Fiscal</label>  
+                            <label v-else for="address" class="form-label">Morada Fiscal</label>
+                            <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
                             <input required type="text" id="address" name="address" class="form-control form-control-lg" placeholder="Introduza a sua morada" autofocus="">  
                             </div>
     
                             <div class="form-outline mb-4">
                             <label for="email" class="form-label">Email</label>
+                            <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
                             <input required type="email" name ="email" id="email" class="form-control form-control-lg" placeholder="Introduz o seu email">
                             </div>
                             
@@ -70,17 +75,19 @@
                             <div class="form-outline mb-4">
                                 <label for="password" class="form-label">Password</label>
                                 <ul>
-                                    <li>Pelo menos 8 caracteres</li>
-                                    <li>Pelo menos um número</li>
-                                    <li>Pelo menos uma letra maiúscula</li>
-                                    <li>Pelo menos um caracter especial</li>
+                                    <li :class="[{'checked': contains_eight_characters}]">Pelo menos 8 caracteres</li>
+                                    <li :class="[{'checked': contains_number}]">Pelo menos um número</li>
+                                    <li :class="[{'checked': contains_uppercase}]">Pelo menos uma letra maiúscula</li>
+                                    <li :class="[{'checked': contains_special_character}]">Pelo menos um caracter especial</li>
                                 </ul>
                                 <input v-model="password" @input="checkPassword()" type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autocomplete="off">
                             </div>
+
+                            <p><i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i> Obrigatório</p>
                             </div>
 
                             <div class="row">
-                            <button type="submit" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
+                            <button :disabled="!valid_password" type="submit" id="ola" class="btn btn-primary btn-lg btn-block">Registar</button>
                             </div>
                             
                         </form>

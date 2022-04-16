@@ -10,3 +10,14 @@
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     border: 2px solid rgba(0,0,0,.2);
 }
+
+.checked {
+    text-decoration: line-through;
+    color: green;
+}
+
+i {
+    position: relative;
+    font-size: 0.5rem;
+    bottom: 5px;
+}
