@@ -81,6 +81,14 @@
             </div>
         </div>
     
+        <div v-show="!telephone_valid" class="alert alert-danger" role="alert">
+            Telemóvel tem de ser um número!
+        </div>
+
+        <div v-show="!nif_valid" class="alert alert-danger" role="alert">
+            NIF tem de ser um número!
+        </div>
+
         <div class="form-div mx-auto my-2 px-3">  
             <img class="logo" src="images/logo6.png" alt="EcoSmart Logo">
 
@@ -108,7 +116,7 @@
                             <div class="col-sm">
                                 <label for="telefone" class="form-label text-light">Telemóvel</label>
                                 <div class="input-group mb-3">
-                                    <input name="telefone" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
+                                    <input @input="checkForm()" name="telefone" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
                                         aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" ref="userTel" value="<?=$userTel?>" :disabled="!editable">
                                 </div>
                             </div>
@@ -121,8 +129,7 @@
                                 @else
                                     <label for="nif" class="sr-only text-light">NIF da Empresa</label>
                                 @endif
-                                
-                                <input type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
+                                <input @input="checkForm()" type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
                                 aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" ref="userNIF" value="<?=$userNIF?>" :disabled="!editable">
                             </div>
         
@@ -153,8 +160,6 @@
                         
                     </div>
                 </form>
-
-            
             </div>
         </div>    
     </div>

@@ -6,7 +6,9 @@ let app = Vue.createApp({
             userTel: "",
             userNIF: "",
             userAdress: "",
-            editable: false
+            editable: false,
+            telephone_valid: true,
+            nif_valid: true,
         }
     },
 
@@ -18,6 +20,20 @@ let app = Vue.createApp({
             this.$refs.userTel.value = this.userTel;
             this.$refs.userNIF.value = this.userNIF;
             this.$refs.userAdress.value = this.userAdress;
+        },
+
+        checkForm() {
+            if (isNaN(this.$refs.userTel.value)) {
+                this.telephone_valid = false;
+            } else {
+                this.telephone_valid = true;
+            }
+
+            if (isNaN(this.$refs.userNIF.value)) {
+                this.nif_valid = false;
+            } else {
+                this.nif_valid = true;
+            } 
         }
     }, 
 
