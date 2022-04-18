@@ -6,14 +6,25 @@ let app = Vue.createApp({
             fundoDivOpac:false,
             cadeiaDiv:false,
             totalSteps:2,
-            step:1
+            step:1,
+            
+            category:""
             
         }
     },
     methods: {
 
+        
+        changeSubcat(cat){
+            console.log("AJFDUASHFUIAHGIYUHDSUGHAUIHGIUAHGIJASHDGJKHAKJ");
+            this.category=cat;
+        },
+
+       
+
         openArmazem(){
             this.armazemAddDiv=!this.armazemAddDiv;
+            console.log("AJFDUASHFUIAHGIYUHDSUGHAUIHGIUAHGIJASHDGJKHAKJ");
 
         },
         openAddArmazem(){

@@ -4,7 +4,7 @@
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
-$arrayTestArmazem = array(array("morada" => "Teste morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ));
+$arrayTestArmazem = array(array("morada" => "Teste  morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ), array("morada" => "Teste morada","recursos" => "teste recursos" ));
 Session::put('armazensFornecedor', $arrayTestArmazem);
 ?>
 @extends('layouts.page_default')
@@ -24,23 +24,52 @@ Session::put('armazensFornecedor', $arrayTestArmazem);
         <input type="file" class="form-control" name="image" id="image" aria-label="file" aria-describedby="basic-addon1" required>
       </div>
 
-
+      <div class="row" >
+        <div class="col">
+          <label for="nome" class="form-label">Nome do seu produto:</label>
+          <input type="text" class="form-control" name="nome" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
+        </div>
+        <div class="col">
+          <label for="armazem" class="form-label">Armazem do produto</label>
+          <input class="form-control" list="datalistOptions" name="armazem" placeholder="Type to search...">
+          <datalist id="datalistOptions">
+            @for($i = 0; $i < sizeOf(session()->get('armazensFornecedor')); $i++)
+            <option value='<?php echo session()->get('armazensFornecedor')[$i]["recursos"] ?>'>
+            @endfor
+          </datalist>
+            
+        
+        </div>
+      </div>
 
         <div class="row" >
           <div class="col">
-            <label for="nome" class="form-label">Nome do seu produto:</label>
-            <input type="text" class="form-control" name="nome" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
+            <label for="nome_categoria" class="form-label">Categoria do produto</label>
+            <select class="form-control" name="categoria">
+              
+              @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
+              <?php $category= session()->get('categories')[$i] ?>
+              <option @click="changeSubcat('$category')" value='<?php echo session()->get('categories')[$i] ?>'><?php echo session()->get('categories')[$i] ?></option>
+              
+              @endfor
+            </select>
+           <?php /* echo "@click=changeSubcat('$category')" */?> 
           </div>
           <div class="col">
-            <label for="nome_categoria" class="form-label">Categoria do produto</label>
-            <input class="form-control" list="datalistOptions" name="nome_categoria" placeholder="Type to search...">
-            <datalist id="datalistOptions">
-              <option value="Pão">
-              <option value="Pão">
-              <option value="Pão">
-              <option value="Pão">
-              <option value="Pão">
-            </datalist>
+            <label for="nome_categoria" class="form-label">Subcategoria</label>
+            <select class="form-control" name="subcategoria">
+              <option selected>Selecione uma categoria</option>
+              @if(session()->get('subcategoriesSelect') !=  null)
+              @for($i = 0; $i < sizeOf(session()->get('subcategoriesSelect')); $i++)
+              <?php $subcategory= session()->get('subcategoriesSelect')[$i][1] ?>
+              <option v-if="category={{$subcategory}}" value='<?php echo session()->get('subcategoriesSelect')[$i][0] ?>'><?php echo session()->get('subcategoriesSelect')[$i][0] ?></option>
+              @endfor
+              @endif
+              
+              
+              
+            </select> 
+          
           </div>
         </div>
 
@@ -73,8 +102,7 @@ Session::put('armazensFornecedor', $arrayTestArmazem);
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
   <h3>As cadeias logisticas associadas ao produto</h3>
   <div class="row">
-  @for($i = 0; $i < sizeOf(session()->get('cadeiasLogisticas')); $i++)
-    
+  @for($i = 0; $i < sizeOf(session()->get('cadeiasLogisticas')); $i++)  
     <div class="col">
       <div class="card"  style="width: 18rem;"> 
         <div class="card-body">
@@ -198,6 +226,7 @@ Session::put('armazensFornecedor', $arrayTestArmazem);
 
 <button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
 <button type="button" @click ="openAddArmazem()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
+
 <script src="./js/inventory.js"></script>
     
 @endsection
