@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
         <section class="h-100">
+
+            <div v-show="!telephone_valid" class="alert alert-danger" role="alert">
+                Telemóvel tem de ser um número!
+            </div>
+
+            <div v-show="!nif_valid" class="alert alert-danger" role="alert">
+                NIF tem de ser um número!
+            </div>
+
             <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col">
@@ -45,7 +54,7 @@
                                 <div class="form-outline">
                                 <label for="phone_number" class="form-label">Telemóvel</label>
                                 <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
-                                <input required type="text" name ="phone_number" id="phone_number" class="form-control form-control-lg" placeholder="Introduza o seu número" minlength="9" maxlength="9">
+                                <input @input="checkForm()" ref="userTel" required type="text" name ="phone_number" id="phone_number" class="form-control form-control-lg" placeholder="Introduza o seu número" minlength="9" maxlength="9">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-4">
@@ -53,7 +62,7 @@
                                 <label v-if="clientConsumer" for="nif" class="form-label">NIF</label>
                                 <label v-else for="nif" class="form-label">NIF da Empresa</label>
                                 <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
-                                <input required type="text" name ="nif" id="nif" class="form-control form-control-lg" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
+                                <input @input="checkForm()" ref="userNIF" required type="text" name ="nif" id="nif" class="form-control form-control-lg" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
                                 </div>
                             </div>
                             </div>

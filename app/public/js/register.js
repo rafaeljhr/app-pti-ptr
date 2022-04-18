@@ -8,7 +8,9 @@ let app = Vue.createApp({
             contains_number: false,
             contains_uppercase: false,
             contains_special_character: false,
-            valid_password: false
+            valid_password: false,
+            telephone_valid: true,
+            nif_valid: true,
         }
     },
     methods: {
@@ -46,6 +48,20 @@ let app = Vue.createApp({
                 this.valid_password = false;
             }
           
+        },
+
+        checkForm() {
+            if (isNaN(this.$refs.userTel.value)) {
+                this.telephone_valid = false;
+            } else {
+                this.telephone_valid = true;
+            }
+
+            if (isNaN(this.$refs.userNIF.value)) {
+                this.nif_valid = false;
+            } else {
+                this.nif_valid = true;
+            } 
         }
     }
 })
