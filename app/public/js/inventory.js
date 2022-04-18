@@ -7,17 +7,31 @@ let app = Vue.createApp({
             cadeiaDiv:false,
             totalSteps:2,
             step:1,
-            
-            category:""
+            computadores:false,
+            mobilidade:false
+           
             
         }
     },
     methods: {
-
-        
         changeSubcat(cat){
-            console.log("AJFDUASHFUIAHGIYUHDSUGHAUIHGIUAHGIJASHDGJKHAKJ");
-            this.category=cat;
+            if(cat.target.value=="computadores"){
+                this.computadores=!this.computadores;
+                if( this.mobilidade==true){
+                    this.mobilidade=!this.mobilidade;
+                }
+                
+            }
+            if(cat.target.value=="mobilidade"){
+                this.mobilidade=!this.mobilidade;
+                if( this.computadores==true){
+                    this.computadores=!this.computadores;
+                }
+                
+            } 
+           /*console.log(cat.target.value);
+            this.category=cat.target.value;
+            console.log(this.category); */
         },
 
        

@@ -45,29 +45,31 @@ Session::put('armazensFornecedor', $arrayTestArmazem);
         <div class="row" >
           <div class="col">
             <label for="nome_categoria" class="form-label">Categoria do produto</label>
-            <select class="form-control" name="categoria">
-              
+            <select class="form-control" @change="changeSubcat($event)" name="nome_categoria">
+              <option selected>Selecione uma subcategoria</option>
               @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
               <?php $category= session()->get('categories')[$i] ?>
-              <option @click="changeSubcat('$category')" value='<?php echo session()->get('categories')[$i] ?>'><?php echo session()->get('categories')[$i] ?></option>
+              <option value='<?php echo session()->get('categories')[$i] ?>'><?php echo session()->get('categories')[$i] ?></option>
               
               @endfor
             </select>
-           <?php /* echo "@click=changeSubcat('$category')" */?> 
+            
           </div>
           <div class="col">
             <label for="nome_categoria" class="form-label">Subcategoria</label>
-            <select class="form-control" name="subcategoria">
+            <select class="form-control" name="nome_subcategoria">
               <option selected>Selecione uma categoria</option>
-              @if(session()->get('subcategoriesSelect') !=  null)
-              @for($i = 0; $i < sizeOf(session()->get('subcategoriesSelect')); $i++)
-              <?php $subcategory= session()->get('subcategoriesSelect')[$i][1] ?>
-              <option v-if="category={{$subcategory}}" value='<?php echo session()->get('subcategoriesSelect')[$i][0] ?>'><?php echo session()->get('subcategoriesSelect')[$i][0] ?></option>
-              @endfor
+              
+              @for($i = 0; $i < sizeOf(session()->get('subcategories')); $i++)
+              <?php $subcategory= session()->get('subcategories')[$i][1] ?>
+              @if($subcategory=="mobilidade")
+              <option v-if="mobilidade" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
               @endif
-              
-              
-              
+              @if($subcategory=="computadores")
+              <option v-if="computadores" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              @endif             
+              @endfor
+                            
             </select> 
           
           </div>
@@ -81,16 +83,24 @@ Session::put('armazensFornecedor', $arrayTestArmazem);
       </div>
       <div class="row">
         <div class="col">
-          <label for="dataProduto" class="form-label">Data de fabrico do produto:</label>
-          <input  name="dataProduto" class="form-control" type="date" required>
+          <label for="data_producao_do_produto" class="form-label">Data de fabrico do produto:</label>
+          <input  name="data_producao_do_produto" class="form-control" type="date" required>
         </div>
         <div class="col">
-          <label for="dataProdutoValidade" class="form-label">Data de validade do produto:</label>
-          <input  name="dataProdutoValidade" class="form-control" type="date" required>
+          <label for="data_insercao_no_site" class="form-label">Data de inserção no site do produto:</label>
+          <input  name="data_insercao_no_site" class="form-control" type="date" required>
         </div>
       </div>
 
+      
+
       <div class="input-group mb-3">
+        <div class="row">
+          <div class="input-group-prepend">
+            <span class="input-group-text">With textarea</span>
+          </div>
+          <textarea name="info_arbitraria" class="form-control" aria-label="With textarea"></textarea>
+        </div>
       </div>
       <button @click="nextStep()" class="w-100 btn btn-lg btn-primary" type="submit">Próximo passo</button>
 
