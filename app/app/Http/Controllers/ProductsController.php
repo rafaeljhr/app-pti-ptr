@@ -56,6 +56,7 @@ class ProductsController extends Controller
             'nome'=>'required|string',
             'id_armazem'=>'required|string',
             'nome_categoria'=>'required|string',
+            'path_imagem'=>'required|string',
             'nome_subcategoria'=>'required|string',
             'info_arbitraria'=>'required|string',
             'data_producao_do_produto'=>'required|string',
@@ -68,6 +69,7 @@ class ProductsController extends Controller
             'id_armazem' => $request->get('id_armazem'),
             'id_fornecedor' => session()->get('id_fornecedor'),
             'nome_categoria' => $request->get('nome_categoria'),
+            'path_imagem' => $request->get('path_imagem'),
             'nome_subcategoria' => $request->get('nome_subcategoria'),
             'info_arbitraria' => $request->get('info_arbitraria'),
             'data_producao_do_produto' => $request->get('data_producao_do_produto'),
@@ -84,6 +86,7 @@ class ProductsController extends Controller
         $produto_id_armazem = $newProduto->id_armazem;
         $produto_id_fornecedor = $newProduto->id_fornecedor;
         $produto_nome_categoria = $newProduto->nome_categoria;
+        $produto_path_imagem = $newProduto->path_imagem;
         $produto_nome_subcategoria = $newProduto->nome_subcategoria;
         $produto_info_arbitraria = $newProduto->info_arbitraria;
         $produto_data_producao_do_produto = $newProduto->data_producao_do_produto;
@@ -95,6 +98,7 @@ class ProductsController extends Controller
         array_push($atributos_produto, $produto_id_armazem);
         array_push($atributos_produto, $produto_id_fornecedor);
         array_push($atributos_produto, $produto_nome_categoria);
+        array_push($atributos_produto, $produto_path_imagem);
         array_push($atributos_produto, $produto_nome_subcategoria);
         array_push($atributos_produto, $produto_info_arbitraria);
         array_push($atributos_produto, $produto_data_producao_do_produto);
@@ -125,6 +129,7 @@ class ProductsController extends Controller
             $produto_id_armazem = $produto->id_armazem;
             $produto_id_fornecedor = $produto->id_fornecedor;
             $produto_nome_categoria = $produto->nome_categoria;
+            $produto_path_imagem = $produto->path_imagem;
             $produto_nome_subcategoria = $produto->nome_subcategoria;
             $produto_info_arbitraria = $produto->info_arbitraria;
             $produto_data_producao_do_produto = $produto->data_producao_do_produto;
@@ -136,6 +141,7 @@ class ProductsController extends Controller
             array_push($atributos_produto, $produto_id_armazem);
             array_push($atributos_produto, $produto_id_fornecedor);
             array_push($atributos_produto, $produto_nome_categoria);
+            array_push($atributos_produto, $produto_path_imagem);
             array_push($atributos_produto, $produto_nome_subcategoria);
             array_push($atributos_produto, $produto_info_arbitraria);
             array_push($atributos_produto, $produto_data_producao_do_produto);
@@ -155,9 +161,9 @@ class ProductsController extends Controller
         return redirect('/inventory');
     }
 
-    public function productDelete(Request $request){
+    public function productDelete($id){
 
-        $produto = Produto::where('id', $request->get('id'))->first();
+        $produto = Produto::where('id', $id)->first();
         $produto->delete();
 
         self::getAllProducts(); // rebuild the products in session
