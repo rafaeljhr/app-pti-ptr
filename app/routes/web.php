@@ -71,6 +71,9 @@ Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDe
 // USERS RELATED ROUTES
 // ####################
 
+Route::post('/register-etapa1-controller', [UserController::class, 'register_etapa1'])->name('register-etapa1-controller');
+
+
 Route::post('/register-controller', [UserController::class, 'register'])->name('register-controller');
 Route::get('/logout-controller', [UserController::class, 'logout'])->name('logout-controller');
 Route::post('/login-controller', [UserController::class, 'login'])->name('login-controller');

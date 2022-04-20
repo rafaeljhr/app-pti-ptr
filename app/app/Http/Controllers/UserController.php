@@ -108,6 +108,13 @@ class UserController extends Controller
     }
 
 
+    // Saber se 
+    public function register_etapa1(Request $request)
+    {
+        return $request->input();
+    }
+
+
 
     // Register a consumidor/transportadora/fornecedor
     public function register(Request $request)
