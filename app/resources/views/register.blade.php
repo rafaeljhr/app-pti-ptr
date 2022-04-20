@@ -89,7 +89,9 @@
                                     <li :class="[{'checked': contains_uppercase}]">Pelo menos uma letra maiúscula</li>
                                     <li :class="[{'checked': contains_special_character}]">Pelo menos um caracter especial</li>
                                 </ul>
-                                <input v-model="password" @input="checkPassword()" type="password" id="password" name ="password" class="form-control form-control-lg" placeholder="Introduza a sua password" required autocomplete="off">
+                                <input v-model="password" @input="checkPassword()" type="password" id="password" name ="password" class="form-control form-control-lg mb-2" placeholder="Introduza a sua password" required autocomplete="off">
+                                <input v-model="password2" @input="checkPassword()" type="password" id="password2" name ="password2" class="form-control form-control-lg" placeholder="Confirme a password" required autocomplete="off">
+                                <p v-show="diff_password" class="text-danger">As duas passwords não coincidem!</p>
                             </div>
 
                             <p><i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i> Obrigatório</p>

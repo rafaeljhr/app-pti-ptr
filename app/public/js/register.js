@@ -11,6 +11,7 @@ let app = Vue.createApp({
             valid_password: false,
             telephone_valid: true,
             nif_valid: true,
+            diff_password: false,
         }
     },
     methods: {
@@ -37,11 +38,18 @@ let app = Vue.createApp({
             this.contains_uppercase = /[A-Z]/.test(this.password);
 
             this.contains_special_character = format.test(this.password);
+
+            if (this.password == this.password2) {
+                this.diff_password = false;
+            } else {
+                this.diff_password = true;
+            }
             
             if (this.contains_eight_characters === true &&
                 this.contains_special_character === true &&
                 this.contains_uppercase === true &&
-                this.contains_number === true) {
+                this.contains_number === true &&
+                this.diff_password === false) {
                     
                 this.valid_password = true;			
             } else {
