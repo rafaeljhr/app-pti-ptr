@@ -221,6 +221,19 @@ Session::put('armazens', $armazens);
 
 <button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
 <button type="button" @click ="openAddArmazem()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Filtrar por armazem
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a class="dropdown-item" href="#">Todos</a></li>
+    @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+    
+    <li><a class="dropdown-item" href="#"><?php echo session()->get('armazens')[$i][3] ?></a></li>
+    @endfor
+
+  </ul>
+</div>
 
 <script src="./js/inventory.js"></script>
     
