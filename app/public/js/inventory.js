@@ -28,17 +28,14 @@ let app = Vue.createApp({
                     this.computadores=!this.computadores;
                 }
                 
-            } 
-           /*console.log(cat.target.value);
-            this.category=cat.target.value;
-            console.log(this.category); */
+            }
         },
 
        
 
         openArmazem(){
             this.armazemAddDiv=!this.armazemAddDiv;
-            console.log("AJFDUASHFUIAHGIYUHDSUGHAUIHGIUAHGIJASHDGJKHAKJ");
+            
 
         },
         openAddArmazem(){
@@ -52,7 +49,7 @@ let app = Vue.createApp({
         openAdd() {
             this.fundoDivOpac=!this.fundoDivOpac;
             this.fundoDiv=!this.fundoDiv;
-            /* this.cadeiaDiv=!this.cadeiaDiv; */
+         
         },
 
         nextStep(){

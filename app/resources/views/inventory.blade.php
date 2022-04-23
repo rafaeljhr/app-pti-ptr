@@ -6,6 +6,12 @@ $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste de
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
 $armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
 Session::put('armazens', $armazens);
+$produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+ array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+  array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+   array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
+   array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
+Session::put('produtos', $produtos);
 
 ?>
 @extends('layouts.page_default')
@@ -219,9 +225,8 @@ Session::put('armazens', $armazens);
   </form>
   </div>
 
-<button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-<button type="button" @click ="openAddArmazem()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
-<div class="dropdown">
+
+<div class="dropdown" id="">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
     Filtrar por armazem
   </button>
@@ -234,6 +239,39 @@ Session::put('armazens', $armazens);
 
   </ul>
 </div>
+<button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+<button type="button" @click ="openAddArmazem()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
+
+
+<div class="container p-0 mt-5 mb-5">
+  <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+  @if(session()->get('produtos')!=null)
+  @for($i = 0; $i < sizeOf(session()->get('produtos')); $i++) 
+  
+    <div class="col">
+      <div class="card">
+        <button type="button" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+        <h5 class="card-title"><?php echo session()->get('produtos')[$i][1] ?></h5>
+          <h4 class="card-text text-danger"><?php echo session()->get('produtos')[$i][2] ?> €</h4>
+        <img src='<?php echo session()->get('produtos')[$i][0] ?>' class="card-img-top" alt="...">
+        <div class="card-body text-center">
+          <h5 class="card-title"><?php echo session()->get('produtos')[$i][3] ?></h5>
+          <button type="button" class="btn btn-outline-primary">Editar</button>
+          <button type="button" class="btn btn-outline-primary">informações adicionais</button>
+        </div>
+      </div>
+    </div>
+    @if($i > 0 && $i % 3==0)
+    </div>
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+    @endif
+    @endfor
+
+
+    @endif
+  </div>
+</div>
+
 
 <script src="./js/inventory.js"></script>
     
