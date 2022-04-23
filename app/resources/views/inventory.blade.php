@@ -4,6 +4,8 @@
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
+$armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
+Session::put('armazens', $armazens);
 
 ?>
 @extends('layouts.page_default')
@@ -14,6 +16,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 <div v-show="fundoDiv" v-if="step==1" class="forForm">
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 
+  {{-- Criar produto--}}
   <form {{-- method="post" action="{{ route('product-register-controller') }}" --}}>
   <h2>Informação principal do produto</h2>
 
@@ -32,8 +35,8 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
           <label for="armazem" class="form-label">Armazem do produto</label>
           <input class="form-control" list="datalistOptions" name="armazem" placeholder="Type to search...">
           <datalist id="datalistOptions">
-            @for($i = 0; $i < sizeOf(session()->get('armazensFornecedor')); $i++)
-            <option value='<?php echo session()->get('armazensFornecedor')[$i]["recursos"] ?>'>
+            @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+            <option value='<?php echo session()->get('armazens')[$i][3] ?>'>
             @endfor
           </datalist>
                    
