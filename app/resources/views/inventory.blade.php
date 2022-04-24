@@ -1,6 +1,6 @@
 <?php
 
-//dd(session()->all());
+// dd(session()->all());
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
@@ -11,12 +11,13 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 // ISTO JA TA OK, BASTA CRIAR ARMAZENS E JA IRAO APARECER NA CRIACAO DE PRODUTOS
 
 
-$produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
-array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
-Session::put('produtos', $produtos);
+// $produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
+// array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
+// Session::put('produtos', $produtos);
+// ISTO JA TA OK, BASTA CRIAR PRODUTOS E JA IRAO APARECER
 
 ?>
 @extends('layouts.page_default')
@@ -279,17 +280,17 @@ Session::put('produtos', $produtos);
 
 <div class="container p-0 mt-5 mb-5">
   <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-  @if(session()->get('produtos')!=null)
-  @for($i = 0; $i < sizeOf(session()->get('produtos')); $i++) 
+  @if(session()->get('all_fornecedor_produtos')!=null)
+  @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
   
     <div class="col">
       <div class="card">
         <button type="button" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-        <h5 class="card-title"><?php echo session()->get('produtos')[$i][1] ?></h5>
-          <h4 class="card-text text-danger"><?php echo session()->get('produtos')[$i][2] ?> €</h4>
-        <img src='<?php echo session()->get('produtos')[$i][0] ?>' class="card-img-top" alt="...">
+        <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i][1] ?></h5>
+          <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedor_produtos')[$i][2] ?> €</h4>
+        <img src='<?php echo session()->get('all_fornecedor_produtos')[$i][5] ?>' class="card-img-top" alt="...">
         <div class="card-body text-center">
-          <h5 class="card-title"><?php echo session()->get('produtos')[$i][3] ?></h5>
+          <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i][9] ?></h5>
           <button type="button" class="btn btn-outline-primary">Editar</button>
           <button type="button" class="btn btn-outline-primary">informações adicionais</button>
         </div>

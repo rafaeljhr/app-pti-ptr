@@ -49,30 +49,7 @@ class ArmazensController extends Controller
             'path_imagem' => $filename,
         ]);
 
-        // adding the product to the session
-
-        $atributos_armazem = array();
-
-        $armazem_id = $newArmazem->id;
-        $armazem_id_fornecedor = $newArmazem->id_fornecedor;
-        $armazem_morada = $newArmazem->morada;
-        $armazem_nome = $newArmazem->nome;
-        $armazem_path_imagem = $newArmazem->path_imagem;
-
-        array_push($atributos_armazem, $armazem_id);
-        array_push($atributos_armazem, $armazem_id_fornecedor);
-        array_push($atributos_armazem, $armazem_morada);
-        array_push($atributos_armazem, $armazem_nome);
-        array_push($atributos_armazem, $armazem_path_imagem);
-
-        if(!(session()->has('armazens'))){
-            $all_fornecedor_armazens = session()->get('all_fornecedor_armazens');
-            array_push($all_fornecedor_armazens, $atributos_armazem);
-        } else {
-            $all_armazens = array();
-            array_push($all_armazens, $atributos_armazem);
-            session()->put('armazens', $all_armazens);
-        }
+        (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
 
         return redirect('/inventory');
 

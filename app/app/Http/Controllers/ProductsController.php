@@ -53,7 +53,7 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
 
-        return $request->input();
+        // return $request->input();
 
         $request->validate([
             'nome'=>'required|string',
@@ -96,7 +96,7 @@ class ProductsController extends Controller
             'nome' => $request->get('nome'),
             'preco' => $request->get('preco'),
             'id_armazem' => $request->get('id_armazem'),
-            'id_fornecedor' => session()->get('id_fornecedor'),
+            'id_fornecedor' => session()->get('user_id'),
             'quantidade' => $request->get('quantidade'),
             'nome_categoria' => $request->get('nome_categoria'),
             'path_imagem' => $filename,
@@ -148,6 +148,8 @@ class ProductsController extends Controller
         session()->put('last_added_product_id', $newProduto->id);
 
         session()->put('passo', 2);
+
+        return redirect('/inventory');
 
     }
 
