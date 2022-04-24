@@ -1,13 +1,14 @@
 <?php
 
-//dd(session()->all());
+// dd(session()->all());
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
 
-$armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
-Session::put('armazens', $armazens);
+// $armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
+// Session::put('armazens', $armazens);
+// ISTO JA TA OK, BASTA CRIAR ARMAZENS E JA IRAO APARECER NA CRIACAO DE PRODUTOS
 
 
 $produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
@@ -27,30 +28,30 @@ Session::put('produtos', $produtos);
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 
   {{-- Criar produto--}}
-  <form {{-- method="post" action="{{ route('product-register-controller') }}" --}}>
+  <form method="post" action="{{ route('product-register-controller') }}" enctype="multipart/form-data">
     @csrf
-  <h2>Informação principal do produto</h2>
-    
-
-    <label for="image" class="form-label">Imagem do seu produto:</label>
-    <div class="input-group mb-3">       
-        <input type="file" class="form-control" name="path_imagem" id="image" aria-label="file" aria-describedby="basic-addon1" required>
-      </div>
-
+    <h2>Informação principal do produto</h2>
+      
       <div class="row" >
         <div class="col">
           <label for="nome" class="form-label">Nome do seu produto:</label>
           <input type="text" class="form-control" name="nome" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
         </div>
+
         <div class="col">
-          <label for="armazem" class="form-label">Armazem do produto</label>
-          <input class="form-control" list="datalistOptions" name="armazem" placeholder="Type to search...">
-          <datalist id="datalistOptions">
+          <label for="path_imagem_produto" class="form-label">Imagem do seu produto:</label>
+          <input type="file" class="form-control" name="path_imagem_produto" id="image" aria-label="file">
+        </div>
+
+        <div class="col">
+          <label for="id_armazem" class="form-label">Armazem do produto</label>
+          <input class="form-control" id='selected_armazem' list="input-armazens" placeholder="Type to search..." onChange="set_armazem_id()" >
+          <datalist id="input-armazens">
             @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-            <option value='<?php echo session()->get('armazens')[$i][3] ?>'>
+            <option data-id='<?php echo session()->get('armazens')[$i][0] ?>'><?php echo session()->get('armazens')[$i][3] ?></option>
             @endfor
           </datalist>
-                   
+          <input type="hidden" name="id_armazem" id="id_selected_armazem">
         </div>
       </div>
 
@@ -64,8 +65,8 @@ Session::put('produtos', $produtos);
               <option value='<?php echo session()->get('categories')[$i] ?>'><?php echo session()->get('categories')[$i] ?></option>              
               @endfor
             </select>
-            
           </div>
+
           <div class="col">
             <label for="nome_categoria" class="form-label">Subcategoria</label>
             <select class="form-control" name="nome_subcategoria">
@@ -81,17 +82,21 @@ Session::put('produtos', $produtos);
               @endfor               
             </select>         
           </div>
+
         </div>
+
       <div class="input-group mb-3">
         <span class="input-group-text">€</span>
         <span class="input-group-text">0.00</span>
-        <input type="number"  step="any" class="form-control" name="precoProduto" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
+        <input type="number"  step="any" class="form-control" name="preco" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
       </div>
+
       <div class="row">
         <div class="col">
           <label for="data_producao_do_produto" class="form-label">Data de fabrico do produto:</label>
           <input  name="data_producao_do_produto" class="form-control" type="date" required>
         </div>
+        
         <div class="col">
           <label for="data_insercao_no_site" class="form-label">Data de inserção no site do produto:</label>
           <input  name="data_insercao_no_site" class="form-control" type="date" required>
@@ -101,9 +106,10 @@ Session::put('produtos', $produtos);
 
       <div class="row">
         <div class="col">
-          <label for="kwh_consumidos" class="form-label">Kwh consumidos por dia</label>
-          <input  name="kwh_consumidos" class="form-control" type="number" step="any" required>
+          <label for="kwh_consumidos_por_dia" class="form-label">Kwh consumidos por dia</label>
+          <input  name="kwh_consumidos_por_dia" class="form-control" type="number" step="any" required>
         </div>
+
         <div class="col">
           <label for="quantidade" class="form-label">Quantidade que deseja criar</label>
           <input  name="quantidade" class="form-control" type="number" step="any" required>
@@ -116,13 +122,17 @@ Session::put('produtos', $produtos);
           <div class="input-group-prepend">
             <span class="input-group-text">With textarea</span>
           </div>
-          <textarea name="info_arbitraria" class="form-control" aria-label="With textarea"></textarea>
+
+          <textarea name="informacoes_adicionais" class="form-control" aria-label="With textarea"></textarea>
         
       </div>
-      <button @click="nextStep()" class="w-100 btn btn-lg btn-primary" type="submit">Próximo passo</button>
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Próximo passo</button>
+  
+  </form>
 
 </div>
-</form>
+
 
 {{-- div para apresentar as cadeias logisticas associadas ao  produto acabado de criar e poder criar mais--}}
 <div v-show="fundoDiv" v-if="step==2" class="forForm">
@@ -162,6 +172,7 @@ Session::put('produtos', $produtos);
 <div v-show="cadeiaDiv" class="cadeiaLogistica">
 <button type="button" @click="openCadeia()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 <form>
+@csrf
   <h3>Cadeia logistica associada ao produto</h3>
   <label for="image" class="form-label">Nome da cadeia</label>
   <div class="input-group mb-3">  
@@ -221,7 +232,8 @@ Session::put('produtos', $produtos);
 {{-- criar armazem --}}
 <div v-show="armazemAddDiv" class="cadeiaLogistica">
   <button type="button" @click="openArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <form {{-- method="post" action="{{ route('armazem-register-controller')}}" --}}>
+  <form method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
+    @csrf
     <h3>Armazem:</h3>
     <label for="nome" class="form-label">Nome</label>
     <div class="input-group mb-3">  
@@ -230,7 +242,7 @@ Session::put('produtos', $produtos);
 
     <label for="image" class="form-label">Imagem do seu armazém:</label>
     <div class="input-group mb-3">       
-        <input type="file" class="form-control" name="path_imagem_armazem" id="image" aria-label="file" aria-describedby="basic-addon1" required>
+        <input type="file" class="form-control" name="path_imagem_armazem" id="image" aria-label="file" aria-describedby="basic-addon1">
       </div>
     <label for="morada" class="form-label">Morada do armazém</label>
     <div class="input-group mb-3">  

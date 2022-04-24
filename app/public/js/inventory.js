@@ -62,3 +62,8 @@ let app = Vue.createApp({
 })
 
 app.mount('.app')
+
+
+function set_armazem_id(){
+    document.getElementById("id_selected_armazem").value = input-armazens.options.namedItem( selected_armazem.value ).getAttribute('data-id');
+}
