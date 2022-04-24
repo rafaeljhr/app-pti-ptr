@@ -1,6 +1,6 @@
 <?php
 
-// dd(session()->all());
+//dd(session()->all());
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
@@ -23,9 +23,9 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 @extends('layouts.page_default')
 
 @section('background')
-    
+<?php $passo= session()->get('passo') ?>    
 <div v-show="fundoDivOpac" class="backgroundSee"></div>
-<div v-show="fundoDiv" v-if="step==1" class="forForm">
+<div v-show="fundoDiv" v-if="<?php echo  $passo?>==1" class="forForm">
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 
   {{-- Criar produto--}}
@@ -141,7 +141,8 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
 
 {{-- div para apresentar as cadeias logisticas associadas ao  produto acabado de criar e poder criar mais--}}
-<div v-show="fundoDiv" v-if="step==2" class="forForm">
+
+<div v-show="fundoDiv" v-if="<?php echo  $passo?>==2" class="forForm">
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
   <h3>As cadeias logisticas associadas ao produto</h3>
   <div class="row">
@@ -165,11 +166,12 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
   </div>
     <div class="row">
       <div class="col">
-        <button @click="previousStep()" class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Passo anterior</button>
+        <form method="post" action="{{ route('product-remove-last-added')}}">
+          @csrf
+        <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Passo anterior</button>
+        </form>
       </div>
-      <div class="col">
-        <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
-      </div>
+     
     </div>
 </div>
 
@@ -217,6 +219,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
       <div class="card"  style="width: 18rem;"> 
         <div class="card-body">
           <h5 class="card-title"><?php echo session()->get('armazens')[$i][3] ?></h5>
+          <img src='<?php echo session()->get('armazens')[$i][4] ?>' class="card-img-top" alt="...">
           <p class="card-text"><?php echo session()->get('armazens')[$i][2] ?></p>         
         </div>
       </div>

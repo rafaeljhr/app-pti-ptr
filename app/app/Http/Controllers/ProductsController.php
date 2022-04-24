@@ -199,7 +199,7 @@ class ProductsController extends Controller
         }
 
         (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
-
+        session()->put('passo', 1);
         return redirect('/inventory');
     }
 
@@ -209,8 +209,9 @@ class ProductsController extends Controller
         $produto->delete();
 
         self::getAllProducts(); // rebuild the products in session
-
+        session()->forget('last_added_product_id');
         session()->put('passo', 1);
+        return redirect('/inventory');
 
     }
 
