@@ -1,6 +1,6 @@
 <?php
 
-// dd(session()->all());
+//dd(session()->all());
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
@@ -45,13 +45,12 @@ Session::put('produtos', $produtos);
 
         <div class="col">
           <label for="id_armazem" class="form-label">Armazem do produto</label>
-          <input class="form-control" id='selected_armazem' list="input-armazens" placeholder="Type to search..." onChange="set_armazem_id()" >
-          <datalist id="input-armazens">
+          <select class="form-control" name="id_armazem" id='selected_armazem' list="input-armazens" placeholder="Type to search..." onChange="set_armazem_id()" >
+            <option selected="selected">Selecione o armazem do produto</option>
             @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-            <option data-id='<?php echo session()->get('armazens')[$i][0] ?>'><?php echo session()->get('armazens')[$i][3] ?></option>
+            <option value=<?php echo session()->get('armazens')[$i][0]?>><?php echo session()->get('armazens')[$i][3] ?></option>
             @endfor
-          </datalist>
-          <input type="hidden" name="id_armazem" id="id_selected_armazem">
+          </select>
         </div>
       </div>
 
@@ -78,7 +77,13 @@ Session::put('produtos', $produtos);
               @endif
               @if($subcategory=="computadores")
               <option v-if="computadores" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
-              @endif             
+              @endif
+              @if($subcategory=="componentes")
+              <option v-if="componentes" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              @endif 
+              @if($subcategory=="periféricos")
+              <option v-if="perifericos" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              @endif              
               @endfor               
             </select>         
           </div>

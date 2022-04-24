@@ -8,7 +8,9 @@ let app = Vue.createApp({
             totalSteps:2,
             step:1,
             computadores:false,
-            mobilidade:false
+            mobilidade:false,
+            componentes:false,
+            perifericos:false
            
             
         }
@@ -17,9 +19,16 @@ let app = Vue.createApp({
         changeSubcat(cat){
             if(cat.target.value=="computadores"){
                 this.computadores=!this.computadores;
-                if( this.mobilidade==true){
+                if(this.mobilidade==true){
                     this.mobilidade=!this.mobilidade;
                 }
+                if(this.componentes==true){
+                    this.componentes=!this.componentes;
+                }
+                if(this.perifericos==true){
+                    this.perifericos=!this.perifericos;
+                }
+                
                 
             }
             if(cat.target.value=="mobilidade"){
@@ -27,6 +36,39 @@ let app = Vue.createApp({
                 if( this.computadores==true){
                     this.computadores=!this.computadores;
                 }
+                if(this.componentes==true){
+                    this.componentes=!this.componentes;
+                }
+                if(this.perifericos==true){
+                    this.perifericos=!this.perifericos;
+                }
+                
+            }
+            if(cat.target.value=="componentes"){
+                this.componentes=!this.componentes;
+                if( this.computadores==true){
+                    this.computadores=!this.computadores;
+                }
+                if(this.mobilidade==true){
+                    this.mobilidade=!this.mobilidade;
+                }
+                
+                if(this.perifericos==true){
+                    this.perifericos=!this.perifericos;
+                }
+                
+            }
+            if(cat.target.value=="periféricos"){
+                this.perifericos=!this.perifericos;
+                if( this.computadores==true){
+                    this.computadores=!this.computadores;
+                }
+                if(this.mobilidade==true){
+                    this.mobilidade=!this.mobilidade;
+                }
+                if(this.componentes==true){
+                    this.componentes=!this.componentes;
+                }                
                 
             }
         },
@@ -64,6 +106,3 @@ let app = Vue.createApp({
 app.mount('.app')
 
 
-function set_armazem_id(){
-    document.getElementById("id_selected_armazem").value = input-armazens.options.namedItem( selected_armazem.value ).getAttribute('data-id');
-}
