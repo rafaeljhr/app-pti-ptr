@@ -4,13 +4,17 @@
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
+
+
 $armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
 Session::put('armazens', $armazens);
+
+
 $produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
- array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-  array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-   array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
-   array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
+array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
+array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
+array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
 Session::put('produtos', $produtos);
 
 ?>
@@ -24,8 +28,9 @@ Session::put('produtos', $produtos);
 
   {{-- Criar produto--}}
   <form {{-- method="post" action="{{ route('product-register-controller') }}" --}}>
+    @csrf
   <h2>Informação principal do produto</h2>
-
+    
 
     <label for="image" class="form-label">Imagem do seu produto:</label>
     <div class="input-group mb-3">       
@@ -80,7 +85,7 @@ Session::put('produtos', $produtos);
       <div class="input-group mb-3">
         <span class="input-group-text">€</span>
         <span class="input-group-text">0.00</span>
-        <input type="text" class="form-control" name="precoProduto" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
+        <input type="number"  step="any" class="form-control" name="precoProduto" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
       </div>
       <div class="row">
         <div class="col">
@@ -92,6 +97,20 @@ Session::put('produtos', $produtos);
           <input  name="data_insercao_no_site" class="form-control" type="date" required>
         </div>
       </div>
+
+
+      <div class="row">
+        <div class="col">
+          <label for="kwh_consumidos" class="form-label">Kwh consumidos por dia</label>
+          <input  name="kwh_consumidos" class="form-control" type="number" step="any" required>
+        </div>
+        <div class="col">
+          <label for="quantidade" class="form-label">Quantidade que deseja criar</label>
+          <input  name="quantidade" class="form-control" type="number" step="any" required>
+        </div>
+      </div>
+
+
       <div class="input-group mb-3">
         
           <div class="input-group-prepend">
@@ -148,10 +167,15 @@ Session::put('produtos', $produtos);
   <div class="input-group mb-3">  
   <input type="text" class="form-control" name="nomeCadeia" id="image"  aria-describedby="basic-addon1" required>
     </div>
-  <label for="image" class="form-label">Poluição gerada pelo produto</label>
-  <div class="input-group mb-3">       
-      <input type="text" class="form-control" name="poluicaoGerada" id="image" aria-describedby="basic-addon1" required>
-    </div>
+  
+    <label for="co2_produzido" class="form-label">CO2 gerado pelo produto</label>
+    <div class="input-group mb-3">       
+        <input type="number" min="0" step  ="any" class="form-control" name="co2_produzido" id="co2_produzido" aria-describedby="basic-addon1" required>
+      </div>
+      <label for="kwh_consumidos" class="form-label">KWh consumidos por dia</label>
+    <div class="input-group mb-3">       
+        <input type="number"  min="0" step ="any" class="form-control" name="kwh_consumidos" id="kwh_consumidos" aria-describedby="basic-addon1" required>
+      </div>
   <div class="input-group mb-3"> 
     <span class="input-group-text">Descrição</span>
     <textarea class="form-control" name="descricaoCadeia" aria-label="With textarea" required></textarea>
@@ -159,16 +183,7 @@ Session::put('produtos', $produtos);
   
   </div>
 
-<h3>Recursos consumidos</h3>
 
-<label for="image" class="form-label">Nome do recurso</label>
-<div class="input-group mb-3">       
-  <input type="text" class="form-control" name="nomeRecurso" id="image"  aria-describedby="basic-addon1" required>
-</div>
-<label for="image" class="form-label">Quantidade:</label>
-<div class="input-group mb-3">       
-  <input type="text" class="form-control" name="quantidadeRecurso" id="image" aria-describedby="basic-addon1" required>
-</div>
 <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
 </form>
 </div>
@@ -212,14 +227,16 @@ Session::put('produtos', $produtos);
     <div class="input-group mb-3">  
     <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
     </div>
+
+    <label for="image" class="form-label">Imagem do seu armazém:</label>
+    <div class="input-group mb-3">       
+        <input type="file" class="form-control" name="path_imagem_armazem" id="image" aria-label="file" aria-describedby="basic-addon1" required>
+      </div>
     <label for="morada" class="form-label">Morada do armazém</label>
     <div class="input-group mb-3">  
     <input type="text" class="form-control" name="morada" id="morada"  aria-describedby="basic-addon1" required>
       </div>
-    <label for="recursos_consumidos_por_dia" class="form-label">Recursos consumidos diariamente pelo armazem</label>
-    <div class="input-group mb-3">       
-        <input type="text" class="form-control" name="recursos_consumidos_por_dia" id="image" aria-describedby="basic-addon1" required>
-      </div> 
+    
   
   <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
   </form>
