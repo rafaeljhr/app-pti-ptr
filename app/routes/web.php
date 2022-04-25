@@ -35,6 +35,9 @@ Route::get('/profile', function () {
 
 Route::get('/inventory', function () {
     return view('inventory');
+
+    ProductsController::getAllProducts();
+
 })->name('inventory');
 
 Route::get('/products', function () {

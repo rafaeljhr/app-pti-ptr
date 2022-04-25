@@ -31,7 +31,7 @@ class ArmazensController extends Controller
             }
 
             $file= $request->file('path_imagem_armazem');
-            $filename= date('YmdHi').$file->getClientOriginalName();
+            $filename= uniqid().$file->getClientOriginalName();
 
             if (!$file-> move(public_path('images/users_images/'), $filename)) {
                 return 'Error saving the file';
@@ -64,19 +64,19 @@ class ArmazensController extends Controller
 
         foreach($fornecedor_armazens as $armazem) {
 
-            $atributos_armazem = array();
-
             $armazem_id = $armazem->id;
             $armazem_id_fornecedor = $armazem->id_fornecedor;
             $armazem_morada = $armazem->morada;
             $armazem_nome = $armazem->nome;
             $armazem_path_imagem = $armazem->path_imagem;
 
-            array_push($atributos_armazem, $armazem_id);
-            array_push($atributos_armazem, $armazem_id_fornecedor);
-            array_push($atributos_armazem, $armazem_morada);
-            array_push($atributos_armazem, $armazem_nome);
-            array_push($atributos_armazem, $armazem_path_imagem);
+            $atributos_armazem = [
+                "armazem_id" => $armazem_id,
+                "armazem_id_fornecedor" => $armazem_id_fornecedor,
+                "armazem_morada" => $armazem_morada,
+                "armazem_nome" => $armazem_nome,
+                "armazem_path_imagem" => $armazem_path_imagem,
+            ];
 
 
             array_push($all_fornecedor_armazens, $atributos_armazem);
@@ -88,8 +88,12 @@ class ArmazensController extends Controller
 
     public function armazemDelete($id){
 
-        $produto = Armazem::where('id', $id)->first();
-        $produto->delete();
+        $armazem = Armazem::where('id', $id)->first();
+        $armazem->delete();
+
+        (new ArmazensController)->getAllArmazens(); // rebuild armazens of fornecedor in session
+
+        return redirect('/inventory');
 
     }
 

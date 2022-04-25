@@ -23,7 +23,11 @@ class ProductsController extends Controller
 
             $category_nome = $category->nome;
 
-            array_push($all_categories, $category_nome);
+            $atributos_category = [
+                "category_nome" => $category_nome,
+            ];
+
+            array_push($all_categories, $atributos_category);
         }
 
         session()->put('categories', $all_categories);
@@ -34,13 +38,13 @@ class ProductsController extends Controller
 
         foreach($subcategories as $subcategory) {
 
-            $atributos_subcategory = array();
-
             $subcategory_nome = $subcategory->nome;
             $subcategory_nome_categoria = $subcategory->nome_categoria;
 
-            array_push($atributos_subcategory, $subcategory_nome);
-            array_push($atributos_subcategory, $subcategory_nome_categoria);
+            $atributos_subcategory = [
+                "subcategory_nome" => $subcategory_nome,
+                "subcategory_nome_categoria" => $subcategory_nome_categoria,
+            ];
 
             array_push($all_subcategories, $atributos_subcategory);
         }
@@ -81,7 +85,7 @@ class ProductsController extends Controller
             }
 
             $file= $request->file('path_imagem_produto');
-            $filename= date('YmdHi').$file->getClientOriginalName();
+            $filename= uniqid().$file->getClientOriginalName();
 
             if (!$file-> move(public_path('images/users_images/'), $filename)) {
                 return 'Error saving the file';
@@ -109,8 +113,6 @@ class ProductsController extends Controller
 
         // adding the product to the session
 
-        $atributos_produto = array();
-
         $produto_id = $newProduto->id;
         $produto_nome = $newProduto->nome;
         $produto_preco = $newProduto->preco;
@@ -125,23 +127,36 @@ class ProductsController extends Controller
         $produto_data_insercao_no_site = $newProduto->data_insercao_no_site;
         $produto_kwh_consumidos_por_dia = $newProduto->kwh_consumidos_por_dia;
 
-        array_push($atributos_produto, $produto_id);
-        array_push($atributos_produto, $produto_nome);
-        array_push($atributos_produto, $produto_preco);
-        array_push($atributos_produto, $produto_id_armazem);
-        array_push($atributos_produto, $produto_id_fornecedor);
-        array_push($atributos_produto, $produto_quantidade);
-        array_push($atributos_produto, $produto_nome_categoria);
-        array_push($atributos_produto, $produto_path_imagem);
-        array_push($atributos_produto, $produto_nome_subcategoria);
-        array_push($atributos_produto, $produto_informacoes_adicionais);
-        array_push($atributos_produto, $produto_data_producao_do_produto);
-        array_push($atributos_produto, $produto_data_insercao_no_site);
-        array_push($atributos_produto, $produto_kwh_consumidos_por_dia);
+        $atributos_produto = [
+            "produto_id" => $produto_id,
+            "produto_nome" => $produto_nome,
+            "produto_preco" => $produto_preco,
+            "produto_id_armazem" => $produto_id_armazem,
+            "produto_id_fornecedor" => $produto_id_fornecedor,
+            "produto_quantidade" => $produto_quantidade,
+            "produto_nome_categoria" => $produto_nome_categoria,
+            "produto_path_imagem" => $produto_path_imagem,
+            "produto_nome_subcategoria" => $produto_nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+        ];
 
+        if((session()->has('all_fornecedor_produtos'))){
 
-        $all_fornecedor_produtos = session()->get('all_fornecedor_produtos');
-        array_push($all_fornecedor_produtos, $atributos_produto);
+            $all_fornecedor_produtos = session()->get('all_fornecedor_produtos');
+            array_push($all_fornecedor_produtos, $atributos_produto);
+
+        } else {
+
+            $all_fornecedor_produtos = array();
+            array_push($all_fornecedor_produtos, $atributos_produto);
+            session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
+
+        }
+
+        
 
         session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
 
@@ -162,12 +177,12 @@ class ProductsController extends Controller
 
         foreach($fornecedor_produtos as $produto) {
 
-            $atributos_produto = array();
-
             $produto_id = $produto->id;
             $produto_nome = $produto->nome;
+            $produto_preco = $produto->preco;
             $produto_id_armazem = $produto->id_armazem;
             $produto_id_fornecedor = $produto->id_fornecedor;
+            $produto_quantidade = $produto->quantidade;
             $produto_nome_categoria = $produto->nome_categoria;
             $produto_path_imagem = $produto->path_imagem;
             $produto_nome_subcategoria = $produto->nome_subcategoria;
@@ -176,17 +191,21 @@ class ProductsController extends Controller
             $produto_data_insercao_no_site = $produto->data_insercao_no_site;
             $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
 
-            array_push($atributos_produto, $produto_id);
-            array_push($atributos_produto, $produto_nome);
-            array_push($atributos_produto, $produto_id_armazem);
-            array_push($atributos_produto, $produto_id_fornecedor);
-            array_push($atributos_produto, $produto_nome_categoria);
-            array_push($atributos_produto, $produto_path_imagem);
-            array_push($atributos_produto, $produto_nome_subcategoria);
-            array_push($atributos_produto, $produto_informacoes_adicionais);
-            array_push($atributos_produto, $produto_data_producao_do_produto);
-            array_push($atributos_produto, $produto_data_insercao_no_site);
-            array_push($atributos_produto, $produto_kwh_consumidos_por_dia);
+            $atributos_produto = [
+                "produto_id" => $produto_id,
+                "produto_nome" => $produto_nome,
+                "produto_preco" => $produto_preco,
+                "produto_id_armazem" => $produto_id_armazem,
+                "produto_id_fornecedor" => $produto_id_fornecedor,
+                "produto_quantidade" => $produto_quantidade,
+                "produto_nome_categoria" => $produto_nome_categoria,
+                "produto_path_imagem" => $produto_path_imagem,
+                "produto_nome_subcategoria" => $produto_nome_subcategoria,
+                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+            ];
 
 
             array_push($all_fornecedor_produtos, $atributos_produto);

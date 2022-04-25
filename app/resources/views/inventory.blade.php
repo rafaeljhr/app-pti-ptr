@@ -1,6 +1,6 @@
 <?php
 
-//dd(session()->all());
+// dd(session()->all());
 
 $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
 Session::put('cadeiasLogisticas', $arrayTestCadeia);
@@ -49,7 +49,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
           <select class="form-control" name="id_armazem" id='selected_armazem' list="input-armazens" placeholder="Type to search..." onChange="set_armazem_id()" >
             <option selected="selected">Selecione o armazem do produto</option>
             @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-            <option value=<?php echo session()->get('armazens')[$i][0]?>><?php echo session()->get('armazens')[$i][3] ?></option>
+            <option value=<?php echo session()->get('armazens')[$i]['armazem_id']?>><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>
             @endfor
           </select>
         </div>
@@ -62,7 +62,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
               <option selected>Selecione uma subcategoria</option>
               @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
               <?php $category= session()->get('categories')[$i] ?>
-              <option value='<?php echo session()->get('categories')[$i] ?>'><?php echo session()->get('categories')[$i] ?></option>              
+              <option value='<?php echo session()->get('categories')[$i]['category_nome'] ?>'><?php echo session()->get('categories')[$i]['category_nome'] ?></option>              
               @endfor
             </select>
           </div>
@@ -72,18 +72,18 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
             <select class="form-control" name="nome_subcategoria">
               <option selected>Selecione uma categoria</option>             
               @for($i = 0; $i < sizeOf(session()->get('subcategories')); $i++)
-              <?php $subcategory= session()->get('subcategories')[$i][1] ?>
+              <?php $subcategory= session()->get('subcategories')[$i]['subcategory_nome_categoria'] ?>
               @if($subcategory=="mobilidade")
-              <option v-if="mobilidade" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              <option v-if="mobilidade" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
               @endif
               @if($subcategory=="computadores")
-              <option v-if="computadores" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              <option v-if="computadores" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
               @endif
               @if($subcategory=="componentes")
-              <option v-if="componentes" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              <option v-if="componentes" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
               @endif 
               @if($subcategory=="periféricos")
-              <option v-if="perifericos" value='<?php echo session()->get('subcategories')[$i][0] ?>'><?php echo session()->get('subcategories')[$i][0] ?></option>
+              <option v-if="perifericos" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
               @endif              
               @endfor               
             </select>         
@@ -218,9 +218,9 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
     <div class="col">
       <div class="card"  style="width: 18rem;"> 
         <div class="card-body">
-          <h5 class="card-title"><?php echo session()->get('armazens')[$i][3] ?></h5>
-          <img src='<?php echo session()->get('armazens')[$i][4] ?>' class="card-img-top" alt="...">
-          <p class="card-text"><?php echo session()->get('armazens')[$i][2] ?></p>         
+          <h5 class="card-title"><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></h5>
+          <img src='<?php echo session()->get('armazens')[$i]['armazem_path_imagem'] ?>' class="card-img-top" alt="...">
+          <p class="card-text"><?php echo session()->get('armazens')[$i]['armazem_morada'] ?></p>         
         </div>
       </div>
     </div>
@@ -272,7 +272,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
     <li><a class="dropdown-item" href="#">Todos</a></li>
     @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
     
-    <li><a class="dropdown-item" href="#"><?php echo session()->get('armazens')[$i][3] ?></a></li>
+    <li><a class="dropdown-item" href="#"><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></a></li>
     @endfor
 
   </ul>
@@ -289,11 +289,11 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
     <div class="col">
       <div class="card">
         <button type="button" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-        <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i][1] ?></h5>
-          <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedor_produtos')[$i][2] ?> €</h4>
-        <img src='<?php echo session()->get('all_fornecedor_produtos')[$i][5] ?>' class="card-img-top" alt="...">
+        <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
+          <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
+        <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="card-img-top" alt="...">
         <div class="card-body text-center">
-          <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i][9] ?></h5>
+          <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
           <button type="button" class="btn btn-outline-primary">Editar</button>
           <button type="button" class="btn btn-outline-primary">informações adicionais</button>
         </div>
