@@ -33,12 +33,9 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-Route::get('/inventory', function () {
-    return view('inventory');
 
-    ProductsController::getAllProducts();
+Route::get('/inventory', [ProductsController::class, "getAllProducts"])->name('inventory');
 
-})->name('inventory');
 
 Route::get('/products', function () {
     return view('products');
@@ -48,9 +45,6 @@ Route::get('/products', function () {
 // #######################
 // PRODUCTS RELATED ROUTES
 // #######################
-
-// Ir buscar os produtos do fornecedor, meter na session (quando clica inventario no dropdown menu)
-Route::get('/inventory-controller', [ProductsController::class, "getAllProducts"])->name('inventory-controller');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');

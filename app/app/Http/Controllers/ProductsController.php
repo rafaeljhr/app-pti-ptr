@@ -53,6 +53,58 @@ class ProductsController extends Controller
 
     }
 
+    public static function rebuild_fornecedor_session()
+    {
+        $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
+
+        $all_fornecedor_produtos = array();
+
+        foreach($fornecedor_produtos as $produto) {
+
+            $produto_id = $produto->id;
+            $produto_nome = $produto->nome;
+            $produto_preco = $produto->preco;
+            $produto_id_armazem = $produto->id_armazem;
+            $produto_id_fornecedor = $produto->id_fornecedor;
+            $produto_quantidade = $produto->quantidade;
+            $produto_nome_categoria = $produto->nome_categoria;
+            $produto_path_imagem = $produto->path_imagem;
+            $produto_nome_subcategoria = $produto->nome_subcategoria;
+            $produto_informacoes_adicionais = $produto->informacoes_adicionais;
+            $produto_data_producao_do_produto = $produto->data_producao_do_produto;
+            $produto_data_insercao_no_site = $produto->data_insercao_no_site;
+            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+
+            $atributos_produto = [
+                "produto_id" => $produto_id,
+                "produto_nome" => $produto_nome,
+                "produto_preco" => $produto_preco,
+                "produto_id_armazem" => $produto_id_armazem,
+                "produto_id_fornecedor" => $produto_id_fornecedor,
+                "produto_quantidade" => $produto_quantidade,
+                "produto_nome_categoria" => $produto_nome_categoria,
+                "produto_path_imagem" => $produto_path_imagem,
+                "produto_nome_subcategoria" => $produto_nome_subcategoria,
+                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+            ];
+
+
+            array_push($all_fornecedor_produtos, $atributos_produto);
+        }
+
+        session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
+
+        if(!(session()->has('categories'))){
+            self::getAllCategoriesAndSubcategories(); // put all categories and subcategories in session
+        }
+
+        (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
+
+    }
+
 
     public function productRegister(Request $request)
     {
@@ -111,126 +163,49 @@ class ProductsController extends Controller
             'kwh_consumidos_por_dia' => $request->get('kwh_consumidos_por_dia')
         ]);
 
-        // adding the product to the session
-
-        $produto_id = $newProduto->id;
-        $produto_nome = $newProduto->nome;
-        $produto_preco = $newProduto->preco;
-        $produto_id_armazem = $newProduto->id_armazem;
-        $produto_id_fornecedor = $newProduto->id_fornecedor;
-        $produto_quantidade = $newProduto->quantidade;
-        $produto_nome_categoria = $newProduto->nome_categoria;
-        $produto_path_imagem = $newProduto->path_imagem;
-        $produto_nome_subcategoria = $newProduto->nome_subcategoria;
-        $produto_informacoes_adicionais = $newProduto->informacoes_adicionais;
-        $produto_data_producao_do_produto = $newProduto->data_producao_do_produto;
-        $produto_data_insercao_no_site = $newProduto->data_insercao_no_site;
-        $produto_kwh_consumidos_por_dia = $newProduto->kwh_consumidos_por_dia;
-
-        $atributos_produto = [
-            "produto_id" => $produto_id,
-            "produto_nome" => $produto_nome,
-            "produto_preco" => $produto_preco,
-            "produto_id_armazem" => $produto_id_armazem,
-            "produto_id_fornecedor" => $produto_id_fornecedor,
-            "produto_quantidade" => $produto_quantidade,
-            "produto_nome_categoria" => $produto_nome_categoria,
-            "produto_path_imagem" => $produto_path_imagem,
-            "produto_nome_subcategoria" => $produto_nome_subcategoria,
-            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
-        ];
-
-        if((session()->has('all_fornecedor_produtos'))){
-
-            $all_fornecedor_produtos = session()->get('all_fornecedor_produtos');
-            array_push($all_fornecedor_produtos, $atributos_produto);
-
-        } else {
-
-            $all_fornecedor_produtos = array();
-            array_push($all_fornecedor_produtos, $atributos_produto);
-            session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
-
-        }
-
-        
-
-        session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
 
         session()->put('last_added_product_id', $newProduto->id);
 
+        self::rebuild_fornecedor_session(); // REBUILD THE FORNECEDOR SESSION
+
         session()->put('passo', 2);
 
-        return redirect('/inventory');
+        return view('inventory');
 
     }
 
 
-    public function getAllProducts()
+    public static function getAllProducts()
     {
-        $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
+        self::rebuild_fornecedor_session(); // BUILD THE FORNECEDOR SESSION
 
-        $all_fornecedor_produtos = array();
-
-        foreach($fornecedor_produtos as $produto) {
-
-            $produto_id = $produto->id;
-            $produto_nome = $produto->nome;
-            $produto_preco = $produto->preco;
-            $produto_id_armazem = $produto->id_armazem;
-            $produto_id_fornecedor = $produto->id_fornecedor;
-            $produto_quantidade = $produto->quantidade;
-            $produto_nome_categoria = $produto->nome_categoria;
-            $produto_path_imagem = $produto->path_imagem;
-            $produto_nome_subcategoria = $produto->nome_subcategoria;
-            $produto_informacoes_adicionais = $produto->informacoes_adicionais;
-            $produto_data_producao_do_produto = $produto->data_producao_do_produto;
-            $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
-
-            $atributos_produto = [
-                "produto_id" => $produto_id,
-                "produto_nome" => $produto_nome,
-                "produto_preco" => $produto_preco,
-                "produto_id_armazem" => $produto_id_armazem,
-                "produto_id_fornecedor" => $produto_id_fornecedor,
-                "produto_quantidade" => $produto_quantidade,
-                "produto_nome_categoria" => $produto_nome_categoria,
-                "produto_path_imagem" => $produto_path_imagem,
-                "produto_nome_subcategoria" => $produto_nome_subcategoria,
-                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
-            ];
-
-
-            array_push($all_fornecedor_produtos, $atributos_produto);
-        }
-
-        session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
-
-        if(!(session()->has('categories'))){
-            self::getAllCategoriesAndSubcategories(); // put all categories and subcategories in session
-        }
-
-        (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
         session()->put('passo', 1);
-        return redirect('/inventory');
+        
+        return view('inventory');
     }
+
 
     public function productRemoveLastAdded(){
 
         $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
         $produto->delete();
 
-        self::getAllProducts(); // rebuild the products in session
         session()->forget('last_added_product_id');
         session()->put('passo', 1);
-        return redirect('/inventory');
+
+        return redirect('/inventory'); // this will rebuild the sessions vars
+
+    }
+
+
+    public function productAddEvent(Request $request){
+
+        $request->validate([
+        ]);
+
+        self::rebuild_fornecedor_session(); // REBUILD THE FORNECEDOR SESSION
+
+        return view('inventory');
 
     }
 
