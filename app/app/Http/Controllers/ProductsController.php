@@ -13,7 +13,7 @@ use App\Http\Controllers\ArmazensController;
 class ProductsController extends Controller
 {
 
-    public function getAllCategoriesAndSubcategories()
+    public static function getAllCategoriesAndSubcategories()
     {
         $categories = Categoria::all();
 
@@ -168,8 +168,6 @@ class ProductsController extends Controller
 
         self::rebuild_fornecedor_session(); // REBUILD THE FORNECEDOR SESSION
 
-        session()->put('passo', 2);
-
         return view('inventory');
 
     }
@@ -178,8 +176,6 @@ class ProductsController extends Controller
     public static function getAllProducts()
     {
         self::rebuild_fornecedor_session(); // BUILD THE FORNECEDOR SESSION
-
-        session()->put('passo', 1);
         
         return view('inventory');
     }
@@ -191,7 +187,6 @@ class ProductsController extends Controller
         $produto->delete();
 
         session()->forget('last_added_product_id');
-        session()->put('passo', 1);
 
         return redirect('/inventory'); // this will rebuild the sessions vars
 
