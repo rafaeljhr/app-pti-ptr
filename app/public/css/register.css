@@ -38,7 +38,9 @@
     margin: 0px auto;
     padding: 40px;
     border-radius: 10px;
-    width: 50%;
+    min-width: min-content;
+    max-width: max-content;
+    min-width: 20%;
 }
 
 h1#registar {
@@ -59,14 +61,12 @@ input.invalid {
     display: none
 }
 
-button {
-    background-color: #93BF7E;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 1px;
+
+.btn-color {
+    background-color: #05591A!important;
+    color: white!important;
 }
+
 i {
     color: #fff;
 }
@@ -98,7 +98,7 @@ button:hover {
 }
 
 .step.finish {
-    background-color: #93BF7E
+    background-color: #93BF7E;
 }
 
 .all-steps {
@@ -108,7 +108,7 @@ button:hover {
 }
 
 .thanks-message {
-    display: none
+    display: none;
 }
 
 .container-form {
@@ -173,4 +173,39 @@ hr {
     opacity: 0.25;
     text-align: right;
     
+  }
+
+.adicionar-foto {
+    color: transparent;
+    overflow: hidden;
+    border: transparent;
+}
+.adicionar-foto::-webkit-file-upload-button {
+    visibility: hidden;
+}
+  .adicionar-foto::before {
+    content: 'Adicionar Fotografia';
+    color: black;
+    display: inline-block;
+    background: #93BF7E;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-align: center;
+  }
+  .adicionar-foto:hover::before {
+    border-color: black;
+  }
+  .adicionar-foto:active {
+    outline: 0;
+  }
+  .adicionar-foto:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+  }
+
+  #btn-finalizar {
+      display: none;
   }
