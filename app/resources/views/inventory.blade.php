@@ -24,29 +24,31 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
 @section('background')
 <?php $passo= session()->get('passo') ?>    
+
 <div v-show="fundoDivOpac" class="backgroundSee"></div>
-<div v-show="fundoDiv" v-if="<?php echo  $passo?>==1" class="forForm">
+
+<div v-show="fundoDiv" v-if="step == 1" class="forForm">
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 
   {{-- Criar produto--}}
-  <form method="post" action="{{ route('product-register-controller') }}" enctype="multipart/form-data">
+  <form id="productForm" enctype="multipart/form-data">
     @csrf
     <h2>Informação principal do produto</h2>
       
       <div class="row" >
         <div class="col">
           <label for="nome" class="form-label">Nome do seu produto:</label>
-          <input type="text" class="form-control" name="nome" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
+          <input type="text" ref="nome" class="form-control"  name="nome" placeholder="Nome do produto" aria-label="Username" aria-describedby="addon-wrapping" required>
         </div>
 
         <div class="col">
           <label for="path_imagem_produto" class="form-label">Imagem do seu produto:</label>
-          <input type="file" class="form-control" name="path_imagem_produto" id="image" aria-label="file">
+          <input type="file" ref="imagem" class="form-control"  name="path_imagem_produto" id="image" aria-label="file">
         </div>
 
         <div class="col">
           <label for="id_armazem" class="form-label">Armazem do produto</label>
-          <select class="form-control" name="id_armazem" id='selected_armazem' list="input-armazens" placeholder="Type to search..." onChange="set_armazem_id()" >
+          <select ref="armazem" class="form-control"  name="id_armazem" id='selected_armazem' list="input-armazens" placeholder="Type to search...">
             <option selected="selected">Selecione o armazem do produto</option>
             @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
             <option value=<?php echo session()->get('armazens')[$i]['armazem_id']?>><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>
@@ -58,8 +60,8 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
         <div class="row" >
           <div class="col">
             <label for="nome_categoria" class="form-label">Categoria do produto</label>
-            <select class="form-control" @change="changeSubcat($event)" name="nome_categoria">
-              <option selected>Selecione uma subcategoria</option>
+            <select ref="categoria" class="form-control"  @change="changeSubcat($event)" name="nome_categoria">
+              <option selected>Selecione uma categoria</option>
               @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
               <?php $category= session()->get('categories')[$i] ?>
               <option value='<?php echo session()->get('categories')[$i]['category_nome'] ?>'><?php echo session()->get('categories')[$i]['category_nome'] ?></option>              
@@ -69,8 +71,8 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
           <div class="col">
             <label for="nome_categoria" class="form-label">Subcategoria</label>
-            <select class="form-control" name="nome_subcategoria">
-              <option selected>Selecione uma categoria</option>             
+            <select ref="subcategoria" class="form-control"  name="nome_subcategoria">
+              <option selected>Selecione uma subcategoria</option>             
               @for($i = 0; $i < sizeOf(session()->get('subcategories')); $i++)
               <?php $subcategory= session()->get('subcategories')[$i]['subcategory_nome_categoria'] ?>
               @if($subcategory=="mobilidade")
@@ -94,18 +96,18 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
       <div class="input-group mb-3">
         <span class="input-group-text">€</span>
         <span class="input-group-text">0.00</span>
-        <input type="number"  step="any" class="form-control" name="preco" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
+        <input type="number" ref="preco" step="any" class="form-control"  name="preco" placeholder="Preço do seu produto" aria-label="Dollar amount (with dot and two decimal places)" required>
       </div>
 
       <div class="row">
         <div class="col">
           <label for="data_producao_do_produto" class="form-label">Data de fabrico do produto:</label>
-          <input  name="data_producao_do_produto" class="form-control" type="date" required>
+          <input ref="dataFabrico" name="data_producao_do_produto" class="form-control" type="date" required>
         </div>
         
         <div class="col">
           <label for="data_insercao_no_site" class="form-label">Data de inserção no site do produto:</label>
-          <input  name="data_insercao_no_site" class="form-control" type="date" required>
+          <input ref="dataEntrada" name="data_insercao_no_site" class="form-control" type="date" required>
         </div>
       </div>
 
@@ -113,12 +115,12 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
       <div class="row">
         <div class="col">
           <label for="kwh_consumidos_por_dia" class="form-label">Kwh consumidos por dia</label>
-          <input  name="kwh_consumidos_por_dia" class="form-control" type="number" step="any" required>
+          <input ref="kwh" name="kwh_consumidos_por_dia" class="form-control" type="number" step="any" required>
         </div>
 
         <div class="col">
           <label for="quantidade" class="form-label">Quantidade que deseja criar</label>
-          <input  name="quantidade" class="form-control" type="number" step="any" required>
+          <input ref="quant" name="quantidade" class="form-control" type="number" step="any" required>
         </div>
       </div>
 
@@ -129,11 +131,11 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
             <span class="input-group-text">With textarea</span>
           </div>
 
-          <textarea name="informacoes_adicionais" class="form-control" aria-label="With textarea"></textarea>
+          <textarea ref="info" name="informacoes_adicionais" class="form-control" aria-label="With textarea"></textarea>
         
       </div>
 
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Próximo passo</button>
+      <button class="w-100 btn btn-lg btn-primary" @click="createProduct()" type="submit">Próximo passo</button>
   
   </form>
 
@@ -142,7 +144,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
 {{-- div para apresentar as cadeias logisticas associadas ao  produto acabado de criar e poder criar mais--}}
 
-<div v-show="fundoDiv" v-if="<?php echo  $passo?>==2" class="forForm">
+<div v-show="fundoDiv" v-if="step == 2" class="forForm">
   <button type="button" @click="openAdd()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
   <h3>As cadeias logisticas associadas ao produto</h3>
   <div class="row">
@@ -206,6 +208,7 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
 </form>
 </div>
+
 
 
 {{-- div para apresentar armazens  e criar  novos --}}
@@ -277,7 +280,9 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
 
   </ul>
 </div>
-<button type="button" @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+
+<button type="submit"  @click ="openAdd()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+
 <button type="button" @click ="openAddArmazem()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
 
 
@@ -309,8 +314,58 @@ Session::put('cadeiasLogisticas', $arrayTestCadeia);
     @endif
   </div>
 </div>
+{{-- 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+
+<script>
+$('#productForm').on('submit',function(e){
+  e.preventDefault();
+
+  let nome = $('#nome').val();
+  let path_imagem_produto = $('#path_imagem_produto').val();
+  let id_armazem = $('#id_armazem').val();
+  let nome_categoria = $('#nome_categoria').val();
+  let nome_subcategoria = $('#nome_subcategoria').val();
+  let preco = $('#preco').val();
+  let data_producao_do_produto = $('#data_producao_do_produto').val();
+  let data_insercao_no_site = $('#data_insercao_no_site').val();
+  let kwh_consumidos_por_dia = $('#kwh_consumidos_por_dia').val();
+  let quantidade = $('#quantidade').val();
+  let informacoes_adicionais = $('#informacoes_adicionais').val();
 
 
+  $.ajax({
+    url: "/product-register-controller",
+    type:"POST",
+    data:{
+      "_token": "{{ csrf_token() }}",
+      nome:nome,
+      path_imagem_produto:path_imagem_produto,
+      id_armazem:id_armazem,
+      nome_categoria:nome_categoria,
+      nome_subcategoria:nome_subcategoria,
+      preco:preco,
+      data_producao_do_produto:data_producao_do_produto,
+      data_insercao_no_site:data_insercao_no_site,
+      kwh_consumidos_por_dia:kwh_consumidos_por_dia,
+      quantidade:quantidade,
+      informacoes_adicionais:informacoes_adicionais,
+    },
+    success:function(response){
+      console.log(response);
+      if (response) {
+        $('#success-message').text(response.success); 
+        
+      }
+    },
+    error: function(response) {
+      $('#nome-error').text(response.responseJSON.errors.nome);
+     
+     }
+   });
+  });
+  
+  </script> --}}
 <script src="./js/inventory.js"></script>
     
 @endsection

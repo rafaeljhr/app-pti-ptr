@@ -33,7 +33,6 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
-
 Route::get('/inventory', [ProductsController::class, "getAllProducts"])->name('inventory');
 
 
@@ -45,6 +44,8 @@ Route::get('/products', function () {
 // #######################
 // PRODUCTS RELATED ROUTES
 // #######################
+
+Route::post('/set-passo1-add-product', [ProductsController::class, "setPasso1"])->name('set-passo1-add-product');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
