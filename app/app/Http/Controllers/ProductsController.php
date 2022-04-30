@@ -166,9 +166,7 @@ class ProductsController extends Controller
 
         session()->put('last_added_product_id', $newProduto->id);
 
-        self::rebuild_fornecedor_session(); // REBUILD THE FORNECEDOR SESSION
-
-        return view('inventory');
+        self::getAllProducts(); // REBUILD THE FORNECEDOR SESSION
 
     }
 

@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'google' => [
+        'client_id' => '968226490222-q2t2t8vnn0taeliba1nl2qfnd0k1grg6.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'http://localhost/app-pti-ptr/app/public/auth/google/callback',
+    ],
+
 ];

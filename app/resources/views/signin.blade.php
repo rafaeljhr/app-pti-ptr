@@ -48,6 +48,13 @@
                   <input type="checkbox" value="remember-me"> Lembrar-me
                 </label>
               </div>
+
+              <a href="{{ route('auth/google') }}" class="btn btn-google btn-user btn-block">
+                <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em;">
+              </a>
+
+
+
               <button class="w-100 btn btn-lg btn-color" type="submit">Entrar</button>
               <hr class="my-4">
               

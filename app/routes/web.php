@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ArmazensController;
+use App\Http\Controllers\GoogleController;
 
 // ##############
 // NAVBAR ROUTES
@@ -40,6 +41,13 @@ Route::get('/inventory', [ProductsController::class, "getAllProducts"])->name('i
 Route::get('/products', function () {
     return view('products');
 })->name('products');
+
+
+
+
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth/google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth/google/callback');
+
 
 
 // #######################
