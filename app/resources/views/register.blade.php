@@ -16,52 +16,34 @@
                 NIF tem de ser um número!
             </div>
 
-            <div class="container-form wow fadeInUp mt-5" data-wow-delay="0.5s">
+            <div class="container-form">
                 <div class="row">
-                    <div class="col">
+                    <div class="col"> <br><br>
                         <form id="regForm" class="form-signin" method="post"  action="{{ route('register-controller') }}">
-                            <h1 id="registar">REGISTAR COM</h1>
-                            <div class="all-steps" id="all-steps"> <span class="step"></span> <span class="step"></span> <span class="step"></span> <span class="step"></span> </div>
+                            @csrf
+                            <h1 id="registar">REGISTAR</h1> <br>
+                            <div class="all-steps" id="all-steps"> <span class="step"></span> <span class="step"></span> <span class="step"></span>  <span class="step"></span> </div>
+                            
                             <div class="tab">
-
-                                <div class="row">
-                                
-                                    <div class="col d-flex justify-content-center align-items-center">
-                                        
-                                        <p>Registar com:</p>
+                                <div class="row d-flex justify-content-center">
+                                    <div class="form-outline mb-4 text-center">
+                                        <a href=" ">
+                                            <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" style="margin-left: 3em;">
+                                        </a>
                                     </div>
 
-                                    <div class="col d-flex justify-content-center align-items-center">
-                                
-                                    <p>Registar através do email:</p>
-                                    </div>
-                                </div>
-
-                                <div class="row">
+                                    <p class="text-center">ou:</p>
                                     
-                                    <div class="col d-flex justify-content-center align-items-center">
-                                        
-                                        <button class="btn btn-lg" id="google" type="submit">
-                                            <i class="fab fa-google me-2"></i> Google
-                                        </button>
-                                    </div>
-
-                                    <div class="col d-flex justify-content-center align-items-center">
-                                
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-outline mb-4">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
-                                                    <input required type="email" name ="email" id="email" class="form-control" placeholder="Introduz o seu email">
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-outline col-sm-7">
+                                        <i class="ms-1 text-danger" aria-hidden="true"></i>
+                                        <input required type="email" name ="email" id="email" class="form-control" placeholder="Introduza o seu email">
                                     </div>
 
                                 </div>
-
+                                
                             </div>
+
+                            
 
                             <div class="tab">
 
@@ -78,7 +60,7 @@
                                 <div class="row"> 
                                     <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Nome</label>
-                                        <i class="bi-asterisk ms-1 text-danger" aria-hidden="true"></i>
+                                        <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <input required type="text" name ="name" id="name" class="form-control form-control-lg" placeholder="Introduza o seu nome">
                                     </div>
                                 
@@ -116,6 +98,8 @@
                                     </div>
                                 </div>
 
+                                <p><i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i> Obrigatório</p>
+
                                 
                             </div>
                         
@@ -141,13 +125,23 @@
                                 </div>
 
                             </div>
+
+                            <div class="tab">
+                                <img src="images/foto.png" width="200" class="d-grid mx-auto" alt="">
+                                <input type="file" class="adicionar-foto d-grid mx-auto">
+                            </div>
                             
                             
                             <div class="thanks-message text-center" id="text-message"> <img src="https://i.imgur.com/O18mJ1K.png" width="100" class="mb-4">
-                                <h3>Thanks for your Donation!</h3> <span>Your donation has been entered! We will contact you shortly!</span>
+                                <h3>Conta criada com sucesso!</h3> <span>Pode agora desfrutar das funcionalidades todas do site!</span>
                             </div>
                             <div style="overflow:auto;" id="nextprevious">
-                                <div style="float:right;"> <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button> <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button> </div>
+                                <div class="gap-2 d-grid mx-auto col-4"> 
+                                    <button type="button" class="btn" id="prevBtn" onclick="nextPrev(-1)">Anterior</button> 
+                                    <button type="button" class="btn btn-color" id="nextBtn" onclick="nextPrev(1)">Seguinte</button>
+                                    <button type="submit" class="btn btn-color" id="btn-finalizar">Finalizar</button> 
+                                
+                                </div>
                             </div>
                         </form>
                     </div>

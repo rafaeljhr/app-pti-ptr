@@ -107,57 +107,77 @@ showTab(currentTab);
 });
 
 function showTab(n) {
-var x = document.getElementsByClassName("tab");
-x[n].style.display = "block";
-if (n == 0) {
-document.getElementById("prevBtn").style.display = "none";
-} else {
-document.getElementById("prevBtn").style.display = "inline";
-}
-if (n == (x.length - 1)) {
-document.getElementById("nextBtn").innerHTML = "Submit";
-} else {
-document.getElementById("nextBtn").innerHTML = "Next";
-}
-fixStepIndicator(n)
+    var x = document.getElementsByClassName("tab");
+    x[n].style.display = "block";
+    if (n == 0) {
+        document.getElementById("prevBtn").style.display = "none";
+        document.getElementById("all-steps").style.display = "none";
+
+    } else {
+        document.getElementById("prevBtn").style.display = "block";
+        document.getElementById("all-steps").style.display = "block";
+
+    }
+    if (n == (x.length - 1)) {
+        document.getElementById("nextBtn").style.display = "none";
+        document.getElementById("btn-finalizar").style.display = "block";
+        
+    } else {
+    document.getElementById("nextBtn").innerHTML = "Seguinte";
+    }
+    fixStepIndicator(n)
 }
 
 function nextPrev(n) {
-var x = document.getElementsByClassName("tab");
-if (n == 1 && !validateForm()) return false;
-x[currentTab].style.display = "none";
-currentTab = currentTab + n;
-if (currentTab >= x.length) {
-// document.getElementById("regForm").submit();
-// return false;
-//alert("sdf");
-document.getElementById("nextprevious").style.display = "none";
-document.getElementById("all-steps").style.display = "none";
-document.getElementById("register").style.display = "none";
-document.getElementById("text-message").style.display = "block";
+    var x = document.getElementsByClassName("tab");
+    if (n == 1 && !validateForm()) return false;
+    x[currentTab].style.display = "none";
+    currentTab = currentTab + n;
 
+    if (currentTab == 0) {
+        document.getElementById("registar").innerHTML = "REGISTAR";
+        console.log("dddd")
+    } else if (currentTab == 1){
+        document.getElementById("registar").innerHTML = "DADOS DA SUA CONTA";
+    } else if (currentTab == 2) {
+        document.getElementById("registar").innerHTML = "PALAVRA-PASSE";
+    } else if (currentTab == 3){
+        document.getElementById("registar").innerHTML = "ADICIONE UMA FOTOGRAFIA";
+    } else {
+        document.getElementById("registar").innerHTML = "ADICIONE UMA FOTOGRAFIA";
+    }
 
+    if (currentTab >= x.length) {
+    // document.getElementById("regForm").submit();
+    // return false;
+    //alert("sdf");
+    document.getElementById("text-message").style.display = "block";
+    document.getElementById("nextprevious").style.display = "none";
+    document.getElementById("all-steps").style.display = "none";
+    document.getElementById("registar").innerHTML = "";
+    
 
+    }
 
-}
 showTab(currentTab);
 }
 
 function validateForm() {
-var x, y, i, valid = true;
-x = document.getElementsByClassName("tab");
-y = x[currentTab].getElementsByTagName("input");
-for (i = 0; i < y.length; i++) { 
-    if (y[i].value=="" ) { 
-        y[i].className +=" invalid" ; valid=false; 
-    }} 
-    if (valid) { 
-        document.getElementsByClassName("step")[currentTab].className +=" finish" ; } 
-        return valid; 
-    } function fixStepIndicator(n) { 
-        var i, x=document.getElementsByClassName("step"); 
-        for (i=0; i < x.length; i++) { 
-            x[i].className=x[i].className.replace(" active", "" ); 
+    var x, y, i, valid = true;
+    x = document.getElementsByClassName("tab");
+    y = x[currentTab].getElementsByTagName("input");
+    for (i = 0; i < y.length; i++) { 
+        if (y[i].value=="" ) { 
+            y[i].className +=" invalid" ; valid=false; 
+        }} 
+        if (valid) { 
+            document.getElementsByClassName("step")[currentTab].className +=" finish" ; } 
+            return valid; 
         } 
-        x[n].className +=" active" ; 
-    }
+function fixStepIndicator(n) { 
+    var i, x=document.getElementsByClassName("step"); 
+    for (i=0; i < x.length; i++) { 
+        x[i].className=x[i].className.replace(" active", "" ); 
+    } 
+    x[n].className +=" active" ; 
+}
