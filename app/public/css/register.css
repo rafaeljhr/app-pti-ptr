@@ -21,3 +21,145 @@ i {
     font-size: 0.5rem;
     bottom: 5px;
 }
+
+#regForm {
+    background-color: #ffffff;
+    margin: 0px auto;
+    padding: 40px;
+    border-radius: 10px;
+    width: 50%;
+}
+
+h1#registar {
+    text-align: center
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #aaaaaa
+}
+
+input.invalid {
+    background-color: #ffdddd
+}
+
+.tab {
+    display: none
+}
+
+button {
+    background-color: #93BF7E;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 1px;
+}
+i {
+    color: #fff;
+}
+button:hover {
+    opacity: 0.8
+}
+
+#prevBtn {
+    background-color: #bbbbbb
+}
+
+#google {
+    background-color: #dd4b39;
+    color: #fff;
+}
+.step {
+    height: 15px;
+    width: 22%;
+    margin: 0 1px;
+    background-color: #bbbbbb;
+    border: none;
+    display: inline-block;
+    opacity: 0.5;
+    border-color: #93BF7E;
+}
+
+.step.active {
+    opacity: 1
+}
+
+.step.finish {
+    background-color: #93BF7E
+}
+
+.all-steps {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px
+}
+
+.thanks-message {
+    display: none
+}
+
+.container-form {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.container-form input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%
+}
+
+.container-form:hover input~.checkmark {
+    background-color: #ccc
+}
+
+.container-form input:checked~.checkmark {
+    background-color: #2196F3
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none
+}
+
+.container-form input:checked~.checkmark:after {
+    display: block
+}
+
+.container-form .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white
+}
+
+hr {
+    color: inherit;
+    background-color: currentColor;
+    border: 0;
+    opacity: 0.25;
+    text-align: right;
+    
+  }
