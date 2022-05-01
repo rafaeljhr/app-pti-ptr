@@ -188,27 +188,16 @@ class ProductsController extends Controller
         session()->put('last_added_product_id', $newProduto->id);
     }
 
-<<<<<<< HEAD
-        self::getAllProducts(); // REBUILD THE FORNECEDOR SESSION
-=======
 
     public function productRemoveLastAdded(Request $request){
 
         Evento::where('id_produto', session()->get('last_added_product_id'))->delete();
->>>>>>> mduarte
 
         $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
 
         session()->forget('last_added_product_id');
         session()->forget('produto_cadeia_logistica');
 
-<<<<<<< HEAD
-    public static function getAllProducts()
-    {
-        self::rebuild_fornecedor_session(); // BUILD THE FORNECEDOR SESSION
-        
-        return view('inventory');
-=======
         if ($produto->path_imagem != "images/default_produto.jpg") {
             unlink($produto->path_imagem); // apagar a imagem do produto
         }
@@ -216,7 +205,6 @@ class ProductsController extends Controller
         $produto->delete();
 
         self::rebuild_fornecedor_session(); // rebuild products on session
->>>>>>> mduarte
     }
 
 
@@ -234,9 +222,6 @@ class ProductsController extends Controller
 
         $produto->delete();
 
-<<<<<<< HEAD
-        session()->forget('last_added_product_id');
-=======
         self::rebuild_fornecedor_session(); // rebuild products on session
 
         //
@@ -277,7 +262,6 @@ class ProductsController extends Controller
             }
             
         }
->>>>>>> mduarte
 
 
         if(sizeOf(session()->get('all_fornecedor_produtos')) % 3!=0) {
