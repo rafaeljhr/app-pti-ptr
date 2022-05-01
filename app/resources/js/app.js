@@ -4,6 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 require('./bootstrap');
 
 window.Vue = require('vue').default;

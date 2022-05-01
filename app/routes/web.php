@@ -34,8 +34,19 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
+Route::get('/inventory', function () {
 
-Route::get('/inventory', [ProductsController::class, "getAllProducts"])->name('inventory');
+    if(session()->has('all_fornecedor_produtos')){
+
+        return view('inventory');
+
+    } else {
+
+        ProductsController::rebuild_fornecedor_session();
+        return view('inventory');
+
+    }
+})->name('inventory');
 
 
 Route::get('/products', function () {
@@ -57,6 +68,7 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
 Route::post('/product-remove-last-added', [ProductsController::class, "productRemoveLastAdded"])->name('product-remove-last-added');
+Route::post('/product-remove', [ProductsController::class, "productRemove"])->name('product-remove');
 Route::post('/product-edit-controller', [ProductsController::class, "productEdit"])->name('product-edit-controller');
 
 Route::post('/product-add-event-controller', [ProductsController::class, "productAddEvent"])->name('product-add-event-controller');

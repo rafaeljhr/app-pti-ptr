@@ -4,7 +4,6 @@ Session_start();
 ?>
 
 <link rel="stylesheet" href="css/page_default.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <header class="site-header sticky-top py-1">
     <nav class="container d-flex flex-column flex-md-row justify-content-between">  

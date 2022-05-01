@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
+use App\Models\Evento;
 use App\Http\Controllers\ArmazensController;
 
 class ProductsController extends Controller
@@ -101,7 +102,10 @@ class ProductsController extends Controller
             self::getAllCategoriesAndSubcategories(); // put all categories and subcategories in session
         }
 
-        (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
+        if(!(session()->has('armazens'))){
+            (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
+        }
+        
 
     }
 
@@ -109,7 +113,7 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
 
-        // return $request->input();
+        //return $request->input();
 
         $request->validate([
             'nome'=>'required|string',
@@ -125,10 +129,10 @@ class ProductsController extends Controller
         ]);
 
 
-        $filename = "public/images/default_produto.jpg";
+        $filename = "images/default_produto.jpg";
 
         if($request->file('path_imagem_produto')){
-
+            
             $allowedMimeTypes = ['image/jpeg', 'image/jpg','image/gif','image/png'];
             $contentType = $request->file('path_imagem_produto')->getClientMimeType();
 
@@ -163,42 +167,214 @@ class ProductsController extends Controller
             'kwh_consumidos_por_dia' => $request->get('kwh_consumidos_por_dia')
         ]);
 
+        $atributos_novo_produto = [
+            "produto_id" => $newProduto->id,
+            "produto_nome" => $newProduto->nome,
+            "produto_preco" => $newProduto->preco,
+            "produto_id_armazem" => $newProduto->id_armazem,
+            "produto_id_fornecedor" => $newProduto->id_fornecedor,
+            "produto_quantidade" => $newProduto->quantidade,
+            "produto_nome_categoria" => $newProduto->nome_categoria,
+            "produto_path_imagem" => $newProduto->path_imagem,
+            "produto_nome_subcategoria" => $newProduto->nome_subcategoria,
+            "produto_informacoes_adicionais" => $newProduto->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $newProduto->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $newProduto->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia,
+        ];
 
+
+        session()->push('all_fornecedor_produtos', $atributos_novo_produto);
         session()->put('last_added_product_id', $newProduto->id);
-
-        self::getAllProducts(); // REBUILD THE FORNECEDOR SESSION
-
     }
 
+<<<<<<< HEAD
+        self::getAllProducts(); // REBUILD THE FORNECEDOR SESSION
+=======
 
+    public function productRemoveLastAdded(Request $request){
+
+        Evento::where('id_produto', session()->get('last_added_product_id'))->delete();
+>>>>>>> mduarte
+
+        $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
+
+        session()->forget('last_added_product_id');
+        session()->forget('produto_cadeia_logistica');
+
+<<<<<<< HEAD
     public static function getAllProducts()
     {
         self::rebuild_fornecedor_session(); // BUILD THE FORNECEDOR SESSION
         
         return view('inventory');
+=======
+        if ($produto->path_imagem != "images/default_produto.jpg") {
+            unlink($produto->path_imagem); // apagar a imagem do produto
+        }
+
+        $produto->delete();
+
+        self::rebuild_fornecedor_session(); // rebuild products on session
+>>>>>>> mduarte
     }
 
 
-    public function productRemoveLastAdded(){
+    public function productRemove(Request $request){
 
-        $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
+        Evento::where('id_produto', $request->get('id_produto'))->delete();
+
+        $produto = Produto::where('id', $request->get('id_produto'))->first();
+
+        session()->forget('all_fornecedor_produtos');
+
+        if ($produto->path_imagem != "images/default_produto.jpg") {
+            unlink($produto->path_imagem); // apagar a imagem do produto
+        }
+
         $produto->delete();
 
+<<<<<<< HEAD
         session()->forget('last_added_product_id');
+=======
+        self::rebuild_fornecedor_session(); // rebuild products on session
 
-        return redirect('/inventory'); // this will rebuild the sessions vars
+        //
+        // Constucao da cadeia logistica para ser mostrada no html
+        //
+        $html =
+        "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+        ;
 
+        
+        for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
+
+            $html=$html."
+            <div class='col'>
+                <div class='card'>
+                    <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                    <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
+                    <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
+                    <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
+                    <div class='card-body text-center'>
+                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
+                        <button type='button' class='btn btn-outline-primary'>Ver informações do produto</button>
+                        <br>
+                        <button type='button' class='btn btn-outline-primary'>Editar</button>
+
+                        <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                
+                    </div>
+                </div>
+            </div>"
+            ;
+
+            if($i > 0 && $i % 3==0) {
+                $html=$html.
+                "</div>".
+                "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                ;
+            }
+            
+        }
+>>>>>>> mduarte
+
+
+        if(sizeOf(session()->get('all_fornecedor_produtos')) % 3!=0) {
+            $html=$html.
+            '</div>'
+            ;
+        }
+
+        return $html; //devolver a cadeia logistica do produto
     }
 
 
     public function productAddEvent(Request $request){
 
         $request->validate([
+            'nomeCadeia'=>'required|string',
+            'descricaoCadeia'=>'required|string',
         ]);
 
-        self::rebuild_fornecedor_session(); // REBUILD THE FORNECEDOR SESSION
+        if (!($request->has('co2_produzido'))) {
+            $co2_produzido = 0;
+        } else {
+            $co2_produzido = $request->get('co2_produzido');
+        }
 
-        return view('inventory');
+        if (!($request->has('kwh_consumidos'))) {
+            $kwh_consumidos = 0;
+        } else {
+            $kwh_consumidos = $request->get('kwh_consumidos');
+        }
+
+
+        $newEvento = Evento::create([
+            'id_produto' => session()->get('last_added_product_id'),
+            'nome' => $request->get('nomeCadeia'),
+            'co2_produzido' => $co2_produzido,
+            'kwh_consumidos' => $kwh_consumidos,
+            'descricao_do_evento' => $request->get('descricaoCadeia'),
+        ]);
+
+
+        $atributos_novo_evento = [
+            "evento_id_produto" => $newEvento->id_produto,
+            "evento_nome" => $newEvento->nome,
+            "evento_co2_produzido" => $newEvento->co2_produzido,
+            "evento_kwh_consumidos" => $newEvento->kwh_consumidos,
+            "evento_descricao_do_evento" => $newEvento->descricao_do_evento,
+        ];
+
+
+        if(session()->has('produto_cadeia_logistica')){
+            session()->push('produto_cadeia_logistica', $atributos_novo_evento);
+        } else {
+            $produto_cadeia_logistica = array();
+            array_push($produto_cadeia_logistica, $atributos_novo_evento);
+            session()->put('produto_cadeia_logistica', $produto_cadeia_logistica);
+        }
+
+        //
+        // Constucao da cadeia logistica para ser mostrada no html
+        //
+        $html =
+        '<div class="row">'
+        ;
+
+        
+        for($i = 0; $i < sizeOf(session()->get('produto_cadeia_logistica')); $i++) {
+
+            $html=$html.'
+            <div class="col">
+              <div class="card"  style="width: 18rem;"> 
+                <div class="card-body">
+                  <h5 class="card-title">'.session()->get('produto_cadeia_logistica')[$i]["evento_nome"].'</h5>
+                  <p class="card-text">'.session()->get('produto_cadeia_logistica')[$i]["evento_descricao_do_evento"].'</p>         
+                </div>
+              </div>
+            </div>'
+            ;
+
+            if($i > 0 && $i % 3==0) {
+                $html=$html.
+                '</div>'.
+                '<div class="row">'
+                ;
+            }
+        }
+
+        if(sizeOf(session()->get('produto_cadeia_logistica')) % 3!=0) {
+            $html=$html.
+            '</div>'
+            ;
+        }
+
+
+
+
+        return $html; //devolver a cadeia logistica do produto
 
     }
 
