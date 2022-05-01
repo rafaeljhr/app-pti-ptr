@@ -1,11 +1,36 @@
+function apagarProduto(id){
+    let route = document.getElementById("buttonApagarProduto").name;
+
+    var data = new FormData()
+    data.append('id_produto', id);
+
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("todosProdutos").innerHTML = xhr.responseText;
+            
+
+        } else if (this.status >= 400) {
+            console.log(xhr.responseText);
+        }
+    };
+
+    xhr.send(data);
+
+}
+
 
 
 let app = Vue.createApp({
+
+
     data() {
         return {
-
-            
-
             armazemAddDiv:false,
             fundoDiv: false,
             fundoDivOpac:false,
@@ -16,70 +41,100 @@ let app = Vue.createApp({
             mobilidade:false,
             componentes:false,
             perifericos:false
-           
-            
         }
     },
     methods: {
 
+        criarProduto(e){
 
-        /* onFileChange(event){
-            this.form.path_imagem_produto = event.target.files[0];
+            document.getElementById("productForm").style.display = "none";
+            document.getElementById("todaCadeiaLogistica").style.display = "block";
+
+            e.preventDefault();
+
+            var form = e.target
+            var data = new FormData(form)
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+
         },
 
+        apagarUltimoProduto(e){
 
-        createrProduct(e){
-            console.warn(result);
-            this.axios.post("http://localhost/app-pti-ptr/app/public/product-register-controller",this.form)
-            .then((result)=>{
-                console.warn(result);
-            })
+            document.getElementById("mostrarCadeiaLogistica").innerHTML = "";
+            document.getElementById("productForm").style.display = "block";
+            document.getElementById("todaCadeiaLogistica").style.display = "none";
+
+            e.preventDefault();
+
+            var form = e.target
+            var data = new FormData(form)
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+
+        },
+
+        criarEvento(e){
+
+            document.getElementById("botaoAdicionarEvento").style.display = "none";
+            document.getElementById("spinnerAdicionarEvento").style.display = "block";
             
 
             e.preventDefault();
-            
-        },
- */
 
-        createProduct(){
-            let urlActual = window.location.href;
-            var hrefNew = urlActual.split("?");
-            let formInputs = hrefNew[1].split("&");
-            
-            let toAdd = hrefNew[0].slice(0, -9);
-            let form={
-                _token:formInputs[0].split("=")[1],
-                nome:formInputs[1].split("=")[1],
-                path_imagem_produto:formInputs[2].split("=")[1],
-                id_armazem:formInputs[3].split("=")[1],
-                nome_categoria:formInputs[4].split("=")[1],
-                nome_subcategoria:formInputs[5].split("=")[1],
-                preco:formInputs[6].split("=")[1],
-                data_producao_do_produto:formInputs[7].split("=")[1],
-                data_insercao_no_site:formInputs[8].split("=")[1],
-                kwh_consumidos_por_dia:formInputs[9].split("=")[1],
-                quantidade:formInputs[10].split("=")[1],
-                informacoes_adicionais:formInputs[11].split("=")[1]
-            }
+            var form = e.target
+            var data = new FormData(form)
 
-            let post = JSON.stringify(form);
-            
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            const url = toAdd + "product-register-controller";
             let xhr = new XMLHttpRequest();
-            
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
-            console.log(form);
-            /* xhr.send(post);
-            
-            xhr.onload = function () {
-                if(xhr.status === 201) {
-                    console.log("Post successfully created!");
-                }else{
-                    console.log(form);
+            xhr.open(form.method, form.action, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("todaCadeiaLogistica").style.display = "block";
+                    document.getElementById("mostrarCadeiaLogistica").innerHTML = xhr.responseText;
+                    document.getElementById("criarUmaCadeiaLogistica").style.display = "none";
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
                 }
-            } */
+            };
+
+            xhr.send(data);
+
+
         },
 
         changeSubcat(cat){
@@ -138,35 +193,101 @@ let app = Vue.createApp({
                 }                
                 
             }
+        },       
+
+        criarUmArmazem(){
+
+            if (document.getElementById("criarUmArmazem").style.display == "block") {
+                document.getElementById("criarUmArmazem").style.display = "none";
+            } else {
+                document.getElementById("criarUmArmazem").style.display = "block";
+            }
+
         },
 
-       
+        mostrarArmazens(){
 
-        openArmazem(){
-            this.armazemAddDiv=!this.armazemAddDiv;
-            
+            if (document.getElementById("fundoDivOpac").style.display == "block") {
+                document.getElementById("fundoDivOpac").style.display = "none";
+            } else {
+                document.getElementById("fundoDivOpac").style.display = "block";
+            }
+
+            if (document.getElementById("todosArmazens").style.display == "block") {
+                document.getElementById("todosArmazens").style.display = "none";
+            } else {
+                document.getElementById("todosArmazens").style.display = "block";
+            }
 
         },
-        openAddArmazem(){
-            this.fundoDivOpac=!this.fundoDivOpac;
-            this.armazemDiv=!this.armazemDiv;
-        },
-        openCadeia() {
-           this.cadeiaDiv=!this.cadeiaDiv;
-        },
 
-        openAdd() {
-            this.fundoDivOpac=!this.fundoDivOpac;
-            this.fundoDiv=!this.fundoDiv;
+        finalizarAdicaoProduto() {
+
+            if (document.getElementById("todaCadeiaLogistica").style.display == "block") {
+                document.getElementById("todaCadeiaLogistica").style.display = "none";
+            } else {
+                document.getElementById("todaCadeiaLogistica").style.display = "block";
+            }
+
+            if (document.getElementById("fundoDivOpac").style.display == "block") {
+                document.getElementById("fundoDivOpac").style.display = "none";
+            } else {
+                document.getElementById("fundoDivOpac").style.display = "block";
+            }
+
+            location.reload();
          
         },
 
-        nextStep(){
-            this.step++;
-        }, 
-        previousStep(){
-            this.step--;
+        criarUmaCadeiaLogistica() {
+
+            if (document.getElementById("criarUmaCadeiaLogistica").style.display == "block") {
+                document.getElementById("criarUmaCadeiaLogistica").style.display = "none";
+            } else {
+                document.getElementById("criarUmaCadeiaLogistica").style.display = "block";
+            }
+
+
+            if (document.getElementById("spinnerAdicionarEvento").style.display == "block") {
+                document.getElementById("spinnerAdicionarEvento").style.display = "none";
+                document.getElementById("botaoAdicionarEvento").style.display = "block";
+            }
+
         },
+
+        mostrarCriarProduto() {
+            
+            if (document.getElementById("productForm").style.display == "block") {
+                document.getElementById("productForm").style.display = "none";
+            } else {
+                document.getElementById("productForm").style.display = "block";
+            }
+
+
+            if (document.getElementById("fundoDivOpac").style.display == "block") {
+                document.getElementById("fundoDivOpac").style.display = "none";
+            } else {
+                document.getElementById("fundoDivOpac").style.display = "block";
+            }
+
+        },
+
+        mostrarRegistoCo2() {
+            if (document.getElementById('co2quantidade').style.display == "block") {
+                document.getElementById('co2quantidade').style.display = 'none';
+            } else {
+                document.getElementById('co2quantidade').style.display = 'block';
+            }
+        },
+
+        mostrarRegistoKWh() {
+            if (document.getElementById('kwhquantidade').style.display == "block") {
+                document.getElementById('kwhquantidade').style.display = 'none';
+            } else {
+                document.getElementById('kwhquantidade').style.display = 'block';
+            }
+        },
+
     },
 })
 
