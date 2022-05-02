@@ -13,8 +13,10 @@ let app = Vue.createApp({
             contains_special_character: false,
             valid_password: false,
             strong_password: 'no',
-            telephone_valid: true,
-            nif_valid: true,
+            telephone_valid: false,
+            morada_valid: false,
+            nif_valid: false,
+            email_valid: false,
             diff_password: 'yes',
         }
     },
@@ -28,6 +30,7 @@ let app = Vue.createApp({
         },
 
         strongPassword() {
+            
             this.password_length = this.password.length;
 
             const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -59,6 +62,7 @@ let app = Vue.createApp({
         },
 
         equalPasswords() {
+            
             if (this.password !== this.password2) {
                 this.diff_password = 'yes';
             } else if (this.password2.length === 0) { 
@@ -76,23 +80,75 @@ let app = Vue.createApp({
                     document.getElementById("nextBtn").disabled = false;
                 this.valid_password = true;			
             } else {
-                document.getElementById("nextBtn").disabled = true;
                 this.valid_password = false;
+                
+                if (currentTab ==2) {
+                    document.getElementById("nextBtn").disabled = false;
+                }
             }
         },
 
         checkForm() {
             if (isNaN(this.$refs.userTel.value)) {
                 this.telephone_valid = false;
+                
+                document.getElementById("nextBtn").disabled = true;
             } else {
-                this.telephone_valid = true;
+                if (this.$refs.userTel.value.length == 9){
+                    this.telephone_valid = true;
+                    document.getElementById("nextBtn").disabled = false;
+                } else {
+                    this.telephone_valid = false;
+                    
+                    document.getElementById("nextBtn").disabled = true;
+                }
             }
 
             if (isNaN(this.$refs.userNIF.value)) {
                 this.nif_valid = false;
+                
+                document.getElementById("nextBtn").disabled = true;
             } else {
-                this.nif_valid = true;
+                if (this.$refs.userNIF.value.length == 9){
+                    this.nif_valid = true;
+                    document.getElementById("nextBtn").disabled = false;
+                } else {
+                    this.nif_valid = false;
+                    
+                    document.getElementById("nextBtn").disabled = true;
+                }
+                
             } 
+
+            if (this.$refs.userMorada.value.length <= 0) {
+                this.morada_valid = false;
+                
+                document.getElementById("nextBtn").disabled = true;
+            } else {
+                if (this.$refs.userMorada.value.length > 0){
+                    this.morada_valid = true;
+                    document.getElementById("nextBtn").disabled = false;
+                } else {
+                    this.morada_valid = false;
+                    
+                    document.getElementById("nextBtn").disabled = true;
+                }
+                
+            } 
+        },
+
+
+        checkEmail() {
+            
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.$refs.userEmail.value)){
+                
+                this.email_valid = true;
+                document.getElementById("nextBtn").disabled = false;
+            } else {
+                
+                this.email_valid = false;
+                document.getElementById("nextBtn").disabled = true;
+            }
         },
 
         finalizarRegisto(e) {
@@ -161,10 +217,6 @@ function showTab(n) {
             document.getElementById("nextBtn").style.display = "block";
             document.getElementById("btn-finalizar").style.display = "none";
         }
-
-        if (n==2) {
-            document.getElementById("nextBtn").disabled = true;
-        }
     
     document.getElementById("nextBtn").innerHTML = "Seguinte";
     }
@@ -179,9 +231,44 @@ function nextPrev(n) {
     currentTab = currentTab + n;
 
     if (currentTab == 0) {
-        document.getElementById("registar").innerHTML = "REGISTAR";
+        document.getElementById("registar").innerHTML = "REGISTAR"; 
+
+        document.getElementById("email").value = "";
+
+        let current_url = window.location.href;
+        let url = current_url.substring(0, current_url.length - 8);
+        url=url+"forget-google-user";
+
+        let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        var request = new XMLHttpRequest();
+        request.open('get', url);
+        request.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+        request.onreadystatechange = function() {
+            if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                // console.log(request.responseText);
+            } else if (this.status >= 400) {
+                // console.log("not ok");
+            }
+        };
+
+        request.send();
+
     } else if (currentTab == 1){
         document.getElementById("registar").innerHTML = "DADOS DA SUA CONTA";
+
+        if (document.getElementById("email").value) {
+            document.getElementById("name").value = "";
+
+            if (document.getElementById("user_input_email").value) {
+                document.getElementById("user_input_email").value = document.getElementById("email").value;
+            } else{
+                document.getElementById("user_input_email").value = document.getElementById("email").value;
+            }
+            
+        }
+
     } else if (currentTab == 2) {
         document.getElementById("registar").innerHTML = "PALAVRA-PASSE";
     } else if (currentTab == 3){

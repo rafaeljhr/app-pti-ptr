@@ -22,13 +22,13 @@ Session::put('login_ou_registo', "registo");
 
         <section class="h-100">
 
-            <div v-show="!telephone_valid" class="alert alert-danger" role="alert">
+            {{-- <div v-show="!telephone_valid" class="alert alert-danger" role="alert">
                 Telemóvel tem de ser um número!
             </div>
 
             <div v-show="!nif_valid" class="alert alert-danger" role="alert">
                 NIF tem de ser um número!
-            </div>
+            </div> --}}
 
             @if(session()->get('user_google_id')!=null) 
                 <input type="hidden" id="user_google_id" name="user_google_id" value="<?php echo session()->get('user_google_id')?>">
@@ -46,7 +46,7 @@ Session::put('login_ou_registo', "registo");
                             <div class="tab">
                                 <div class="row d-flex justify-content-center">
 
-                                    @if(session()->get('user_google_id')==null) 
+                                    
                                         <div class="form-outline mb-4 text-center">
                                             <a href="{{ route('auth/google') }}">
                                                 <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
@@ -57,10 +57,8 @@ Session::put('login_ou_registo', "registo");
                                         
                                         <div class="form-outline col-sm-7">
                                             <i class="ms-1 text-danger" aria-hidden="true"></i>
-                                            <input required type="email" name ="email" id="email" class="form-control" placeholder="Introduza o seu email">
+                                            <input required @input="checkEmail()" ref="userEmail" type="text" name ="email" id="email" class="form-control" placeholder="Introduza o seu email">
                                         </div>
-                                    @endif
-
                                 </div>
                                 
                             </div>
@@ -68,11 +66,6 @@ Session::put('login_ou_registo', "registo");
                             
 
                             <div class="tab">
-
-                                @if(session()->get('user_google_id')!=null) 
-                                    <input type="hidden" name ="email" id="email" value="<?php echo session()->get('user_email')?>">
-                                    <input type="hidden" name ="user_google_id" id="user_google_id" value="<?php echo session()->get('user_google_id')?>">
-                                @endif
 
                                 <div class="row">
                                     <div class="form-outline mb-4">
@@ -89,13 +82,23 @@ Session::put('login_ou_registo', "registo");
                                 
                                 <div class="row"> 
                                     <div class="form-outline mb-4">
+                                        <label for="nome" class="form-label">Email</label>
+                                        <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
+                                        <input type="text" name ="email" id="user_input_email" class="form-control form-control-lg" value="<?php echo session()->get('user_email')?>" disabled>
+                                    </div>
+                                </div>
+                                    
+
+                                
+                                <div class="row"> 
+                                    <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Nome</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
 
                                         @if(session()->get('user_google_id')==null) 
                                             <input required type="text" name ="name" id="name" class="form-control form-control-lg" placeholder="Introduza o seu nome">
                                         @else
-                                            <input type="text" name ="name" id="name" class="form-control form-control-lg" value="<?php echo session()->get('user_nome')?>">
+                                            <input type="text" name ="name" id="name" class="form-control form-control-lg" value="<?php echo session()->get('user_nome')?>" placeholder="Introduza o seu nome">
                                         @endif
 
                                     </div>
@@ -108,8 +111,9 @@ Session::put('login_ou_registo', "registo");
                                             <label for="phone_number" class="form-label">Telemóvel</label>
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userTel" required type="text" name ="phone_number" id="phone_number" class="form-control" placeholder="Introduza o seu número" minlength="9" maxlength="9">
+                                                <input @input="checkForm()" ref="userTel" required type="text" name ="phone_number" id="phone_number" class="form-control" placeholder="Introduza o seu número" maxlength="9">
                                                 <i v-show="telephone_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" title="Telemóvel tem de ser um número"></i>
+                                                <i v-show="telephone_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -119,8 +123,9 @@ Session::put('login_ou_registo', "registo");
                                             <label v-else for="nif" class="form-label">NIF da Empresa</label>
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userNIF" required type="text" name ="nif" id="nif" class="form-control" placeholder="Introduza o seu NIF" minlength="9" maxlength="9">
+                                                <input @input="checkForm()" ref="userNIF" required type="text" name ="nif" id="nif" class="form-control" placeholder="Introduza o seu NIF" maxlength="9">
                                                 <i v-show="nif_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" title="NIF tem de ser um número"></i>
+                                                <i v-show="nif_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -130,16 +135,18 @@ Session::put('login_ou_registo', "registo");
                                         <label v-if="clientConsumer" for="address" class="form-label">Morada</label>
                                         <label v-else for="address" class="form-label">Morada Fiscal</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
-                                        <input required type="text" id="address" name="address" class="form-control" placeholder="Introduza a sua morada" autofocus="">
+                                        <input required @input="checkForm()" ref="userMorada" type="text" id="address" name="address" class="form-control" placeholder="Introduza a sua morada">
+                                        <i v-show="morada_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" title="Tem de introduzir uma morada"></i>
+                                        <i v-show="morada_valid === true" class="bi bi-check check-icon"></i>
                                     </div>
                                 </div>
 
-                                <p><i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i> Obrigatório</p>
+                                
 
                                 
                             </div>
                         
-                            <div class="tab">
+                            <div class="tab" style="display:none;">
                                 <div class="row">
                                     <div class="form-outline mb-4">
                                         <label for="password" class="form-label">Password</label>
@@ -158,7 +165,6 @@ Session::put('login_ou_registo', "registo");
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             
@@ -185,7 +191,7 @@ Session::put('login_ou_registo', "registo");
                             <div style="overflow:auto;" id="nextprevious">
                                 <div class="gap-2 d-grid mx-auto col-4"> 
                                     <button type="button" class="btn" id="prevBtn" onclick="nextPrev(-1)">Anterior</button> 
-                                    <button type="button" class="btn btn-color" id="nextBtn" onclick="nextPrev(1)">Seguinte</button>
+                                    <button type="button" class="btn btn-color" id="nextBtn" onclick="nextPrev(1)" disabled>Seguinte</button>
                                     <button type="submit" class="btn btn-color" id="btn-finalizar">Finalizar</button>
                                 
                                 </div>
