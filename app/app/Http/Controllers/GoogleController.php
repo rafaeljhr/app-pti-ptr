@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\Fornecedor;
+use App\Models\Transportadora;
 
 class GoogleController extends Controller
 {
@@ -36,7 +38,22 @@ class GoogleController extends Controller
             if (session()->get('login_ou_registo') == "registo") {
                 return redirect()->route('register-url');
             } else {
-                return redirect()->route('signin-url');
+
+                $consumidor = Consumidor::where('google_id', session()->get('user_google_id'))->first();
+                $fornecedor = Fornecedor::where('google_id', session()->get('user_google_id'))->first();
+                $transportadora = Transportadora::where('google_id', session()->get('user_google_id'))->first();
+
+                if ($consumidor || $fornecedor || $transportadora) {
+                    session()->forget('failed_login');
+                    return redirect()->route('signin-url');
+                    
+                } else {
+                    session()->forget('user_google_id');
+                    session()->put('failed_login', "yes");
+                    return redirect('/signin');
+
+                }
+
             }
 
             
