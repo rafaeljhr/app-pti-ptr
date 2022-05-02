@@ -11,12 +11,13 @@ class Transportadora extends Model
     protected $table = 'transportadora';
 
     protected $fillable = [
-        'morada', 'telefone', 'nif', 'nome', 'email', 'password'
+        'email', 'password', 'nome', 'path_imagem', 'telefone', 'nif', 'morada', 'google_id'
     ];
 
     protected $hidden = [
         'password',
         'nif',
+        'google_id',
         'updated_at',
         'created_at',
     ];

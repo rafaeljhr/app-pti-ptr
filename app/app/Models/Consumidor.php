@@ -11,7 +11,7 @@ class Consumidor extends Model
 	protected $table = 'consumidor';
 
     protected $fillable = [
-        'nome', 'telefone', 'nif', 'morada', 'email', 'password'
+        'email', 'password', 'nome', 'path_imagem', 'telefone', 'nif', 'morada', 'google_id'
     ];
 
     protected $hidden = [
@@ -19,6 +19,7 @@ class Consumidor extends Model
         'nif',
         'telefone',
         'morada',
+        'google_id',
         'updated_at',
         'created_at',
     ];

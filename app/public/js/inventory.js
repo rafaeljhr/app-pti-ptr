@@ -288,6 +288,15 @@ let app = Vue.createApp({
             }
         },
 
+        mostrarCriarArmazem() {
+            if (document.getElementById('criarUmArmazem').style.display == "block") {
+                document.getElementById('criarUmArmazem').style.display = 'none';
+            } else {
+                document.getElementById('criarUmArmazem').style.display = 'block';
+            }
+
+        },
+
     },
 })
 

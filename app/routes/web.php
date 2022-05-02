@@ -55,15 +55,17 @@ Route::get('/products', function () {
 
 
 
-
+// ##############################################
+// GOOGLE ROUTES
+// ##############################################
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth/google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth/google/callback');
 
 
 
-// #######################
+// ##############################################
 // PRODUCTS RELATED ROUTES
-// #######################
+// ##############################################
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
@@ -77,18 +79,18 @@ Route::post('/product-remove-event-controller', [ProductsController::class, "pro
 
 
 
-// #######################
+// ##############################################
 // ARMAZENS RELATED ROUTES
-// #######################
+// ##############################################
 
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
 
 
-// ####################
+// ##############################################
 // USERS RELATED ROUTES
-// ####################
+// ##############################################
 
 Route::post('/register-etapa1-controller', [UserController::class, 'register_etapa1'])->name('register-etapa1-controller');
 

@@ -1,3 +1,5 @@
+
+
 let app = Vue.createApp({
     data: function() {
         return {
@@ -10,10 +12,10 @@ let app = Vue.createApp({
             contains_uppercase: false,
             contains_special_character: false,
             valid_password: false,
-            strong_password: 'empty',
+            strong_password: 'no',
             telephone_valid: true,
             nif_valid: true,
-            diff_password: 'empty',
+            diff_password: 'yes',
         }
     },
     methods: {
@@ -60,7 +62,7 @@ let app = Vue.createApp({
             if (this.password !== this.password2) {
                 this.diff_password = 'yes';
             } else if (this.password2.length === 0) { 
-                this.diff_password = 'empty';
+                this.diff_password = 'yes';
             } else {
                 this.diff_password = 'no';
             }
@@ -71,9 +73,10 @@ let app = Vue.createApp({
         validPasswords() {
             if (this.strong_password === 'yes' &&
                 this.diff_password === 'no') {
-                    
+                    document.getElementById("nextBtn").disabled = false;
                 this.valid_password = true;			
             } else {
+                document.getElementById("nextBtn").disabled = true;
                 this.valid_password = false;
             }
         },
@@ -90,17 +93,46 @@ let app = Vue.createApp({
             } else {
                 this.nif_valid = true;
             } 
+        },
+
+        finalizarRegisto(e) {
+            e.preventDefault();
+
+            document.getElementById("text-message").style.display = "block";
+            document.getElementById("nextprevious").style.display = "none";
+            document.getElementById("all-steps").style.display = "none";
+            document.getElementById("tab_da_imagem").style.display = "none";
+            document.getElementById("registar").innerHTML = "";
+
+
+            setTimeout(function() {
+
+                document.getElementById("regForm").submit();
+                
+            }, 1000)
+
+            
+
+
         }
     }
 })
 
 app.mount('.app')
 
+
+
 /* FORM STEP BY STEP */
 
-var currentTab = 0;
-document.addEventListener("DOMContentLoaded", function(event) {
 
+
+if (document.getElementById("user_google_id") != null) {
+    var currentTab = 1;
+} else {
+    var currentTab = 0;
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
 
 showTab(currentTab);
 
@@ -109,6 +141,7 @@ showTab(currentTab);
 function showTab(n) {
     var x = document.getElementsByClassName("tab");
     x[n].style.display = "block";
+
     if (n == 0) {
         document.getElementById("prevBtn").style.display = "none";
         document.getElementById("all-steps").style.display = "none";
@@ -118,15 +151,26 @@ function showTab(n) {
         document.getElementById("all-steps").style.display = "block";
 
     }
-    if (n == (x.length - 1)) {
+
+    if (n == 3) {
         document.getElementById("nextBtn").style.display = "none";
         document.getElementById("btn-finalizar").style.display = "block";
         
     } else {
+        if (document.getElementById("btn-finalizar").style.display == "block") {
+            document.getElementById("nextBtn").style.display = "block";
+            document.getElementById("btn-finalizar").style.display = "none";
+        }
+
+        if (n==2) {
+            document.getElementById("nextBtn").disabled = true;
+        }
+    
     document.getElementById("nextBtn").innerHTML = "Seguinte";
     }
     fixStepIndicator(n)
 }
+
 
 function nextPrev(n) {
     var x = document.getElementsByClassName("tab");
@@ -136,7 +180,6 @@ function nextPrev(n) {
 
     if (currentTab == 0) {
         document.getElementById("registar").innerHTML = "REGISTAR";
-        console.log("dddd")
     } else if (currentTab == 1){
         document.getElementById("registar").innerHTML = "DADOS DA SUA CONTA";
     } else if (currentTab == 2) {
@@ -147,22 +190,12 @@ function nextPrev(n) {
         document.getElementById("registar").innerHTML = "ADICIONE UMA FOTOGRAFIA";
     }
 
-    if (currentTab >= x.length) {
-    // document.getElementById("regForm").submit();
-    // return false;
-    //alert("sdf");
-    document.getElementById("text-message").style.display = "block";
-    document.getElementById("nextprevious").style.display = "none";
-    document.getElementById("all-steps").style.display = "none";
-    document.getElementById("registar").innerHTML = "";
-    
-
-    }
-
 showTab(currentTab);
 }
 
+
 function validateForm() {
+
     var x, y, i, valid = true;
     x = document.getElementsByClassName("tab");
     y = x[currentTab].getElementsByTagName("input");
@@ -172,8 +205,10 @@ function validateForm() {
         }} 
         if (valid) { 
             document.getElementsByClassName("step")[currentTab].className +=" finish" ; } 
-            return valid; 
-        } 
+            return valid;
+} 
+
+
 function fixStepIndicator(n) { 
     var i, x=document.getElementsByClassName("step"); 
     for (i=0; i < x.length; i++) { 

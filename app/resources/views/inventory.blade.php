@@ -7,22 +7,7 @@
 
 // dd(session()->all());
 
-// $arrayTestCadeia = array(array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ), array("name" => "Teste nome","description" => "teste descricao" ));
-// Session::put('cadeiasLogisticas', $arrayTestCadeia);
-
-
-// $armazens = array(array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ), array("aaa", "teste", "teste", "testeNome" ));
-// Session::put('armazens', $armazens);
-// ISTO JA TA OK, BASTA CRIAR ARMAZENS E JA IRAO APARECER NA CRIACAO DE PRODUTOS
-
-
-// $produtos = array(array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),
-// array("images/teste.jpg", "nome teste", "50",  "descricao teste"),  
-// array("images/teste.jpg", "nome teste", "50",  "descricao teste"));
-// Session::put('produtos', $produtos);
-// ISTO JA TA OK, BASTA CRIAR PRODUTOS E JA IRAO APARECER
+session()->forget('produto_cadeia_logistica');
 
 ?>
 
@@ -246,12 +231,6 @@
 
 
 
-  
-
-
-
-
-
 {{-- div para apresentar armazens  e criar  novos --}}
 <div id="todosArmazens" class="forForm">
   <button type="button" @click="mostrarArmazens()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
@@ -277,14 +256,14 @@
   @endfor
   
   @endif
-  <button type="button" @click="openArmazem()" class="btn btn-primary" id="addCadeia">+</button>
+  <button type="button" @click="mostrarCriarArmazem()" class="btn btn-primary" id="addCadeia">+</button>
   </div>
 </div>
 
 
 {{-- criar armazem --}}
 <div id="criarUmArmazem" class="armazem">
-  <button type="button" @click="criarUmArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+  <button type="button" @click="mostrarCriarArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
   <form method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
     @csrf
     <h3>Armazem:</h3>
@@ -362,9 +341,10 @@
           @endif
           @endfor
 
-          </div>
-
         @endif
+
+      </div>
+
     </div>
 
   </div>

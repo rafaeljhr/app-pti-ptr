@@ -20,28 +20,55 @@ class GoogleController extends Controller
         try {
             $user = Socialite::driver('google')->user();
 
-            dd($user);
+            // dd($user);
 
-            // Check Users Email If Already There
-            $is_user = Consumidor::where('email', $user->getEmail())->first();
+            $email = $user->email;
+            $nome = $user->name;
+            $path_imagem = $user->avatar;
+            $google_id = $user->id;
+
             
-            if(!$is_user){
+            session()->put('user_email', $email);
+            session()->put('user_path_imagem', $path_imagem);
+            session()->put('user_nome', $nome);
+            session()->put('user_google_id', $google_id);
 
-                $saveUser = Consumidor::updateOrCreate([
-                    'google_id' => $user->getId(),
-                ],[
-                    'nome' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'password' => Hash::make($user->getName().'@'.$user->getId())
-                ]);
-            }else{
-                $saveUser = Consumidor::where('email',  $user->getEmail())->update([
-                    'google_id' => $user->getId(),
-                ]);
-                $saveUser = Consumidor::where('email', $user->getEmail())->first();
+            if (session()->get('login_ou_registo') == "registo") {
+                return redirect()->route('register-url');
+            } else {
+                return redirect()->route('signin-url');
             }
 
-            return redirect()->route('home-url');
+            
+
+            // Check Users Email If Already There
+            // $is_user = Consumidor::where('email', $user->getEmail())->first();
+            
+
+
+
+
+            // 'password' => Hash::make($user->getName().'@'.$user->getId())
+
+            // if(!$is_user){
+
+            //     $saveUser = Consumidor::updateOrCreate([
+            //         'google_id' => $user->getId(),
+            //     ],[
+            //         'nome' => $user->getName(),
+            //         'email' => $user->getEmail(),
+                    
+            //         'path_imagem' >=
+            //     ]);
+
+            // }else{
+            //     $saveUser = Consumidor::where('email',  $user->getEmail())->update([
+            //         'google_id' => $user->getId(),
+            //     ]);
+            //     $saveUser = Consumidor::where('email', $user->getEmail())->first();
+            // }
+
+            
 
         } catch (\Throwable $th) {
             throw $th;
