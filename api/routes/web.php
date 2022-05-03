@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+//**********    ROUTES HTTP API  ************
+
+
+
+Route::get('/api', function () {
     return view('welcome');
 });

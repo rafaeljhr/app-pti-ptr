@@ -11,13 +11,6 @@ use App\Http\Controllers\Base_TransportadoraController;
 use App\Http\Controllers\AuthController;
 
 
-//**********    ROUTES HTTP API  ************
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 
 
 //**********    Recursos Publicos  ************
