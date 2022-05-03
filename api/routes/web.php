@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 //**********    ROUTES HTTP API  ************
 
+Route::get('/', function () {
+    return redirect('/api');
+});
 
 
 Route::get('/api', function () {
     return view('welcome');
-});
+})->name('api');
