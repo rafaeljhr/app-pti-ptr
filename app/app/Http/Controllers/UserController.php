@@ -246,7 +246,7 @@ class UserController extends Controller
                     'telefone' => $request->get('phone_number'),
                     'nif' => $request->get('nif'),
                     'morada' => $request->get('address'),
-                    'email' => $request->get('email'),
+                    'email' => $request->get('emailssh rribeiro@load-balancer1.projeto-lti.rafaeljhr.pt -p 222'),
                     'password' => bcrypt($request->get('password')),
                     'path_imagem' => $filename,
                 ]);
