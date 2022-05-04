@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
+
+
+Route::get('/login', [WebController::class, 'login'])->name('login');
+Route::post('/checklogin', [WebController::class, 'checklogin']);
+Route::get('/index', [WebController::class, 'index'])->name('index');
+Route::get('/logout', [WebController::class, 'logout']);
+Route::post('/GetToken', [WebController::class, 'GetToken']);

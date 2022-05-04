@@ -21,6 +21,7 @@ class fornecedor extends Model
         'nif',
         'updated_at',
         'created_at',
+        'google_id',
     ];
 
     public function produto()
