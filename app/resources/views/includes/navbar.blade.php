@@ -15,9 +15,9 @@ Session_start();
        
             <li class="py-2 d-none d-md-inline-block">
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Perfil
-                    </button>
+                    <a class="dropdown-toggle" id="drop" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    PERFIL
+                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="{{ route('profile-url') }}">Conta</a></li>
                     @if(Session::get('userType') == 'fornecedor')

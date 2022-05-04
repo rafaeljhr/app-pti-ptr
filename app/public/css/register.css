@@ -175,15 +175,18 @@ hr {
     
   }
 
+
 .adicionar-foto {
     color: transparent;
     overflow: hidden;
     border: transparent;
 }
+
 .adicionar-foto::-webkit-file-upload-button {
     visibility: hidden;
 }
-  .adicionar-foto::before {
+
+.adicionar-foto::before {
     content: 'Adicionar Fotografia';
     color: black;
     display: inline-block;
@@ -195,16 +198,19 @@ hr {
     -webkit-user-select: none;
     cursor: pointer;
     text-align: center;
-  }
-  .adicionar-foto:hover::before {
+}
+
+.adicionar-foto:hover::before {
     border-color: black;
-  }
-  .adicionar-foto:active {
+}
+
+.adicionar-foto:active {
     outline: 0;
-  }
-  .adicionar-foto:active::before {
+}
+
+.adicionar-foto:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
-  }
+}
 
   #btn-finalizar {
       display: none;

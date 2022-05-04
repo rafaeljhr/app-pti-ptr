@@ -91,3 +91,8 @@
 body {
   background-color: #e2dfdf!important;
 }
+
+.btn-secondary {
+  background-color: transparent!important;
+  border: none!important;
+}
