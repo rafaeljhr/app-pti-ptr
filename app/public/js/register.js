@@ -9,16 +9,123 @@ let app = Vue.createApp({
             contains_number: false,
             contains_uppercase: false,
             contains_special_character: false,
-            valid_password: false,
             strong_password: 'no',
             telephone_valid: false,
             morada_valid: false,
             nif_valid: false,
-            email_valid: false,
             diff_password: 'yes',
+            form_valid: false,
+            user_google_id: null,
+            current_tab: null,
+            tabs: document.getElementsByClassName("tab"),
+            steps: document.getElementsByClassName("step"),
         }
     },
+
+    mounted() {
+        if ((this.user_google_id) != null) {
+            this.current_tab = 1;
+        } else {
+            this.current_tab = 0;
+        }
+
+        this.showTab(this.current_tab);
+    },
+
     methods: {
+        showTab(n) {
+
+            this.tabs[n].style.display = "block";
+        
+            if (n == 0) {
+                this.$refs.prevBtn.style.display = "none";
+                this.$refs.all_steps.style.display = "none";
+        
+            } else {
+                this.$refs.prevBtn.style.display = "block";
+                this.$refs.all_steps.style.display = "block";
+        
+            }
+        
+            if (n == 3) {
+                this.$refs.nextBtn.style.display = "none";
+                this.$refs.btn_finalizar.style.display = "block";
+                
+            } else {
+                if (this.$refs.btn_finalizar.style.display == "block") {
+                    this.$refs.nextBtn.style.display = "block";
+                    this.$refs.btn_finalizar.style.display = "none";
+                }
+            
+                this.$refs.nextBtn.innerHTML = "Seguinte";
+            }
+
+            this.fixStepIndicator(n)
+        },
+
+        fixStepIndicator(n) { 
+            for (var i=0; i < this.steps.length; i++) { 
+                this.steps[i].className = this.steps[i].className.replace(" active", "" ); 
+            } 
+
+            this.steps[n].className += " active"; 
+        },
+
+        nextPrev(n) {
+            this.form_valid = false;
+
+            if (n == 1 && !(this.validateForm())) return false; // PORQUE RETURN FALSE?
+            this.tabs[this.current_tab].style.display = "none";
+            this.current_tab = this.current_tab + n;
+        
+            if (this.current_tab == 0) {
+                this.$refs.header.innerHTML = "REGISTAR"; 
+        
+                this.$refs.userEmail.value = "";
+        
+                let current_url = window.location.href;
+                let url = current_url.substring(0, current_url.length - 8);
+                url=url+"forget-google-user";
+        
+                let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+                var request = new XMLHttpRequest();
+                request.open('get', url);
+                request.setRequestHeader('X-CSRF-TOKEN', csrf);
+        
+                request.onreadystatechange = function() {
+                    if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                        // console.log(request.responseText);
+                    } else if (this.status >= 400) {
+                        // console.log("not ok");
+                    }
+                };
+        
+                request.send();
+        
+            } else if (this.current_tab == 1){
+                this.$refs.header.innerHTML = "DADOS DA SUA CONTA";
+        
+                if (this.$refs.userEmail.value) {
+                    this.$refs.userName.value = "";
+        
+                    if (this.$refs.userInputEmail.value) {
+                        this.$refs.userInputEmail.value = this.$refs.userEmail.value;
+                    } else{
+                        this.$refs.userInputEmail.value = this.$refs.userEmail.value;
+                    }
+                    
+                }
+        
+            } else if (this.current_tab == 2) {
+                this.$refs.header.innerHTML = "PALAVRA-PASSE";
+            } else {
+                this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
+            }
+        
+            this.showTab(this.current_tab);
+        },
+
         switchSelect(event) {
             if (event.target.value === "consumidor") {
                 this.clientConsumer = true;
@@ -55,8 +162,6 @@ let app = Vue.createApp({
             } else {
                 this.strong_password = 'no';
             }
-
-            this.validPasswords();
         },
 
         equalPasswords() {
@@ -68,21 +173,16 @@ let app = Vue.createApp({
             } else {
                 this.diff_password = 'no';
             }
-
-            this.validPasswords();
         },
 
         validPasswords() {
+
+            this.strongPassword();
+            this.equalPasswords();
+
             if (this.strong_password === 'yes' &&
                 this.diff_password === 'no') {
-                    document.getElementById("nextBtn").disabled = false;
-                this.valid_password = true;			
-            } else {
-                this.valid_password = false;
-                
-                if (currentTab ==2) {
-                    document.getElementById("nextBtn").disabled = false;
-                }
+                    this.form_valid = true;
             }
         },
 
@@ -90,73 +190,61 @@ let app = Vue.createApp({
             if (isNaN(this.$refs.userTel.value)) {
                 this.telephone_valid = false;
                 
-                document.getElementById("nextBtn").disabled = true;
             } else {
                 if (this.$refs.userTel.value.length == 9){
                     this.telephone_valid = true;
-                    document.getElementById("nextBtn").disabled = false;
+                    
                 } else {
                     this.telephone_valid = false;
                     
-                    document.getElementById("nextBtn").disabled = true;
                 }
             }
 
             if (isNaN(this.$refs.userNIF.value)) {
                 this.nif_valid = false;
                 
-                document.getElementById("nextBtn").disabled = true;
             } else {
                 if (this.$refs.userNIF.value.length == 9){
                     this.nif_valid = true;
-                    document.getElementById("nextBtn").disabled = false;
+                    
                 } else {
                     this.nif_valid = false;
                     
-                    document.getElementById("nextBtn").disabled = true;
                 }
-                
             } 
 
             if (this.$refs.userMorada.value.length <= 0) {
                 this.morada_valid = false;
                 
-                document.getElementById("nextBtn").disabled = true;
             } else {
-                if (this.$refs.userMorada.value.length > 0){
-                    this.morada_valid = true;
-                    document.getElementById("nextBtn").disabled = false;
-                } else {
-                    this.morada_valid = false;
-                    
-                    document.getElementById("nextBtn").disabled = true;
-                }
+                this.morada_valid = true;
                 
-            } 
+            }
+                
+            if (this.telephone_valid === true &&  
+                this.nif_valid === true && 
+                this.morada_valid === true) {
+                this.form_valid = true;
+            }
         },
-
-
+        
         checkEmail() {
             
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.$refs.userEmail.value)){
-                
-                this.email_valid = true;
-                document.getElementById("nextBtn").disabled = false;
+                this.form_valid = true;
             } else {
-                
-                this.email_valid = false;
-                document.getElementById("nextBtn").disabled = true;
+                this.form_valid = false;
             }
         },
 
         finalizarRegisto(e) {
             e.preventDefault();
 
-            document.getElementById("text-message").style.display = "block";
-            document.getElementById("nextprevious").style.display = "none";
-            document.getElementById("all-steps").style.display = "none";
-            document.getElementById("tab_da_imagem").style.display = "none";
-            document.getElementById("registar").innerHTML = "";
+            this.$refs.text_message.style.display = "block";
+            this.$refs.next_previous.style.display = "none";
+            this.$refs.all_steps.style.display = "none";
+            this.$refs.tab_imagem.style.display = "none";
+            this.$refs.header.innerHTML = "";
 
 
             setTimeout(function() {
@@ -164,136 +252,24 @@ let app = Vue.createApp({
                 document.getElementById("regForm").submit();
                 
             }, 1000)
-        }
-    }
+        },
+
+        validateForm() {
+
+            var valid = true;
+
+            var y = this.tabs[this.current_tab].getElementsByTagName("input");
+            for (var i = 0; i < y.length; i++) { 
+                if (y[i].value=="" ) { 
+                    y[i].className +=" invalid" ; valid=false; 
+                }} 
+                if (valid) { 
+                    this.steps[this.current_tab].className +=" finish" ; } 
+                    return valid;
+        } 
+    },
 })
 
 app.mount('.app')
 
 
-
-/* FORM STEP BY STEP */
-
-
-
-if (document.getElementById("user_google_id") != null) {
-    var currentTab = 1;
-} else {
-    var currentTab = 0;
-}
-
-document.addEventListener("DOMContentLoaded", function(event) {
-
-showTab(currentTab);
-
-});
-
-function showTab(n) {
-    var x = document.getElementsByClassName("tab");
-    x[n].style.display = "block";
-
-    if (n == 0) {
-        document.getElementById("prevBtn").style.display = "none";
-        document.getElementById("all-steps").style.display = "none";
-
-    } else {
-        document.getElementById("prevBtn").style.display = "block";
-        document.getElementById("all-steps").style.display = "block";
-
-    }
-
-    if (n == 3) {
-        document.getElementById("nextBtn").style.display = "none";
-        document.getElementById("btn-finalizar").style.display = "block";
-        
-    } else {
-        if (document.getElementById("btn-finalizar").style.display == "block") {
-            document.getElementById("nextBtn").style.display = "block";
-            document.getElementById("btn-finalizar").style.display = "none";
-        }
-    
-    document.getElementById("nextBtn").innerHTML = "Seguinte";
-    }
-    fixStepIndicator(n)
-}
-
-
-function nextPrev(n) {
-    var x = document.getElementsByClassName("tab");
-    if (n == 1 && !validateForm()) return false;
-    x[currentTab].style.display = "none";
-    currentTab = currentTab + n;
-
-    if (currentTab == 0) {
-        document.getElementById("registar").innerHTML = "REGISTAR"; 
-
-        document.getElementById("email").value = "";
-
-        let current_url = window.location.href;
-        let url = current_url.substring(0, current_url.length - 8);
-        url=url+"forget-google-user";
-
-        let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        var request = new XMLHttpRequest();
-        request.open('get', url);
-        request.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-        request.onreadystatechange = function() {
-            if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                // console.log(request.responseText);
-            } else if (this.status >= 400) {
-                // console.log("not ok");
-            }
-        };
-
-        request.send();
-
-    } else if (currentTab == 1){
-        document.getElementById("registar").innerHTML = "DADOS DA SUA CONTA";
-
-        if (document.getElementById("email").value) {
-            document.getElementById("name").value = "";
-
-            if (document.getElementById("user_input_email").value) {
-                document.getElementById("user_input_email").value = document.getElementById("email").value;
-            } else{
-                document.getElementById("user_input_email").value = document.getElementById("email").value;
-            }
-            
-        }
-
-    } else if (currentTab == 2) {
-        document.getElementById("registar").innerHTML = "PALAVRA-PASSE";
-    } else if (currentTab == 3){
-        document.getElementById("registar").innerHTML = "ADICIONE UMA FOTOGRAFIA";
-    } else {
-        document.getElementById("registar").innerHTML = "ADICIONE UMA FOTOGRAFIA";
-    }
-
-showTab(currentTab);
-}
-
-
-function validateForm() {
-
-    var x, y, i, valid = true;
-    x = document.getElementsByClassName("tab");
-    y = x[currentTab].getElementsByTagName("input");
-    for (i = 0; i < y.length; i++) { 
-        if (y[i].value=="" ) { 
-            y[i].className +=" invalid" ; valid=false; 
-        }} 
-        if (valid) { 
-            document.getElementsByClassName("step")[currentTab].className +=" finish" ; } 
-            return valid;
-} 
-
-
-function fixStepIndicator(n) { 
-    var i, x=document.getElementsByClassName("step"); 
-    for (i=0; i < x.length; i++) { 
-        x[i].className=x[i].className.replace(" active", "" ); 
-    } 
-    x[n].className +=" active" ; 
-}
