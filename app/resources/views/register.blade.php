@@ -94,7 +94,7 @@ Session::put('login_ou_registo', "registo");
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
                                                 <input @input="checkForm()" ref="userTel" required type="text" name ="phone_number" id="phone_number" class="form-control" placeholder="Introduza o seu número" maxlength="9">
-                                                <i v-show="telephone_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" title="Telemóvel tem de ser um número"></i>
+                                                <i v-show="telephone_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Telemóvel tem de ser um número"></i>
                                                 <i v-show="telephone_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@ Session::put('login_ou_registo', "registo");
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
                                                 <input @input="checkForm()" ref="userNIF" required type="text" name ="nif" id="nif" class="form-control" placeholder="Introduza o seu NIF" maxlength="9">
-                                                <i v-show="nif_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" title="NIF tem de ser um número"></i>
+                                                <i v-show="nif_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="NIF tem de ser um número"></i>
                                                 <i v-show="nif_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@ Session::put('login_ou_registo', "registo");
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
                                             <input required @input="checkForm()" ref="userMorada" type="text" id="address" name="address" class="form-control" placeholder="Introduza a sua morada">
-                                            <i v-show="morada_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" title="Tem de introduzir uma morada"></i>
+                                            <i v-show="morada_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Tem de introduzir uma morada"></i>
                                             <i v-show="morada_valid === true" class="bi bi-check check-icon"></i>
                                         </div>
                                     </div>
@@ -134,14 +134,14 @@ Session::put('login_ou_registo', "registo");
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
                                             <input v-model="password" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" required autocomplete="off">
-                                            <i v-show="strong_password === 'no'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" 
+                                            <i v-show="strong_password === 'no'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" 
                                             title="Pelo menos 8 caracteres<br>Pelo menos um número<br>Pelo menos uma maiúscula<br>Pelo menos um carácter especial"></i>
                                             <i v-show="strong_password === 'yes'" class="bi bi-check check-icon"></i>
                                         </div>
                                         
                                         <div class="inline-icon">
                                             <input v-model="password2" @input="validPasswords()" type="password" id="password2" name ="password2" class="form-control me-1" placeholder="Confirme a password" required autocomplete="off">
-                                            <i v-show="diff_password === 'yes'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="left" title="As duas passwords não coincidem!"></i>
+                                            <i v-show="diff_password === 'yes'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="As duas passwords não coincidem!"></i>
                                             <i v-show="diff_password === 'no'" class="bi bi-check check-icon"></i>
                                         </div>
                                     </div>
@@ -183,7 +183,4 @@ Session::put('login_ou_registo', "registo");
     <script src="./js/register.js"></script>
     
 @endsection
-
-{{-- <p v-show="!valid_password" class="text-danger tt tt-icon" data-bs-toggle="tooltip" data-bs-placement="auto" data-bs-html="true" 
-                                        title="<ul> <li>Pelo menos 8 caracteres</li> <li>Pelo menos um número</li> <li>Pelo menos uma letra maiúscula</li> <li>Pelo menos um caracter especial</li> </ul>">!</p> --}}
 
