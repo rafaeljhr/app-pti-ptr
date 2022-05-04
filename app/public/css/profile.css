@@ -4,8 +4,8 @@
 }
 
 .form-div {
-    max-width: 60%;
-    background-color: forestgreen;
+    width: 80%;
+    background-color: #fff;
     border-radius: 1rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     border: 2px solid rgba(0,0,0,.2);
@@ -13,4 +13,45 @@
 
 input[disabled] {
     color: grey;
- }
+}
+
+.btn-primary {
+    background-color: #05591A!important;
+    border: solid 1px #05591A!important;
+}
+
+.adicionar-foto {
+    color: transparent;
+    overflow: hidden;
+    border: transparent;
+}
+
+.adicionar-foto::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.adicionar-foto::before {
+    content: 'Alterar Fotografia';
+    color: black;
+    display: inline-block;
+    background: #93BF7E;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.adicionar-foto:hover::before {
+    border-color: black;
+}
+
+.adicionar-foto:active {
+    outline: 0;
+}
+
+.adicionar-foto:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}

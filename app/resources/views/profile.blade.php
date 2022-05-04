@@ -11,6 +11,7 @@
     $userTel = Session::get('user_telefone');
     $userNIF = Session::get('user_nif');
     $userAdress = Session::get('user_morada');
+    $userImage = Session::get('path_imagem');
 
     if (Session::get('userType') == 'consumidor') {
         $clientConsumer = true;
@@ -90,11 +91,11 @@
         </div>
 
         <div class="form-div mx-auto my-2 px-3">  
-            <img class="logo" src="images/logo6.png" alt="EcoSmart Logo">
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?=$userImage?>" alt="EcoSmart Logo">
 
-            <h1 class="h3 mb-4 font-weight-normal">Os Meus Dados</h1>
+            <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">Os Meus Dados</h1>
 
-            <div class="px-4 py-4">
+            <div class="px-4">
                 <form method="post" action="{{ route('edit-profile-controller') }}">
                     @csrf
                     <div class="prof-info">
@@ -143,14 +144,19 @@
                                 <input type="text" name="morada" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
                                 aria-describedby="Morada do Utilizador" ref="userAdress" value="<?=$userAdress?>" :disabled="!editable">
                             </div>
+
+                            <div class="col-sm">
+                                <label for="foto" class="sr-only text-light">Foto de perfil</label>
+                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto">
+                            </div>
         
                             <div class="col-sm mt-4">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
+                                <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
                             </div>
                         </div>
 
                         <div class="position-relative my-2">
-                            <button v-show="!editable" type="button" class="btn btn-primary" @click="editable = true">Editar Dados</button>
+                            <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
                             <button v-show="editable" type="submit" class="btn btn-primary me-3">Guardar Alterações</button>
                             <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
                             <!-- Button trigger modal -->
