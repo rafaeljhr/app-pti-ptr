@@ -15,3 +15,13 @@ use App\Http\Controllers\WebController;
 */
 
 
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::get('/login', [WebController::class, 'login'])->name('login');
+Route::post('/checklogin', [WebController::class, 'checklogin']);
+Route::get('/index', [WebController::class, 'index'])->name('index');
+Route::get('/logout', [WebController::class, 'logout']);
+Route::post('/GetToken', [WebController::class, 'GetToken']);
