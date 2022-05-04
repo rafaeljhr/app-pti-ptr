@@ -4,7 +4,6 @@
 // session()->forget('user_google_id');
 
 Session::put('login_ou_registo', "login");
-
 ?>
 
 
@@ -12,17 +11,8 @@ Session::put('login_ou_registo', "login");
 @extends('layouts.page_default')
 
 @section('background')
-    
-    @if (Session::has('failed_login'))
-    <div class="alert alert-danger" role="alert">
-        A sua palavra-passe ou email estão incorretos ou a sua conta nao existe
-      </div>
-    <?php
-    session()->forget('failed_login');
-    ?>
-    @endif
-    
-    <link rel="stylesheet" href="css/login.css">
+      
+  <link rel="stylesheet" href="css/login.css">
 
   <div class="container col-xl-10 col-xxl-8 px-4 py-5">
         <div id="borderDiv" class="row align-items-center g-lg-5 mt-2 py-2">
@@ -57,15 +47,14 @@ Session::put('login_ou_registo', "login");
             
               @if(session()->get('user_google_id')==null) 
                 <div class="form-floating mb-3">
-                  <input type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
+                  <input v-model="email" @input="validateForm()" type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
                   <label for="loginEmail">Email</label>
                 </div>
               @endif
 
-              
               <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
-                <label for="password" >Palavra-passe</label>
+                <input v-model="password" @input="validateForm()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
+                <label for="password">Palavra-passe</label>
               </div>
               
               <div class="checkbox mb-3">
@@ -74,7 +63,16 @@ Session::put('login_ou_registo', "login");
                 </label>
               </div>
 
-              <button class="w-100 btn btn-lg btn-color" type="submit">Entrar</button>
+              @if (Session::has('failed_login'))
+                <div class="alert alert-danger" role="alert">
+                  <p>A sua palavra-passe está incorreta ou a sua conta nao existe. Por favor <a href="#">altere a usa palavra-passe</a> ou <a href="{{ route('register-url')}}">crie uma conta nova.</a></p>
+                </div>
+                <?php
+                session()->forget('failed_login');
+                ?>
+              @endif
+
+              <button :disabled="!validForm" class="w-100 btn btn-lg btn-color mt-4" type="submit">Entrar</button>
 
               @if(session()->get('user_google_id')==null) 
                 <hr class="my-4">
@@ -91,5 +89,7 @@ Session::put('login_ou_registo', "login");
           </div>
         </div>
   </div>
-    
+  
+  <script src="./js/signin.js"></script>
+
 @endsection

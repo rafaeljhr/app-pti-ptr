@@ -1,5 +1,3 @@
-
-
 let app = Vue.createApp({
     data: function() {
         return {
@@ -166,10 +164,6 @@ let app = Vue.createApp({
                 document.getElementById("regForm").submit();
                 
             }, 1000)
-
-            
-
-
         }
     }
 })

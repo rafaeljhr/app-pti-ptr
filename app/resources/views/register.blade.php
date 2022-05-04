@@ -4,7 +4,6 @@
 // session()->forget('user_google_id');
 
 Session::put('login_ou_registo', "registo");
-
 ?>
 
 
