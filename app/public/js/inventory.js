@@ -24,6 +24,34 @@ function apagarProduto(id){
 
 }
 
+function apagarArmazem(id){
+    let route = document.getElementById("buttonApagarArmazem").name;
+
+    var data = new FormData()
+    data.append('id_armazem', id);
+
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("todosArmazens").style.display = "block";
+            
+            document.getElementById("apresentarArmazens").innerHTML = xhr.responseText;
+            
+
+        } else if (this.status >= 400) {
+            console.log(xhr.responseText);
+        }
+};
+
+    xhr.send(data);
+    console.log(id);
+}
+
 
 
 let app = Vue.createApp({
@@ -193,7 +221,43 @@ let app = Vue.createApp({
                 }                
                 
             }
-        },       
+        },  
+        
+        
+        criarArmazem(e){
+
+            document.getElementById("but-pad").style.display = "none";
+            document.getElementById("spinnerAdicionarArmazem").style.display = "block";
+            
+
+            e.preventDefault();
+
+            var form = e.target
+            var data = new FormData(form)
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr1 = new XMLHttpRequest();
+            xhr1.open(form.method, form.action, true)
+            xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr1.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("todosArmazens").style.display = "block";
+                    
+                    document.getElementById("apresentarArmazens").innerHTML = xhr1.responseText;
+                    document.getElementById("criarUmArmazem").style.display = "none";
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr1.responseText);
+                }
+            };
+
+            xhr1.send(data);
+            },
+
+        
 
         criarUmArmazem(){
 
@@ -293,6 +357,8 @@ let app = Vue.createApp({
                 document.getElementById('criarUmArmazem').style.display = 'none';
             } else {
                 document.getElementById('criarUmArmazem').style.display = 'block';
+                document.getElementById("but-pad").style.display = "block";
+                document.getElementById("spinnerAdicionarArmazem").style.display = "none";    
             }
 
         },
