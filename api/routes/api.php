@@ -10,6 +10,9 @@ use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\Base_TransportadoraController;
 use App\Http\Controllers\AuthController;
 
+
+
+
 //**********    Recursos Publicos  ************
 
 Route::post('/login', [AuthController::class, 'login']);
