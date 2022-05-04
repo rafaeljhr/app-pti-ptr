@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Consumidor;
 use App\Models\Transportadora;
-use App\Models\Fornecedor;
+use App\Models\fornecedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -47,7 +47,7 @@ class WebController extends Controller
         }elseif ($user_data['tipo_conta'] == 'transportadora'){
             $user = Transportadora::where('email', $user_data['email'])->first();
         }elseif ($user_data['tipo_conta'] == 'fornecedor'){
-            $user = Fornecedor::where('email', $user_data['email'])->first();
+            $user = fornecedor::where('email', $user_data['email'])->first();
         }else{
             return FALSE;
         }
@@ -91,7 +91,7 @@ class WebController extends Controller
         }elseif ($tipo_conta == 'transportadora'){
             $user = Transportadora::where('email', $email)->first();
         }elseif ($tipo_conta == 'fornecedor'){
-            $user = Fornecedor::where('email', $email)->first();
+            $user = fornecedor::where('email', $email)->first();
         }
 
         $user->tokens()->delete();
