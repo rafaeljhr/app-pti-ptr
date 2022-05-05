@@ -221,7 +221,7 @@ session()->forget('produto_cadeia_logistica');
 
     <button class="w-100 btn btn-lg btn-primary" id='botaoAdicionarEvento' type="submit">Adicionar</button>
     
-
+    <button id='spinnerAdicionarEvento' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
     
       
     </p>
@@ -234,15 +234,18 @@ session()->forget('produto_cadeia_logistica');
 {{-- div para apresentar armazens  e criar  novos --}}
 <div id="todosArmazens" class="forForm">
   <button type="button" @click="mostrarArmazens()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+ 
   <h3>Os seus armazens:</h3>
-  
+
   <div id="apresentarArmazens"> 
  
   </div>
 
- {{--  <div id="divBeforeAjax">
+  <div id="apresentarArmazensBefore"> 
  
-    </div> --}}
+  </div>
+
+     
  
   <button type="button" @click="mostrarCriarArmazem()" class="btn btn-primary" id="addCadeia">+</button>
   
@@ -296,8 +299,12 @@ session()->forget('produto_cadeia_logistica');
 
 
 <button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-<button type="button" @click ="mostrarArmazens()" class="btn btn-dark" id="btn-id" >Criar armazens</button>
 
+
+<form @submit.prevent="displayThem" method="get" action="{{ route('armazem-show-controller')}}">
+  @csrf
+<button  class="btn btn-dark" type="submit" id="btn-id" >Criar armazens</button>
+</form>
 
 {{-- mostrar todos os produtos --}}
 <div class="container p-0 mt-5 mb-5">
@@ -316,7 +323,7 @@ session()->forget('produto_cadeia_logistica');
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                <button type="button" class="btn btn-outline-primary">Ver informações do produto</button>
+                <button type="button" name="{{ route('product-info')}}" onclick="apagarProduto(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 <button type="button" class="btn btn-outline-primary">Editar</button>
 

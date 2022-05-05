@@ -208,10 +208,10 @@ class ProductsController extends Controller
     }
 
 
-    public function productRemove(Request $request){
+    public static function productRemove(Request $request){
 
         Evento::where('id_produto', $request->get('id_produto'))->delete();
-
+        
         $produto = Produto::where('id', $request->get('id_produto'))->first();
 
         session()->forget('all_fornecedor_produtos');
@@ -360,6 +360,13 @@ class ProductsController extends Controller
 
         return $html; //devolver a cadeia logistica do produto
 
+    }
+
+
+
+    public function productInfo(){
+        $html = "teste";
+        return $html;
     }
 
 }

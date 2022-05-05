@@ -1,3 +1,35 @@
+function apagarArmazem(id){
+    let route = document.getElementById("buttonApagarArmazem").name;
+
+    document.getElementById("buttonApagarArmazem").style.display = "none";
+    document.getElementById(id).removeAttribute("hidden");
+
+    var data = new FormData()
+    data.append('id_armazem', id);
+
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("apresentarArmazensBefore").style.display = "none";
+            document.getElementById("todosArmazens").style.display = "block";
+            document.getElementById("apresentarArmazens").style.display = "block";
+            document.getElementById("apresentarArmazens").innerHTML = xhr.responseText;
+            
+
+        } else if (this.status >= 400) {
+            console.log(xhr.responseText);
+        }
+};
+
+    xhr.send(data);
+    console.log(id);
+}
+
 function apagarProduto(id){
     let route = document.getElementById("buttonApagarProduto").name;
 
@@ -24,33 +56,7 @@ function apagarProduto(id){
 
 }
 
-function apagarArmazem(id){
-    let route = document.getElementById("buttonApagarArmazem").name;
 
-    var data = new FormData()
-    data.append('id_armazem', id);
-
-    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', route, true)
-    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-            document.getElementById("todosArmazens").style.display = "block";
-            
-            document.getElementById("apresentarArmazens").innerHTML = xhr.responseText;
-            
-
-        } else if (this.status >= 400) {
-            console.log(xhr.responseText);
-        }
-};
-
-    xhr.send(data);
-    console.log(id);
-}
 
 
 
@@ -243,8 +249,9 @@ let app = Vue.createApp({
 
             xhr1.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("apresentarArmazensBefore").style.display = "none";
                     document.getElementById("todosArmazens").style.display = "block";
-                    
+                    document.getElementById("apresentarArmazens").style.display = "block";
                     document.getElementById("apresentarArmazens").innerHTML = xhr1.responseText;
                     document.getElementById("criarUmArmazem").style.display = "none";
                     
@@ -268,6 +275,54 @@ let app = Vue.createApp({
             }
 
         },
+
+
+        displayThem(e){
+            
+            if (document.getElementById("fundoDivOpac").style.display == "block") {
+                document.getElementById("fundoDivOpac").style.display = "none";
+            } else {
+                document.getElementById("fundoDivOpac").style.display = "block";
+            }
+
+            if (document.getElementById("todosArmazens").style.display == "block") {
+                document.getElementById("todosArmazens").style.display = "none";
+            } else {
+                document.getElementById("todosArmazens").style.display = "block";
+            }
+            
+
+            e.preventDefault();
+
+            var form = e.target
+            
+            
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr1 = new XMLHttpRequest();
+            xhr1.open(form.method, form.action, true)
+            console.log(form.method);
+            console.log(form.action);
+            xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
+           
+            xhr1.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                   
+                    document.getElementById("apresentarArmazens").style.display = "none";
+                    
+                    document.getElementById("apresentarArmazensBefore").innerHTML = xhr1.responseText;
+                    
+                    
+
+                } else if (this.status >= 400) {
+                    
+                    console.log(xhr1.responseText);
+                }
+            };
+            xhr1.send();
+            
+        },
+
 
         mostrarArmazens(){
 
