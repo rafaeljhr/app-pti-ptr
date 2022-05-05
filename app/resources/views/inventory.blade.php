@@ -221,8 +221,8 @@ session()->forget('produto_cadeia_logistica');
 
     <button class="w-100 btn btn-lg btn-primary" id='botaoAdicionarEvento' type="submit">Adicionar</button>
     
-
     <button id='spinnerAdicionarEvento' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
+    
       
     </p>
 
@@ -234,29 +234,21 @@ session()->forget('produto_cadeia_logistica');
 {{-- div para apresentar armazens  e criar  novos --}}
 <div id="todosArmazens" class="forForm">
   <button type="button" @click="mostrarArmazens()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+ 
   <h3>Os seus armazens:</h3>
-  <div class="row">
-  @if(session()->get('armazens')!=null)
-  @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++) 
-    <div class="col">
-      <div class="card"  style="width: 18rem;"> 
-        <div class="card-body">
-          <h5 class="card-title"><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></h5>
-          <img src='<?php echo session()->get('armazens')[$i]['armazem_path_imagem'] ?>' class="card-img-top" alt="...">
-          <p class="card-text"><?php echo session()->get('armazens')[$i]['armazem_morada'] ?></p>         
-        </div>
-      </div>
-    </div>
 
-  @if($i > 0 && $i % 3==0)
-  <?php echo '</div>' ?>
-  <?php echo '<div class="row">' ?>
-  @endif
-  
-  @endfor
-  
-  @endif
+  <div id="apresentarArmazens"> 
+ 
+  </div>
+
+  <div id="apresentarArmazensBefore"> 
+ 
+  </div>
+
+     
+ 
   <button type="button" @click="mostrarCriarArmazem()" class="btn btn-primary" id="addCadeia">+</button>
+  
   </div>
 </div>
 
@@ -264,9 +256,10 @@ session()->forget('produto_cadeia_logistica');
 {{-- criar armazem --}}
 <div id="criarUmArmazem" class="armazem">
   <button type="button" @click="mostrarCriarArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <form method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
+  <form @submit.prevent="criarArmazem" method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
     @csrf
     <h3>Armazem:</h3>
+
     <label for="nome" class="form-label">Nome</label>
     <div class="input-group mb-3">  
     <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
@@ -282,7 +275,9 @@ session()->forget('produto_cadeia_logistica');
       </div>
     
   
-  <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Submeter</button>
+  <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Adicionar armazém</button>
+  <button id='spinnerAdicionarArmazem' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
+  
   </form>
 </div>
 
@@ -304,8 +299,12 @@ session()->forget('produto_cadeia_logistica');
 
 
 <button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-<button type="button" @click ="mostrarArmazens();" class="btn btn-dark" id="btn-id" >Criar armazens</button>
 
+
+<form @submit.prevent="displayThem" method="get" action="{{ route('armazem-show-controller')}}">
+  @csrf
+<button  class="btn btn-dark" type="submit" id="btn-id" >Criar armazens</button>
+</form>
 
 {{-- mostrar todos os produtos --}}
 <div class="container p-0 mt-5 mb-5">
@@ -324,7 +323,7 @@ session()->forget('produto_cadeia_logistica');
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                <button type="button" class="btn btn-outline-primary">Ver informações do produto</button>
+                <button type="button" name="{{ route('product-info')}}" onclick="apagarProduto(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 <button type="button" class="btn btn-outline-primary">Editar</button>
 
