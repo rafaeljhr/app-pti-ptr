@@ -6,7 +6,6 @@
 Session::put('login_ou_registo', "login");
 ?>
 
-
 <link rel="stylesheet" href="css/login.css">
 @extends('layouts.page_default')
 
@@ -44,6 +43,8 @@ Session::put('login_ou_registo', "login");
                 <option value="transportadora">Transportadora</option>
                 <option value="fornecedor">Fornecedor</option>
               </select>
+
+              <hr class="my-4">
             
               @if(session()->get('user_google_id')==null) 
                 <div class="form-floating mb-3">

@@ -26,6 +26,23 @@ CREATE TABLE transportadora (
         PRIMARY KEY (id)
 );
 
+CREATE TABLE admin (
+    id integer AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    cargo VARCHAR(255) NOT NULL,
+
+    CONSTRAINT pk_admin_id
+        PRIMARY KEY (id)
+);
+
+CREATE TABLE cargo (
+    cargo VARCHAR(255) NOT NULL,
+
+    CONSTRAINT pk_cargo
+        PRIMARY KEY (cargo)
+);
+
 
 CREATE TABLE base (
     id integer AUTO_INCREMENT,
