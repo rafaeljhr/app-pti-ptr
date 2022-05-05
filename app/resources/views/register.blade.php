@@ -130,7 +130,7 @@ Session::put('login_ou_registo', "registo");
                             <div class="tab" style="display:none;">
                                 <div class="row">
                                     <div class="form-outline mb-4">
-                                        <label for="password" class="form-label">Password</label>
+                                        <label for="password" class="form-label">Palavra-passe</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
                                             <input v-model="password" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" required autocomplete="off">

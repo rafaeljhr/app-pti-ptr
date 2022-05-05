@@ -147,7 +147,7 @@
 
                             <div class="col-sm">
                                 <label for="foto" class="sr-only text-light">Foto de perfil</label>
-                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto">
+                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto" :disabled="!editable">
                             </div>
         
                             <div class="col-sm mt-4">
