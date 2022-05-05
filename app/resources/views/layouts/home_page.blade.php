@@ -3,8 +3,10 @@
 
     <head>
         <meta charset="utf'8">
-        <title>Site PTI-PTR</title>
+        <title>Eco Smart Store</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" href="./images">
 
         <link rel="stylesheet" href="css/page_default.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
