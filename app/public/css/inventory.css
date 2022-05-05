@@ -29,6 +29,17 @@
 #spinnerAdicionarEvento {
     display: none;
 }
+#spinnerAdicionarArmazem {
+    display: none;
+}
+#addCadeia{
+    display: block;
+}
+
+#but-pad{
+    display: block;
+    width: 50%;
+}
 
 
 #todaCadeiaLogistica {
