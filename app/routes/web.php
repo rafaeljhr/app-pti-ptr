@@ -48,10 +48,7 @@ Route::get('/inventory', function () {
     }
 })->name('inventory');
 
-
-Route::get('/products', function () {
-    return view('products');
-})->name('products');
+Route::get('/products', [ProductsController::class, "allProducts"])->name('products');
 
 
 

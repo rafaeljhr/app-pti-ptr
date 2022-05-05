@@ -9,6 +9,7 @@ Session_start();
     <nav class="container d-flex flex-column flex-md-row justify-content-between">  
         <img src="images/logo6.png" class="main-logo" width="140">
         <a class="py-2 d-none d-md-inline-block" href="{{ route('home-url') }}">HOME</a>
+        <a class="py-2 d-none d-md-inline-block" href="{{ route('products') }}">PRODUTOS</a>
         <a class="py-2 d-none d-md-inline-block" href="{{ route('about-url') }}">SOBRE</a>
         <a class="py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
         @if(Session::get('loggedIn') == 'yes')
