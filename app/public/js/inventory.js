@@ -27,7 +27,7 @@ function apagarArmazem(id){
 };
 
     xhr.send(data);
-    console.log(id);
+    
 }
 
 function apagarProduto(id){
@@ -54,6 +54,41 @@ function apagarProduto(id){
 
     xhr.send(data);
 
+}
+
+function showInfoProduct(id){
+        
+    let route = document.getElementById("showProductInfo").name;
+
+    var data = new FormData()
+    data.append('id_produto', id);
+    console.log(id);
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("fundoDivOpac").style.display = "block";
+            document.getElementById("infoAdicional").style.display = "block";
+            document.getElementById("produtoArmazens").style.display = "block";
+            document.getElementById("produtoArmazens").innerHTML = JSON.parse(xhr.responseText)[0];
+            document.getElementById("produtoCadeias").style.display = "block";
+            document.getElementById("produtoCadeias").innerHTML = JSON.parse(xhr.responseText)[1];
+            document.getElementById("descriptionGeral").style.display = "block";
+            document.getElementById("descriptionGeral").innerHTML = JSON.parse(xhr.responseText)[2];
+            document.getElementById("descriptionText").style.display = "block";
+            document.getElementById("descriptionText").innerHTML = JSON.parse(xhr.responseText)[3];
+            
+
+        } else if (this.status >= 400) {
+            console.log(xhr.responseText);
+        }
+};
+
+    xhr.send(data);
 }
 
 
@@ -104,6 +139,13 @@ let app = Vue.createApp({
             };
 
             xhr.send(data);
+
+        },
+
+
+        hideShowInfoProduct(){
+            document.getElementById("fundoDivOpac").style.display = "none";
+            document.getElementById("infoAdicional").style.display = "none";
 
         },
 
@@ -230,6 +272,7 @@ let app = Vue.createApp({
         },  
         
         
+        
         criarArmazem(e){
 
             document.getElementById("but-pad").style.display = "none";
@@ -262,6 +305,7 @@ let app = Vue.createApp({
             };
 
             xhr1.send(data);
+            
             },
 
         
@@ -323,6 +367,7 @@ let app = Vue.createApp({
             
         },
 
+        
 
         mostrarArmazens(){
 

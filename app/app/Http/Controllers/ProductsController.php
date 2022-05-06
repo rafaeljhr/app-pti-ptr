@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produto;
+use App\Models\Armazem;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Evento;
@@ -364,9 +365,59 @@ class ProductsController extends Controller
 
 
 
-    public function productInfo(){
-        $html = "teste";
-        return $html;
+    public function productInfo(Request $request){
+       
+        
+        $produto = Produto::where('id', $request->get('id_produto'))->first();
+        $armazem = Armazem::where('id', $produto->id_armazem)->first();
+        $htmlA = "
+        <div class='card' id='prudInfoA'>
+                   
+            <h5 class='card-title'>".$armazem->nome."</h5>
+            <img src='".$armazem->path_imagem."' class='imagemProduto card-img-top'>
+            
+            <h5 class='card-title'>".$armazem->morada."</h5>
+            
+
+        </div>";
+        $htmlE='<div class="row">'
+        ;
+        if(Evento::where('id_produto', $request->get('id_produto'))  != null){
+            $evento = Evento::where('id_produto', $request->get('id_produto'))->get();
+            $i = 0;
+            foreach($evento as $eventos ){
+                $htmlE=$htmlE.'
+                <div class="col">
+                <div class="card"  style="width: 18rem;"> 
+                    <div class="card-body">
+                    <h5 class="card-title">'.$eventos->nome.'</h5>
+                    <p class="card-text">'.$eventos->descricao_do_evento.'</p>         
+                    </div>
+                </div>
+                </div>'
+                ;
+
+            if($i > 0 && $i % 3==0) {
+                $htmlE=$htmlE.
+                '</div>'.
+                '<div class="row">'
+                ;
+            }
+            $i = $i + 1;
+            }
+        }
+
+        $htmlD='<p id="toOverflow">Informações adicionais: '.$produto->informacoes_adicionais.'</p>';
+
+        $htmlt='<p>Categoria: '.$produto->nome_categoria.'</p>
+        <p>Subcategoria: '.$produto->nome_subcategoria.'</p>
+        <p>Data de produção: '.$produto->data_producao_do_produto.'</p>
+        <p>Data de inserção: '.$produto->data_insercao_no_site.'</p>
+        <p>kwh:  '.$produto->kwh_consumidos_por_dia.'</p>
+        
+        ';
+
+        return  array($htmlA, $htmlE, $htmlt, $htmlD);
     }
 
 }

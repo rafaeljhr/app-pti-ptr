@@ -115,9 +115,6 @@ class ArmazensController extends Controller
             ;
         }
 
-
-
-
         return $htmlA; //devolver a cadeia logistica do produto
 
         
@@ -204,17 +201,10 @@ class ArmazensController extends Controller
     }
 
 
-
-
     public function armazemDelete(Request $request){
         
         $produto = Produto::where('id_armazem', $request->get('id_armazem'))->first();
        
-        
-
-        
-
-
         if($produto!=null){
             Evento::where('id_produto', $produto->id)->delete();
             if ($produto->path_imagem != "images/default_produto.jpg") {
@@ -225,11 +215,6 @@ class ArmazensController extends Controller
             session()->forget('all_fornecedor_produtos');
              ProductsController::rebuild_fornecedor_session(); // rebuild products on session
         }
-
-
-        
-
-       
 
         $armazem = Armazem::where('id', $request->get('id_armazem'))->first();
         
@@ -283,9 +268,6 @@ class ArmazensController extends Controller
            
             ;
         }
-
-
-
 
         return $htmlA; 
     }

@@ -13,11 +13,6 @@
 }
 
 
-#criarUmArmazem {
-    display: none;
-}
-
-
 #criarUmaCadeiaLogistica {
     display: none;
 }
@@ -51,17 +46,34 @@
     display: none;
 }
 
+#prudInfoA{
+    width: 35%;
+}
+
+#infoAdicional{
+    position: absolute;
+    background-color: white;
+    border: solid;
+    padding: 10px;
+    top: 25%;
+    left: 25%;
+    z-index: 9;
+    width: 65%;
+
+    display:none;
+
+}
 
 .armazem{
  
+    position: absolute;
     background-color: white;
     border: solid;
-    position: fixed;
     padding: 10px;
-    top: 15%;
-    left: 2%;
+    top: 25%;
+    left: 25%;
     z-index: 9;
-    width: 20%;
+    width: 55%;
   
 }
 

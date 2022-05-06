@@ -67,7 +67,7 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // PRODUCTS RELATED ROUTES
 // ##############################################
 
-Route::get('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
+Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');

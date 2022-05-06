@@ -5,9 +5,9 @@
 
 <?php
 
-// dd(session()->all());
+//dd(session()->all());
 
-session()->forget('produto_cadeia_logistica');
+//session()->forget('produto_cadeia_logistica');
 
 ?>
 
@@ -306,6 +306,34 @@ session()->forget('produto_cadeia_logistica');
 <button  class="btn btn-dark" type="submit" id="btn-id" >Criar armazens</button>
 </form>
 
+
+<div id="infoAdicional" >
+  <button type="button" @click="hideShowInfoProduct()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+ <div class="row">
+   <div class="col">
+  <h3>O armazém:</h3>
+
+  <div id="produtoArmazens"></div>
+ 
+  
+  <h3>As suas cadeias Logisticas</h3>
+  <div id="produtoCadeias"></div>
+
+</div>
+<div class="col" id="descriptionGeral">
+  
+</div>
+<div class="col" id="descriptionText">
+  <p>oal</p>
+</div>
+</div>
+
+  
+</div>
+
+
+
+
 {{-- mostrar todos os produtos --}}
 <div class="container p-0 mt-5 mb-5">
   <div id='todosProdutos'>
@@ -323,7 +351,7 @@ session()->forget('produto_cadeia_logistica');
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                <button type="button" name="{{ route('product-info')}}" onclick="apagarProduto(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
+                <button type="button" id="showProductInfo" name="{{ route('product-info')}}" onclick="showInfoProduct(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 <button type="button" class="btn btn-outline-primary">Editar</button>
 
