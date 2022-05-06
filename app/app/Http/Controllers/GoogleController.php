@@ -45,7 +45,7 @@ class GoogleController extends Controller
 
                 if ($consumidor || $fornecedor || $transportadora) {
                     session()->forget('failed_login');
-                    return redirect()->route('signin-url');
+                    return redirect('/signin');
                     
                 } else {
                     session()->forget('user_google_id');

@@ -22,7 +22,9 @@ Session::put('login_ou_registo', "registo");
         <section class="h-100">
 
             @if(session()->get('user_google_id')!=null) 
-                <input v-model="user_google_id" type="hidden" id="user_google_id" name="user_google_id" value="<?php echo session()->get('user_google_id')?>">
+                <input v-model="user_google_id" type="hidden" id="user_google_id" name="1">
+            @else 
+                <input v-model="user_google_id" type="hidden" id="user_google_id" name="0">
             @endif           
 
             <div class="container-form">
