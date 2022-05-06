@@ -92,12 +92,7 @@
 
         <div class="form-div mx-auto my-2 px-3">
 
-            @if(session()->get('user_google_id')!=null) 
-                <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?php echo session()->get('path_imagem') ?>" alt="EcoSmart Logo" referrerpolicy="no-referrer">
-            @else
-                <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?php $userImage ?>" alt="EcoSmart Logo">
-            @endif
-            
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?php echo session()->get('path_imagem') ?>" alt="EcoSmart Logo" referrerpolicy="no-referrer">
 
             <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">Os Meus Dados</h1>
 

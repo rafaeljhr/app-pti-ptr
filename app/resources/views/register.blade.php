@@ -48,7 +48,7 @@ Session::put('login_ou_registo', "registo");
                                         
                                         <div class="form-outline col-sm-7">
                                             <i class="ms-1 text-danger" aria-hidden="true"></i>
-                                            <input required @input="checkEmail()" ref="userEmail" type="text" name ="email" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
+                                            <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
                                         </div>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@ Session::put('login_ou_registo', "registo");
                                     <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Email</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
-                                        <input ref="userInputEmail" type="text" name ="email" id="user_input_email" class="form-control" value="<?php echo session()->get('user_email')?>" disabled>
+                                        <input ref="userInputEmail" type="text" name="email" id="user_input_email" class="form-control" value="<?php echo session()->get('user_email')?>" disabled>
                                     </div>
                                 </div>
                                 
@@ -81,7 +81,7 @@ Session::put('login_ou_registo', "registo");
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
 
                                         @if(session()->get('user_google_id')==null) 
-                                            <input ref="userName" required type="text" name ="name" id="name" class="form-control" placeholder="Introduza o seu nome">
+                                            <input ref="userName" type="text" name ="name" id="name" class="form-control" placeholder="Introduza o seu nome">
                                         @else
                                             <input type="text" name ="name" id="name" class="form-control form-control-lg" value="<?php echo session()->get('user_nome')?>" placeholder="Introduza o seu nome">
                                         @endif
@@ -95,7 +95,7 @@ Session::put('login_ou_registo', "registo");
                                             <label for="phone_number" class="form-label">Telemóvel</label>
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userTel" required type="text" name ="phone_number" id="phone_number" class="form-control" placeholder="Introduza o seu número" maxlength="9">
+                                                <input @input="checkForm()" ref="userTel" type="text" name ="phone_number" id="phone_number" class="form-control" placeholder="Introduza o seu número" maxlength="9">
                                                 <i v-show="telephone_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Telemóvel tem de ser um número"></i>
                                                 <i v-show="telephone_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
@@ -107,7 +107,7 @@ Session::put('login_ou_registo', "registo");
                                             <label v-else for="nif" class="form-label">NIF da Empresa</label>
                                             <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userNIF" required type="text" name ="nif" id="nif" class="form-control" placeholder="Introduza o seu NIF" maxlength="9">
+                                                <input @input="checkForm()" ref="userNIF" type="text" name ="nif" id="nif" class="form-control" placeholder="Introduza o seu NIF" maxlength="9">
                                                 <i v-show="nif_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="NIF tem de ser um número"></i>
                                                 <i v-show="nif_valid === true" class="bi bi-check check-icon"></i>
                                             </div>
@@ -121,7 +121,7 @@ Session::put('login_ou_registo', "registo");
                                         <label v-else for="address" class="form-label">Morada Fiscal</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
-                                            <input required @input="checkForm()" ref="userMorada" type="text" id="address" name="address" class="form-control" placeholder="Introduza a sua morada">
+                                            <input @input="checkForm()" ref="userMorada" type="text" id="address" name="address" class="form-control" placeholder="Introduza a sua morada">
                                             <i v-show="morada_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Tem de introduzir uma morada"></i>
                                             <i v-show="morada_valid === true" class="bi bi-check check-icon"></i>
                                         </div>
@@ -135,14 +135,14 @@ Session::put('login_ou_registo', "registo");
                                         <label for="password" class="form-label">Palavra-passe</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
-                                            <input v-model="password" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" required autocomplete="off">
+                                            <input v-model="password" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" autocomplete="off">
                                             <i v-show="strong_password === 'no'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" 
                                             title="Pelo menos 8 caracteres<br>Pelo menos um número<br>Pelo menos uma maiúscula<br>Pelo menos um carácter especial"></i>
                                             <i v-show="strong_password === 'yes'" class="bi bi-check check-icon"></i>
                                         </div>
                                         
                                         <div class="inline-icon">
-                                            <input v-model="password2" @input="validPasswords()" type="password" id="password2" name ="password2" class="form-control me-1" placeholder="Confirme a password" required autocomplete="off">
+                                            <input v-model="password2" @input="validPasswords()" type="password" id="password2" name ="password2" class="form-control me-1" placeholder="Confirme a password" autocomplete="off">
                                             <i v-show="diff_password === 'yes'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="As duas passwords não coincidem!"></i>
                                             <i v-show="diff_password === 'no'" class="bi bi-check check-icon"></i>
                                         </div>

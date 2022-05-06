@@ -246,6 +246,7 @@ let app = Vue.createApp({
             this.$refs.tab_imagem.style.display = "none";
             this.$refs.header.innerHTML = "";
 
+            document.getElementById('user_input_email').disabled = false;
 
             setTimeout(function() {
 
