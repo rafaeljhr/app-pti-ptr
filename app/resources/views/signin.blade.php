@@ -51,13 +51,18 @@ Session::put('login_ou_registo', "login");
                   <input v-model="email" @input="validateForm()" type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
                   <label for="loginEmail">Email</label>
                 </div>
+
+                <div class="form-floating mb-3">
+                  <input v-model="password" @input="validateForm()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
+                  <label for="password">Palavra-passe</label>
+                </div>
+              @else
+                <div class="form-floating mb-3">
+                  <input v-model="password" @input="validatePass()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
+                  <label for="password">Palavra-passe</label>
+                </div>
               @endif
 
-              <div class="form-floating mb-3">
-                <input v-model="password" @input="validateForm()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
-                <label for="password">Palavra-passe</label>
-              </div>
-              
               <div class="checkbox mb-3">
                 <label>
                   <input type="checkbox" value="remember-me"> Lembrar-me
