@@ -71,7 +71,7 @@ Session::put('login_ou_registo', "login");
 
               @if (Session::has('failed_login'))
                 <div class="alert alert-danger" role="alert">
-                  <p>A sua palavra-passe está incorreta ou a sua conta nao existe. Por favor <a href="#">altere a usa palavra-passe</a> ou <a href="{{ route('register-url')}}">crie uma conta nova.</a></p>
+                  <p>A sua palavra-passe está incorreta ou a sua conta nao existe. <br> Se desejar pode <a href="#">alterar a usa palavra-passe</a> ou <a href="{{ route('register-url')}}">criar uma conta nova</a>.</p>
                 </div>
                 <?php
                 session()->forget('failed_login');

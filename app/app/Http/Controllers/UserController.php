@@ -123,10 +123,92 @@ class UserController extends Controller
     }
 
 
-    // Saber se 
-    public function register_etapa1(Request $request)
+    public function changePassword(Request $request)
     {
-        return $request->input();
+        $accountType = session()->get('userType');
+        $old_pass = $request->get('oldPass');
+        $new_pass = $request->get('newPass1');
+
+        if ($accountType == "consumidor") {
+
+            if (session()->has('user_google_id')) {
+                $consumidor = Consumidor::where('google_id', session()->get('user_google_id'))->first();
+            } else {
+                $consumidor = Consumidor::where('email', session()->get('user_email'))->first();
+            }
+
+            if (Hash::check($old_pass, $consumidor->password)) {
+
+                $consumidor->password = bcrypt($new_pass);
+                $consumidor->save();
+
+
+                session()->forget('failed_password_change');
+                return redirect('/profile');
+
+            } else {
+                return "falhou mudar password";
+
+                session()->put('failed_password_change', "yes");
+                return redirect('/profile');
+            }
+
+
+        } elseif ($accountType == "fornecedor") {
+
+            if (session()->has('user_google_id')) {
+                $fornecedor = Fornecedor::where('google_id', session()->get('user_google_id'))->first();
+            } else {
+                $fornecedor = Fornecedor::where('email', session()->get('user_email'))->first();
+            }
+
+            if (Hash::check($old_pass, $fornecedor->password)) {
+
+                $fornecedor->password = bcrypt($new_pass);
+                $fornecedor->save();
+
+
+                session()->forget('failed_password_change');
+                return redirect('/profile');
+
+            } else {
+                return "falhou mudar password";
+                
+                session()->put('failed_password_change', "yes");
+                return redirect('/profile');
+            }
+
+
+        } elseif ($accountType == "transportadora") {
+
+            if (session()->has('user_google_id')) {
+                $transportadora = Transportadora::where('google_id', session()->get('user_google_id'))->first();
+            } else {
+                $transportadora = Transportadora::where('email', session()->get('user_email'))->first();
+            }            
+
+            if (Hash::check($old_pass, $transportadora->password)) {
+
+                $transportadora->password = bcrypt($new_pass);
+                $transportadora->save();
+
+
+                session()->forget('failed_password_change');
+                return redirect('/profile');
+
+            } else {
+                return "falhou mudar password";
+
+                session()->put('failed_password_change', "yes");
+                return redirect('/profile');
+            }
+
+
+        } else { 
+            print "Erro no login! O userType recebido é diferente de transportadora/fornecedor/consumidor !";
+            print "";
+            return $request->input();
+        }
     }
 
 
