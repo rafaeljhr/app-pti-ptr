@@ -151,13 +151,12 @@ Session::put('login_ou_registo', "registo");
                             </div>
 
                             <div ref="tab_imagem" class="tab" id='tab_da_imagem'>
-
                                 @if(session()->get('user_google_id')==null) 
                                     <img src="images/foto.png" width="200" class="d-grid mx-auto" alt="">
                                     <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto">
                                 @else
                                     <label for="path_imagem" class="form-label">A sua imagem Google</label>
-                                    <img src="<?php echo session()->get('user_path_imagem')?>" id='path_imagem' name="path_imagem" width="200" class="d-grid mx-auto" referrerpolicy="no-referrer">
+                                    <img src="<?php echo session()->get('user_path_imagem')?>" id='path_imagem' name="path_imagem" width="200" class="d-grid mx-auto mb-3" referrerpolicy="no-referrer">
                                 @endif
 
                             </div>
