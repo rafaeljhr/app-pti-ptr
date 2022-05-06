@@ -20,7 +20,7 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver('google')->stateless()->user();
 
             // dd($user);
 
@@ -45,7 +45,7 @@ class GoogleController extends Controller
 
                 if ($consumidor || $fornecedor || $transportadora) {
                     session()->forget('failed_login');
-                    return redirect()->route('signin-url');
+                    return redirect('/signin');
                     
                 } else {
                     session()->forget('user_google_id');

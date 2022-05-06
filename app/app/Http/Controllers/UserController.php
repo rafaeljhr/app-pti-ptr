@@ -134,6 +134,8 @@ class UserController extends Controller
     // Register a consumidor/transportadora/fornecedor
     public function register(Request $request)
     {
+
+        // return $request->input();
         
         $accountType = $request->get('selectedOption');
 

@@ -6,6 +6,8 @@
         <title>EcoSmart Store</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link rel="icon" href="./images/imagem_tab.png">
+
         <link rel="stylesheet" href="css/page_default.css">
 
         {{-- Bootstrap needed imports --}}

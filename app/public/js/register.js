@@ -16,14 +16,14 @@ let app = Vue.createApp({
             diff_password: 'yes',
             form_valid: false,
             user_google_id: null,
-            current_tab: null,
+            current_tab: 0,
             tabs: document.getElementsByClassName("tab"),
             steps: document.getElementsByClassName("step"),
         }
     },
 
     mounted() {
-        if ((this.user_google_id) != null) {
+        if (document.getElementById("user_google_id").name == 1) {
             this.current_tab = 1;
         } else {
             this.current_tab = 0;
@@ -246,6 +246,7 @@ let app = Vue.createApp({
             this.$refs.tab_imagem.style.display = "none";
             this.$refs.header.innerHTML = "";
 
+            document.getElementById('user_input_email').disabled = false;
 
             setTimeout(function() {
 

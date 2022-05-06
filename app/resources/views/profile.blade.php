@@ -90,8 +90,9 @@
             NIF tem de ser um número!
         </div>
 
-        <div class="form-div mx-auto my-2 px-3">  
-            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?=$userImage?>" alt="EcoSmart Logo">
+        <div class="form-div mx-auto my-2 px-3">
+
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?php echo session()->get('path_imagem') ?>" alt="EcoSmart Logo" referrerpolicy="no-referrer">
 
             <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">Os Meus Dados</h1>
 
@@ -147,7 +148,7 @@
 
                             <div class="col-sm">
                                 <label for="foto" class="sr-only text-light">Foto de perfil</label>
-                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto">
+                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto" :disabled="!editable">
                             </div>
         
                             <div class="col-sm mt-4">

@@ -12,6 +12,12 @@ let app = Vue.createApp({
                 this.validForm = true;
             }
         },
+
+        validatePass() {
+            if(this.password.length > 0) {
+                this.validForm = true;
+            }
+        }
     }
 })
 
