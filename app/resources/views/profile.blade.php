@@ -82,11 +82,11 @@
             </div>
         </div>
     
-        <div v-show="!telephone_valid" class="alert alert-danger" role="alert">
+        <div v-show="!telephone_valid" class="alert alert-danger" role="alert" style="display: none">
             Telemóvel tem de ser um número!
         </div>
 
-        <div v-show="!nif_valid" class="alert alert-danger" role="alert">
+        <div v-show="!nif_valid" class="alert alert-danger" role="alert" style="display: none">
             NIF tem de ser um número!
         </div>
 
