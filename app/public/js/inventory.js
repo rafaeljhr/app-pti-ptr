@@ -182,7 +182,7 @@ let app = Vue.createApp({
         criarEvento(e){
 
             document.getElementById("botaoAdicionarEvento").style.display = "none";
-            document.getElementById("spinnerAdicionarEvento").style.display = "block";
+            document.getElementById("spinnerAdicionarEvento").style.display = "block"
             
 
             e.preventDefault();
@@ -275,11 +275,10 @@ let app = Vue.createApp({
         
         criarArmazem(e){
 
+            e.preventDefault(),;
+
             document.getElementById("but-pad").style.display = "none";
             document.getElementById("spinnerAdicionarArmazem").style.display = "block";
-            
-
-            e.preventDefault();
 
             var form = e.target
             var data = new FormData(form)
@@ -305,6 +304,38 @@ let app = Vue.createApp({
             };
 
             xhr1.send(data);
+
+
+
+            // setTimeout(
+            //     function() {
+
+            //         var form = e.target;
+            //         var data = new FormData(form);
+        
+            //         let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+            //         let xhr1 = new XMLHttpRequest();
+            //         xhr1.open(form.method, form.action, true)
+            //         xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
+        
+            //         xhr1.onreadystatechange = function() {
+            //             if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            //                 document.getElementById("apresentarArmazensBefore").style.display = "none";
+            //                 document.getElementById("todosArmazens").style.display = "block";
+            //                 document.getElementById("apresentarArmazens").style.display = "block";
+            //                 document.getElementById("apresentarArmazens").innerHTML = xhr1.responseText;
+            //                 document.getElementById("criarUmArmazem").style.display = "none";
+            //                 document.getElementById("spinnerAdicionarArmazem").style.display = "none";
+        
+            //             } else if (this.status >= 400) {
+            //                 console.log(xhr1.responseText);
+            //             }
+            //         };
+        
+            //         xhr1.send(data);
+
+            // }, 2000);
             
             },
 
