@@ -124,7 +124,7 @@ class ArmazensController extends Controller
     }
 
 
-    public function getAllArmazens()
+    public static function getAllArmazens()
     {
         $fornecedor_armazens = Armazem::where('id_fornecedor', session()->get('user_id'))->get();
 
@@ -213,7 +213,7 @@ class ArmazensController extends Controller
     
             $produto->delete();
             session()->forget('all_fornecedor_produtos');
-             ProductsController::rebuild_fornecedor_session(); // rebuild products on session
+            ProductsController::rebuild_fornecedor_session(); // rebuild products on session
         }
 
         $armazem = Armazem::where('id', $request->get('id_armazem'))->first();
@@ -230,7 +230,7 @@ class ArmazensController extends Controller
         (new ArmazensController)->getAllArmazens(); // rebuild armazens of fornecedor in session
 
         $htmlA =
-        '<div class="row">'
+        '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
         ;
 
         
@@ -244,11 +244,17 @@ class ArmazensController extends Controller
                     <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
                     <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
                     
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h5>
+                    <div class='card-body text-center'>
+
+                    <h4 class='card-text'>".session()->get('armazens')[$a]['armazem_morada']."</h4>
+                    <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
                     <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                
                     <button id='".session()->get('armazens')[$a]['armazem_id']."' hidden class='w-100 btn btn-lg btn-primary' ><a class='spinner-border text-light'></a></button>        
+                
+                    </div>
                 </div>
             </div>"
             ;
@@ -257,7 +263,7 @@ class ArmazensController extends Controller
                 $htmlA=$htmlA.
                 '</div>'.
                 
-                '<div class="row">'
+                '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
                 ;
             }
         }

@@ -34,6 +34,20 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
+Route::get('/storage', function () {
+
+    if(session()->has('armazens')){
+
+        return view('storage');
+
+    } else {
+
+        ArmazensController::getAllArmazens();
+        return view('storage');
+
+    }
+})->name('storage');
+
 Route::get('/inventory', function () {
 
     if(session()->has('all_fornecedor_produtos')){
