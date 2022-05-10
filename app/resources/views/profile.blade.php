@@ -6,12 +6,23 @@
     
     <?php
 
-    $userName = Session::get('user_nome');
     $userEmail = Session::get('user_email');
-    $userTel = Session::get('user_telefone');
-    $userNIF = Session::get('user_nif');
-    $userAdress = Session::get('user_morada');
-    $userImage = Session::get('path_imagem');
+    $userPrimeiroNome = Session::get('user_primeiro_nome');
+    $userUltimoNome = Session::get('user_ultimo_nome');
+    $userImage = Session::get('user_path_imagem');
+    $userTel = Session::get('user_numero_telemovel');
+    $userNumContribuinte = Session::get('user_numero_contribuinte');
+    $userMorada = Session::get('user_morada');
+
+    $userCodPostal = Session::get('user_codigo_postal');
+    $userCodPostal = explode("-", $userCodPostal);
+
+    $userCodPostal_1 = $userCodPostal[0];
+    $userCodPostal_2 = $userCodPostal[1];
+
+    $userCidade = Session::get('user_cidade');
+    $userPais = Session::get('user_pais');
+    
 
     if (Session::get('userType') == 'consumidor') {
         $clientConsumer = true;
@@ -81,6 +92,40 @@
             </div>
             </div>
         </div>
+
+        <!-- Modal Mudar Avatar -->
+        <div class="modal fade" id="modalMudarAvatar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMudarPassLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMudarPassLabel">Alterar Avatar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div ref="tab_imagem" class="tab" id='tab_da_imagem'>
+                    <div class="form-outline mb-4 text-center">
+                        <br>
+                        <h3 id="titulo_image_do_utilizador">Avatar Atual</h3>
+                        <img src="<?php echo session()->get('user_path_imagem') ?>" id="image_do_utilizador" width="200" class="d-grid mx-auto" alt="">
+                    </div>
+                </div>
+
+
+                <div class="modal-body">
+                    <form id="changeAvatar" method="post" action="{{ route('update-avatar-controller') }}" enctype="multipart/form-data">
+                        @csrf
+                        <input onchange="alterarImagemUser(event)" ref="redUploadImagem" type="file" id='path_imagem' name="mudar_path_imagem" class="w-50 adicionar-foto d-grid mx-auto">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="changeAvatar" id="submitChangeAvatar" class="btn btn-danger" style="display: none">Confirmar</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
     
         <div v-show="!telephone_valid" class="alert alert-danger" role="alert" style="display: none">
             Telemóvel tem de ser um número!
@@ -92,80 +137,110 @@
 
         <div class="form-div mx-auto my-2 px-3">
 
-            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" width="300" style="border-radius: 50%;" src="<?php echo session()->get('path_imagem') ?>" alt="EcoSmart Logo" referrerpolicy="no-referrer">
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
 
-            <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">Os Meus Dados</h1>
+            <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">O MEU PERFIL</h1>
 
             <div class="px-4">
                 <form method="post" action="{{ route('edit-profile-controller') }}">
                     @csrf
-                    <div class="prof-info">
-                        <div class="row" >                    
-                            <div class="col-sm ">
-                                <label for="nome" class="form-label text-light">Nome</label>
-                                <input type="text" name="nome" class="form-control mb-3" placeholder="Introduza o seu nome" aria-label="Nome do Utilizador"
-                                aria-describedby="Nome do Utilizador" ref="userName" value="<?=$userName?>" :disabled="!editable">
-                            </div>
-        
-                            <div class="col-sm">
-                                <label for="email" class="form-label text-light">Email</label>
-                                <div class="input-group mb-3">
-                                    <input name="email" type="email" class="form-control" placeholder="Introduza o seu email" aria-label="Email do Utilizador"
-                                        aria-describedby="Email do Utilizador" ref="userEmail" value="<?=$userEmail?>" :disabled="!editable">
-                                </div>
-                            </div>
-        
-                            <div class="col-sm">
-                                <label for="telefone" class="form-label text-light">Telemóvel</label>
-                                <div class="input-group mb-3">
-                                    <input @input="checkForm()" name="telefone" type="text" class="form-control" placeholder="Introduza o seu número" aria-label="Telemóvel do Utilizador"
-                                        aria-describedby="Telemóvel do Utilizador" minlength="9" maxlength="9" ref="userTel" value="<?=$userTel?>" :disabled="!editable">
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div class="row">              
-                            <div class="col-sm">
-                                @if ($clientConsumer) 
-                                    <label for="nif" class="sr-only text-light">NIF</label>
-                                @else
-                                    <label for="nif" class="sr-only text-light">NIF da Empresa</label>
-                                @endif
-                                <input @input="checkForm()" type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
-                                aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" ref="userNIF" value="<?=$userNIF?>" :disabled="!editable">
-                            </div>
-        
-                            <div class="col-sm">
-                                @if ($clientConsumer)
-                                    <label for="morada" class="sr-only text-light">Morada</label>
-                                @else
-                                    <label for="morada" class="sr-only text-light">Morada Fiscal</label>
-                                @endif
-                                
-                                <input type="text" name="morada" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
-                                aria-describedby="Morada do Utilizador" ref="userAdress" value="<?=$userAdress?>" :disabled="!editable">
-                            </div>
-
-                            <div class="col-sm">
-                                <label for="foto" class="sr-only text-light">Foto de perfil</label>
-                                <input type="file" id='path_imagem' name="path_imagem" class="adicionar-foto d-grid mx-auto" :disabled="!editable">
-                            </div>
-        
-                            <div class="col-sm mt-4">
-                                <button type="button" class="btn btn-primary form-control" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
-                            </div>
+                    <div class="row" >                    
+                        <div class="col">
+                            <label for="primeiro_nome" class="form-label text-dark">Primeiro nome</label>
+                            <input ref="userPrimeiroNome" type="text" name="primeiro_nome" class="form-control mb-3" value="<?=$userPrimeiroNome?>" :disabled="!editable">
                         </div>
 
-                        <div class="position-relative my-2">
-                            <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
-                            <button v-show="editable" type="submit" class="btn btn-primary me-3">Guardar Alterações</button>
-                            <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Conta</button>
+                        <div class="col">
+                            <label for="ultimo_nome" class="form-label text-dark">Último nome</label>
+                            <input ref="userUltimoNome" type="text" name="ultimo_nome" class="form-control mb-3" value="<?=$userUltimoNome?>" :disabled="!editable">
                         </div>
-
-                        
+    
+                        <div class="col">
+                            <label for="email" class="form-label text-dark">Email</label>
+                            <div class="input-group mb-3">
+                                <input ref="userEmail" name="email" type="email" class="form-control" value="<?=$userEmail?>" disabled>
+                            </div>
+                        </div>
                     </div>
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="telemovel" class="form-label text-dark">Telemóvel</label>
+                            <input @input="checkForm()" ref="userTel" name="telemovel" type="text" class="form-control" minlength="9" maxlength="9" value="<?=$userTel?>" :disabled="!editable">
+                        </div>
+
+                        <div class="col">
+                            @if ($clientConsumer) 
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte</label>
+                            @else
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte da Empresa</label>
+                            @endif
+                            <input @input="checkForm()" ref="userNumContribuinte" type="text" name="numero_contribuinte" class="form-control" minlength="9" maxlength="9" value="<?=$userNumContribuinte?>" :disabled="!editable">
+                        </div>
+
+                        <div class="col">
+                            <label for="pais" class="sr-only text-dark">País</label>
+                            
+                            <input ref="userPais" type="text" name="pais" class="form-control mb-3" value="<?=$userPais?>" :disabled="!editable">
+                        </div>
+                    </div>
+    
+
+                    <div class="row">
+                        <div class="col">
+                            @if ($clientConsumer)
+                                <label for="morada" class="sr-only text-dark">Morada</label>
+                            @else
+                                <label for="morada" class="sr-only text-dark">Morada Fiscal</label>
+                            @endif
+                            
+                            <input ref="userMorada" type="text" name="morada" class="form-control mb-3" value="<?=$userMorada?>" :disabled="!editable">
+                        </div>
+
+                        <div class="col">
+                            <label class="text-dark" style="display: table-cell;">Código Postal</label>
+                            <div class="inline-icon">
+                                <input ref="userCodPostal_1" type="text" name="codigo_postal_1" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_1?>" maxlength="4" :disabled="!editable" placeholder="xxxx">
+                                <input ref="userCodPostal_2" type="text" name="codigo_postal_2" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_2?>" maxlength="3" :disabled="!editable" placeholder="xxx">
+                                <i v-show="codigo_postal_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Código postal inválido"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label for="cidade" class="sr-only text-dark">Cidade</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userCidade" type="text" name="cidade" class="form-control mb-3" value="<?=$userCidade?>" :disabled="!editable">
+                                <i v-show="cidade_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir uma cidade"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <button type="button" class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">Alterar Fotografia</button>
+                        </div>
+    
+                        <div class="col-sm">
+                            <button type="button" class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
+                        </div>
+                    </div>
+
+
+                    <br><br>
+
+
+                    <div class="position-relative my-2">
+                        <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
+                        <button v-show="editable" type="submit" class="btn btn-warning me-3">Guardar Alterações</button>
+                        <button v-show="editable" type="button" class="btn btn-primary" @click="cancelChanges()">Cancelar Alterações</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Conta</button>
+                    </div>
+
                 </form>
             </div>
         </div>    

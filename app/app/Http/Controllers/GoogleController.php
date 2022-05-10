@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Consumidor;
+use App\Models\Tipo_de_conta;
+use App\Models\Utilizador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
-use App\Models\Fornecedor;
-use App\Models\Transportadora;
 
 class GoogleController extends Controller
 {
@@ -39,13 +38,29 @@ class GoogleController extends Controller
                 return redirect()->route('register-url');
             } else {
 
-                $consumidor = Consumidor::where('google_id', session()->get('user_google_id'))->first();
-                $fornecedor = Fornecedor::where('google_id', session()->get('user_google_id'))->first();
-                $transportadora = Transportadora::where('google_id', session()->get('user_google_id'))->first();
+                $utilizador = Utilizador::where('google_id', session()->get('user_google_id'))->first();
+                
+                if ($utilizador) {
 
-                if ($consumidor || $fornecedor || $transportadora) {
+                    $tipo_conta_nome = (Tipo_de_conta::where('id', $utilizador->tipo_de_conta)->first())->nome;
+
                     session()->forget('failed_login');
-                    return redirect('/signin');
+                    session()->put('loggedIn', 'yes');
+                    session()->put('userType', $tipo_conta_nome);
+                    session()->put('user_id', $utilizador->id);
+                    session()->put('user_email', $utilizador->email);
+                    session()->put('user_primeiro_nome', $utilizador->primeiro_nome);
+                    session()->put('user_ultimo_nome', $utilizador->ultimo_nome);
+                    session()->put('user_path_imagem', $utilizador->path_imagem);
+                    session()->put('user_numero_telemovel', $utilizador->numero_telemovel);
+                    session()->put('user_numero_contribuinte', $utilizador->numero_contribuinte);
+                    session()->put('user_morada', $utilizador->morada);
+                    session()->put('user_codigo_postal', $utilizador->codigo_postal);
+                    session()->put('user_cidade', $utilizador->cidade);
+                    session()->put('user_pais', $utilizador->pais);
+                    session()->put('user_google_id', $utilizador->google_id);
+
+                    return redirect('/');
                     
                 } else {
                     session()->forget('user_google_id');
@@ -55,37 +70,6 @@ class GoogleController extends Controller
                 }
 
             }
-
-            
-
-            // Check Users Email If Already There
-            // $is_user = Consumidor::where('email', $user->getEmail())->first();
-            
-
-
-
-
-            // 'password' => Hash::make($user->getName().'@'.$user->getId())
-
-            // if(!$is_user){
-
-            //     $saveUser = Consumidor::updateOrCreate([
-            //         'google_id' => $user->getId(),
-            //     ],[
-            //         'nome' => $user->getName(),
-            //         'email' => $user->getEmail(),
-                    
-            //         'path_imagem' >=
-            //     ]);
-
-            // }else{
-            //     $saveUser = Consumidor::where('email',  $user->getEmail())->update([
-            //         'google_id' => $user->getId(),
-            //     ]);
-            //     $saveUser = Consumidor::where('email', $user->getEmail())->first();
-            // }
-
-            
 
         } catch (\Throwable $th) {
             throw $th;

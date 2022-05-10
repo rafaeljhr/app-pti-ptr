@@ -35,12 +35,10 @@
 
 #regForm {
     background-color: #ffffff;
-    margin: 0px auto;
-    padding: 40px;
+    margin: auto;
+    padding: 50px;
     border-radius: 10px;
-    min-width: min-content;
-    max-width: max-content;
-    min-width: 20%;
+    max-width: 1300px;
 }
 
 h1#registar {
@@ -186,7 +184,7 @@ hr {
 }
 
 .adicionar-foto::before {
-    content: 'Adicionar Fotografia';
+    content: 'Adicionar Avatar';
     color: black;
     display: inline-block;
     background: #93BF7E;

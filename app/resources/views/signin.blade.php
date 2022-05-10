@@ -28,40 +28,21 @@ Session::put('login_ou_registo', "login");
           <div class="col-md-10 mx-auto col-lg-5" >
             <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="{{ route('login-controller') }}">
               @csrf
-
-              @if(session()->get('user_google_id')==null) 
-                <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades da EcoSmart Store!</h1>
-              @else
-                <h1 class="col-lg-10 fs-4">Olá de volta <?php echo session()->get('user_nome')?>!</h1>
-              @endif
+              
+              <h1 class="h3 mb-2 font-weight-normal">Autentique-se para usufruir  de todas as funcionalidades da EcoSmart Store!</h1>
 
               <br>
-
-              <label for="inlineRadioOptions" class="form-label">Tipo de conta a autenticar</label>
-              <select class="form-select mb-3" name ="inlineRadioOptions" aria-label="Default select example">
-                <option selected value="consumidor">Consumidor</option>
-                <option value="transportadora">Transportadora</option>
-                <option value="fornecedor">Fornecedor</option>
-              </select>
-
-              <hr class="my-4">
             
-              @if(session()->get('user_google_id')==null) 
-                <div class="form-floating mb-3">
-                  <input v-model="email" @input="validateForm()" type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
-                  <label for="loginEmail">Email</label>
-                </div>
+              
+              <div class="form-floating mb-3">
+                <input v-model="email" @input="validateForm()" type="email" name="usernameLogin" id="loginEmail" class="form-control"  placeholder="Email de utilizador">
+                <label for="loginEmail">Email</label>
+              </div>
 
-                <div class="form-floating mb-3">
-                  <input v-model="password" @input="validateForm()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
-                  <label for="password">Palavra-passe</label>
-                </div>
-              @else
-                <div class="form-floating mb-3">
-                  <input v-model="password" @input="validatePass()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
-                  <label for="password">Palavra-passe</label>
-                </div>
-              @endif
+              <div class="form-floating mb-3">
+                <input v-model="password" @input="validateForm()" type="password" class="form-control" name="passwordLogin" id="password" placeholder="Palavra-passe" autofocus="">
+                <label for="password">Palavra-passe</label>
+              </div>
 
               <div class="checkbox mb-3">
                 <label>
@@ -80,15 +61,15 @@ Session::put('login_ou_registo', "login");
 
               <button :disabled="!validForm" class="w-100 btn btn-lg btn-color mt-4" type="submit">Entrar</button>
 
-              @if(session()->get('user_google_id')==null) 
-                <hr class="my-4">
+              
+              <hr class="my-4">
 
-                <div class="text-center">
-                  <a href="{{ route('auth/google') }}">
-                    <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
-                  </a>
-                </div>
-              @endif
+              <div class="text-center">
+                <a href="{{ route('auth/google') }}">
+                  <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                </a>
+              </div>
+              
               
               
             </form>

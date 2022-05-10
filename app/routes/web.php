@@ -101,6 +101,7 @@ Route::post('/login-controller', [UserController::class, 'login'])->name('login-
 Route::post('/edit-profile-controller', [UserController::class, 'update'])->name('edit-profile-controller');
 Route::post('/delete-profile-controller', [UserController::class, 'delete'])->name('delete-profile-controller');
 Route::post('/update-password-controller', [UserController::class, 'changePassword'])->name('update-password-controller');
+Route::post('/update-avatar-controller', [UserController::class, 'changeAvatar'])->name('update-avatar-controller');
 
 
 // ##############################################
