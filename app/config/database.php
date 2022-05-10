@@ -45,7 +45,7 @@ return [
 
         'mysql' => [
             'read' => [
-                'host' => 'db.projeto-lti.rafaeljhr.pt',
+                'host' => 'master.projeto-lti.rafaeljhr.pt',
             ],
             'write' => [
                 'host' => 'master.projeto-lti.rafaeljhr.pt'
