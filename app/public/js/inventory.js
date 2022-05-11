@@ -275,7 +275,7 @@ let app = Vue.createApp({
         
         criarArmazem(e){
 
-            e.preventDefault(),;
+            e.preventDefault();
 
             document.getElementById("but-pad").style.display = "none";
             document.getElementById("spinnerAdicionarArmazem").style.display = "block";
