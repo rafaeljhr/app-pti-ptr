@@ -50,6 +50,10 @@
     width: 35%;
 }
 
+#filtroA{
+    width: 13%;
+}
+
 #infoAdicional{
     position: absolute;
     background-color: white;

@@ -244,7 +244,8 @@ class ProductsController extends Controller
                     <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
                     <div class='card-body text-center'>
                         <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
-                        <button type='button' class='btn btn-outline-primary'>Ver informações do produto</button>
+                        
+                        <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
                         <br>
                         <button type='button' class='btn btn-outline-primary'>Editar</button>
 
@@ -467,5 +468,119 @@ class ProductsController extends Controller
 
         return  array($htmlA, $htmlE, $htmlt, $htmlD);
     }
+
+
+
+    public function filterProduct(Request $request){
+
+        if($request->get('id_armazem') == "reset"){
+            $htmlR =
+            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+            ;
+            for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
+
+                $htmlR=$htmlR."
+                <div class='col'>
+                    <div class='card'>
+                        <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
+                        <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
+                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
+                        <div class='card-body text-center'>
+                            <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
+                            
+                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
+                            <br>
+                            <button type='button' class='btn btn-outline-primary'>Editar</button>
+    
+                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                    
+                        </div>
+                    </div>
+                </div>"
+                ;
+    
+                if($i > 0 && $i % 3==0) {
+                    $htmlR=$htmlR.
+                    "</div>".
+                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                    ;
+                }
+            }
+            return $htmlR;
+
+
+        }else{
+            $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
+
+            if($produto!=null){
+    
+            $html =
+            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+            ;
+    
+            $i = 0;
+            foreach($produto as $produtos) {
+            $html=$html."
+                <div class='col'>
+                    <div class='card'>
+                        
+                        <h5 class='card-title'>".$produtos->nome."</h5>
+                        <h4 class='card-text text-danger'>".$produtos->preco." €</h4>
+                        <img src='".$produtos->path_imagem."' class='imagemProduto card-img-top'>
+                        <div class='card-body text-center'>
+                            <h5 class='card-title'>".$produtos->informacoes_adicionais."</h5>
+                            
+                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".$produtos->id.")' class='btn btn-outline-primary'>Ver informações do produto</button>
+                            <br>
+                            <button type='button' class='btn btn-outline-primary'>Editar</button>
+    
+                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".$produtos->id.")' class='btn btn-outline-danger'>Apagar</button>
+                    
+                        </div>
+                    </div>
+                </div>"
+                ;
+    
+                if($i > 0 && $i % 3==0) {
+                    $html=$html.
+                    "</div>".
+                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                    ;
+                }
+                $i = $i + 1;
+            }
+            }
+            return  $html;
+        }
+       
+        
+        
+    }
+
+    public function changeSub(Request $request){
+
+        $subCat = Subcategoria::where('nome_categoria', $request->get('categoria'))->get();
+
+        if($request->get('categoria') != null){
+            $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
+            <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+                <option default value=''>-- Selecione uma subcategoria --</option>";
+            foreach($subCat as $sub){
+                $html=$html."
+                <option value='".$sub->nome."'>".$sub->nome."</option>
+                
+                ";
+            }
+            return $html;
+        }else{
+            $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
+            <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+                <option default value=''>-- Selecione uma subcategoria --</option>";
+            return $html;
+        }
+    
+    }
+
 
 }
