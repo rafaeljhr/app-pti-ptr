@@ -96,10 +96,12 @@ Route::post('/product-remove-event-controller', [ProductsController::class, "pro
 // ARMAZENS RELATED ROUTES
 // ##############################################
 
+Route::post('/armazem-info-controller', [ArmazensController::class, "storageInfo"])->name('storage-info');
+
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
-Route::get('/armazem-show-controller', [ArmazensController::class, "showDiv"])->name('armazem-show-controller');
+
 
 
 // ##############################################

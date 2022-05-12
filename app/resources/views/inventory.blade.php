@@ -231,55 +231,6 @@
 
 
 
-{{-- div para apresentar armazens  e criar  novos --}}
-<div id="todosArmazens" class="forForm">
-  <button type="button" @click="mostrarArmazens()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
- 
-  <h3>Os seus armazens:</h3>
-
-  <div id="apresentarArmazens"> 
- 
-  </div>
-
-  <div id="apresentarArmazensBefore"> 
- 
-  </div>
-
-     
- 
-  <button type="button" @click="mostrarCriarArmazem()" class="btn btn-primary" id="addCadeia">+</button>
-  
-  </div>
-</div>
-
-
-{{-- criar armazem --}}
-<div id="criarUmArmazem" class="armazem">
-  <button type="button" @click="mostrarCriarArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <form @submit.prevent="criarArmazem" method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
-    @csrf
-    <h3>Armazem:</h3>
-
-    <label for="nome" class="form-label">Nome</label>
-    <div class="input-group mb-3">  
-    <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
-    </div>
-
-    <label for="image" class="form-label">Imagem do seu armazém:</label>
-    <div class="input-group mb-3">       
-        <input type="file" class="form-control" name="path_imagem_armazem" id="image" aria-label="file" aria-describedby="basic-addon1">
-      </div>
-    <label for="morada" class="form-label">Morada do armazém</label>
-    <div class="input-group mb-3">  
-    <input type="text" class="form-control" name="morada" id="morada"  aria-describedby="basic-addon1" required>
-      </div>
-    
-  
-  <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Adicionar armazém</button>
-  <button id='spinnerAdicionarArmazem' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
-  
-  </form>
-</div>
 
 
 {{-- dropdown menu para selecionar o armazem --}}
@@ -301,10 +252,7 @@
 <button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
 
 
-<form @submit.prevent="displayThem" method="get" action="{{ route('armazem-show-controller')}}">
-  @csrf
-<button  class="btn btn-dark" type="submit" id="btn-id" >Criar armazens</button>
-</form>
+
 
 
 <div id="infoAdicional" >

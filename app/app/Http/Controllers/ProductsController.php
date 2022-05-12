@@ -160,12 +160,12 @@ class ProductsController extends Controller
             'id_fornecedor' => session()->get('user_id'),
             'quantidade' => $request->get('quantidade'),
             'nome_categoria' => $request->get('nome_categoria'),
-            'path_imagem' => $filename,
             'nome_subcategoria' => $request->get('nome_subcategoria'),
+            'path_imagem' => $filename,          
             'informacoes_adicionais' => $request->get('informacoes_adicionais'),
             'data_producao_do_produto' => $request->get('data_producao_do_produto'),
             'data_insercao_no_site' => $request->get('data_insercao_no_site'),
-            'kwh_consumidos_por_dia' => $request->get('kwh_consumidos_por_dia')
+            'kwh_consumidos_por_dia_no_armazem' => $request->get('kwh_consumidos_por_dia')
         ]);
 
         $atributos_novo_produto = [
@@ -181,7 +181,7 @@ class ProductsController extends Controller
             "produto_informacoes_adicionais" => $newProduto->informacoes_adicionais,
             "produto_data_producao_do_produto" => $newProduto->data_producao_do_produto,
             "produto_data_insercao_no_site" => $newProduto->data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia,
+            "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia_no_armazem,
         ];
 
 

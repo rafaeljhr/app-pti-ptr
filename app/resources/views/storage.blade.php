@@ -20,8 +20,13 @@
   <div id="fundoDivOpac"  class="backgroundSee"></div>
 
  
-
-  <button  class="btn btn-dark" @click="criarUmArmazem()" id="btn-id" >Criar armazens</button>
+  <div id="apresentação">
+    
+    <h4>Bem vindo <?php echo  session()->get('user_nome')?>! </h4>
+    <h5>Aqui pode ver todos os armazéns que se encontram associados à sua conta de momento </h5> 
+    <button  class="btn btn-dark" @click="criarUmArmazem()" id="btn-id" >Criar armazens</button>
+  </div>
+  
 
   <div id="criarUmArmazem" class="armazem">
     <button type="button" @click="criarUmArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
@@ -55,7 +60,7 @@
   
         <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
   
-        @if(session()->get('armazens')!=null)
+        @if(session()->get('armazens') != null)
           @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++) 
           
             <div class="col">
@@ -65,12 +70,13 @@
                 <img src='<?php echo session()->get('armazens')[$i]['armazem_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
                 <div class="card-body text-center">
                 <h4 class="card-text"><?php echo session()->get('armazens')[$i]['armazem_morada'] ?></h4>
-                <br>
-                  <button type="button" class="btn btn-outline-primary">Editar</button>
+                
+                <button id="storageInfo" name="{{ route('storage-info')}}" type="button" onclick="infoAdicional('<?php echo session()->get('armazens')[$i]['armazem_id']?>', '<?php echo session()->get('armazens')[$i]['armazem_nome'] ?>')" class="btn btn-outline-primary">info</button>
+                <br>  
+                <button type="button" class="btn btn-outline-primary">Editar</button>
   
-                  <button type="button" id='buttonApagarProduto' name="{{ route('armazem-delete-controller')}}" onclick="apagarArmazem(<?php echo session()->get('armazens')[$i]['armazem_id'] ?>)" class="btn btn-outline-danger">Apagar</button>
-                  <button id=' <?php echo session()->get('armazens')[$a]['armazem_id'] ?>' hidden class="w-100 btn btn-lg btn-primary"><a class="spinner-border text-light"></a></button>   
-                </div>
+                  <button type="button" id='buttonApagarArmazem' name="{{ route('armazem-delete-controller')}}" onclick="apagarArmazem('<?php echo session()->get('armazens')[$i]['armazem_id'] ?>')" class="btn btn-outline-danger">Apagar</button>
+                  </div>
   
               </div>
             </div>
@@ -92,14 +98,29 @@
     </div>
   </div>
 
-  <div id="successCreate" classs="container p-5">
+  {{-- <div id="confDiv">
+
+    <button type="button" id='' class="buttonApagarArmazem" name="{{ route('armazem-delete-controller')}}" onclick="apagarArmazem()" class="btn btn-outline-danger">Apagar</button>
+    <button id='' hidden class="w-100 btn btn-lg btn-primary"><a class="spinner-border text-light"></a></button>
+  </div> --}}
+
+
+<div id="storage_info"> 
+  <button type="button" @click="closeInfo()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+  <h3>Produtos do armazém:</h3>
+  <p id="info"></p>
+  <div id="prods"></div>
+</div>
+
+<div id="successCreate" classs="container p-5">
 	<div class="row no-gutters">
 		<div class="col-lg-6 col-md-12 m-auto">
 			<div class="alert alert-success fade show" role="alert">
 				
-			 	<h4 class="alert-heading">Well done!</h4>
-			  	<p>This is an alert within a column. The column can be made any size at different viewpoints.</p>
-			</div>
+			 	<h4 class="alert-heading">Sucesso!</h4>
+			  <p id="aviso">O seu armazem foi criado com sucesso.</p>
+        <button  class="w-40 btn btn-lg btn-primary"  @click="closeSuccess()" id ="okButton" >Ok</button>
+      </div>
 		</div>
 	</div>
 </div>

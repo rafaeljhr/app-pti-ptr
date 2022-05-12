@@ -13,14 +13,38 @@
 }
 
 
-#successCreate {
+#okButton{
+    left: 50%;
+}
 
-    display:block;
+
+#storage_info{
+    display: none;
+}
+
+#successCreate {
+    opacity:0.75;
+    bottom: 5%;
+    left: 18%;
+    width: 60%;
+    position: absolute;
+    display:none;
 
 }
 
+#storage_info{
+    position: absolute;
+    background-color: white;
+    border: solid;
+    padding: 10px;
+    top: 25%;
+    left: 25%;
+    z-index: 9;
+    width: 55%;
+}
+
 .armazem{
- 
+    display:none;
     position: absolute;
     background-color: white;
     border: solid;

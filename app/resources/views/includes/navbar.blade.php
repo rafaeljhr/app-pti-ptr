@@ -52,7 +52,7 @@ Session_start();
                     @if(Session::get('userType') == 'fornecedor')
                     <li><a class="dropdown-item" href="#">Encomendas</a></li>
                     <li><a class="dropdown-item" href="{{ route('inventory') }}">Inventário</a></li>
-                    <li><a class="dropdown-item" {{-- href="{{ route('storage') }}" --}}>Armazéns</a></li>
+                    <li><a class="dropdown-item"  href="{{ route('storage') }}" >Armazéns</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
                     <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
