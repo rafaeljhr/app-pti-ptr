@@ -34,7 +34,6 @@ let app = Vue.createApp({
         }
 
         this.showTab(this.current_tab);
-        // this.showTab(1);
     },
 
     methods: {

@@ -36,6 +36,14 @@ Session_start();
         @if(Session::get('loggedIn') == 'yes')
        
             <div class="dropdown" id="menu_perfil_utilizador">
+
+                <a style="text-decoration:none;">
+                    <img class="icons_navbar" src="images/carrinho_de_compras.png">
+                </a>
+
+                <a style="text-decoration:none;">
+                    <img class="icons_navbar" src="images/notification_bell.png">
+                </a>
                     
                 <a style="text-decoration:none;" class="dropdown-toggle" id="drop" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img id="foto_navbar" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">

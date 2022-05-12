@@ -34,6 +34,8 @@ class GoogleController extends Controller
             session()->put('user_nome', $nome);
             session()->put('user_google_id', $google_id);
 
+            // return $google_id;
+
             if (session()->get('login_ou_registo') == "registo") {
                 return redirect()->route('register-url');
             } else {
