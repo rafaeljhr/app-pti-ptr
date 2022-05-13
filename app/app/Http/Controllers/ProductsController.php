@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produto;
+use App\Models\Armazem;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Evento;
@@ -159,12 +160,12 @@ class ProductsController extends Controller
             'id_fornecedor' => session()->get('user_id'),
             'quantidade' => $request->get('quantidade'),
             'nome_categoria' => $request->get('nome_categoria'),
-            'path_imagem' => $filename,
             'nome_subcategoria' => $request->get('nome_subcategoria'),
+            'path_imagem' => $filename,          
             'informacoes_adicionais' => $request->get('informacoes_adicionais'),
             'data_producao_do_produto' => $request->get('data_producao_do_produto'),
             'data_insercao_no_site' => $request->get('data_insercao_no_site'),
-            'kwh_consumidos_por_dia' => $request->get('kwh_consumidos_por_dia')
+            'kwh_consumidos_por_dia_no_armazem' => $request->get('kwh_consumidos_por_dia')
         ]);
 
         $atributos_novo_produto = [
@@ -180,7 +181,7 @@ class ProductsController extends Controller
             "produto_informacoes_adicionais" => $newProduto->informacoes_adicionais,
             "produto_data_producao_do_produto" => $newProduto->data_producao_do_produto,
             "produto_data_insercao_no_site" => $newProduto->data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia,
+            "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia_no_armazem,
         ];
 
 
@@ -243,7 +244,8 @@ class ProductsController extends Controller
                     <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
                     <div class='card-body text-center'>
                         <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
-                        <button type='button' class='btn btn-outline-primary'>Ver informações do produto</button>
+                        
+                        <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
                         <br>
                         <button type='button' class='btn btn-outline-primary'>Editar</button>
 
@@ -412,9 +414,173 @@ class ProductsController extends Controller
 
 
 
-    public function productInfo(){
-        $html = "teste";
-        return $html;
+    public function productInfo(Request $request){
+       
+        
+        $produto = Produto::where('id', $request->get('id_produto'))->first();
+        $armazem = Armazem::where('id', $produto->id_armazem)->first();
+        $htmlA = "
+        <div class='card' id='prudInfoA'>
+                   
+            <h5 class='card-title'>".$armazem->nome."</h5>
+            <img src='".$armazem->path_imagem."' class='imagemProduto card-img-top'>
+            
+            <h5 class='card-title'>".$armazem->morada."</h5>
+            
+
+        </div>";
+        $htmlE='<div class="row">'
+        ;
+        if(Evento::where('id_produto', $request->get('id_produto'))  != null){
+            $evento = Evento::where('id_produto', $request->get('id_produto'))->get();
+            $i = 0;
+            foreach($evento as $eventos ){
+                $htmlE=$htmlE.'
+                <div class="col">
+                <div class="card"  style="width: 18rem;"> 
+                    <div class="card-body">
+                    <h5 class="card-title">'.$eventos->nome.'</h5>
+                    <p class="card-text">'.$eventos->descricao_do_evento.'</p>         
+                    </div>
+                </div>
+                </div>'
+                ;
+
+            if($i > 0 && $i % 3==0) {
+                $htmlE=$htmlE.
+                '</div>'.
+                '<div class="row">'
+                ;
+            }
+            $i = $i + 1;
+            }
+        }
+
+        $htmlD='<p id="toOverflow">Informações adicionais: '.$produto->informacoes_adicionais.'</p>';
+
+        $htmlt='<p>Categoria: '.$produto->nome_categoria.'</p>
+        <p>Subcategoria: '.$produto->nome_subcategoria.'</p>
+        <p>Data de produção: '.$produto->data_producao_do_produto.'</p>
+        <p>Data de inserção: '.$produto->data_insercao_no_site.'</p>
+        <p>kwh:  '.$produto->kwh_consumidos_por_dia.'</p>
+        
+        ';
+
+        return  array($htmlA, $htmlE, $htmlt, $htmlD);
     }
+
+
+
+    public function filterProduct(Request $request){
+
+        if($request->get('id_armazem') == "reset"){
+            $htmlR =
+            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+            ;
+            for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
+
+                $htmlR=$htmlR."
+                <div class='col'>
+                    <div class='card'>
+                        <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
+                        <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
+                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
+                        <div class='card-body text-center'>
+                            <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
+                            
+                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
+                            <br>
+                            <button type='button' class='btn btn-outline-primary'>Editar</button>
+    
+                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                    
+                        </div>
+                    </div>
+                </div>"
+                ;
+    
+                if($i > 0 && $i % 3==0) {
+                    $htmlR=$htmlR.
+                    "</div>".
+                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                    ;
+                }
+            }
+            return $htmlR;
+
+
+        }else{
+            $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
+
+            if($produto!=null){
+    
+            $html =
+            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+            ;
+    
+            $i = 0;
+            foreach($produto as $produtos) {
+            $html=$html."
+                <div class='col'>
+                    <div class='card'>
+                        
+                        <h5 class='card-title'>".$produtos->nome."</h5>
+                        <h4 class='card-text text-danger'>".$produtos->preco." €</h4>
+                        <img src='".$produtos->path_imagem."' class='imagemProduto card-img-top'>
+                        <div class='card-body text-center'>
+                            <h5 class='card-title'>".$produtos->informacoes_adicionais."</h5>
+                            
+                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".$produtos->id.")' class='btn btn-outline-primary'>Ver informações do produto</button>
+                            <br>
+                            <button type='button' class='btn btn-outline-primary'>Editar</button>
+    
+                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".$produtos->id.")' class='btn btn-outline-danger'>Apagar</button>
+                    
+                        </div>
+                    </div>
+                </div>"
+                ;
+    
+                if($i > 0 && $i % 3==0) {
+                    $html=$html.
+                    "</div>".
+                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                    ;
+                }
+                $i = $i + 1;
+            }
+            }
+            return  $html;
+        }
+       
+        
+        
+    }
+
+    public function changeSub(Request $request){
+
+        $subCat = Subcategoria::where('nome_categoria', $request->get('categoria'))->get();
+
+        if($request->get('categoria') != null){
+            $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
+            <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+                <option default value=''>-- Selecione uma subcategoria --</option>";
+            foreach($subCat as $sub){
+                $html=$html."
+                <option value='".$sub->nome."'>".$sub->nome."</option>
+                
+                ";
+            }
+            return $html;
+        }else{
+            $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
+            <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+                <option default value=''>-- Selecione uma subcategoria --</option>";
+            return $html;
+        }
+    
+    }
+
 
 }

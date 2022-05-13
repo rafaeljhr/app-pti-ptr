@@ -6,12 +6,23 @@
     
     <?php
 
-    $userName = Session::get('user_nome');
     $userEmail = Session::get('user_email');
-    $userTel = Session::get('user_telefone');
-    $userNIF = Session::get('user_nif');
-    $userAdress = Session::get('user_morada');
-    $userImage = Session::get('path_imagem');
+    $userPrimeiroNome = Session::get('user_primeiro_nome');
+    $userUltimoNome = Session::get('user_ultimo_nome');
+    $userImage = Session::get('user_path_imagem');
+    $userTel = Session::get('user_numero_telemovel');
+    $userNumContribuinte = Session::get('user_numero_contribuinte');
+    $userMorada = Session::get('user_morada');
+
+    $userCodPostal = Session::get('user_codigo_postal');
+    $userCodPostal = explode("-", $userCodPostal);
+
+    $userCodPostal_1 = $userCodPostal[0];
+    $userCodPostal_2 = $userCodPostal[1];
+
+    $userCidade = Session::get('user_cidade');
+    $userPais = Session::get('user_pais');
+    
 
     if (Session::get('userType') == 'consumidor') {
         $clientConsumer = true;
@@ -116,7 +127,9 @@
 
         <div class="form-div mx-auto my-2 px-3">
 
-            <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">Os Meus Dados</h1>
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
+
+            <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">O MEU PERFIL</h1>
 
             <div class="px-4">
                 <form method="post" action="{{ route('edit-profile-controller') }}">
@@ -243,16 +256,97 @@
                             </div>
                         </div>
 
-                        <div class="position-relative my-2">
-                            <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
-                            <button v-show="editable" type="submit" class="btn btn-primary me-3">Guardar Alterações</button>
-                            <button v-show="editable" type="button" class="btn btn-secondary" @click="cancelChanges()">Cancelar Alterações</button>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Conta</button>
+                        <div class="col">
+                            <label for="ultimo_nome" class="form-label text-dark">Último nome</label>
+                            <input ref="userUltimoNome" type="text" name="ultimo_nome" class="form-control mb-3" value="<?=$userUltimoNome?>" :disabled="!editable">
+                        </div>
+    
+                        <div class="col">
+                            <label for="email" class="form-label text-dark">Email</label>
+                            <div class="input-group mb-3">
+                                <input ref="userEmail" name="email" type="email" class="form-control" value="<?=$userEmail?>" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="telemovel" class="form-label text-dark">Telemóvel</label>
+                            <input @input="checkForm()" ref="userTel" name="telemovel" type="text" class="form-control" minlength="9" maxlength="9" value="<?=$userTel?>" :disabled="!editable">
                         </div>
 
-                        
+                        <div class="col">
+                            @if ($clientConsumer) 
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte</label>
+                            @else
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte da Empresa</label>
+                            @endif
+                            <input @input="checkForm()" ref="userNumContribuinte" type="text" name="numero_contribuinte" class="form-control" minlength="9" maxlength="9" value="<?=$userNumContribuinte?>" :disabled="!editable">
+                        </div>
+
+                        <div class="col">
+                            <label for="pais" class="sr-only text-dark">País</label>
+                            
+                            <input ref="userPais" type="text" name="pais" class="form-control mb-3" value="<?=$userPais?>" :disabled="!editable">
+                        </div>
                     </div>
+    
+
+                    <div class="row">
+                        <div class="col">
+                            @if ($clientConsumer)
+                                <label for="morada" class="sr-only text-dark">Morada</label>
+                            @else
+                                <label for="morada" class="sr-only text-dark">Morada Fiscal</label>
+                            @endif
+                            
+                            <input ref="userMorada" type="text" name="morada" class="form-control mb-3" value="<?=$userMorada?>" :disabled="!editable">
+                        </div>
+
+                        <div class="col">
+                            <label class="text-dark" style="display: table-cell;">Código Postal</label>
+                            <div class="inline-icon">
+                                <input ref="userCodPostal_1" type="text" name="codigo_postal_1" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_1?>" maxlength="4" :disabled="!editable" placeholder="xxxx">
+                                <input ref="userCodPostal_2" type="text" name="codigo_postal_2" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_2?>" maxlength="3" :disabled="!editable" placeholder="xxx">
+                                <i v-show="codigo_postal_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Código postal inválido"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label for="cidade" class="sr-only text-dark">Cidade</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userCidade" type="text" name="cidade" class="form-control mb-3" value="<?=$userCidade?>" :disabled="!editable">
+                                <i v-show="cidade_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir uma cidade"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <button type="button" class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">Alterar Fotografia</button>
+                        </div>
+    
+                        <div class="col-sm">
+                            <button type="button" class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#modalMudarPass">Mudar Password</button>
+                        </div>
+                    </div>
+
+
+                    <br><br>
+
+
+                    <div class="position-relative my-2">
+                        <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
+                        <button v-show="editable" type="submit" class="btn btn-warning me-3">Guardar Alterações</button>
+                        <button v-show="editable" type="button" class="btn btn-primary" @click="cancelChanges()">Cancelar Alterações</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Conta</button>
+                    </div>
+
                 </form>
             </div>
         </div>    

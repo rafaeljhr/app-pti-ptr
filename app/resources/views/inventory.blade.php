@@ -5,9 +5,9 @@
 
 <?php
 
-// dd(session()->all());
+//dd(session()->all());
 
-session()->forget('produto_cadeia_logistica');
+//session()->forget('produto_cadeia_logistica');
 
 ?>
 
@@ -18,6 +18,14 @@ session()->forget('produto_cadeia_logistica');
 @section('background') 
 
 <div id="fundoDivOpac" v-show="fundoDivOpac" class="backgroundSee"></div>
+<p class="lead">
+  Bem vindo à sua área de produtos <?php echo session()->get('user_nome')?>!
+</p>
+
+@if(sizeOf(session()->get('armazens'))  == 0)
+<p>Não possui nenhum armazém associado à sua conta logo não pode criar produtos!</p>
+<p>Diriga-se à página dos armazens onde poderá criar um ou mais</p>
+@endif
 
 <div id="productForm" v-show="fundoDiv" class="forForm">
   <button type="button" @click="mostrarCriarProduto();" class="btn-close" id="button-close-div"  aria-label="Close"></button>
@@ -52,7 +60,7 @@ session()->forget('produto_cadeia_logistica');
         <div class="row" >
           <div class="col">
             <label for="nome_categoria" class="form-label">Categoria do produto</label>
-            <select class="form-control"  @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" required>
+            <select class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" required>
               <option value="">-- Selecione uma categoria --</option>
               @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
               <?php $category= session()->get('categories')[$i] ?>
@@ -62,25 +70,10 @@ session()->forget('produto_cadeia_logistica');
           </div>
 
           <div class="col">
-            <label for="nome_categoria" class="form-label">Subcategoria</label>
-            <select class="form-control"  name="nome_subcategoria" id="novo_produto_subcategoria" required>
-              <option value="">-- Selecione uma subcategoria --</option>             
-              @for($i = 0; $i < sizeOf(session()->get('subcategories')); $i++)
-              <?php $subcategory= session()->get('subcategories')[$i]['subcategory_nome_categoria'] ?>
-              @if($subcategory=="mobilidade")
-              <option v-if="mobilidade" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
-              @endif
-              @if($subcategory=="computadores")
-              <option v-if="computadores" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
-              @endif
-              @if($subcategory=="componentes")
-              <option v-if="componentes" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
-              @endif 
-              @if($subcategory=="periféricos")
-              <option v-if="perifericos" value='<?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?>'><?php echo session()->get('subcategories')[$i]['subcategory_nome'] ?></option>
-              @endif              
-              @endfor               
-            </select>         
+            <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
+            <div id="toChangeOnCmd">
+              
+          </div>       
           </div>
 
         </div>
@@ -231,80 +224,55 @@ session()->forget('produto_cadeia_logistica');
 
 
 
-{{-- div para apresentar armazens  e criar  novos --}}
-<div id="todosArmazens" class="forForm">
-  <button type="button" @click="mostrarArmazens()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
- 
-  <h3>Os seus armazens:</h3>
-
-  <div id="apresentarArmazens"> 
- 
-  </div>
-
-  <div id="apresentarArmazensBefore"> 
- 
-  </div>
-
-     
- 
-  <button type="button" @click="mostrarCriarArmazem()" class="btn btn-primary" id="addCadeia">+</button>
-  
-  </div>
-</div>
-
-
-{{-- criar armazem --}}
-<div id="criarUmArmazem" class="armazem">
-  <button type="button" @click="mostrarCriarArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <form @submit.prevent="criarArmazem" method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
-    @csrf
-    <h3>Armazem:</h3>
-
-    <label for="nome" class="form-label">Nome</label>
-    <div class="input-group mb-3">  
-    <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
-    </div>
-
-    <label for="image" class="form-label">Imagem do seu armazém:</label>
-    <div class="input-group mb-3">       
-        <input type="file" class="form-control" name="path_imagem_armazem" id="image" aria-label="file" aria-describedby="basic-addon1">
-      </div>
-    <label for="morada" class="form-label">Morada do armazém</label>
-    <div class="input-group mb-3">  
-    <input type="text" class="form-control" name="morada" id="morada"  aria-describedby="basic-addon1" required>
-      </div>
-    
-  
-  <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Adicionar armazém</button>
-  <button id='spinnerAdicionarArmazem' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
-  
-  </form>
-</div>
 
 
 {{-- dropdown menu para selecionar o armazem --}}
-<div class="dropdown" id="">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Filtrar por armazem
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a class="dropdown-item" href="#">Todos</a></li>
-    @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-    
-    <li><a class="dropdown-item" href="#"><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></a></li>
-    @endfor
+<label for="nome_categoria" class="form-label">Filtrar por armazém</label>
+<select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
+  <option default value="reset">-- Todos os produtos --</option>
+  @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+  <?php $category= session()->get('armazens')[$i] ?>
+  <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
+  @endfor
+</select>
 
-  </ul>
+@if(sizeOf(session()->get('armazens'))  >  0)
+<button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+@else
+
+<button type="submit"  @click ="mostrarCriarProduto()" disabled class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+
+@endif
+
+
+
+
+<div id="infoAdicional" >
+  <button type="button" @click="hideShowInfoProduct()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+ <div class="row">
+   <div class="col">
+  <h3>O armazém:</h3>
+
+  <div id="produtoArmazens"></div>
+ 
+  
+  <h3>As suas cadeias Logisticas</h3>
+  <div id="produtoCadeias"></div>
+
+</div>
+<div class="col" id="descriptionGeral">
+  
+</div>
+<div class="col" id="descriptionText">
+  <p>oal</p>
+</div>
+</div>
+
+  
 </div>
 
 
-<button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
 
-
-<form @submit.prevent="displayThem" method="get" action="{{ route('armazem-show-controller')}}">
-  @csrf
-<button  class="btn btn-dark" type="submit" id="btn-id" >Criar armazens</button>
-</form>
 
 {{-- mostrar todos os produtos --}}
 <div class="container p-0 mt-5 mb-5">
@@ -317,13 +285,12 @@ session()->forget('produto_cadeia_logistica');
         
           <div class="col">
             <div class="card">
-              <button type="button" class="btn-close" id="button-close-div"  aria-label="Close"></button>
               <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
               <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                <button type="button" name="{{ route('product-info')}}" onclick="apagarProduto(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
+                <button type="button" id="showProductInfo" name="{{ route('product-info')}}" onclick="showInfoProduct(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 <button type="button" class="btn btn-outline-primary">Editar</button>
 

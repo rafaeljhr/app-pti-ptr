@@ -1,0 +1,85 @@
+#todosArmazens {
+    display: none;
+}
+
+
+#criarUmArmazem {
+    display: none;
+}
+
+
+#fundoDivOpac {
+    display: none;
+}
+
+
+#okButton{
+    left: 50%;
+}
+
+
+#storage_info{
+    display: none;
+}
+
+#successCreate {
+    opacity:0.75;
+    bottom: 5%;
+    left: 18%;
+    width: 60%;
+    position: absolute;
+    display:none;
+
+}
+
+#storage_info{
+    position: absolute;
+    background-color: white;
+    border: solid;
+    padding: 10px;
+    top: 25%;
+    left: 25%;
+    z-index: 9;
+    width: 55%;
+}
+
+.armazem{
+    display:none;
+    position: absolute;
+    background-color: white;
+    border: solid;
+    padding: 10px;
+    top: 25%;
+    left: 25%;
+    z-index: 9;
+    width: 55%;
+  
+}
+
+#but-pad{
+    display: block;
+    width: 50%;
+}
+
+#button-close-div{
+    padding:5px;
+    float: right;
+}
+
+#spinnerAdicionarArmazem {
+    display: none;
+}
+
+
+.backgroundSee{
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background-color: #000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}

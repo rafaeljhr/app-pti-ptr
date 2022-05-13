@@ -34,6 +34,20 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile-url');
 
+Route::get('/storage', function () {
+
+    if(session()->has('armazens')){
+
+        return view('storage');
+
+    } else {
+
+        ArmazensController::getAllArmazens();
+        return view('storage');
+
+    }
+})->name('storage');
+
 Route::get('/inventory', function () {
 
     if(session()->has('all_fornecedor_produtos')){
@@ -64,7 +78,10 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // PRODUCTS RELATED ROUTES
 // ##############################################
 
-Route::get('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
+Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
+
+Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');
+Route::post('/product-categories', [ProductsController::class, "changeSub"])->name('product-changeSub');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
@@ -82,10 +99,12 @@ Route::post('/product-remove-event-controller', [ProductsController::class, "pro
 // ARMAZENS RELATED ROUTES
 // ##############################################
 
+Route::post('/armazem-info-controller', [ArmazensController::class, "storageInfo"])->name('storage-info');
+
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
-Route::get('/armazem-show-controller', [ArmazensController::class, "showDiv"])->name('armazem-show-controller');
+
 
 
 // ##############################################
@@ -101,6 +120,7 @@ Route::post('/login-controller', [UserController::class, 'login'])->name('login-
 Route::post('/edit-profile-controller', [UserController::class, 'update'])->name('edit-profile-controller');
 Route::post('/delete-profile-controller', [UserController::class, 'delete'])->name('delete-profile-controller');
 Route::post('/update-password-controller', [UserController::class, 'changePassword'])->name('update-password-controller');
+Route::post('/update-avatar-controller', [UserController::class, 'changeAvatar'])->name('update-avatar-controller');
 
 
 // ##############################################

@@ -76,7 +76,7 @@ class ArmazensController extends Controller
         // Constucao do armazém para ser mostrado no html
         //
         $htmlA =
-        '<div class="row">'
+        '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
         ;
 
         
@@ -89,12 +89,14 @@ class ArmazensController extends Controller
                    
                     <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
                     <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
-                    
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h5>
+                    <div class='card-body text-center'>
+                    <h4 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h4>
+                    <button id='storageInfo' name='". route('storage-info')."' type='button' onclick='infoAdicional('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-primary'>info</button>
+                    <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
                     <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                    <button id='".session()->get('armazens')[$a]['armazem_id']."' hidden class='w-100 btn btn-lg btn-primary' ><a class='spinner-border text-light'></a></button>        
+                    </div>
                 </div>
             </div>"
             ;
@@ -103,7 +105,7 @@ class ArmazensController extends Controller
                 $htmlA=$htmlA.
                 '</div>'.
                 
-                '<div class="row">'
+                '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
                 ;
             }
         }
@@ -115,9 +117,6 @@ class ArmazensController extends Controller
             ;
         }
 
-
-
-
         return $htmlA; //devolver a cadeia logistica do produto
 
         
@@ -127,7 +126,7 @@ class ArmazensController extends Controller
     }
 
 
-    public function getAllArmazens()
+    public static function getAllArmazens()
     {
         $fornecedor_armazens = Armazem::where('id_fornecedor', session()->get('user_id'))->get();
 
@@ -158,63 +157,13 @@ class ArmazensController extends Controller
 
 
 
-    public function showDiv(){
-        
-        $htmlA =
-        '<div class="row">'
-        ;
-      
-        for($a = 0; $a < sizeOf(session()->get('armazens')); $a++) {
-
-
-            $htmlA=$htmlA."
-            <div class='col'>
-                <div class='card'>
-                   
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
-                    <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
-                    
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h5>
-                    <button type='button' class='btn btn-outline-primary'>Editar</button>
-
-                    <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                    <button id='".session()->get('armazens')[$a]['armazem_id']."' hidden class='w-100 btn btn-lg btn-primary' ><a class='spinner-border text-light'></a></button>       
-                </div>
-            </div>"
-            ;
-
-            if($a > 0 && $a % 3==0) {
-                $htmlA=$htmlA.
-                '</div>'.
-                
-                '<div class="row">'
-                ;
-            }
-        }
-
-        if(sizeOf(session()->get('armazens')) % 3!=0) {
-            $htmlA=$htmlA.
-            '</div>'
-           
-            ;
-        }
-
-
-        return $htmlA; 
-    }
-
-
+    
 
 
     public function armazemDelete(Request $request){
         
         $produto = Produto::where('id_armazem', $request->get('id_armazem'))->first();
        
-        
-
-        
-
-
         if($produto!=null){
             Evento::where('id_produto', $produto->id)->delete();
             if ($produto->path_imagem != "images/default_produto.jpg") {
@@ -223,13 +172,8 @@ class ArmazensController extends Controller
     
             $produto->delete();
             session()->forget('all_fornecedor_produtos');
-             ProductsController::rebuild_fornecedor_session(); // rebuild products on session
+            ProductsController::rebuild_fornecedor_session(); // rebuild products on session
         }
-
-
-        
-
-       
 
         $armazem = Armazem::where('id', $request->get('id_armazem'))->first();
         
@@ -245,7 +189,7 @@ class ArmazensController extends Controller
         (new ArmazensController)->getAllArmazens(); // rebuild armazens of fornecedor in session
 
         $htmlA =
-        '<div class="row">'
+        '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
         ;
 
         
@@ -259,11 +203,17 @@ class ArmazensController extends Controller
                     <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
                     <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
                     
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h5>
+                    <div class='card-body text-center'>
+
+                    <h4 class='card-text'>".session()->get('armazens')[$a]['armazem_morada']."</h4>
+                    <button id='storageInfo' name='".route('storage-info')."' type='button' onclick='infoAdicional('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-primary'>info</button>
+                    <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
                     <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                    <button id='".session()->get('armazens')[$a]['armazem_id']."' hidden class='w-100 btn btn-lg btn-primary' ><a class='spinner-border text-light'></a></button>        
+                
+                    
+                    </div>
                 </div>
             </div>"
             ;
@@ -272,7 +222,7 @@ class ArmazensController extends Controller
                 $htmlA=$htmlA.
                 '</div>'.
                 
-                '<div class="row">'
+                '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
                 ;
             }
         }
@@ -284,10 +234,58 @@ class ArmazensController extends Controller
             ;
         }
 
-
-
-
         return $htmlA; 
     }
 
+    public function storageInfo(Request $request){
+
+        $produtos = Produto::where('id_armazem', $request->get('id_armazem'))->get();
+        $armazemNome = Armazem::where('id', $request->get('id_armazem'))->first();
+        if($produtos != null  && count($produtos) ){
+            $htmlP="Armazem: ";
+            $htmlP .= $armazemNome->nome;
+            $html =
+            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+            ;
+
+            $i = 0;
+            foreach($produtos as $armazemSel){
+
+                $html=$html."
+                <div class='col'>
+                    <div class='card'>
+                        
+                        <h5 class='card-title'>".$armazemNome->nome."</h5>
+                        <h4 class='card-text-center text-danger'>".$armazemSel->preco." €</h4>
+                        <img src='".$armazemSel->path_imagem."' class='imagemProduto card-img-top'>
+                        <div class='card-body text-center'>
+                            <h5 class='card-title'>Informacões adicionais: ".$armazemSel->informacoes_adicionais."</h5>                
+                        </div>
+                    </div>
+                </div>"
+                ;
+
+                if($i > 0 && $i % 3==0) {
+                    $html=$html.
+                    "</div>".
+                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
+                    ;
+                }
+                $i = $i + 1;
+                
+            }
+
+
+            
+        }else{
+            $html ="";
+            $htmlP ="Não possui nenhum produto associado ao armazem ";
+            $htmlP .= $armazemNome->nome;
+        }
+
+        return array($html, $htmlP);
+    }
+
 }
+
+

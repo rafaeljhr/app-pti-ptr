@@ -1,11 +1,16 @@
 let app = Vue.createApp({
     data: function() {
         return {
-            userName: "",
+            userPrimeiroNome: "",
+            userUltimoNome: "",
             userEmail: "",
             userTel: "",
-            userNIF: "",
-            userAdress: "",
+            userNumContribuinte: "",
+            userPais: "",
+            userMorada: "",
+            userCodPostal_1: "",
+            userCodPostal_2: "",
+            userCidade: "",
             editable: false,
             telephone_valid: true,
             nif_valid: true,
@@ -22,11 +27,16 @@ let app = Vue.createApp({
     methods: {
         cancelChanges() {
             this.editable = false;
-            this.$refs.userName.value = this.userName;
+            this.$refs.userPrimeiroNome.value = this.userPrimeiroNome;
+            this.$refs.userUltimoNome.value = this.userUltimoNome;
             this.$refs.userEmail.value = this.userEmail;
             this.$refs.userTel.value = this.userTel;
-            this.$refs.userNIF.value = this.userNIF;
-            this.$refs.userAdress.value = this.userAdress;
+            this.$refs.userNumContribuinte.value = this.userNumContribuinte;
+            this.$refs.userPais.value = this.userPais;
+            this.$refs.userMorada.value = this.userMorada;
+            this.$refs.userCodPostal_1.value = this.userCodPostal_1;
+            this.$refs.userCodPostal_2.value = this.userCodPostal_2;
+            this.$refs.userCidade.value = this.userCidade;
         },
 
         checkForm() {
@@ -87,11 +97,16 @@ let app = Vue.createApp({
     }, 
 
     mounted() {
-        this.userName = this.$refs.userName.value; 
-        this.userEmail = this.$refs.userEmail.value
+        this.userPrimeiroNome = this.$refs.userPrimeiroNome.value;
+        this.userUltimoNome = this.$refs.userUltimoNome.value;
+        this.userEmail = this.$refs.userEmail.value;
         this.userTel = this.$refs.userTel.value;
-        this.userNIF = this.$refs.userNIF.value;
-        this.userAdress = this.$refs.userAdress.value;
+        this.userNumContribuinte = this.$refs.userNumContribuinte.value;
+        this.userPais = this.$refs.userPais.value;
+        this.userMorada = this.$refs.userMorada.value;
+        this.userCodPostal_1 = this.$refs.userCodPostal_1.value;
+        this.userCodPostal_2 = this.$refs.userCodPostal_2.value;
+        this.userCidade = this.$refs.userCidade.value;
     }
 })
 

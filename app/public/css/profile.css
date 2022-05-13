@@ -1,10 +1,12 @@
 .logo {
-    max-width: 50%;
+    width: 200px;
+    height: 200px;
     height: auto;
+    border-radius: 50%;
 }
 
 .form-div {
-    width: 80%;
+    width: 100%;
     background-color: #fff;
     border-radius: 1rem;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
@@ -20,6 +22,8 @@ input[disabled] {
     border: solid 1px #05591A!important;
 }
 
+
+
 .adicionar-foto {
     color: transparent;
     overflow: hidden;
@@ -31,7 +35,7 @@ input[disabled] {
 }
 
 .adicionar-foto::before {
-    content: 'Alterar Fotografia';
+    content: 'Alterar Avatar';
     color: black;
     display: inline-block;
     background: #93BF7E;

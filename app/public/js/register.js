@@ -10,20 +10,24 @@ let app = Vue.createApp({
             contains_uppercase: false,
             contains_special_character: false,
             strong_password: 'no',
+            first_name_valid: false,
+            last_name_valid: false,
             telephone_valid: false,
             morada_valid: false,
-            nif_valid: false,
+            cidade_valid: false,
+            codigo_postal_valid: false,
+            numero_contribuinte_valid: false,
             diff_password: 'yes',
             form_valid: false,
             user_google_id: null,
-            current_tab: null,
+            current_tab: 0,
             tabs: document.getElementsByClassName("tab"),
             steps: document.getElementsByClassName("step"),
         }
     },
 
     mounted() {
-        if ((this.user_google_id) != null) {
+        if (document.getElementById("user_google_id").name == 1) {
             this.current_tab = 1;
         } else {
             this.current_tab = 0;
@@ -105,15 +109,10 @@ let app = Vue.createApp({
         
             } else if (this.current_tab == 1){
                 this.$refs.header.innerHTML = "DADOS DA SUA CONTA";
-        
+                
                 if (this.$refs.userEmail.value) {
-                    this.$refs.userName.value = "";
-        
-                    if (this.$refs.userInputEmail.value) {
-                        this.$refs.userInputEmail.value = this.$refs.userEmail.value;
-                    } else{
-                        this.$refs.userInputEmail.value = this.$refs.userEmail.value;
-                    }
+                    this.$refs.primeiro_nome.value = "";
+                    this.$refs.userInputEmail.value = this.$refs.userEmail.value;
                     
                 }
         
@@ -187,6 +186,24 @@ let app = Vue.createApp({
         },
 
         checkForm() {
+            if (this.$refs.primeiro_nome.value.length <= 0) {
+                this.first_name_valid = false;
+                
+            } else {
+                this.first_name_valid = true;
+                
+            }
+
+
+            if (this.$refs.ultimo_nome.value.length <= 0) {
+                this.last_name_valid = false;
+                
+            } else {
+                this.last_name_valid = true;
+                
+            }
+
+
             if (isNaN(this.$refs.userTel.value)) {
                 this.telephone_valid = false;
                 
@@ -200,15 +217,15 @@ let app = Vue.createApp({
                 }
             }
 
-            if (isNaN(this.$refs.userNIF.value)) {
-                this.nif_valid = false;
+            if (isNaN(this.$refs.user_numero_contribuinte.value)) {
+                this.numero_contribuinte_valid = false;
                 
             } else {
-                if (this.$refs.userNIF.value.length == 9){
-                    this.nif_valid = true;
+                if (this.$refs.user_numero_contribuinte.value.length == 9){
+                    this.numero_contribuinte_valid = true;
                     
                 } else {
-                    this.nif_valid = false;
+                    this.numero_contribuinte_valid = false;
                     
                 }
             } 
@@ -220,11 +237,40 @@ let app = Vue.createApp({
                 this.morada_valid = true;
                 
             }
+
+
+            if (this.$refs.userCidade.value.length <= 0) {
+                this.cidade_valid = false;
                 
-            if (this.telephone_valid === true &&  
-                this.nif_valid === true && 
-                this.morada_valid === true) {
+            } else {
+                this.cidade_valid = true;
+                
+            }
+
+
+            if ((isNaN(this.$refs.userCod_Postal_1.value)) && (isNaN(this.$refs.userCod_Postal_2.value))) {
+                this.codigo_postal_valid = false;
+                
+            } else {
+                if ((this.$refs.userCod_Postal_1.value.length == 4) && (this.$refs.userCod_Postal_2.value.length == 3)){
+                    this.codigo_postal_valid = true;
+                    
+                } else {
+                    this.codigo_postal_valid = false;
+                    
+                }
+            }
+                
+            if (this.first_name_valid === true &&
+                this.last_name_valid === true &&
+                this.telephone_valid === true &&  
+                this.numero_contribuinte_valid === true && 
+                this.morada_valid === true &&
+                this.cidade_valid === true &&
+                this.codigo_postal_valid === true) {
                 this.form_valid = true;
+            } else {
+                this.form_valid = false;
             }
         },
         
@@ -246,12 +292,13 @@ let app = Vue.createApp({
             this.$refs.tab_imagem.style.display = "none";
             this.$refs.header.innerHTML = "";
 
+            document.getElementById('user_input_email').disabled = false;
 
             setTimeout(function() {
 
                 document.getElementById("regForm").submit();
                 
-            }, 1000)
+            }, 3000)
         },
 
         validateForm() {
@@ -266,7 +313,9 @@ let app = Vue.createApp({
                 if (valid) { 
                     this.steps[this.current_tab].className +=" finish" ; } 
                     return valid;
-        } 
+        }
+        
+        
     },
 })
 
@@ -276,3 +325,8 @@ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
+
+
+function alterarImagemUser(event) {
+    document.getElementById("image_do_utilizador").src=URL.createObjectURL(event.target.files[0]);
+}
