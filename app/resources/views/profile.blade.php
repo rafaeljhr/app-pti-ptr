@@ -125,16 +125,6 @@
             </div>
         </div>
 
-
-    
-        <div v-show="!telephone_valid" class="alert alert-danger" role="alert" style="display: none">
-            Telemóvel tem de ser um número!
-        </div>
-
-        <div v-show="!nif_valid" class="alert alert-danger" role="alert" style="display: none">
-            NIF tem de ser um número!
-        </div>
-
         <div class="form-div mx-auto my-2 px-3">
 
             <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
@@ -144,10 +134,126 @@
             <div class="px-4">
                 <form method="post" action="{{ route('edit-profile-controller') }}">
                     @csrf
-                    <div class="row" >                    
+                    <div class="row">                    
                         <div class="col">
                             <label for="primeiro_nome" class="form-label text-dark">Primeiro nome</label>
-                            <input ref="userPrimeiroNome" type="text" name="primeiro_nome" class="form-control mb-3" value="<?=$userPrimeiroNome?>" :disabled="!editable">
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userPrimeiroNome" type="text" name="primeiro_nome" class="form-control mb-3" value="<?=$userPrimeiroNome?>" :disabled="!editable">
+                                <i v-show="pnome_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Primeiro nome não pode ficar vazio"></i>
+                                <i v-show="pnome_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label for="ultimo_nome" class="form-label text-dark">Último nome</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userUltimoNome" type="text" name="ultimo_nome" class="form-control mb-3" value="<?=$userUltimoNome?>" :disabled="!editable">
+                                <i v-show="unome_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Último nome não pode ficar vazio"></i>
+                                <i v-show="unome_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                            
+                        </div>
+    
+                        <div class="col">
+                            <label for="email" class="form-label text-dark">Email</label>
+                            <div class="input-group mb-3 inline-icon">
+                                <input ref="userEmail" name="email" type="email" class="form-control" value="<?=$userEmail?>" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="telemovel" class="form-label text-dark">Telemóvel</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userTel" name="telemovel" type="text" class="form-control" minlength="9" maxlength="9" value="<?=$userTel?>" :disabled="!editable">
+                                <i v-show="telephone_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Telemóvel tem de ser um número e não pode ficar vazio"></i>
+                                <i v-show="telephone_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col">
+                            @if ($clientConsumer) 
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte</label>
+                            @else
+                                <label for="numero_contribuinte" class="form-label text-dark">Número de Contribuinte da Empresa</label>
+                            @endif
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userNumContribuinte" type="text" name="numero_contribuinte" class="form-control" minlength="9" maxlength="9" value="<?=$userNumContribuinte?>" :disabled="!editable">
+                                <i v-show="nif_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="NIF não pode ficar vazio e tem de ter 9 digitos"></i>
+                                <i v-show="nif_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label for="pais" class="sr-only text-dark">País</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userPais" type="text" name="pais" class="form-control mb-3" value="<?=$userPais?>" :disabled="!editable">
+                                <i v-show="pais_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Pais não pode ficar vazio"></i>
+                                <i v-show="pais_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+    
+
+                    <div class="row">
+                        <div class="col">
+                            @if ($clientConsumer)
+                                <label for="morada" class="sr-only text-dark">Morada</label>
+                            @else
+                                <label for="morada" class="sr-only text-dark">Morada Fiscal</label>
+                            @endif
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userMorada" type="text" name="morada" class="form-control mb-3" value="<?=$userMorada?>" :disabled="!editable">
+                                <i v-show="morada_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Morada não pode ficar vazia"></i>
+                                <i v-show="morada_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col">
+                            <label class="text-dark" style="display: table-cell;">Código Postal</label>
+                            <div class="inline-icon">
+                                <input ref="userCodPostal_1" type="text" name="codigo_postal_1" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_1?>" maxlength="4" :disabled="!editable" placeholder="xxxx">
+                                <input ref="userCodPostal_2" type="text" name="codigo_postal_2" class="form-control w-50" style="display: inline-block;" value="<?=$userCodPostal_2?>" maxlength="3" :disabled="!editable" placeholder="xxx">
+                                <i v-show="codigo_postal_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Código postal tem de ser um número e não pode ficar vazio"></i>
+                                <i v-show="codigo_postal_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                                
+                            </div>
+                        </div>
+        
+                        <div class="row">              
+                            <div class="col-sm">
+                                @if ($clientConsumer) 
+                                    <label for="nif" class="sr-only text-light">NIF</label>
+                                @else
+                                    <label for="nif" class="sr-only text-light">NIF da Empresa</label>
+                                @endif
+                                <input @input="checkForm()" type="text" name="nif" class="form-control mb-3" placeholder="Introduza o seu NIF" aria-label="NIF do Utilizador"
+                                aria-describedby="NIF do Utilizador" minlength="9" maxlength="9" ref="userNIF" value="<?=$userNIF?>" :disabled="!editable">
+                            </div>
+        
+                            <div class="col-sm">
+                                @if ($clientConsumer)
+                                    <label for="morada" class="sr-only text-light">Morada</label>
+                                @else
+                                    <label for="morada" class="sr-only text-light">Morada Fiscal</label>
+                                @endif
+                                
+                                <input type="text" name="morada" class="form-control mb-3" placeholder="Introduza a sua morada" aria-label="Morada do Utilizador"
+                                aria-describedby="Morada do Utilizador" ref="userAdress" value="<?=$userAdress?>" :disabled="!editable">
+                            </div>
+
+                        <div class="col">
+                            <label for="cidade" class="sr-only text-dark">Cidade</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="userCidade" type="text" name="cidade" class="form-control mb-3" value="<?=$userCidade?>" :disabled="!editable">
+                                <i v-show="cidade_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Cidade não pode ficar vazio"></i>
+                                <i v-show="cidade_valid === true && editable === true" class="bi bi-check check-icon"></i>
+                            </div>
                         </div>
 
                         <div class="col">
