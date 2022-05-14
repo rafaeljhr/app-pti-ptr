@@ -157,6 +157,7 @@ let app = Vue.createApp({
 
             var form = e.target
             var data = new FormData(form)
+            console.log(data);
 
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 

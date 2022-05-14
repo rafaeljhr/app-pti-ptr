@@ -238,7 +238,7 @@ class ProductsController extends Controller
             $html=$html."
             <div class='col'>
                 <div class='card'>
-                    <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                    
                     <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
                     <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
                     <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
@@ -331,13 +331,13 @@ class ProductsController extends Controller
             'descricaoCadeia'=>'required|string',
         ]);
 
-        if (!($request->has('co2_produzido'))) {
+        if ($request->get('co2_produzido')== null) {
             $co2_produzido = 0;
         } else {
             $co2_produzido = $request->get('co2_produzido');
         }
 
-        if (!($request->has('kwh_consumidos'))) {
+        if ($request->has('kwh_consumidos') == null) {
             $kwh_consumidos = 0;
         } else {
             $kwh_consumidos = $request->get('kwh_consumidos');
@@ -347,7 +347,7 @@ class ProductsController extends Controller
         $newEvento = Evento::create([
             'id_produto' => session()->get('last_added_product_id'),
             'nome' => $request->get('nomeCadeia'),
-            'co2_produzido' => $co2_produzido,
+            'poluicao_co2_produzida' => $co2_produzido,
             'kwh_consumidos' => $kwh_consumidos,
             'descricao_do_evento' => $request->get('descricaoCadeia'),
         ]);
@@ -440,7 +440,10 @@ class ProductsController extends Controller
                 <div class="card"  style="width: 18rem;"> 
                     <div class="card-body">
                     <h5 class="card-title">'.$eventos->nome.'</h5>
-                    <p class="card-text">'.$eventos->descricao_do_evento.'</p>         
+                    <p>Descrição geral das despesas ecoloógicas e energéticas</p>
+                    <p class="card-text">'.$eventos->poluicao_co2_produzida.'</p>  
+                    <p class="card-text">'.$eventos->kwh_consumidos.'</p>  
+                    <p class="card-text">Descrição geral '.$eventos->descricao_do_evento.'</p>         
                     </div>
                 </div>
                 </div>'
@@ -482,7 +485,7 @@ class ProductsController extends Controller
                 $htmlR=$htmlR."
                 <div class='col'>
                     <div class='card'>
-                        <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                        
                         <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
                         <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
                         <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>

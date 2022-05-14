@@ -133,13 +133,10 @@
   {{-- <button type="button" @click="mostrarTodaCadeiaLogistica()" class="btn-close" id="button-close-div"  aria-label="Close"></button> --}}
   <h3>A cadeia logística associada ao novo produto</h3>
   
-  <div id='mostrarCadeiaLogistica'>
-
-  </div>
+  <div id='mostrarCadeiaLogistica'></div>
 
 
   <div>
-
     <form @submit.prevent="apagarUltimoProduto" method="post" action="{{ route('product-remove-last-added')}}">
       @csrf
       <div class="container">
@@ -155,11 +152,8 @@
           </div>
         </div>
       </div>
-
     </form>
-
   </div>
-
 </div>
 
 
