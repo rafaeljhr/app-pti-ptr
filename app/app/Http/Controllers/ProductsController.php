@@ -585,5 +585,23 @@ class ProductsController extends Controller
     
     }
 
+    public function productAddCarrinho(Request $request) {
+        
+        $html = "".$request->get('nome_produto')." adicionado ao carrinho com sucesso!";
+
+        $produto = Produto::where('id', $request->get('id_produto'))->first();
+
+        if(session()->has('carrinho_produtos')){
+
+            session()->push('carrinho_produtos', $produto);
+        } else {
+
+            $carrinho = array();
+            array_push($carrinho, $produto);
+            session()->put('carrinho_produtos', $carrinho);
+        }
+    
+        return $html;
+    }
 
 }
