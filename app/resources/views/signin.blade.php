@@ -18,7 +18,6 @@ Session::put('login_ou_registo', "login");
           <div class="col-lg-7 text-center text-lg-start">
             <img src="images/logo5.png" width="600" alt="">
 
-            
             <p class="col-lg-10 fs-4">A EcoSmart Store permite-te comprar aquilo que tu quiseres, 
               considerando todos os custos associados.
             </p>

@@ -93,7 +93,7 @@ Route::post('/product-add-event-controller', [ProductsController::class, "produc
 Route::post('/product-edit-event-controller', [ProductsController::class, "productEditEvent"])->name('product-edit-event-controller');
 Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
 
-
+Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
 
 // ##############################################
 // ARMAZENS RELATED ROUTES
