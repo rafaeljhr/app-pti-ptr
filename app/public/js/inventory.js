@@ -1,35 +1,3 @@
-function apagarArmazem(id){
-    let route = document.getElementById("buttonApagarArmazem").name;
-
-    document.getElementById("buttonApagarArmazem").style.display = "none";
-    document.getElementById(id).removeAttribute("hidden");
-
-    var data = new FormData()
-    data.append('id_armazem', id);
-
-    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', route, true)
-    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-            document.getElementById("apresentarArmazensBefore").style.display = "none";
-            document.getElementById("todosArmazens").style.display = "block";
-            document.getElementById("apresentarArmazens").style.display = "block";
-            document.getElementById("apresentarArmazens").innerHTML = xhr.responseText;
-            
-
-        } else if (this.status >= 400) {
-            console.log(xhr.responseText);
-        }
-};
-
-    xhr.send(data);
-    
-}
-
 function apagarProduto(id){
     let route = document.getElementById("buttonApagarProduto").name;
 
@@ -182,7 +150,7 @@ let app = Vue.createApp({
         criarEvento(e){
 
             document.getElementById("botaoAdicionarEvento").style.display = "none";
-            document.getElementById("spinnerAdicionarEvento").style.display = "block";
+            document.getElementById("spinnerAdicionarEvento").style.display = "block"
             
 
             e.preventDefault();
@@ -213,8 +181,67 @@ let app = Vue.createApp({
 
         },
 
+
+        filterStorage(filter){
+            
+            let route = filter.target.name;
+            console.log(route);
+            console.log(filter.target.value);
+            var data = new FormData()
+            data.append('id_armazem', filter.target.value);
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', route, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("todosProdutos").innerHTML = xhr.responseText;
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+
+        },
+
         changeSubcat(cat){
-            if(cat.target.value=="computadores"){
+            
+            
+            let route = document.getElementById("routeSubCat").name;
+            var data = new FormData()
+            console.log(route);
+            data.append('categoria', cat.target.value);
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', route, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("toChangeOnCmd").innerHTML = xhr.responseText;
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+            
+            
+            
+            
+            
+            
+           /*  if(cat.target.value=="computadores"){
                 this.computadores=!this.computadores;
                 if(this.mobilidade==true){
                     this.mobilidade=!this.mobilidade;
@@ -266,125 +293,12 @@ let app = Vue.createApp({
                 }
                 if(this.componentes==true){
                     this.componentes=!this.componentes;
-                }                
+                }                 */
                 
-            }
+            
         },  
         
         
-        
-        criarArmazem(e){
-
-            document.getElementById("but-pad").style.display = "none";
-            document.getElementById("spinnerAdicionarArmazem").style.display = "block";
-            
-
-            e.preventDefault();
-
-            var form = e.target
-            var data = new FormData(form)
-
-            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            let xhr1 = new XMLHttpRequest();
-            xhr1.open(form.method, form.action, true)
-            xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-            xhr1.onreadystatechange = function() {
-                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                    document.getElementById("apresentarArmazensBefore").style.display = "none";
-                    document.getElementById("todosArmazens").style.display = "block";
-                    document.getElementById("apresentarArmazens").style.display = "block";
-                    document.getElementById("apresentarArmazens").innerHTML = xhr1.responseText;
-                    document.getElementById("criarUmArmazem").style.display = "none";
-                    
-
-                } else if (this.status >= 400) {
-                    console.log(xhr1.responseText);
-                }
-            };
-
-            xhr1.send(data);
-            
-            },
-
-        
-
-        criarUmArmazem(){
-
-            if (document.getElementById("criarUmArmazem").style.display == "block") {
-                document.getElementById("criarUmArmazem").style.display = "none";
-            } else {
-                document.getElementById("criarUmArmazem").style.display = "block";
-            }
-
-        },
-
-
-        displayThem(e){
-            
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-            if (document.getElementById("todosArmazens").style.display == "block") {
-                document.getElementById("todosArmazens").style.display = "none";
-            } else {
-                document.getElementById("todosArmazens").style.display = "block";
-            }
-            
-
-            e.preventDefault();
-
-            var form = e.target
-            
-            
-            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            let xhr1 = new XMLHttpRequest();
-            xhr1.open(form.method, form.action, true)
-            console.log(form.method);
-            console.log(form.action);
-            xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
-           
-            xhr1.onreadystatechange = function() {
-                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                   
-                    document.getElementById("apresentarArmazens").style.display = "none";
-                    
-                    document.getElementById("apresentarArmazensBefore").innerHTML = xhr1.responseText;
-                    
-                    
-
-                } else if (this.status >= 400) {
-                    
-                    console.log(xhr1.responseText);
-                }
-            };
-            xhr1.send();
-            
-        },
-
-        
-
-        mostrarArmazens(){
-
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-            if (document.getElementById("todosArmazens").style.display == "block") {
-                document.getElementById("todosArmazens").style.display = "none";
-            } else {
-                document.getElementById("todosArmazens").style.display = "block";
-            }
-
-        },
-
         finalizarAdicaoProduto() {
 
             if (document.getElementById("todaCadeiaLogistica").style.display == "block") {
@@ -452,16 +366,7 @@ let app = Vue.createApp({
             }
         },
 
-        mostrarCriarArmazem() {
-            if (document.getElementById('criarUmArmazem').style.display == "block") {
-                document.getElementById('criarUmArmazem').style.display = 'none';
-            } else {
-                document.getElementById('criarUmArmazem').style.display = 'block';
-                document.getElementById("but-pad").style.display = "block";
-                document.getElementById("spinnerAdicionarArmazem").style.display = "none";    
-            }
-
-        },
+       
 
     },
 })

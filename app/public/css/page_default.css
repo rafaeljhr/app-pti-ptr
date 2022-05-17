@@ -96,3 +96,55 @@ body {
   background-color: transparent!important;
   border: none!important;
 }
+
+
+
+.navbar_image {
+  max-height: 45px;
+  margin-top: 2px;
+}
+
+#navbarPrincipal {
+  max-width: 1100px;
+}
+
+#menu_perfil_utilizador {
+  right: 30px;
+  top: 10px;
+  position: absolute;
+  display: none;
+}
+
+#foto_navbar {
+  border-radius: 50%;
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.icons_navbar {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+#notificationsDiv {
+  max-width: 400px;
+  min-width: 300px;
+  max-height: 400px;
+  overflow:auto;
+}
+
+.notificationElement {
+  font-size: 15px; 
+
+}
+
+.textoNotificacao {
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  width: 100% !important;
+  max-width: 25em !important;
+}
+
+.anchorNotificacao {
+  display: inline-flex
+}
