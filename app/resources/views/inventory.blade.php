@@ -120,6 +120,9 @@
         
       </div>
 
+      {{-- Campos extra do produto consoante a sua categoria --}}
+      <div id="camposExtra"></div>
+
       <button class="w-100 btn btn-lg btn-primary">Próximo passo</button>
   
   </form>
@@ -251,15 +254,12 @@
  
   
   <h3>As suas cadeias Logisticas</h3>
-  <div id="produtoCadeias"></div>
+  <div id="produtoCadeias"></div></div>
 
-</div>
-<div class="col" id="descriptionGeral">
-  
-</div>
-<div class="col" id="descriptionText">
-  <p>oal</p>
-</div>
+
+  <h4>Informação principal do produto</h4>
+<div class="col" id="descriptionGeral"></div>
+
 </div>
 
   

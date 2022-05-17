@@ -30,7 +30,7 @@ function showInfoProduct(id){
 
     var data = new FormData()
     data.append('id_produto', id);
-    console.log(id);
+    
     let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     let xhr = new XMLHttpRequest();
@@ -47,8 +47,7 @@ function showInfoProduct(id){
             document.getElementById("produtoCadeias").innerHTML = JSON.parse(xhr.responseText)[1];
             document.getElementById("descriptionGeral").style.display = "block";
             document.getElementById("descriptionGeral").innerHTML = JSON.parse(xhr.responseText)[2];
-            document.getElementById("descriptionText").style.display = "block";
-            document.getElementById("descriptionText").innerHTML = JSON.parse(xhr.responseText)[3];
+         
             
 
         } else if (this.status >= 400) {
@@ -91,7 +90,10 @@ let app = Vue.createApp({
 
             var form = e.target
             var data = new FormData(form)
-
+            
+            for(var pair of data.entries()) {
+                console.log(pair[0]+ ', '+ pair[1]);
+             }
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             let xhr = new XMLHttpRequest();
@@ -157,7 +159,7 @@ let app = Vue.createApp({
 
             var form = e.target
             var data = new FormData(form)
-            console.log(data);
+            
 
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -186,8 +188,7 @@ let app = Vue.createApp({
         filterStorage(filter){
             
             let route = filter.target.name;
-            console.log(route);
-            console.log(filter.target.value);
+            
             var data = new FormData()
             data.append('id_armazem', filter.target.value);
 
@@ -216,7 +217,7 @@ let app = Vue.createApp({
             
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()
-            console.log(route);
+            
             data.append('categoria', cat.target.value);
 
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -227,8 +228,8 @@ let app = Vue.createApp({
 
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                    document.getElementById("toChangeOnCmd").innerHTML = xhr.responseText;
-                    
+                    document.getElementById("toChangeOnCmd").innerHTML = JSON.parse(xhr.responseText)[0];
+                    document.getElementById("camposExtra").innerHTML = JSON.parse(xhr.responseText)[1];
 
                 } else if (this.status >= 400) {
                     console.log(xhr.responseText);
@@ -236,66 +237,7 @@ let app = Vue.createApp({
             };
 
             xhr.send(data);
-            
-            
-            
-            
-            
-            
-           /*  if(cat.target.value=="computadores"){
-                this.computadores=!this.computadores;
-                if(this.mobilidade==true){
-                    this.mobilidade=!this.mobilidade;
-                }
-                if(this.componentes==true){
-                    this.componentes=!this.componentes;
-                }
-                if(this.perifericos==true){
-                    this.perifericos=!this.perifericos;
-                }
-                
-                
-                
-            }
-            if(cat.target.value=="mobilidade"){
-                this.mobilidade=!this.mobilidade;
-                if( this.computadores==true){
-                    this.computadores=!this.computadores;
-                }
-                if(this.componentes==true){
-                    this.componentes=!this.componentes;
-                }
-                if(this.perifericos==true){
-                    this.perifericos=!this.perifericos;
-                }
-                
-            }
-            if(cat.target.value=="componentes"){
-                this.componentes=!this.componentes;
-                if( this.computadores==true){
-                    this.computadores=!this.computadores;
-                }
-                if(this.mobilidade==true){
-                    this.mobilidade=!this.mobilidade;
-                }
-                
-                if(this.perifericos==true){
-                    this.perifericos=!this.perifericos;
-                }
-                
-            }
-            if(cat.target.value=="periféricos"){
-                this.perifericos=!this.perifericos;
-                if( this.computadores==true){
-                    this.computadores=!this.computadores;
-                }
-                if(this.mobilidade==true){
-                    this.mobilidade=!this.mobilidade;
-                }
-                if(this.componentes==true){
-                    this.componentes=!this.componentes;
-                }                 */
-                
+                      
             
         },  
         
