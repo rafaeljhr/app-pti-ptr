@@ -181,8 +181,67 @@ let app = Vue.createApp({
 
         },
 
+
+        filterStorage(filter){
+            
+            let route = filter.target.name;
+            console.log(route);
+            console.log(filter.target.value);
+            var data = new FormData()
+            data.append('id_armazem', filter.target.value);
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', route, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("todosProdutos").innerHTML = xhr.responseText;
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+
+        },
+
         changeSubcat(cat){
-            if(cat.target.value=="computadores"){
+            
+            
+            let route = document.getElementById("routeSubCat").name;
+            var data = new FormData()
+            console.log(route);
+            data.append('categoria', cat.target.value);
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', route, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("toChangeOnCmd").innerHTML = xhr.responseText;
+                    
+
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+
+            xhr.send(data);
+            
+            
+            
+            
+            
+            
+           /*  if(cat.target.value=="computadores"){
                 this.computadores=!this.computadores;
                 if(this.mobilidade==true){
                     this.mobilidade=!this.mobilidade;
@@ -234,9 +293,9 @@ let app = Vue.createApp({
                 }
                 if(this.componentes==true){
                     this.componentes=!this.componentes;
-                }                
+                }                 */
                 
-            }
+            
         },  
         
         

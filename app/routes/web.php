@@ -81,6 +81,9 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
 
+Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');
+Route::post('/product-categories', [ProductsController::class, "changeSub"])->name('product-changeSub');
+
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
 Route::post('/product-remove-last-added', [ProductsController::class, "productRemoveLastAdded"])->name('product-remove-last-added');
@@ -91,7 +94,7 @@ Route::post('/product-add-event-controller', [ProductsController::class, "produc
 Route::post('/product-edit-event-controller', [ProductsController::class, "productEditEvent"])->name('product-edit-event-controller');
 Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
 
-
+Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
 
 // ##############################################
 // ARMAZENS RELATED ROUTES

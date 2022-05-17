@@ -50,6 +50,10 @@
     width: 35%;
 }
 
+#filtroA{
+    width: 13%;
+}
+
 #infoAdicional{
     position: absolute;
     background-color: white;
@@ -126,7 +130,9 @@
 
 
 .row{
-  margin: 15px;
+
+    margin: 15px;
+
 }
 
 #btn-id{
@@ -137,11 +143,24 @@
 
 
 #button-close-div{
+
     padding:5px;
     float: right;
+
 }
 
 .imagemProduto {
+
     max-height: 310px !important;
     max-width: 310px !important;
+
+}
+
+#divAvisoCarrinho {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    background-color: #04AA6D;
+    left: 50%;
+    transform: translateX(-50%);
 }
