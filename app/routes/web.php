@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ArmazensController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\NotificationController;
 
 // ##############
 // NAVBAR ROUTES
@@ -131,3 +132,10 @@ Route::get('/forget-google-user', function () {
     session()->forget('user_google_id');
     return "ok";
 })->name('forget-google-user');
+
+
+// ##############################################
+// ROUTES TO HANDLE NOTIFICATIONS
+// ##############################################
+
+Route::post('/delete-notification', [NotificationController::class, 'hideNotification'])->name('delete-notification');

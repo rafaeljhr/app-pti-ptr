@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notificacao;
 use Illuminate\Http\Request;
 use App\Models\Utilizador;
 use App\Models\Tipo_de_conta;
@@ -44,7 +45,6 @@ class UserController extends Controller
         }
         
     }
-
 
 
     // Delete a consumidor/transportadora/fornecedor
@@ -180,6 +180,13 @@ class UserController extends Controller
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
             ]);
 
+            // notificacao de bem-vindo 
+            $primeira_notificacao = Notificacao::create([
+                'id_utilizador' => $newUtilizador->id,
+                'password' => "Bem-vindo à EcoSmart Store!",
+                'estado' => 1,
+            ]);
+
         } else {
 
             $filename = "images/default_user.png";
@@ -218,6 +225,13 @@ class UserController extends Controller
                 'pais' => $request->get('pais'),
                 'google_id' => null,
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
+            ]);
+
+            // notificacao de bem-vindo 
+            $primeira_notificacao = Notificacao::create([
+                'id_utilizador' => $newUtilizador->id,
+                'password' => "Bem-vindo à EcoSmart Store!",
+                'estado' => 1,
             ]);
         }
 
