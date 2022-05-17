@@ -32,7 +32,11 @@ Route::get('/register', function () {
 
 Route::get('/profile', function () {
     return view('profile');
-})->name('profile-url');
+})->name('profile-url'); 
+
+Route::get('/checkout', function () {
+    return view('checkout');
+})->name('checkout-url'); 
 
 Route::get('/storage', function () {
 

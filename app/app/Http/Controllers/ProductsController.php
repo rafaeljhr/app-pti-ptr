@@ -588,13 +588,43 @@ class ProductsController extends Controller
 
         $produto = Produto::where('id', $request->get('id_produto'))->first();
 
+        $produto_id = $produto->id;
+        $produto_nome = $produto->nome;
+        $produto_preco = $produto->preco;
+        $produto_id_armazem = $produto->id_armazem;
+        $produto_id_fornecedor = $produto->id_fornecedor;
+        $produto_quantidade = $produto->quantidade;
+        $produto_nome_categoria = $produto->nome_categoria;
+        $produto_path_imagem = $produto->path_imagem;
+        $produto_nome_subcategoria = $produto->nome_subcategoria;
+        $produto_informacoes_adicionais = $produto->informacoes_adicionais;
+        $produto_data_producao_do_produto = $produto->data_producao_do_produto;
+        $produto_data_insercao_no_site = $produto->data_insercao_no_site;
+        $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+
+        $atributos_produto = [
+            "produto_id" => $produto_id,
+            "produto_nome" => $produto_nome,
+            "produto_preco" => $produto_preco,
+            "produto_id_armazem" => $produto_id_armazem,
+            "produto_id_fornecedor" => $produto_id_fornecedor,
+            "produto_quantidade" => $produto_quantidade,
+            "produto_nome_categoria" => $produto_nome_categoria,
+            "produto_path_imagem" => $produto_path_imagem,
+            "produto_nome_subcategoria" => $produto_nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+        ];
+
         if(session()->has('carrinho_produtos')){
 
-            session()->push('carrinho_produtos', $produto);
+            session()->push('carrinho_produtos', $atributos_produto);
         } else {
 
             $carrinho = array();
-            array_push($carrinho, $produto);
+            array_push($carrinho, $atributos_produto);
             session()->put('carrinho_produtos', $carrinho);
         }
     

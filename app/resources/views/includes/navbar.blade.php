@@ -37,7 +37,7 @@ Session_start();
        
             <div class="dropdown" id="menu_perfil_utilizador">
 
-                <a style="text-decoration:none;">
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
 
