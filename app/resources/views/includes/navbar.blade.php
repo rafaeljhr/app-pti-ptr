@@ -117,9 +117,9 @@ Session_start();
                     <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
-                    <li><a class="dropdown-item" href="#">ENCOMENDAS</a></li>
-                    <li><a class="dropdown-item" href="{{ route('inventory') }}">INVENTÁRIO</a></li>
-                    <li><a class="dropdown-item"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
+                    <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
                     <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
