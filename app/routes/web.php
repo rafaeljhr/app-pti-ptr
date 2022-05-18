@@ -101,6 +101,8 @@ Route::post('/product-add-carrinho-controller', [ProductsController::class, "pro
 
 Route::post('/armazem-info-controller', [ArmazensController::class, "storageInfo"])->name('storage-info');
 
+Route::post('/armazem-warning-controller', [ArmazensController::class, "deleteWarning"])->name('armazem-delete-warning');
+
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');

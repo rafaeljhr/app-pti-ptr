@@ -75,7 +75,7 @@
                 <br>  
                 <button type="button" class="btn btn-outline-primary">Editar</button>
   
-                  <button type="button" id='buttonApagarArmazem' name="{{ route('armazem-delete-controller')}}" onclick="apagarArmazem('<?php echo session()->get('armazens')[$i]['armazem_id'] ?>')" class="btn btn-outline-danger">Apagar</button>
+                  <button type="button" id='buttonApagarArmazemWarning' name="{{ route('armazem-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('armazens')[$i]['armazem_id'] ?>', '<?php echo session()->get('armazens')[$i]['armazem_nome'] ?>')" class="btn btn-outline-danger">Apagar</button>
                   </div>
   
               </div>
@@ -123,6 +123,11 @@
       </div>
 		</div>
 	</div>
+</div>
+
+<div id = "deleteWarning">
+  
+
 </div>
 
 

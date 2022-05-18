@@ -12,6 +12,17 @@
     display: none;
 }
 
+#deleteWarning{
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: solid;
+    padding: 10px;
+    top: 25%;
+    left: 25%;
+    z-index: 9;
+    width: 55%;
+}
 
 #okButton{
     left: 50%;

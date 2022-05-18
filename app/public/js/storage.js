@@ -15,6 +15,7 @@ function apagarArmazem(id){
 
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("deleteWarning").style.display = "none";
             document.getElementById("todosArmazensBefore").style.display = "none";
             
             document.getElementById("todosArmazensAfter").style.display = "block";
@@ -31,8 +32,40 @@ function apagarArmazem(id){
 }
 
 
+function deleteWarning(id, nome){
+    
+    let route = document.getElementById("buttonApagarArmazemWarning").name;
+
+    
+
+    var data = new FormData()
+    data.append('id_armazem', id);
+    data.append('nome_armazem', nome);
+
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true)
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            document.getElementById("fundoDivOpac").style.display = "block";
+            document.getElementById("deleteWarning").style.display = "block";
+            document.getElementById("deleteWarning").innerHTML = xhr.responseText;
+            
+        } else if (this.status >= 400) {
+            console.log(xhr.responseText);
+        }
+};
+
+    xhr.send(data);
+    
+}
+
+
 function infoAdicional(id, nome){
-    console.log(nome);
+    
     let route = document.getElementById("storageInfo").name;
 
     
