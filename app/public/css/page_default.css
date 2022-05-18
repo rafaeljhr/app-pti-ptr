@@ -160,3 +160,50 @@ body {
   border: 1px solid black !important;
   background-color: white !important;
  }
+
+
+/* ####################### */
+/* Styling do botao google */
+/* ####################### */
+#icon_google {
+  height: 35px;
+  width: 35px;
+  display: inline;
+}
+
+.google_msg {
+  display: inline;
+  margin-left: 10px;
+}
+
+.google_wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google_button {
+  width: 300px;
+  height: 45px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  }
+
+.google_button:hover {
+  background-color: #0b50c3;
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  transform: translateY(-7px);
+}

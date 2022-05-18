@@ -38,18 +38,20 @@ Session::put('login_ou_registo', "registo");
                             <div class="tab" id="tab_1">
                                 <div class="row d-flex justify-content-center">
 
-                                        <div class="form-outline mb-4 text-center">
-                                            <a href="{{ route('auth/google') }}">
-                                                <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
-                                            </a>
-                                        </div>
+                                    <div class="google_wrap">
+                                        <a href="{{ route('auth/google') }}">
+                                            <button type="button" class="google_button">
+                                            <img id="icon_google" src="images/google.png"> <p class="google_msg">Registar com o Google</p>
+                                            </button>
+                                        </a>
+                                    </div>
 
-                                        <hr>
-                                        
-                                        <div class="form-outline col-sm-7">
-                                            <i class="ms-1 text-danger" aria-hidden="true"></i>
-                                            <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
-                                        </div>
+                                    <hr id="separar_tipo_login">
+                                    
+                                    <div class="form-outline col-sm-7">
+                                        <i class="ms-1 text-danger" aria-hidden="true"></i>
+                                        <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
+                                    </div>
                                 </div>
                             </div>
                             

@@ -63,12 +63,13 @@ Session::put('login_ou_registo', "login");
               
               <hr class="my-4">
 
-              <div class="text-center">
+              <div class="google_wrap">
                 <a href="{{ route('auth/google') }}">
-                  <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                  <button type="button" class="google_button">
+                    <img id="icon_google" src="images/google.png"> <p class="google_msg">Entrar com o Google</p>
+                  </button>
                 </a>
               </div>
-              
               
               
             </form>
