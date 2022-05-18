@@ -123,7 +123,7 @@ Session_start();
                     @endif
                     @if(Session::get('userType') == 'transportadora')
                     <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
-                    <li><a class="dropdown-item text-center" href="#">BASES</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('bases') }}">BASES</a></li>
                     <li><a class="dropdown-item text-center" href="#">VEÍCULOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'consumidor')

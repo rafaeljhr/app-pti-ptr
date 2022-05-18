@@ -70,6 +70,15 @@ Route::get('/inventory', function () {
 Route::get('/products', [ProductsController::class, "allProducts"])->name('products');
 
 
+Route::get('/bases', function () {
+    return view('bases');
+})->name('bases');
+
+Route::get('/veiculos', function () {
+    return view('veiculos');
+})->name('veiculos');
+
+
 
 // ##############################################
 // GOOGLE ROUTES

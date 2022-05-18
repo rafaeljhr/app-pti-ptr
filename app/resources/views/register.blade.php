@@ -65,7 +65,7 @@ Session::put('login_ou_registo', "registo");
                                         <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
                                             <option selected value="consumidor">Consumidor</option>
                                             <option value="transportadora">Transportadora</option>
-                                            <option value="fornecedor">Fornecedora</option>
+                                            <option value="fornecedor">Fornecedor</option>
                                         </select>
                                     </div> 
                                 </div>
