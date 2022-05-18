@@ -95,7 +95,8 @@ class ArmazensController extends Controller
                     <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
-                    <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                    <button type='button' id='buttonApagarArmazemWarning' name='".route('armazem-delete-warning')."' onclick='deleteWarning('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-danger'>Apagar</button>
+                    
                     </div>
                 </div>
             </div>"
@@ -156,23 +157,34 @@ class ArmazensController extends Controller
     }
 
 
+    public function deleteWarning(Request $request){
+
+        $html="<button type='button'  class='btn-close' id='button-close-div'  aria-label='Close'></button>
+        <p>Tem a certeza que deseja apagar o armazém ".$request->get('nome_armazem')."</p>
+        <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".$request->get('id_armazem').")' class='btn btn-outline-danger'>Apagar</button>
+        ";
+        return $html;
+    }
+
+
 
     
 
 
     public function armazemDelete(Request $request){
         
-        $produto = Produto::where('id_armazem', $request->get('id_armazem'))->first();
-       
-        if($produto!=null){
-            Evento::where('id_produto', $produto->id)->delete();
-            if ($produto->path_imagem != "images/default_produto.jpg") {
-                unlink($produto->path_imagem); // apagar a imagem do produto
+        $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
+        foreach($produto as $produtos){
+            if($produtos!=null){
+                Evento::where('id_produto', $produtos->id)->delete();
+                if ($produtos->path_imagem != "images/default_produto.jpg") {
+                    unlink($produtos->path_imagem); // apagar a imagem do produto
+                }
+        
+                $produtos->delete();
+                session()->forget('all_fornecedor_produtos');
+                ProductsController::rebuild_fornecedor_session(); // rebuild products on session
             }
-    
-            $produto->delete();
-            session()->forget('all_fornecedor_produtos');
-            ProductsController::rebuild_fornecedor_session(); // rebuild products on session
         }
 
         $armazem = Armazem::where('id', $request->get('id_armazem'))->first();
@@ -210,8 +222,8 @@ class ArmazensController extends Controller
                     <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
-                    <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                
+                    
+                    <button type='button' id='buttonApagarArmazemWarning' name='".route('armazem-delete-warning')."' onclick='deleteWarning('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-danger'>Apagar</button>
                     
                     </div>
                 </div>
