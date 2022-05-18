@@ -14,8 +14,8 @@ class AuthController extends Controller
         return view('login');
     } 
 
-    public function dashboard(){
-        return view('dashboard');
+    public function home(){
+        return view('home');
 
     }
     
@@ -33,7 +33,7 @@ class AuthController extends Controller
         ]);
        
         if ($this->VerifyAdmin($request)){
-            return Redirect('dashboard');
+            return Redirect('home');
         }else{
             return back()->with('error', 'Email ou Password errados');
         }
@@ -41,16 +41,29 @@ class AuthController extends Controller
     }
 
     public function VerifyAdmin(Request $request){
-        $admin = Admin::where('username', $request->username)->first();
 
-        if(!$admin || !Hash::check($request->password, $admin->password)){
+        $admin = new Admin;
+        $admin ->setConnection('mysql2');
+
+        $result = $admin::where('username', $request->username)->first();
+
+        if(!$result || !Hash::check($request->password, $result->password)){
             return FALSE;
         }
 
         session()->put('ADMIN_username', $request->username);
-        session()->put('ADMIN_cargo', $admin->cargo);
-        session()->put('ADMIN_id', $admin->id);
+        session()->put('ADMIN_cargo', $result->cargo);
+        session()->put('ADMIN_id', $result->id);
 
         return TRUE;
+    }
+
+    public function CreateAdmin(){
+
+        $fornecedor = Admin::create([
+            'username' => "admin",
+            'password' => bcrypt("admin"),
+            'cargo' => "Manager"
+        ]);
     }
 }

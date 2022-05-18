@@ -20,13 +20,18 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::resource('consumidores', ConsumidoresController::class);
+
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/checklogin', [AuthController::class, 'checklogin'])->name('checklogin');
 
-Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');; 
-Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
+Route::get('/home', [AuthController::class, 'home'])->name('home');; 
+Route::get('/signout', [AuthController::class, 'signOut'])->name('signout');
 
-Route::get('dashboard/consumidores', [ConsumidoresController::class, 'index'])->name('consumidores');
+Route::get('/consumidores', [ConsumidoresController::class, 'index'])->name('consumidores.index');
+Route::post('/consumidores', [ConsumidoresController::class, 'store'])->name('consumidores.store');
+Route::get('/consumidores/{id}/edit', [ConsumidoresController::class, 'edit'])->name('consumidores.edit');
+Route::delete('/consumidores/{id}', [ConsumidoresController::class, 'destroy'])->name('consumidores.destroy');
 
-Route::get('dashboard/admins', [AdminsController::class, 'index'])->name('admins');
-Route::post('dashboard/addAdmin', [AdminsController::class, 'addAdmin'])->name('addAdmin');
+Route::get('/admins', [AdminsController::class, 'index'])->name('admins');
+Route::post('/addAdmin', [AdminsController::class, 'addAdmin'])->name('addAdmin');

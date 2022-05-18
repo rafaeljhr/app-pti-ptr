@@ -22,9 +22,9 @@
  
   <div id="apresentação">
     
-    <h4>Bem vindo <?php echo  session()->get('user_nome')?>! </h4>
+    <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
     <h5>Aqui pode ver todos os armazéns que se encontram associados à sua conta de momento </h5> 
-    <button  class="btn btn-dark" @click="criarUmArmazem()" id="btn-id" >Criar armazens</button>
+    <button class="btn btn-dark" @click="criarUmArmazem()" id="btn-id">Criar armazens</button>
   </div>
   
 
@@ -102,7 +102,7 @@
 
     <button type="button" id='' class="buttonApagarArmazem" name="{{ route('armazem-delete-controller')}}" onclick="apagarArmazem()" class="btn btn-outline-danger">Apagar</button>
     <button id='' hidden class="w-100 btn btn-lg btn-primary"><a class="spinner-border text-light"></a></button>
-  </div> --}}
+    </div> --}}
 
 
 <div id="storage_info"> 

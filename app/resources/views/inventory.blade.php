@@ -120,6 +120,9 @@
         
       </div>
 
+      {{-- Campos extra do produto consoante a sua categoria --}}
+      <div id="camposExtra"></div>
+
       <button class="w-100 btn btn-lg btn-primary">Próximo passo</button>
   
   </form>
@@ -133,13 +136,10 @@
   {{-- <button type="button" @click="mostrarTodaCadeiaLogistica()" class="btn-close" id="button-close-div"  aria-label="Close"></button> --}}
   <h3>A cadeia logística associada ao novo produto</h3>
   
-  <div id='mostrarCadeiaLogistica'>
-
-  </div>
+  <div id='mostrarCadeiaLogistica'></div>
 
 
   <div>
-
     <form @submit.prevent="apagarUltimoProduto" method="post" action="{{ route('product-remove-last-added')}}">
       @csrf
       <div class="container">
@@ -155,11 +155,8 @@
           </div>
         </div>
       </div>
-
     </form>
-
   </div>
-
 </div>
 
 
@@ -257,15 +254,12 @@
  
   
   <h3>As suas cadeias Logisticas</h3>
-  <div id="produtoCadeias"></div>
+  <div id="produtoCadeias"></div></div>
 
-</div>
-<div class="col" id="descriptionGeral">
-  
-</div>
-<div class="col" id="descriptionText">
-  <p>oal</p>
-</div>
+
+  <h4>Informação principal do produto</h4>
+<div class="col" id="descriptionGeral"></div>
+
 </div>
 
   

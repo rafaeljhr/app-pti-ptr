@@ -10,6 +10,8 @@ use App\Models\Armazem;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Evento;
+use App\Models\Categoria_campos_extra;
+use App\Models\Produto_campos_extra;
 use App\Http\Controllers\ArmazensController;
 
 class ProductsController extends Controller
@@ -114,7 +116,17 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
 
+
         //return $request->input();
+        
+        
+
+        $catField = Categoria_campos_extra::where('nome_categoria', $request->get('nome_categoria'))->get();
+
+
+        if($catField==null){
+            
+        }
 
         $request->validate([
             'nome'=>'required|string',
@@ -129,6 +141,7 @@ class ProductsController extends Controller
             'informacoes_adicionais'=>'required|string',
         ]);
 
+        
 
         $filename = "images/default_produto.jpg";
 
@@ -168,6 +181,16 @@ class ProductsController extends Controller
             'kwh_consumidos_por_dia_no_armazem' => $request->get('kwh_consumidos_por_dia')
         ]);
 
+        foreach($catField as $catFields){
+            
+            $name_field = $catFields->campo_extra;
+            Produto_campos_extra::create([
+                'id_produto' => $newProduto->id,
+                'campo_extra' => $name_field,
+                'valor_campo' => $request->get($name_field)
+            ]);
+        }
+
         $atributos_novo_produto = [
             "produto_id" => $newProduto->id,
             "produto_nome" => $newProduto->nome,
@@ -194,7 +217,11 @@ class ProductsController extends Controller
 
         Evento::where('id_produto', session()->get('last_added_product_id'))->delete();
 
+        Produto_campos_extra::where('id_produto', session()->get('last_added_product_id'))->delete();
+
         $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
+
+       
 
         session()->forget('last_added_product_id');
         session()->forget('produto_cadeia_logistica');
@@ -212,7 +239,7 @@ class ProductsController extends Controller
     public static function productRemove(Request $request){
 
         Evento::where('id_produto', $request->get('id_produto'))->delete();
-        
+        Produto_campos_extra::where('id_produto', $request->get('id_produto'))->delete();
         $produto = Produto::where('id', $request->get('id_produto'))->first();
 
         session()->forget('all_fornecedor_produtos');
@@ -238,7 +265,7 @@ class ProductsController extends Controller
             $html=$html."
             <div class='col'>
                 <div class='card'>
-                    <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                    
                     <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
                     <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
                     <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
@@ -331,13 +358,13 @@ class ProductsController extends Controller
             'descricaoCadeia'=>'required|string',
         ]);
 
-        if (!($request->has('co2_produzido'))) {
+        if ($request->get('co2_produzido')== null) {
             $co2_produzido = 0;
         } else {
             $co2_produzido = $request->get('co2_produzido');
         }
 
-        if (!($request->has('kwh_consumidos'))) {
+        if ($request->has('kwh_consumidos') == null) {
             $kwh_consumidos = 0;
         } else {
             $kwh_consumidos = $request->get('kwh_consumidos');
@@ -347,7 +374,7 @@ class ProductsController extends Controller
         $newEvento = Evento::create([
             'id_produto' => session()->get('last_added_product_id'),
             'nome' => $request->get('nomeCadeia'),
-            'co2_produzido' => $co2_produzido,
+            'poluicao_co2_produzida' => $co2_produzido,
             'kwh_consumidos' => $kwh_consumidos,
             'descricao_do_evento' => $request->get('descricaoCadeia'),
         ]);
@@ -422,10 +449,10 @@ class ProductsController extends Controller
         $htmlA = "
         <div class='card' id='prudInfoA'>
                    
-            <h5 class='card-title'>".$armazem->nome."</h5>
+            <h5 class='card-title'>Nome: ".$armazem->nome."</h5>
             <img src='".$armazem->path_imagem."' class='imagemProduto card-img-top'>
             
-            <h5 class='card-title'>".$armazem->morada."</h5>
+            <h5 class='card-title'>Morada: ".$armazem->morada."</h5>
             
 
         </div>";
@@ -439,8 +466,11 @@ class ProductsController extends Controller
                 <div class="col">
                 <div class="card"  style="width: 18rem;"> 
                     <div class="card-body">
-                    <h5 class="card-title">'.$eventos->nome.'</h5>
-                    <p class="card-text">'.$eventos->descricao_do_evento.'</p>         
+                    <h5 class="card-title">Nome   :'.$eventos->nome.'</h5>
+                    <p>Descrição geral das despesas ecoloógicas e energéticas</p>
+                    <p class="card-text">'.$eventos->poluicao_co2_produzida.'</p>  
+                    <p class="card-text">'.$eventos->kwh_consumidos.'</p>  
+                    <p class="card-text">Descrição geral: '.$eventos->descricao_do_evento.'</p>         
                     </div>
                 </div>
                 </div>'
@@ -456,17 +486,17 @@ class ProductsController extends Controller
             }
         }
 
-        $htmlD='<p id="toOverflow">Informações adicionais: '.$produto->informacoes_adicionais.'</p>';
+       
 
         $htmlt='<p>Categoria: '.$produto->nome_categoria.'</p>
         <p>Subcategoria: '.$produto->nome_subcategoria.'</p>
         <p>Data de produção: '.$produto->data_producao_do_produto.'</p>
         <p>Data de inserção: '.$produto->data_insercao_no_site.'</p>
-        <p>kwh:  '.$produto->kwh_consumidos_por_dia.'</p>
-        
+        <p>kw consumidos por dia no armazém: '.$produto->kwh_consumidos_por_dia_no_armazem.'</p>
+        <p id="toOverflow">Informações adicionais: '.$produto->informacoes_adicionais.'</p>
         ';
 
-        return  array($htmlA, $htmlE, $htmlt, $htmlD);
+        return  array($htmlA, $htmlE, $htmlt);
     }
 
 
@@ -482,7 +512,7 @@ class ProductsController extends Controller
                 $htmlR=$htmlR."
                 <div class='col'>
                     <div class='card'>
-                        <button type='button' class='btn-close' id='button-close-div' aria-label='Close'></button>
+                        
                         <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
                         <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
                         <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
@@ -562,6 +592,9 @@ class ProductsController extends Controller
 
         $subCat = Subcategoria::where('nome_categoria', $request->get('categoria'))->get();
 
+
+        $camposExtra = Categoria_campos_extra::where('nome_categoria', $request->get('categoria'))->get();
+
         if($request->get('categoria') != null){
             $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
             <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
@@ -572,14 +605,43 @@ class ProductsController extends Controller
                 
                 ";
             }
-            return $html;
+            
         }else{
             $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
             <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
-            return $html;
+            
         }
+
+        if($camposExtra != null){
     
+            $htmlC =
+            "<div class='row'>"
+            ;
+    
+            $i = 0;
+            foreach($camposExtra as $camposExtras) {
+            $htmlC=$htmlC."
+                <div class='col'>
+                   <label for='".$camposExtras->campo_extra."' class='form-label'> ".$camposExtras->nome_campo_extra.":</label>
+                   <input name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
+                </div>"
+                ;
+    
+                if($i > 0 && $i % 2==0) {
+                    $htmlC=$htmlC.
+                    "</div>".
+                    "<div class='row'>"
+                    ;
+                }
+                $i = $i + 1;
+            }
+
+
+    
+
+        return array($html,$htmlC);
+        }   
     }
 
     public function productAddCarrinho(Request $request) {
@@ -588,17 +650,48 @@ class ProductsController extends Controller
 
         $produto = Produto::where('id', $request->get('id_produto'))->first();
 
+        $produto_id = $produto->id;
+        $produto_nome = $produto->nome;
+        $produto_preco = $produto->preco;
+        $produto_id_armazem = $produto->id_armazem;
+        $produto_id_fornecedor = $produto->id_fornecedor;
+        $produto_quantidade = $produto->quantidade;
+        $produto_nome_categoria = $produto->nome_categoria;
+        $produto_path_imagem = $produto->path_imagem;
+        $produto_nome_subcategoria = $produto->nome_subcategoria;
+        $produto_informacoes_adicionais = $produto->informacoes_adicionais;
+        $produto_data_producao_do_produto = $produto->data_producao_do_produto;
+        $produto_data_insercao_no_site = $produto->data_insercao_no_site;
+        $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+
+        $atributos_produto = [
+            "produto_id" => $produto_id,
+            "produto_nome" => $produto_nome,
+            "produto_preco" => $produto_preco,
+            "produto_id_armazem" => $produto_id_armazem,
+            "produto_id_fornecedor" => $produto_id_fornecedor,
+            "produto_quantidade" => $produto_quantidade,
+            "produto_nome_categoria" => $produto_nome_categoria,
+            "produto_path_imagem" => $produto_path_imagem,
+            "produto_nome_subcategoria" => $produto_nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+        ];
+
         if(session()->has('carrinho_produtos')){
 
-            session()->push('carrinho_produtos', $produto);
+            session()->push('carrinho_produtos', $atributos_produto);
         } else {
 
             $carrinho = array();
-            array_push($carrinho, $produto);
+            array_push($carrinho, $atributos_produto);
             session()->put('carrinho_produtos', $carrinho);
         }
     
         return $html;
     }
+
 
 }

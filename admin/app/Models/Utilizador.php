@@ -6,19 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
-class Consumidor extends Model
+class Utilizador extends Model
 {
-	protected $table = 'consumidor';
+	protected $table = 'utilizador';
 
     protected $fillable = [
-        'email', 'password', 'nome', 'path_imagem', 'telefone', 'nif', 'morada', 'google_id'
+        'email', 'password', 'primeiro_nome', 'ultimo_nome', 'path_imagem', 'numero_telemovel', 'numero_contribuinte',
+        'morada', 'codigo_postal', 'cidade', 'pais', 'tipo_de_conta', 'google_id'
     ];
 
     protected $hidden = [
-        'password',
-        'nif',
-        'telefone',
-        'morada',
         'google_id',
         'updated_at',
         'created_at',
