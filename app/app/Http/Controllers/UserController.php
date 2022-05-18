@@ -183,7 +183,7 @@ class UserController extends Controller
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([
                 'id_utilizador' => $newUtilizador->id,
-                'password' => "Bem-vindo à EcoSmart Store!",
+                'mensagem' => "Bem-vindo à EcoSmart Store!",
                 'estado' => 1,
             ]);
 
@@ -230,7 +230,7 @@ class UserController extends Controller
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([
                 'id_utilizador' => $newUtilizador->id,
-                'password' => "Bem-vindo à EcoSmart Store!",
+                'mensagem' => "Bem-vindo à EcoSmart Store!",
                 'estado' => 1,
             ]);
         }
@@ -251,6 +251,17 @@ class UserController extends Controller
         if ($newUtilizador->google_id != null || $newUtilizador->google_id != "NULL" || $newUtilizador->google_id != "null" || $newUtilizador->google_id != "Null") {
             session()->put('user_google_id', $newUtilizador->google_id);
         }
+
+        $all_notificacoes = array();
+        $atributos_notificacao = [
+            "notificacao_id" => $primeira_notificacao->id,
+            "notificacao_id_utilizador" => $primeira_notificacao->id_utilizador,
+            "notificacao_mensagem" => $primeira_notificacao->mensagem,
+            "notificacao_estado" => $primeira_notificacao->estado,
+        ];
+        array_push($all_notificacoes, $atributos_notificacao);
+        session()->put('notificacoes', $all_notificacoes);
+
 
         return redirect('/');
 

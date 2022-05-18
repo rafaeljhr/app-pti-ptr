@@ -148,3 +148,15 @@ body {
 .anchorNotificacao {
   display: inline-flex
 }
+
+
+.badge {
+  font-size: 15px;
+  color: black;
+  border-radius: 50%;
+  top: -5px;
+  left: 70px;
+  position: absolute;
+  border: 1px solid black;
+  background-color: white;
+ }
