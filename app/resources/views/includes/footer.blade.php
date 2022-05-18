@@ -1,75 +1,54 @@
-<footer class="text-center text-lg-start bg-light text-muted">
-        <!-- Section: Social media -->
-        <section
-          class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-        >
-         
-        </section>
-        <section class="">
-          <div class="container text-center text-md-start mt-5">
-            <div class="row mt-3">
-              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                <h6 class="text-uppercase fw-bold mb-4">
-                  <i class="fas fa-gem me-3"></i>EcoSmart Store
-                </h6>
-                <p>
-                  Here you can use rows and columns to organize your footer content. Lorem ipsum
-                  dolor sit amet, consectetur adipisicing elit.
-                </p>
-              </div>
+<div id="footer_principal" class="text-center text-lg-start bg-light text-muted">
 
-              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                <h6 class="text-uppercase fw-bold mb-4">
-                  Products
-                </h6>
-                <p>
-                  <a href="#!" class="text-reset">Loja</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Produtos</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Mais Vistos</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Novos Produtos</a>
-                </p>
-              </div>
+    <br>
+    
+    <div class="text-center text-md-start">
+      <div class="row text-center w-100">
 
-              <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                <h6 class="text-uppercase fw-bold mb-4">
-                  Useful links
-                </h6>
-                <p>
-                  <a href="#!" class="text-reset">Pricing</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Settings</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Orders</a>
-                </p>
-                <p>
-                  <a href="#!" class="text-reset">Help</a>
-                </p>
-              </div>
-              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                <h6 class="text-uppercase fw-bold mb-4">
-                  Contact
-                </h6>
-                <p><i class="fas fa-home me-3"></i> Faculdade de Ciências, 1749-016, Lisboa</p>
-                <p>
-                  <i class="fas fa-envelope me-3"></i>
-                  ecosmartstore@gmail.com
-                </p>
-                
-              </div>
-            </div>
-          </div>
-        </section>
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-          © 2021 Copyright:
-          <a class="text-reset fw-bold" href="https://eco-smart-store.rafaeljhr.pt/">eco-smart-store.pt</a>
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto d-flex align-items-center">
+          <img src="images/logo5.png" id="imagem_footer">
         </div>
-      </footer>
-      <script src="../resources/js/components/inventory.js"></script>
+
+
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto">
+          <h6 class="text-uppercase fw-bold mb-4">A nossa missão</h6>
+          <p>
+            O objectivo da EcoSmart Store é ser transparente com os nossos clientes
+            e com o ambiente.
+            Quando compra na EcoSmart Store saberá o histórico de poluição daquilo
+            que encomenda, desde a produção à entrega. Desta forma saberá de forma
+            consciente se se encontra a fazer compras verdadeiramente eco-friendly!
+            <br><i>"Be smart, be EcoSmart"</i>
+
+          </p>
+        </div>
+
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto">
+          <h6 class="text-uppercase fw-bold mb-4">
+            Links úteis
+          </h6>
+          <p>
+            <a href="{{ route('contact-url') }}" class="text-reset">Equipa EcoSmart Store</a>
+          </p>
+          <p>
+            <a href="{{ route('products') }}" class="text-reset">Loja de produtos</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">API EcoSmart Store</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Obter token API EcoSmart Store</a>
+          </p>
+        </div>
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <h6 class="text-uppercase fw-bold mb-4">Onde nos encontramos</h6>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.312781936158!2d-9.15756908431068!3d38.75652946283964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1932fc1d6c5e9b%3A0xe04b42461bdb164c!2sFaculdade%20de%20Ci%C3%AAncias%20da%20Universidade%20de%20Lisboa!5e0!3m2!1spt-PT!2sbe!4v1652910537787!5m2!1spt-PT!2sbe" width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+      </div>
+    </div>
+
+    <br>
+
+</div>

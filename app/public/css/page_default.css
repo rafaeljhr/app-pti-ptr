@@ -207,3 +207,20 @@ body {
   color: #fff;
   transform: translateY(-7px);
 }
+
+
+
+#imagem_footer{
+  height: 150px;
+  width: 400px;
+}
+
+
+#footer_principal {
+  position: relative;
+  padding: 10px 10px 0px 10px;
+  bottom: 0;
+  width: 100%;
+  /* Height of the footer*/ 
+  background: grey;
+}

@@ -6,7 +6,6 @@
 Session::put('login_ou_registo', "login");
 ?>
 
-<link rel="stylesheet" href="css/login.css">
 @extends('layouts.page_default')
 
 @section('background')

@@ -312,10 +312,14 @@ class UserController extends Controller
     public function delete()
     {
         $utilizador = Utilizador::where('email', session()->get('user_email'))->first();
+
+        Notificacao::where('id_utilizador', session()->get('user_id'))->delete();
         
 
-        if ($utilizador->path_imagem != "images/default_user.png") {
-            unlink($utilizador->path_imagem); // apagar a imagem do utilizador
+        if (!(str_contains($utilizador->path_imagem , 'http'))) {
+            if ($utilizador->path_imagem != "images/default_user.png") {
+                unlink($utilizador->path_imagem); // apagar a imagem antiga
+            }
         }
 
         $utilizador->delete();
