@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notificacao;
 use Illuminate\Http\Request;
 use App\Models\Utilizador;
 use App\Models\Tipo_de_conta;
@@ -44,7 +45,6 @@ class UserController extends Controller
         }
         
     }
-
 
 
     // Delete a consumidor/transportadora/fornecedor
@@ -180,6 +180,13 @@ class UserController extends Controller
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
             ]);
 
+            // notificacao de bem-vindo 
+            $primeira_notificacao = Notificacao::create([
+                'id_utilizador' => $newUtilizador->id,
+                'mensagem' => "Bem-vindo à EcoSmart Store!",
+                'estado' => 1,
+            ]);
+
         } else {
 
             $filename = "images/default_user.png";
@@ -219,6 +226,13 @@ class UserController extends Controller
                 'google_id' => null,
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
             ]);
+
+            // notificacao de bem-vindo 
+            $primeira_notificacao = Notificacao::create([
+                'id_utilizador' => $newUtilizador->id,
+                'mensagem' => "Bem-vindo à EcoSmart Store!",
+                'estado' => 1,
+            ]);
         }
 
         session()->put('loggedIn', 'yes');
@@ -237,6 +251,17 @@ class UserController extends Controller
         if ($newUtilizador->google_id != null || $newUtilizador->google_id != "NULL" || $newUtilizador->google_id != "null" || $newUtilizador->google_id != "Null") {
             session()->put('user_google_id', $newUtilizador->google_id);
         }
+
+        $all_notificacoes = array();
+        $atributos_notificacao = [
+            "notificacao_id" => $primeira_notificacao->id,
+            "notificacao_id_utilizador" => $primeira_notificacao->id_utilizador,
+            "notificacao_mensagem" => $primeira_notificacao->mensagem,
+            "notificacao_estado" => $primeira_notificacao->estado,
+        ];
+        array_push($all_notificacoes, $atributos_notificacao);
+        session()->put('notificacoes', $all_notificacoes);
+
 
         return redirect('/');
 

@@ -54,6 +54,10 @@ CREATE TABLE admin (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     cargo VARCHAR(255) NOT NULL
+	
+	CONSTRAINT fk_admin_cargo
+		FOREIGN KEY (cargo)
+		REFERENCES cargo(cargo)
 );
 
 

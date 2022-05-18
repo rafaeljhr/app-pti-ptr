@@ -1,6 +1,13 @@
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+</head>
+
+
 
 <?php
 Session_start();
+//session()->flush();
+//dd(session()->all());
 ?>
 
 <link rel="stylesheet" href="css/page_default.css">
@@ -37,15 +44,67 @@ Session_start();
        
             <div class="dropdown" id="menu_perfil_utilizador">
 
-                <a style="text-decoration:none;">
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
 
-                <a style="text-decoration:none;">
-                    <img class="icons_navbar" src="images/notification_bell.png">
+                <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="icons_navbar" src="images/notification.png">
+                    <span id='numNotificacoes' class="badge badge-light"><?php echo sizeOf(session()->get('notificacoes')) ?></span>
                 </a>
+
+                <ul class="dropdown-menu" id='notificationsDiv'>
+
+                    <h4 style="margin-left: 10px;" class="text-center">
+                         <p>As suas notificações</p>
+                    </h4>
+
+                    <hr class="dropdown-divider" style="width: 90%; margin: auto;">
+
+
+                    @if(Session::get('notificacoes') == [])
+
+                        <li class='notificationElement mt-3 text-center'>
+                            <p class='textoNotificacao'>Não possui notificações!</p>
+                        </li>
+
+                    @else 
+
+                        @for($i = 0; $i < sizeOf(session()->get('notificacoes')); $i++)
+
+                                <li class='notificationElement mt-3' id="li_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>">
+
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
+                                            </div>
+            
+                                            <div class="col align-items-center">
+                                                <a onclick="apagarNotificacao('<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>', '{{ route('delete-notification') }}' )" class='anchorNotificacao'>
+                                                    <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
+                                                </a>
+                                            </div>
+            
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                                
+                                
+                                @if($i+1 < sizeOf(session()->get('notificacoes')))
+
+                                    <hr id='hr_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
+
+                                @endif  
+
+                            @endfor
+
+                    @endif
                     
-                <a style="text-decoration:none;" class="dropdown-toggle" id="drop" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                </ul>
+                    
+                <a style="text-decoration:none;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img id="foto_navbar" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
                 </a>
                 
@@ -55,12 +114,12 @@ Session_start();
 
                     <li><hr class="dropdown-divider"></li>
 
-                    <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">CONTA</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
-                    <li><a class="dropdown-item" href="#">Encomendas</a></li>
-                    <li><a class="dropdown-item" href="{{ route('inventory') }}">Inventário</a></li>
-                    <li><a class="dropdown-item"  href="{{ route('storage') }}" >Armazéns</a></li>
+                    <li><a class="dropdown-item" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item" href="{{ route('inventory') }}">INVENTÁRIO</a></li>
+                    <li><a class="dropdown-item"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
                     <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>

@@ -124,5 +124,39 @@ body {
 .icons_navbar {
   max-width: 30px;
   max-height: 30px;
-  margin-right: 15px;
 }
+
+#notificationsDiv {
+  max-width: 400px;
+  min-width: 300px;
+  max-height: 400px;
+  overflow:auto;
+}
+
+.notificationElement {
+  font-size: 15px; 
+
+}
+
+.textoNotificacao {
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  width: 100% !important;
+  max-width: 25em !important;
+}
+
+.anchorNotificacao {
+  display: inline-flex
+}
+
+
+.badge {
+  font-size: 15px !important;
+  color: black !important;
+  border-radius: 50% !important;
+  top: -5px !important;
+  left: 70px !important;
+  position: absolute !important;
+  border: 1px solid black !important;
+  background-color: white !important;
+ }
