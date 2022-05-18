@@ -95,7 +95,8 @@ class ArmazensController extends Controller
                     <br>
                     <button type='button' class='btn btn-outline-primary'>Editar</button>
 
-                    <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".session()->get('armazens')[$a]['armazem_id'].")' class='btn btn-outline-danger'>Apagar</button>
+                    <button type='button' id='buttonApagarArmazemWarning' name='".route('armazem-delete-warning')."' onclick='deleteWarning('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-danger'>Apagar</button>
+                    
                     </div>
                 </div>
             </div>"
