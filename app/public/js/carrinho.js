@@ -3,6 +3,10 @@ let app = Vue.createApp({
         return {}
     },
 
-    methods: {},
+    methods: {
+        removeProduto () {
+            
+        }
+    },
 
 })

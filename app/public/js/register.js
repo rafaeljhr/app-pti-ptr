@@ -21,6 +21,7 @@ let app = Vue.createApp({
             form_valid: false,
             user_google_id: null,
             current_tab: 0,
+            back_track: false,
             tabs: document.getElementsByClassName("tab"),
             steps: document.getElementsByClassName("step"),
         }
@@ -76,9 +77,14 @@ let app = Vue.createApp({
         },
 
         nextPrev(n) {
-            this.form_valid = false;
 
-            if (n == 1 && !(this.validateForm())) return false; // PORQUE RETURN FALSE?
+            if (this.back_track == true) {
+                this.form_valid = true;
+            } else {
+                this.form_valid = false;
+            }
+
+            if (n == 1 && !(this.validateForm())) return false;
             this.tabs[this.current_tab].style.display = "none";
             this.current_tab = this.current_tab + n;
         
