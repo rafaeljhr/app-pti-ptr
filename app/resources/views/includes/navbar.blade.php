@@ -101,50 +101,6 @@ Session_start();
                             @endfor
 
                     @endif
-
-                    
-
-                    {{-- <li class='notificationElement mt-3'>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-10">
-                                    <p class='textoNotificacao'>Notificação de teste Notificação de teste Notificação de testeNotificação de</p>
-                                </div>
-
-                                <div class="col align-items-center">
-                                    <a href="#" class='anchorNotificacao'>
-                                        <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-                        
-                    </li>
-
-                    <hr class="dropdown-divider" style="width: 90%; margin: auto;">
-
-                    <li class='notificationElement mt-3'>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-10">
-                                    <p class='textoNotificacao'>Notificação de teste 2</p>
-                                </div>
-
-                                <div class="col align-items-center">
-                                    <a href="#" class='anchorNotificacao'>
-                                        <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-                        
-                    </li>
-
-                    <hr class="dropdown-divider" style="width: 90%; margin: auto;"> --}}
                     
                 </ul>
                     
@@ -158,7 +114,7 @@ Session_start();
 
                     <li><hr class="dropdown-divider"></li>
 
-                    <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">CONTA</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
                     <li><a class="dropdown-item" href="#">ENCOMENDAS</a></li>
