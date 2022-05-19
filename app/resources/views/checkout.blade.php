@@ -39,7 +39,7 @@ $custoEntrega = 5;
                             $subTotal += session()->get('carrinho_produtos')[$i]['produto_preco']; 
                         ?>
 
-                            <div class="row px-2">
+                            <div id="<?php echo $i ?>" class="row px-2">
                                 <div class="col-md-4">
                                     <img src='<?php echo session()->get('carrinho_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top">
                                 </div>
@@ -49,14 +49,11 @@ $custoEntrega = 5;
                                     <h4 class="card-text text-danger"><?php echo session()->get('carrinho_produtos')[$i]['produto_preco'] ?> €</h4>
                                     <h5 class="card-title"><?php echo session()->get('carrinho_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
                                     <label for="quantity">Qtd.</label>
-                                    <input type="number" id="quantity" name="quantity" min="1" max="99" value="1">
+                                    <input class="ms-2" type="number" id="quantity" name="quantity" min="1" max="99" value="1">
                                 </div>
                                     
-                                <div class="col-md-2">
-                                    <div id="divAvisoCarrinho" class="text-center p-2">
-                                        <p id='avisoCarrinho'></p>
-                                        <button type="button" class="btn-close" aria-label="Close" @click="removeProduto()"></button>
-                                    </div>
+                                <div class="col-md-2">  
+                                    <button id="removeCartButton" type="button" class="btn-close" aria-label="Close" name="{{ route('product-remove-carrinho') }}" @click="removeProduto('<?php echo $i ?>', '<?php echo session()->get('all_fornecedores_produtos')[$i]['produto_nome'] ?>')"></button>
                                 </div>
 
                                 <hr>
@@ -123,6 +120,11 @@ $custoEntrega = 5;
         
     </div>
     
+    </div>
+
+    <div id="divAvisoCarrinho" class="text-center p-2">
+        <p id='avisoCarrinho'></p>
+        <button type="button" class="btn-close" aria-label="Close" @click="fecharAlerta()"></button>
     </div>
 
     <script src="./js/carrinho.js"></script>
