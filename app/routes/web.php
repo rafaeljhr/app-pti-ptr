@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ArmazensController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\BasesController;
 
 // ##############
 // NAVBAR ROUTES
@@ -71,7 +72,16 @@ Route::get('/products', [ProductsController::class, "allProducts"])->name('produ
 
 
 Route::get('/bases', function () {
-    return view('bases');
+    if(session()->has('bases')){
+
+        return view('bases');
+
+    } else {
+
+        BasesController::rebuild_transportadora_session();
+        return view('bases');
+
+    }
 })->name('bases');
 
 Route::get('/veiculos', function () {

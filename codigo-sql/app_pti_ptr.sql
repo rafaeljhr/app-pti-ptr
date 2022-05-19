@@ -11,8 +11,8 @@ CREATE TABLE utilizador (
   primeiro_nome VARCHAR(255) NOT NULL,
   ultimo_nome VARCHAR(255) NOT NULL,
   path_imagem VARCHAR(255) DEFAULT NULL UNIQUE,
-  numero_telemovel VARCHAR(9) DEFAULT NULL UNIQUE,
-  numero_contribuinte VARCHAR(9) DEFAULT NULL UNIQUE,
+  numero_telemovel VARCHAR(9) DEFAULT NULL,
+  numero_contribuinte VARCHAR(9) DEFAULT NULL,
   morada VARCHAR(255) DEFAULT NULL,
   codigo_postal VARCHAR(255) DEFAULT NULL,
   cidade varchar(255) DEFAULT NULL,
@@ -71,10 +71,13 @@ CREATE TABLE cargo (
 
 CREATE TABLE base (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  morada VARCHAR(255) NOT NULL,
+  morada VARCHAR(255) DEFAULT NULL,
+  codigo_postal VARCHAR(255) DEFAULT NULL,
+  cidade varchar(255) DEFAULT NULL,
+  pais varchar(255) DEFAULT NULL,
   nome VARCHAR(255) NOT NULL,
-  telefone VARCHAR(9) NOT NULL,
   id_transportadora INTEGER NOT NULL,
+  path_imagem VARCHAR(255) NOT NULL,
 		
   CONSTRAINT fk_base_id_transportadora
     FOREIGN KEY (id_transportadora) 
@@ -112,6 +115,9 @@ CREATE TABLE armazem (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_fornecedor INTEGER NOT NULL,
   morada VARCHAR(255) NOT NULL,
+  codigo_postal VARCHAR(255) DEFAULT NULL,
+  cidade varchar(255) DEFAULT NULL,
+  pais varchar(255) DEFAULT NULL,
   nome VARCHAR(255) NOT NULL,
   path_imagem VARCHAR(255) NOT NULL,
 
