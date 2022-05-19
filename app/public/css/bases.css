@@ -1,20 +1,14 @@
 #apresentação {
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-    height: 80%;
-    width: 70%;
+    height: auto;
+    width: 80%;
     background-color: white;
-}
-
-#todosArmazens {
-    display: none;
+    max-height: 100%;
+    overflow: auto;
 }
 
 
 #criarUmaBase {
-    display: block;
-}
-
-#spinnerAdicionarBase {
     display: none;
 }
 
@@ -23,49 +17,9 @@
     display: none;
 }
 
-#deleteWarning{
-    display: none;
-    position: absolute;
-    background-color: white;
-    border: solid;
-    padding: 10px;
-    top: 25%;
-    left: 25%;
-    z-index: 9;
-    width: 55%;
-}
-
-#okButton{
-    left: 50%;
-}
 
 
-#storage_info{
-    display: none;
-}
-
-#successCreate {
-    opacity:0.75;
-    bottom: 5%;
-    left: 18%;
-    width: 60%;
-    position: absolute;
-    display:none;
-
-}
-
-#storage_info{
-    position: absolute;
-    background-color: white;
-    border: solid;
-    padding: 10px;
-    top: 25%;
-    left: 25%;
-    z-index: 9;
-    width: 55%;
-}
-
-.armazem{
+.base{
     display:none;
     position: absolute;
     background-color: white;
@@ -88,10 +42,6 @@
     float: right;
 }
 
-#spinnerAdicionarArmazem {
-    display: none;
-}
-
 
 .backgroundSee{
 
@@ -104,4 +54,110 @@
     opacity: 0.5;
     width: 100%;
     height: 100%;
+}
+
+
+
+
+/* ######################### */
+/* MOSTRAR BASES INDIVIDUAIS */
+/* ######################### */
+.logo {
+    max-width: 400px;
+    max-height: 200px;
+    height: auto;
+    width: auto;
+    border-radius: 5%;
+}
+
+#imagem_a_alterar {
+    max-width: 200px;
+    max-height: 100px;
+    height: auto;
+    width: auto;
+    border-radius: 5%;
+}
+
+input[disabled] {
+    color: grey;
+}
+
+#botao_criar_base_sem_bases {
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+.adicionar-foto {
+    color: transparent;
+    overflow: hidden;
+    border: transparent;
+}
+
+.adicionar-foto::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.adicionar-foto::before {
+    content: 'Alterar Avatar';
+    color: black;
+    display: inline-block;
+    background: #93BF7E;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.adicionar-foto:hover::before {
+    border-color: black;
+}
+
+.adicionar-foto:active {
+    outline: 0;
+}
+
+.adicionar-foto:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}
+
+.inline-icon {
+    display: flex;
+    justify-content: space-between;
+}
+
+.x-icon {
+    position: relative;
+    top: 0.3rem;
+    font-size: 2rem;
+}
+
+.check-icon {
+    font-size: 2rem;
+    color: green;
+}
+
+
+.imagem_da_base {
+    width: 310px;
+    height: 155px;
+}
+
+
+
+#noBases{
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.sem_bases_img {
+    height: auto;
+    width: auto;
+    max-width: 400px;
+    max-height: 300px;
 }

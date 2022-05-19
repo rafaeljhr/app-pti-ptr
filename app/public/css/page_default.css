@@ -90,6 +90,7 @@
 
 body {
   background-color: #e2dfdf!important;
+  min-height: 100%;
 }
 
 .btn-secondary {
@@ -127,8 +128,8 @@ body {
 }
 
 #notificationsDiv {
-  max-width: 400px;
-  min-width: 300px;
+  max-width: 500px;
+  min-width: 350px;
   max-height: 400px;
   overflow:auto;
 }
@@ -217,9 +218,9 @@ body {
 
 
 #footer_principal {
-  position: relative;
+  position: relative  ;
   padding: 10px 10px 0px 10px;
-  bottom: 0;
+  bottom: 0 !important;
   width: 100%;
   /* Height of the footer*/ 
   background: grey;

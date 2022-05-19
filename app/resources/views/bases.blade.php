@@ -6,8 +6,7 @@
 <?php
 
 //dd(session()->all());
-
-//session()->forget('produto_cadeia_logistica');
+//session()->forget('bases');
 
 ?>
 
@@ -20,19 +19,95 @@
   <div id="fundoDivOpac"  class="backgroundSee"></div>
 
  
-  <div id="apresentação" class="mx-auto mt-4">
+  <div id="apresentação" class="mx-auto mt-4 mb-4">
+  
+    @if(session()->get('bases') != null)
+    <div class="container p-0 mt-5 mb-5">
+
+      <div class="row w-100 mt-4 mb-4">
+
+        <div class="float-left">
+          <h1>As suas bases</h1>
+        </div>
+        <div class="float-rigth">
+          <button class="btn btn-primary" onclick="criarUmaBase()" id="botao_criar_base_sem_bases">Criar base</button>
+        </div>
+        
+      </div>
+
+      <div id='todasBases'>
+        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+          
+            @for($i = 0; $i < sizeOf(session()->get('bases')); $i++)
+              <div class="col">
+                <div class="card">
+                  <h5 class="card-title"><?php echo session()->get('bases')[$i]['base_nome'] ?></h5>
+                  
+                  <img src='<?php echo session()->get('bases')[$i]['base_path_imagem'] ?>' class="imagem_da_base card-img-top">
+
+                  <div class="card-body text-center">
+                    <div class="row">
+                      <div class="col">
+                        <p>
+                          <?php
+  
+                            $num_veiculos = 0;
+                            foreach (session()->get('veiculos') as $veiculo) {
+  
+                              if ($veiculo['veiculo_id_base'] == session()->get('bases')[$i]['base_id']) {
+                                $num_veiculos += $veiculo['veiculo_quantidade'];
+                              }
+  
+                            }
+  
+                            echo 'Nº de veículos: ' . $num_veiculos;
+  
+                          ?>
+                        </p>
+                      </div>
+                    </div>
+                  
+                    <a href="{{ URL::to('base/'.session()->get('bases')[$i]['base_id']) }}">
+                      <button type="button" class="btn btn-outline-primary">Detalhes da base</button>
+                    </a>
+                  </div>
     
-    <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
-    <h5>Aqui pode ver todos as bases que se encontram associados à sua conta de momento</h5> 
-    <button class="btn btn-dark" onclick="criarUmaBase()" id="btn-id">Criar base</button>
+                </div>
+              </div>
+            @endfor
+  
+        </div>
+      </div>
+    </div>
+
+    @else
+
+    <div id="noBases">
+
+      <div align="center">
+        <img src="images/armazens.png" class="sem_bases_img" alt="">
+        <br>
+        <br>
+        <h2>Parece que não possui nenhuma base.</h2>
+        <p>As bases são necessárias para criar veículos, então crie uma primeiramente.</p>
+        <br>
+        <button class="btn btn-primary" onclick="criarUmaBase()" id="botao_criar_base_sem_bases">Criar base</button>
+      </div>
+      
+
+    </div>
+
+
+    @endif
+
   </div>
   
 
-  <div id="criarUmaBase" class="armazem">
+  <div id="criarUmaBase" class="base">
     <button type="button" onclick="criarUmaBase()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-    <form method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('base-register-controller')}}" enctype="multipart/form-data">
       @csrf
-        <h3>Base:</h3>
+        <h3>Criar nova base</h3>
 
         <label for="nome" class="form-label">Nome da base</label>
         <div class="input-group mb-3">  
@@ -78,60 +153,10 @@
             </div>
         </div>
     
-    <button class="w-100 btn btn-lg btn-primary mt-5" id ="but-pad" type="submit">Adicionar base</button>
+      <button class="w-100 btn btn-lg btn-primary mt-5" id ="but-pad" type="submit">Adicionar base</button>
     </form>
 
   </div>
-
-  <div class="container p-0 mt-5 mb-5">
-    <div id='todosArmazensBefore'>
-  
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-  
-        @if(session()->get('bases') != null)
-          @for($i = 0; $i < sizeOf(session()->get('bases')); $i++) 
-          
-            <div class="col">
-              <div class="card">
-                <h5 class="card-title"><?php echo session()->get('bases')[$i]['armazem_nome'] ?></h5>
-                
-                <img src='<?php echo session()->get('bases')[$i]['armazem_path_imagem'] ?>' class="imagemProduto card-img-top">
-                <div class="card-body text-center">
-                <h4 class="card-text"><?php echo session()->get('bases')[$i]['armazem_morada'] ?></h4>
-                
-                <button id="storageInfo" name="{{ route('storage-info')}}" type="button" onclick="infoAdicional('<?php echo session()->get('bases')[$i]['armazem_id']?>', '<?php echo session()->get('bases')[$i]['armazem_nome'] ?>')" class="btn btn-outline-primary">info</button>
-                <br>  
-                <button type="button" class="btn btn-outline-primary">Editar</button>
-  
-                  <button type="button" id='buttonApagarArmazemWarning' name="{{ route('armazem-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('bases')[$i]['armazem_id'] ?>', '<?php echo session()->get('bases')[$i]['armazem_nome'] ?>')" class="btn btn-outline-danger">Apagar</button>
-                  </div>
-  
-              </div>
-            </div>
-  
-            @if($i > 0 && $i % 3==0)
-              </div>
-              <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-            @endif
-            @endfor
-  
-          @endif
-  
-        </div>
-  
-      </div>
-
-      {{-- <div id="todosArmazensAfter"></div> --}}
-  
-    </div>
-  </div>
-
-
-<div id="storage_info"> 
-  <button type="button" @click="closeInfo()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <h3>Produtos do armazém:</h3>
-  <p id="info"></p>
-  <div id="prods"></div>
 </div>
 
 

@@ -26,17 +26,6 @@ CREATE TABLE utilizador (
 );
 
 
--- A tabela estados serve para guardar o estado de
--- notificacoes: "ativa" significa que a mensagem deve
--- ser mostrado, e vice-versa
--- Esta tabela serve também para guardar estados de
--- encomendas
-CREATE TABLE estados (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  estado VARCHAR(255) NOT NULL
-);
-
-
 CREATE TABLE notificacoes (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_utilizador INTEGER NOT NULL,
@@ -95,15 +84,23 @@ CREATE TABLE tipo_combustivel (
 );
 
 
-CREATE TABLE metodo_transporte (
+CREATE TABLE veiculo (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  base_id INTEGER NOT NULL,
+  id_base INTEGER NOT NULL,
+  id_transportadora INTEGER NOT NULL,
   nome VARCHAR(255) NOT NULL,
+  quantidade VARCHAR(255) NOT NULL,
   tipoCombustivel VARCHAR(255) NOT NULL,
+  consumo_por_100km VARCHAR(255) NOT NULL,
+  path_imagem VARCHAR(255) NOT NULL,
 
-    CONSTRAINT fk_metodo_transporte_base_id
-        FOREIGN KEY (base_id) 
+    CONSTRAINT fk_metodo_transporte_id_base
+        FOREIGN KEY (id_base) 
         REFERENCES base(id),
+        
+    CONSTRAINT fk_metodo_transporte_id_transportadora
+        FOREIGN KEY (id_transportadora) 
+        REFERENCES utilizador(id),
       
     CONSTRAINT fk_tipoCombustivel_id
         FOREIGN KEY (tipoCombustivel) 

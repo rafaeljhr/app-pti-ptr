@@ -132,6 +132,22 @@ Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
 
 
+// ##############################################
+// BASES RELATED ROUTES
+// ##############################################
+
+Route::post('/base-register-controller', [BasesController::class, "baseRegister"])->name('base-register-controller');
+Route::post('/base-edit-controller', [BasesController::class, "baseEdit"])->name('base-edit-controller');
+Route::post('/base-delete-controller', [BasesController::class, "baseDelete"])->name('base-delete-controller');
+Route::post('/update-imagem-base-controller', [BasesController::class, 'changeImagem'])->name('update-imagem-base-controller');
+
+Route::get('/base/{id}/', [BasesController::class, "baseInformacoes"]);
+
+Route::get('/base', function () {
+    return view('informacoes_base');
+})->name('base');
+
+
 
 // ##############################################
 // USERS RELATED ROUTES
