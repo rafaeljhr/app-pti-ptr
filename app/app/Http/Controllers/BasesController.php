@@ -229,7 +229,7 @@ class BasesController extends Controller
         }
 
         if (!(str_contains($base->path_imagem , 'http'))) {
-            if ($base->path_imagem != "images/default_base.png") {
+            if ($base->path_imagem != "images/default_base.jpg") {
                 unlink($base->path_imagem); // apagar a imagem antiga
             }
         }
