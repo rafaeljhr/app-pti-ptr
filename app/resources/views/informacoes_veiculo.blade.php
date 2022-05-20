@@ -159,6 +159,45 @@
 
                     </div>
 
+                    <div id='baseDoVeiculo' class="text-center">
+
+                        <h3 class="mt-3 mb-2 text-center">Base do veículo</h3>
+
+                        <div class="card solo_veiculo mx-auto">
+                            <img class="card-img-top imagem_da_card" src='<?php echo session()->get('veiculo_base')['base_path_imagem'] ?>'>
+        
+                            <h4 class="card-title mt-3 text-center"><?php echo session()->get('veiculo_base')['base_nome'] ?></h4>
+        
+                            <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col">
+                                <p>
+                                    <?php
+            
+                                    $num_veiculos = 0;
+                                    foreach (session()->get('veiculos') as $veiculo) {
+            
+                                        if ($veiculo['veiculo_id_base'] == session()->get('veiculo_base')['base_id']) {
+                                        $num_veiculos += $veiculo['veiculo_quantidade'];
+                                        }
+            
+                                    }
+            
+                                    echo 'Nº de veículos na base: ' . $num_veiculos;
+            
+                                    ?>
+                                </p>
+                                </div>
+                            </div>
+                            
+                            <a href="{{ URL::to('base/'.session()->get('veiculo_base')['base_id']) }}">
+                                <button type="button" class="btn btn-info botoes_veiculos">Detalhes da base</button>
+                            </a>
+                            </div>
+            
+                        </div>
+                    </div>
+
                     <br><br>
 
                     <div class="position-relative my-1">

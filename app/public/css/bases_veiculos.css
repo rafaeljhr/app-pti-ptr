@@ -153,8 +153,6 @@ select[disabled] {
     height: 150px;
 }
 
-
-
 #noBases{
     width: 100%;
     min-height: 600px;
@@ -181,4 +179,13 @@ select[disabled] {
 .alterar_imagem_botao {
     background-color: #008B8B !important;
     color: white !important;
+}
+
+
+#todasVeiculos, #baseDoVeiculo {
+    padding: 10px 30px 30px 30px;
+}
+
+.solo_veiculo {
+    max-width: 270px;
 }
