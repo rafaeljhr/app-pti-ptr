@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ArmazensController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\BasesController;
 
 // ##############
 // NAVBAR ROUTES
@@ -71,7 +72,16 @@ Route::get('/products', [ProductsController::class, "allProducts"])->name('produ
 
 
 Route::get('/bases', function () {
-    return view('bases');
+    if(session()->has('bases')){
+
+        return view('bases');
+
+    } else {
+
+        BasesController::rebuild_transportadora_session();
+        return view('bases');
+
+    }
 })->name('bases');
 
 Route::get('/veiculos', function () {
@@ -121,6 +131,22 @@ Route::post('/armazem-warning-controller', [ArmazensController::class, "deleteWa
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
+
+
+// ##############################################
+// BASES RELATED ROUTES
+// ##############################################
+
+Route::post('/base-register-controller', [BasesController::class, "baseRegister"])->name('base-register-controller');
+Route::post('/base-edit-controller', [BasesController::class, "baseEdit"])->name('base-edit-controller');
+Route::post('/base-delete-controller', [BasesController::class, "baseDelete"])->name('base-delete-controller');
+Route::post('/update-imagem-base-controller', [BasesController::class, 'changeImagem'])->name('update-imagem-base-controller');
+
+Route::get('/base/{id}/', [BasesController::class, "baseInformacoes"]);
+
+Route::get('/base', function () {
+    return view('informacoes_base');
+})->name('base');
 
 
 

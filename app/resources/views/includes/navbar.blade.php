@@ -76,7 +76,7 @@ Session_start();
 
                                     <div class="container">
                                         <div class="row">
-                                            <div class="col-10">
+                                            <div class="col-9">
                                                 <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
                                             </div>
             

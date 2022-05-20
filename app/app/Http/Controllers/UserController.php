@@ -7,6 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Notificacao;
 use Illuminate\Http\Request;
 use App\Models\Utilizador;
+use App\Models\Produto;
+use App\Models\ProdutoCampoExtra;
+use App\Models\Evento;
+use App\Models\Armazem;
+use App\Models\Veiculo;
+use App\Models\Base;
 use App\Models\Tipo_de_conta;
 use Illuminate\Support\Facades\Hash;
 
@@ -275,7 +281,7 @@ class UserController extends Controller
         // return $request->input();
         $request->validate([
             'email'=>'sometimes|required|string',
-            'primeiro_nome'=>'sometimes|required|string',
+            'primeiro_nome'=>'suser_emailmetimes|required|string',
             'ultimo_nome'=>'sometimes|required|string',
             'telemovel'=>'sometimes|required|integer',
             'numero_contribuinte'=>'sometimes|required|integer',
@@ -314,6 +320,25 @@ class UserController extends Controller
         $utilizador = Utilizador::where('email', session()->get('user_email'))->first();
 
         Notificacao::where('id_utilizador', session()->get('user_id'))->delete();
+
+        if (session()->get('userType') == "consumidor") {
+
+        } else if (session()->get('userType') == "fornecedor") {
+            $produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
+
+            foreach($produtos as $produto){
+                ProdutoCampoExtra::where('id_produto', $produto->id)->delete();
+                Evento::where('id_produto', $produto->id)->delete();
+            }
+
+            Produto::where('id_fornecedor', session()->get('user_id'))->delete();
+            Armazem::where('id_fornecedor', session()->get('user_id'))->delete();
+
+        } else {
+            Veiculo::where('id_transportadora', session()->get('user_id'))->delete();
+            Base::where('id_transportadora', session()->get('user_id'))->delete();
+
+        }
         
 
         if (!(str_contains($utilizador->path_imagem , 'http'))) {
