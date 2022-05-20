@@ -20,7 +20,7 @@
 
     ?>
 
-    <link rel="stylesheet" href="css/bases.css">
+    <link rel="stylesheet" href="css/bases_veiculos.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
     <div class="container py-5">
@@ -80,9 +80,12 @@
 
         <div class="form-div mx-auto my-1 px-3">
 
-            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('base')['base_path_imagem'] ?>" referrerpolicy="no-referrer">
+            <h1 class="h3 mx-auto d-flex justify-content-center font-weight-normal mt-5 mb-5">INFORMAÇÕES DA BASE</h1>
 
-            <h1 class="h3 mx-auto d-flex justify-content-center font-weight-normal">Informações da Base</h1>
+            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('base')['base_path_imagem'] ?>" referrerpolicy="no-referrer">
+            <div class="mt-2 w-25 mx-auto">
+                <button type="button" class="btn form-control alterar_imagem_botao" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">ALTERAR IMAGEM</button>
+            </div>
 
             <br>
 
@@ -142,21 +145,13 @@
 
                     </div>
 
-                    <br>
-
-                    <div class="mt-2 w-25 mx-auto">
-                            <button type="button" class="btn btn-dark form-control" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">Alterar Imagem da Base</button>
-                    </div>
-
-
                     <br><br>
 
-
                     <div class="position-relative my-1">
-                        <button v-show="!editable" type="button" class="btn btn-primary btn-color" @click="editable = true">Editar Dados</button>
-                        <button v-show="editable" type="submit" class="btn btn-warning me-3" id="guardar_alteracoes" disabled>Guardar Alterações</button>
-                        <button v-show="editable" type="button" class="btn btn-primary" @click="cancelChanges()">Cancelar Alterações</button>
-                        <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">Apagar Base</button>
+                        <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">EDITAR BASE</button>
+                        <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
+                        <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelChanges()">CANCELAR ALTERAÇÕES</button>
+                        <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">APAGAR BASE</button>
                     </div>
 
                 </form>
