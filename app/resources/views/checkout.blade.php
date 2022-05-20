@@ -5,7 +5,7 @@
 <?php
 $subTotal = 0;
 $custoEntrega = 5;
-/* session()->forget('carrinho_produtos'); */
+/* session()->forget('carrinho_produtos');  */
 /* dd(session()->all()); */
 ?>
 
