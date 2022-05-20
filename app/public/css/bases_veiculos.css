@@ -8,7 +8,7 @@
 }
 
 
-#criarUmaBase {
+#criar {
     display: none;
 }
 
@@ -68,6 +68,7 @@
     height: auto;
     width: auto;
     border-radius: 5%;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 #imagem_a_alterar {
@@ -82,7 +83,11 @@ input[disabled] {
     color: grey;
 }
 
-#botao_criar_base_sem_bases {
+select[disabled] {
+    color: grey;
+}
+
+#botao_criar {
     font-size: 20px;
     padding: 10px 20px;
 }
@@ -139,10 +144,13 @@ input[disabled] {
     color: green;
 }
 
+.card {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
 
-.imagem_da_base {
+.imagem_da_card {
     width: 310px;
-    height: 155px;
+    height: 150px;
 }
 
 
@@ -152,7 +160,7 @@ input[disabled] {
     min-height: 600px;
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: centerç
 }
 
 .sem_bases_img {
@@ -160,4 +168,17 @@ input[disabled] {
     width: auto;
     max-width: 400px;
     max-height: 300px;
+}
+
+
+.botoes_veiculos {
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 170px;
+}
+
+
+.alterar_imagem_botao {
+    background-color: #008B8B !important;
+    color: white !important;
 }

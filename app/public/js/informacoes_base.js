@@ -59,14 +59,14 @@ let app = Vue.createApp({
                 this.cidade_valid = false; 
             }
 
-            if ((!this.cidade_valid || !this.codigo_postal_valid || !this.morada_valid ||
-                !this.pais_valid || !this.nome_valid) ||
-                (this.$refs.nome.value == this.nome && this.$refs.pais.value == this.pais 
+            if (this.cidade_valid && this.codigo_postal_valid && this.morada_valid &&
+                this.pais_valid && this.nome_valid &&
+                !(this.$refs.nome.value == this.nome && this.$refs.pais.value == this.pais 
                 && this.$refs.morada.value == this.morada && this.$refs.codigo_postal_1.value == this.codigo_postal_1
                 && this.$refs.codigo_postal_2.value == this.codigo_postal_2 && this.$refs.cidade.value == this.cidade)) {
-                    document.getElementById("guardar_alteracoes").disabled = true;
+                    document.getElementById("guardar_alteracoes").disabled = false;
             } else {
-                document.getElementById("guardar_alteracoes").disabled = false;
+                document.getElementById("guardar_alteracoes").disabled = true;
             }
         }
     }, 

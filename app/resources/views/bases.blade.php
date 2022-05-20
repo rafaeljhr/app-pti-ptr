@@ -10,7 +10,7 @@
 
 ?>
 
-<link rel="stylesheet" href="css/bases.css">
+<link rel="stylesheet" href="css/bases_veiculos.css">
 
 @extends('layouts.page_default')
 
@@ -26,11 +26,11 @@
 
       <div class="row w-100 mt-4 mb-4">
 
-        <div class="float-left">
+        <div class="col">
           <h1>As suas bases</h1>
         </div>
-        <div class="float-rigth">
-          <button class="btn btn-primary" onclick="criarUmaBase()" id="botao_criar_base_sem_bases">Criar base</button>
+        <div class="col-auto">
+            <button class="btn btn-success" onclick="criar()" id="botao_criar">Criar base</button>
         </div>
         
       </div>
@@ -41,9 +41,9 @@
             @for($i = 0; $i < sizeOf(session()->get('bases')); $i++)
               <div class="col">
                 <div class="card">
-                  <h5 class="card-title"><?php echo session()->get('bases')[$i]['base_nome'] ?></h5>
-                  
-                  <img src='<?php echo session()->get('bases')[$i]['base_path_imagem'] ?>' class="imagem_da_base card-img-top">
+                  <img class="card-img-top imagem_da_card" src='<?php echo session()->get('bases')[$i]['base_path_imagem'] ?>'>
+
+                  <h4 class="card-title mt-3 text-center"><?php echo session()->get('bases')[$i]['base_nome'] ?></h4>
 
                   <div class="card-body text-center">
                     <div class="row">
@@ -60,7 +60,7 @@
   
                             }
   
-                            echo 'Nº de veículos: ' . $num_veiculos;
+                            echo 'Nº de veículos na base: ' . $num_veiculos;
   
                           ?>
                         </p>
@@ -68,7 +68,7 @@
                     </div>
                   
                     <a href="{{ URL::to('base/'.session()->get('bases')[$i]['base_id']) }}">
-                      <button type="button" class="btn btn-outline-primary">Detalhes da base</button>
+                      <button type="button" class="btn btn-info botoes_veiculos">Detalhes da base</button>
                     </a>
                   </div>
     
@@ -84,14 +84,14 @@
 
     <div id="noBases">
 
-      <div align="center">
+      <div align="center" class="mx-auto">
         <img src="images/armazens.png" class="sem_bases_img" alt="">
         <br>
         <br>
-        <h2>Parece que não possui nenhuma base.</h2>
-        <p>As bases são necessárias para criar veículos, então crie uma primeiramente.</p>
+        <h2>Parece que não possui bases.</h2>
+        <p>As bases são necessárias para possuir veículos, então crie uma primeiramente!</p>
         <br>
-        <button class="btn btn-primary" onclick="criarUmaBase()" id="botao_criar_base_sem_bases">Criar base</button>
+        <button class="btn btn-success" onclick="criar()" id="botao_criar">Criar base</button>
       </div>
       
 
@@ -103,18 +103,18 @@
   </div>
   
 
-  <div id="criarUmaBase" class="base">
-    <button type="button" onclick="criarUmaBase()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+  <div id="criar" class="base">
+    <button type="button" onclick="criar()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
     <form method="post" action="{{ route('base-register-controller')}}" enctype="multipart/form-data">
       @csrf
-        <h3>Criar nova base</h3>
+        <h1 class="text-center mb-3 mt-2">CRIAR BASE</h1>
 
         <label for="nome" class="form-label">Nome da base</label>
         <div class="input-group mb-3">  
             <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
         </div>
 
-        <label for="image" class="form-label">Imagem da sua base:</label>
+        <label for="image" class="form-label">Imagem da base:</label>
         <div class="input-group mb-3">       
             <input type="file" class="form-control" name="path_imagem" id="image" aria-label="file" aria-describedby="basic-addon1">
         </div>
@@ -153,7 +153,7 @@
             </div>
         </div>
     
-      <button class="w-100 btn btn-lg btn-primary mt-5" id ="but-pad" type="submit">Adicionar base</button>
+      <button class="w-100 btn btn-lg btn-success mt-5" id ="but-pad" type="submit">Adicionar base</button>
     </form>
 
   </div>
@@ -161,7 +161,7 @@
 
 
 
-<script src="./js/base.js"></script>
+<script src="./js/base_veiculo.js"></script>
 
     
 @endsection

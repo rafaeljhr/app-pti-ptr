@@ -7,6 +7,7 @@ use App\Http\Controllers\ArmazensController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\BasesController;
+use App\Http\Controllers\VeiculosController;
 
 // ##############
 // NAVBAR ROUTES
@@ -85,7 +86,16 @@ Route::get('/bases', function () {
 })->name('bases');
 
 Route::get('/veiculos', function () {
-    return view('veiculos');
+    if(session()->has('veiculos')){
+
+        return view('veiculos');
+
+    } else {
+
+        BasesController::rebuild_transportadora_session();
+        return view('veiculos');
+
+    }
 })->name('veiculos');
 
 
@@ -121,6 +131,7 @@ Route::post('/product-edit-event-controller', [ProductsController::class, "produ
 Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
 
 Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
+Route::post('/product-remove-carrinho-controller', [ProductsController::class, "productRemoveCarrinho"])->name('product-remove-carrinho');
 
 // ##############################################
 // ARMAZENS RELATED ROUTES
@@ -149,6 +160,22 @@ Route::get('/base/{id}/', [BasesController::class, "baseInformacoes"]);
 Route::get('/base', function () {
     return view('informacoes_base');
 })->name('base');
+
+
+// ##############################################
+// VEICULOS RELATED ROUTES
+// ##############################################
+
+Route::post('/veiculo-register-controller', [VeiculosController::class, "veiculoRegister"])->name('veiculo-register-controller');
+Route::post('/veiculo-edit-controller', [VeiculosController::class, "veiculoEdit"])->name('veiculo-edit-controller');
+Route::post('/veiculo-delete-controller', [VeiculosController::class, "veiculoDelete"])->name('veiculo-delete-controller');
+Route::post('/update-imagem-veiculo-controller', [VeiculosController::class, 'changeImagem'])->name('update-imagem-veiculo-controller');
+
+Route::get('/veiculo/{id}/', [VeiculosController::class, "veiculoInformacoes"]);
+
+Route::get('/veiculo', function () {
+    return view('informacoes_veiculo');
+})->name('veiculo');
 
 
 

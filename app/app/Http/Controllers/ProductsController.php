@@ -704,5 +704,25 @@ class ProductsController extends Controller
         return $html;
     }
 
+    public function productRemoveCarrinho(Request $request) {
+        
+        $html = "".$request->get('nome_produto')." removido do carrinho com sucesso!";
+
+        $produtoKey = $request->get('id_produto');
+
+        if(session()->has('carrinho_produtos')){
+
+           $carrinho = session()->get('carrinho_produtos');
+           array_splice($carrinho, $produtoKey, 1);
+
+           session()->put('carrinho_produtos', $carrinho);
+            
+        } else {
+            $html = "".$request->get("Ocorreu um erro na remoção do produto do carrinho!");
+        }
+    
+        return $html;
+    }
+
 
 }

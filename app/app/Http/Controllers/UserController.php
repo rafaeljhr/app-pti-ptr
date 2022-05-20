@@ -331,11 +331,45 @@ class UserController extends Controller
                 Evento::where('id_produto', $produto->id)->delete();
             }
 
+            foreach ($produtos as $produto) {
+                if (!(str_contains($produto->path_imagem , 'http'))) {
+                    if ($produto->path_imagem != "images/default_produto.jpg") {
+                        unlink($produto->path_imagem); // apagar a imagem antiga
+                    }
+                }
+            }
             Produto::where('id_fornecedor', session()->get('user_id'))->delete();
-            Armazem::where('id_fornecedor', session()->get('user_id'))->delete();
+
+            $armazens = Armazem::where('id_fornecedor', session()->get('user_id'))->get();
+            foreach ($armazens as $armazem) {
+                if (!(str_contains($armazem->path_imagem , 'http'))) {
+                    if ($armazem->path_imagem != "images/default_armazem.jpg") {
+                        unlink($armazem->path_imagem); // apagar a imagem antiga
+                    }
+                }
+            }
+            Armazem::where('id_fornecedor', session()->get('user_id'))->get();
+
 
         } else {
+            $veiculos = Veiculo::where('id_transportadora', session()->get('user_id'))->get();
+            foreach ($veiculos as $veiculo) {
+                if (!(str_contains($veiculo->path_imagem , 'http'))) {
+                    if ($veiculo->path_imagem != "images/default_veiculo.png") {
+                        unlink($veiculo->path_imagem); // apagar a imagem antiga
+                    }
+                }
+            }
             Veiculo::where('id_transportadora', session()->get('user_id'))->delete();
+
+            $bases = Base::where('id_transportadora', session()->get('user_id'))->get();
+            foreach ($bases as $base) {
+                if (!(str_contains($base->path_imagem , 'http'))) {
+                    if ($base->path_imagem != "images/default_base.jpg") {
+                        unlink($base->path_imagem); // apagar a imagem antiga
+                    }
+                }
+            }
             Base::where('id_transportadora', session()->get('user_id'))->delete();
 
         }

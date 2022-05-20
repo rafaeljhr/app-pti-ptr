@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Base;
 use App\Models\Veiculo;
 use App\Models\Notificacao;
-use App\Http\Controllers\ProductsController;
+use App\Models\Tipo_de_combustivel;
 
 class BasesController extends Controller
 {
@@ -68,7 +68,7 @@ class BasesController extends Controller
             $veiculo_consumo_por_100km = $veiculo->consumo_por_100km;
             $veiculo_path_imagem = $veiculo->path_imagem;
 
-            $atributos_base = [
+            $atributos_veiculo = [
                 "veiculo_id" => $veiculo_id,
                 "veiculo_id_base" => $veiculo_id_base,
                 "veiculo_id_transportadora" => $veiculo_id_transportadora,
@@ -79,17 +79,42 @@ class BasesController extends Controller
                 "veiculo_path_imagem" => $veiculo_path_imagem,
             ];
 
-            array_push($all_transportadora_veiculos, $atributos_base);
+            array_push($all_transportadora_veiculos, $atributos_veiculo);
         }
 
         session()->put('veiculos', $all_transportadora_veiculos);
 
+        //
+        // Tipos de combustivel
+        //
+        if(!(session()->has('tipos_combustivel'))){
+
+            $tipos_combustivel = Tipo_de_combustivel::all();
+
+            $all_tipos_combustivel = array();
+
+            foreach($tipos_combustivel as $tipo) {
+
+                $tipos_combustivel_nome = $tipo->nome;
+                $tipos_combustivel_co2_por_km = $tipo->co2_por_km;
+
+                $atributos_tipo_combustivel= [
+                    "tipos_combustivel_nome" => $tipos_combustivel_nome,
+                    "tipos_combustivel_co2_por_km" => $tipos_combustivel_co2_por_km,
+                ];
+
+                array_push($all_tipos_combustivel, $atributos_tipo_combustivel);
+            }
+
+            session()->put('tipos_combustivel', $all_tipos_combustivel);
+            
+        }
+
+        
     }
 
     public function baseRegister(Request $request)
     {
-        // return $request->input();
-        // (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
         $request->validate([
             'nome'=>'required|string',
             'morada'=>'required|string',
@@ -133,7 +158,6 @@ class BasesController extends Controller
             'path_imagem' => $filename,
         ]);
 
-        // notificacao de criacao da base
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
             'mensagem' => "A sua base '".$newBase->nome."' foi criada!",
@@ -148,7 +172,6 @@ class BasesController extends Controller
         ];
 
         session()->push('notificacoes', $atributos_notificacao);
-
 
         $atributos_nova_base= [
             "base_id" => $newBase->id,
@@ -179,9 +202,6 @@ class BasesController extends Controller
     public function baseInformacoes($id)
     {
         $base = Base::where('id', $id)->first();
-
-        // return $base;
-        // dd($base);
 
         $atributos_base= [
             "base_id" => $base->id,
@@ -250,8 +270,6 @@ class BasesController extends Controller
 
         session()->put('base', $atributos_base);
 
-
-        // notificacao de alteracao imagem da base
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
             'mensagem' => "A imagem da sua base '".$base->nome."' foi atualizada!",
@@ -278,7 +296,6 @@ class BasesController extends Controller
 
     public function baseEdit(Request $request)
     {
-        // return $request->input();
         $request->validate([
             'nome'=>'sometimes|required|string',
             'morada'=>'sometimes|required|string',
@@ -305,8 +322,6 @@ class BasesController extends Controller
 
         session()->put('base', $atributos_base);
 
-
-        // notificacao de alteracao imagem da base
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
             'mensagem' => "As informações da sua base '".$base->nome."' foram atualizadas!",
@@ -333,8 +348,15 @@ class BasesController extends Controller
     {
         $base = Base::where('id', session()->get('base')['base_id'])->first();
 
+        $veiculos = Veiculo::where('id_base', session()->get('base')['base_id'])->get();
+        foreach ($veiculos as $veiculo) {
+            if (!(str_contains($veiculo->path_imagem , 'http'))) {
+                if ($veiculo->path_imagem != "images/default_veiculo.png") {
+                    unlink($veiculo->path_imagem); // apagar a imagem antiga
+                }
+            }
+        }
         Veiculo::where('id_base', session()->get('base')['base_id'])->delete();
-        
 
         if (!(str_contains($base->path_imagem , 'http'))) {
             if ($base->path_imagem != "images/default_base.jpg") {
@@ -342,10 +364,9 @@ class BasesController extends Controller
             }
         }
 
-        // notificacao de alteracao imagem da base
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
-            'mensagem' => "A sua base '".$base->nome."' foi apagada!",
+            'mensagem' => "A sua base '".$base->nome."' foi apagada e todos os veículos associados à mesma!",
             'estado' => 1,
         ]);
 
@@ -365,11 +386,4 @@ class BasesController extends Controller
         return redirect('/bases');
     }
 
-
-
-
-
-
 }
-
-
