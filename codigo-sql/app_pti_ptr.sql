@@ -159,6 +159,7 @@ CREATE TABLE produto (
   data_producao_do_produto DATE NOT NULL,
   data_insercao_no_site DATE NOT NULL,
   kwh_consumidos_por_dia_no_armazem DECIMAL(10,2) NOT NULL,
+  pronto_a_vender INTEGER NOT NULL,
 
     CONSTRAINT fk_armazem_id
         FOREIGN KEY (id_armazem)

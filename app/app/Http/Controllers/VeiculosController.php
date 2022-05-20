@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Veiculo;
+use App\Models\Base;
 use App\Models\Notificacao;
 
 class VeiculosController extends Controller
@@ -111,6 +112,21 @@ class VeiculosController extends Controller
         ];
 
         session()->put('veiculo', $atributos_veiculo);
+
+        $base = Base::where('id', $veiculo->id_base)->first();
+        
+        $atributos_base = [
+            "base_id" => $base->id,
+            "base_id_transportadora" => $base->id_transportadora,
+            "base_morada" => $base->morada,
+            "base_nome" => $base->nome,
+            "base_path_imagem" => $base->path_imagem,
+            "base_codigo_postal" => $base->codigo_postal,
+            "base_cidade" => $base->cidade,
+            "base_pais" => $base->pais,
+        ];
+
+        session()->put('veiculo_base', $atributos_base);
 
         return redirect('/veiculo');
 

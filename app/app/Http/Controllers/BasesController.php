@@ -216,6 +216,38 @@ class BasesController extends Controller
 
         session()->put('base', $atributos_base);
 
+        $veiculos = Veiculo::where('id_base', $base->id)->get();
+
+        $all_veiculos = array();
+
+        foreach($veiculos as $veiculo) {
+
+            $veiculo_id = $veiculo->id;
+            $veiculo_id_base = $veiculo->id_base;
+            $veiculo_id_transportadora = $veiculo->id_transportadora;
+            $veiculo_nome = $veiculo->nome;
+            $veiculo_quantidade = $veiculo->quantidade;
+            $veiculo_tipoCombustivel = $veiculo->tipoCombustivel;
+            $veiculo_consumo_por_100km = $veiculo->consumo_por_100km;
+            $veiculo_path_imagem = $veiculo->path_imagem;
+
+            $atributos_veiculo = [
+                "veiculo_id" => $veiculo_id,
+                "veiculo_id_base" => $veiculo_id_base,
+                "veiculo_id_transportadora" => $veiculo_id_transportadora,
+                "veiculo_nome" => $veiculo_nome,
+                "veiculo_quantidade" => $veiculo_quantidade,
+                "veiculo_tipoCombustivel" => $veiculo_tipoCombustivel,
+                "veiculo_consumo_por_100km" => $veiculo_consumo_por_100km,
+                "veiculo_path_imagem" => $veiculo_path_imagem,
+            ];
+
+            array_push($all_veiculos, $atributos_veiculo);
+        }
+
+        session()->put('base_veiculos', $all_veiculos);
+        
+
         return redirect('/base');
 
     }

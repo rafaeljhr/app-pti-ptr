@@ -145,6 +145,72 @@
 
                     </div>
 
+                    <br>
+
+                    @if(Session::get('base_veiculos') != [])
+                    <div id='todasVeiculos'>
+
+                        <h3 class="mt-3 mb-5 text-center">Veículos associados à base</h3>
+
+                        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+                          
+                            @for($i = 0; $i < sizeOf(session()->get('base_veiculos')); $i++)
+                              <div class="col">
+                                <div class="card">
+                                  <img class="card-img-top imagem_da_card" src='<?php echo session()->get('base_veiculos')[$i]['veiculo_path_imagem'] ?>' alt="Card image cap">
+                  
+                                  <h4 class="card-title mt-3 text-center"><?php echo session()->get('base_veiculos')[$i]['veiculo_nome'] ?></h4>
+                  
+                                  <div class="card-body text-center">
+                                    <div class="row">
+                                      <p class="ml-2"> Nº de veículos: <?php echo session()->get('base_veiculos')[$i]['veiculo_quantidade'] ?></p>
+                                    </div>
+                  
+                                    <div class="row">
+                                      <p> Combustível: <?php echo session()->get('base_veiculos')[$i]['veiculo_tipoCombustivel'] ?></p>
+                                    </div>
+                  
+                                    <div class="row">
+                                      <p>
+                                        <?php 
+                                        if (session()->get('base_veiculos')[$i]['veiculo_tipoCombustivel'] == "Eletricidade") {
+                                          echo session()->get('base_veiculos')[$i]['veiculo_consumo_por_100km']." kWh/100km";
+                                        } else {
+                                          echo session()->get('base_veiculos')[$i]['veiculo_consumo_por_100km']." L/100km";
+                                        }
+                                        ?>
+                                      </p>
+                                    </div>
+                  
+                                    <div class="row">
+                                      <p>
+                                        <?php 
+                                        foreach (session()->get('tipos_combustivel') as $tipo) {
+                  
+                                          if ($tipo['tipos_combustivel_nome'] == session()->get('base_veiculos')[$i]['veiculo_tipoCombustivel']) {
+                                            $tipo_combustivel_co2_por_km = $tipo['tipos_combustivel_co2_por_km'];
+                                            break;
+                                          }
+                  
+                                        }
+                                        echo $tipo_combustivel_co2_por_km." CO₂/km";
+                                        ?>
+                                      </p>
+                                    </div>
+                                  
+                                    <a href="{{ URL::to('veiculo/'.session()->get('base_veiculos')[$i]['veiculo_id']) }}">
+                                      <button type="button" class="btn btn-info botoes_veiculos">Detalhes do veiculo</button>
+                                    </a>
+                                  </div>
+                    
+                                </div>
+                              </div>
+                            @endfor
+                  
+                        </div>
+                      </div>
+                      @endif
+
                     <br><br>
 
                     <div class="position-relative my-1">
