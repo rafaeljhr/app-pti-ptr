@@ -1,3 +1,26 @@
+#apresentação {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    height: auto;
+    width: 80%;
+    background-color: white;
+    max-height: 100%;
+    overflow: auto;
+}
+
+#noStorage{
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.sem_bases_img {
+    height: auto;
+    width: auto;
+    max-width: 400px;
+    max-height: 300px;
+}
+
 #todosArmazens {
     display: none;
 }
@@ -12,17 +35,7 @@
     display: none;
 }
 
-#deleteWarning{
-    display: none;
-    position: absolute;
-    background-color: white;
-    border: solid;
-    padding: 10px;
-    top: 25%;
-    left: 25%;
-    z-index: 9;
-    width: 55%;
-}
+
 
 #okButton{
     left: 50%;
@@ -54,6 +67,10 @@
     width: 55%;
 }
 
+.inline-icon {
+    display: flex;
+    justify-content: space-between;
+}
 .armazem{
     display:none;
     position: absolute;
@@ -70,6 +87,7 @@
 #but-pad{
     display: block;
     width: 50%;
+    margin-top:10px;
 }
 
 #button-close-div{

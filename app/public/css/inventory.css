@@ -1,3 +1,26 @@
+#apresentação {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    height: auto;
+    width: 80%;
+    background-color: white;
+    max-height: 100%;
+    overflow: auto;
+}
+
+#noProducts{
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.sem_bases_img {
+    height: auto;
+    width: auto;
+    max-width: 400px;
+    max-height: 300px;
+}
+
 #productForm {
     display: none;
 }
@@ -50,8 +73,17 @@
     width: 35%;
 }
 
+#fixSize{
+    width: 310px;
+    height: 200px;
+}
+.warning{
+    width: 210px;
+    height: 100px;
+}
+
 #filtroA{
-    width: 13%;
+    width: 15%;
 }
 
 #infoAdicional{
@@ -136,6 +168,11 @@
 }
 
 #btn-id{
+    margin: 0;
+    display: block;
+    float: center;
+}
+#btn-id-id{
     margin: 0;
     display: block;
     float: right;

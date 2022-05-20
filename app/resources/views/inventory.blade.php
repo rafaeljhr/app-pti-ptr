@@ -72,11 +72,17 @@
           <div class="col">
             <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
             <div id="toChangeOnCmd">
-              
+              <label for="nome_subcategoria" class="form-label">Selecione uma categoria</label>
+            <select class="form-control" disabled name="nome_subcategoria" id="novo_produto_subcategoria" required>
+                <option default value="">-- Selecione uma subcategoria --</option>
+              </select>
           </div>       
           </div>
 
         </div>
+        
+      {{-- Campos extra do produto consoante a sua categoria --}}
+      <div id="camposExtra"></div>
 
       <div class="input-group mb-3">
         <span class="input-group-text">€</span>
@@ -120,8 +126,7 @@
         
       </div>
 
-      {{-- Campos extra do produto consoante a sua categoria --}}
-      <div id="camposExtra"></div>
+      
 
       <button class="w-100 btn btn-lg btn-primary">Próximo passo</button>
   
@@ -276,6 +281,14 @@
 
       @if(session()->get('all_fornecedor_produtos')!=null)
         @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
+        <?php
+        $comCadeia = 0;
+        $id  = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
+        if(session()->get('produto_cadeia_logistica')  !=  null)
+          for($c = 0; $c < sizeOf(session()->get('produto_cadeia_logistica')); $c++)
+            if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
+              $comCadeia = 1;
+        ?>
         
           <div class="col">
             <div class="card">
@@ -284,11 +297,15 @@
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
+                @if($comCadeia == 0)
+                <p>Este produto não possui cadeias logisticas</p>
+                <img src="images/warning.png" class="warning card-img-top" alt="...">
+                @endif
                 <button type="button" id="showProductInfo" name="{{ route('product-info')}}" onclick="showInfoProduct(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 <button type="button" class="btn btn-outline-primary">Editar</button>
 
-                <button type="button" id='buttonApagarProduto' name="{{ route('product-remove')}}" onclick="apagarProduto(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-danger">Apagar</button>
+                <button type="button" id='buttonApagarProdutoWarning' name="{{ route('product-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>','<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
                 
               </div>
 
@@ -310,6 +327,27 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="modalApagarLabel">Atenção!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <p id="fraseWarning">Tem a certeza que deseja apagar o produto</p>
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      <form method="post" action="{{ route('product-remove')}}">
+        
+      @csrf
+      <div id="buttonApagar"></div>
+      </form>
+      </div>
+  </div>
+  </div>
+</div>
 
 <script src="./js/inventory.js"></script>
 

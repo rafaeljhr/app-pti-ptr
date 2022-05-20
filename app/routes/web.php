@@ -104,11 +104,14 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
 
+Route::post('/product-warning-controller', [ProductsController::class, "deleteWarning"])->name('product-delete-warning');
+
+
 Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');
 Route::post('/product-categories', [ProductsController::class, "changeSub"])->name('product-changeSub');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
-Route::post('/product-delete-controller', [ProductsController::class, "productDelete"])->name('product-delete-controller');
+
 Route::post('/product-remove-last-added', [ProductsController::class, "productRemoveLastAdded"])->name('product-remove-last-added');
 Route::post('/product-remove', [ProductsController::class, "productRemove"])->name('product-remove');
 Route::post('/product-edit-controller', [ProductsController::class, "productEdit"])->name('product-edit-controller');

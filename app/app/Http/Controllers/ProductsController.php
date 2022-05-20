@@ -10,6 +10,7 @@ use App\Models\Armazem;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Evento;
+use App\Models\Notificacao;
 use App\Models\Categoria_campos_extra;
 use App\Models\Produto_campos_extra;
 use App\Http\Controllers\ArmazensController;
@@ -77,7 +78,7 @@ class ProductsController extends Controller
             $produto_informacoes_adicionais = $produto->informacoes_adicionais;
             $produto_data_producao_do_produto = $produto->data_producao_do_produto;
             $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia_no_armazem;
 
             $atributos_produto = [
                 "produto_id" => $produto_id,
@@ -116,18 +117,12 @@ class ProductsController extends Controller
     public function productRegister(Request $request)
     {
 
-
-        //return $request->input();
-        
-        
-
         $catField = Categoria_campos_extra::where('nome_categoria', $request->get('nome_categoria'))->get();
 
 
         if($catField==null){
             
         }
-
         $request->validate([
             'nome'=>'required|string',
             'id_armazem'=>'required|integer',
@@ -207,6 +202,24 @@ class ProductsController extends Controller
             "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia_no_armazem,
         ];
 
+        $noti ="O Produto ";
+        $noti .= $request->get('nome');
+        $noti.=" foi criado com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
+        
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
 
         session()->push('all_fornecedor_produtos', $atributos_novo_produto);
         session()->put('last_added_product_id', $newProduto->id);
@@ -236,6 +249,24 @@ class ProductsController extends Controller
     }
 
 
+
+    public function deleteWarning(Request $request){
+
+        $html="Tem a certeza que deseja apagar o produto ".$request->get('nome_produto')."     
+        ";
+
+        $htmlB="
+        
+        <input name ='id_produto' type='hidden' value='".$request->get('id_produto')."'>
+        <button type='submit' data-bs-dismiss='modal' id='buttonApagarProduto' class='btn btn-outline-danger'>Apagar</button>
+        
+        ";
+        
+        return array($html, $htmlB);
+    }
+
+
+
     public static function productRemove(Request $request){
 
         Evento::where('id_produto', $request->get('id_produto'))->delete();
@@ -252,55 +283,35 @@ class ProductsController extends Controller
 
         self::rebuild_fornecedor_session(); // rebuild products on session
 
+        $noti ="O Produto ";
+        $noti .= $request->get('nome');
+        $noti.=" foi removido com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
+        
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
+
+        
         //
         // Constucao da cadeia logistica para ser mostrada no html
         //
-        $html =
-        "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-        ;
-
         
-        for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
 
-            $html=$html."
-            <div class='col'>
-                <div class='card'>
-                    
-                    <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
-                    <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
-                    <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
-                    <div class='card-body text-center'>
-                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
-                        
-                        <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
-                        <br>
-                        <button type='button' class='btn btn-outline-primary'>Editar</button>
-
-                        <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                
-                    </div>
-                </div>
-            </div>"
-            ;
-
-            if($i > 0 && $i % 3==0) {
-                $html=$html.
-                "</div>".
-                "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                ;
-            }
-            
-        }
-
-
-        if(sizeOf(session()->get('all_fornecedor_produtos')) % 3!=0) {
-            $html=$html.
-            '</div>'
-            ;
-        }
-
-        return $html; //devolver a cadeia logistica do produto
+        return redirect('/inventory'); //devolver a cadeia logistica do produto
     }
+
+
 
     public function allProducts() {
 
@@ -515,7 +526,7 @@ class ProductsController extends Controller
                         
                         <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
                         <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
-                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' class='imagemProduto card-img-top'>
+                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' id='fixSize'  class='imagemProduto card-img-top'>
                         <div class='card-body text-center'>
                             <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
                             
@@ -557,7 +568,7 @@ class ProductsController extends Controller
                         
                         <h5 class='card-title'>".$produtos->nome."</h5>
                         <h4 class='card-text text-danger'>".$produtos->preco." €</h4>
-                        <img src='".$produtos->path_imagem."' class='imagemProduto card-img-top'>
+                        <img src='".$produtos->path_imagem."' id='fixSize' class='imagemProduto card-img-top'>
                         <div class='card-body text-center'>
                             <h5 class='card-title'>".$produtos->informacoes_adicionais."</h5>
                             

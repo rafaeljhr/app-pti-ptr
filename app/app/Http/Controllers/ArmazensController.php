@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Armazem;
 use App\Models\Produto;
 use App\Models\Evento;
+use App\Models\Produto_campos_extra;
+use App\Models\Notificacao;
 use App\Http\Controllers\ProductsController;
 
 class ArmazensController extends Controller
@@ -20,7 +22,15 @@ class ArmazensController extends Controller
         $request->validate([
             'nome'=>'required|string',
             'morada'=>'required|string',
+            'nome'=>'required|string',
+            'morada'=>'required|string',
+            'codigo_postal_1'=>'required|integer',
+            'codigo_postal_2'=>'required|integer',
+            'cidade'=>'required|string',
+            'pais'=>'required|string',
         ]);
+
+        $codigo_postal = $request->get('codigo_postal_1') . "-" . $request->get('codigo_postal_2');
 
         $filename = "images/default_armazem.jpg";
 
@@ -44,12 +54,34 @@ class ArmazensController extends Controller
             
         }
 
+        $noti ="O armazem ";
+        $noti .= $request->get('nome');
+        $noti.=" foi criado com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
+        
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
+
 
         $newArmazem = Armazem::create([
             'id_fornecedor' => session()->get('user_id'),
             'morada' => $request->get('morada'),
             'nome' => $request->get('nome'),
             'path_imagem' => $filename,
+            'codigo_postal' => $codigo_postal,
+            'cidade'=>$request->get('cidade'),
+            'pais'=>$request->get('pais'),
         ]);
 
         $idArmazem = Armazem::where('morada', $request->get('morada'))->get();
@@ -61,6 +93,9 @@ class ArmazensController extends Controller
             "armazem_morada" => $newArmazem->morada,
             "armazem_nome" => $newArmazem->nome,
             "armazem_path_imagem" => $newArmazem->path_imagem,
+            "armazem_zip_code"=> $newArmazem->codigo_postal,
+            "armazem_cidade"=> $newArmazem->cidade,
+            "armazem_pais"=> $newArmazem->pais,
         ];
 
 
@@ -72,57 +107,11 @@ class ArmazensController extends Controller
             session()->put('armazens', $armazem_info);
         }
 
-        //
-        // Constucao do armazém para ser mostrado no html
-        //
-        $htmlA =
-        '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
-        ;
-
         
-        for($a = 0; $a < sizeOf(session()->get('armazens')); $a++) {
-
-
-            $htmlA=$htmlA."
-            <div class='col'>
-                <div class='card'>
-                   
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
-                    <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
-                    <div class='card-body text-center'>
-                    <h4 class='card-title'>".session()->get('armazens')[$a]['armazem_morada']."</h4>
-                    <button id='storageInfo' name='". route('storage-info')."' type='button' onclick='infoAdicional('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-primary'>info</button>
-                    <br>
-                    <button type='button' class='btn btn-outline-primary'>Editar</button>
-
-                    <button type='button' id='buttonApagarArmazemWarning' name='".route('armazem-delete-warning')."' onclick='deleteWarning('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-danger'>Apagar</button>
-                    
-                    </div>
-                </div>
-            </div>"
-            ;
-
-            if($a > 0 && $a % 3==0) {
-                $htmlA=$htmlA.
-                '</div>'.
-                
-                '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
-                ;
-            }
-        }
-
-        if(sizeOf(session()->get('armazens')) % 3!=0) {
-            $htmlA=$htmlA.
-            '</div>'
-           
-            ;
-        }
-
-        return $htmlA; //devolver a cadeia logistica do produto
 
         
 
-        //return redirect('/inventory');
+        return redirect('/storage');
 
     }
 
@@ -159,11 +148,17 @@ class ArmazensController extends Controller
 
     public function deleteWarning(Request $request){
 
-        $html="<button type='button'  class='btn-close' id='button-close-div'  aria-label='Close'></button>
-        <p>Tem a certeza que deseja apagar o armazém ".$request->get('nome_armazem')."</p>
-        <button type='button' id='buttonApagarArmazem' name='".route('armazem-delete-controller')."' onclick='apagarArmazem(".$request->get('id_armazem').")' class='btn btn-outline-danger'>Apagar</button>
+        $html="Tem a certeza que deseja apagar o armazém ".$request->get('nome_armazem')."     
         ";
-        return $html;
+
+        $htmlB="
+        
+        <input name ='id_armazem' type='hidden' value='".$request->get('id_armazem')."'>
+        <button type='submit' data-bs-dismiss='modal' id='buttonApagarArmazem' class='btn btn-outline-danger'>Apagar</button>
+        
+        ";
+        
+        return array($html, $htmlB);
     }
 
 
@@ -180,7 +175,7 @@ class ArmazensController extends Controller
                 if ($produtos->path_imagem != "images/default_produto.jpg") {
                     unlink($produtos->path_imagem); // apagar a imagem do produto
                 }
-        
+                Produto_campos_extra::where('id_produto',  $produtos->id)->delete();
                 $produtos->delete();
                 session()->forget('all_fornecedor_produtos');
                 ProductsController::rebuild_fornecedor_session(); // rebuild products on session
@@ -200,53 +195,28 @@ class ArmazensController extends Controller
         $armazem->delete();
         (new ArmazensController)->getAllArmazens(); // rebuild armazens of fornecedor in session
 
-        $htmlA =
-        '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
-        ;
 
+        $noti ="O armazem ";
+        $noti .= $armazem->nome;
+        $noti.=" foi apagado com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
         
-        for($a = 0; $a < sizeOf(session()->get('armazens')); $a++) {
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
+        return redirect('/storage');
 
-
-            $htmlA=$htmlA."
-            <div class='col'>
-                <div class='card'>
-                   
-                    <h5 class='card-title'>".session()->get('armazens')[$a]['armazem_nome']."</h5>
-                    <img src='".session()->get('armazens')[$a]['armazem_path_imagem']."' class='imagemProduto card-img-top'>
-                    
-                    <div class='card-body text-center'>
-
-                    <h4 class='card-text'>".session()->get('armazens')[$a]['armazem_morada']."</h4>
-                    <button id='storageInfo' name='".route('storage-info')."' type='button' onclick='infoAdicional('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-primary'>info</button>
-                    <br>
-                    <button type='button' class='btn btn-outline-primary'>Editar</button>
-
-                    
-                    <button type='button' id='buttonApagarArmazemWarning' name='".route('armazem-delete-warning')."' onclick='deleteWarning('".session()->get('armazens')[$a]['armazem_id']."', '".session()->get('armazens')[$a]['armazem_nome']."')' class='btn btn-outline-danger'>Apagar</button>
-                    
-                    </div>
-                </div>
-            </div>"
-            ;
-
-            if($a > 0 && $a % 3==0) {
-                $htmlA=$htmlA.
-                '</div>'.
-                
-                '<div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">'
-                ;
-            }
-        }
-
-        if(sizeOf(session()->get('armazens')) % 3!=0) {
-            $htmlA=$htmlA.
-            '</div>'
-           
-            ;
-        }
-
-        return $htmlA; 
+         
     }
 
     public function storageInfo(Request $request){
