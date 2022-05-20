@@ -27,11 +27,97 @@
 <p>Diriga-se à página dos armazens onde poderá criar um ou mais</p>
 @endif
 
+
+
+{{-- dropdown menu para selecionar o armazem --}}
+<label for="nome_categoria" class="form-label">Filtrar por armazém</label>
+<select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
+  <option default value="reset">-- Todos os produtos --</option>
+  @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+  <?php $category= session()->get('armazens')[$i] ?>
+  <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
+  @endfor
+</select>
+
+@if(sizeOf(session()->get('armazens'))  >  0)
+<button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+@else
+
+<button type="submit"  @click ="mostrarCriarProduto()" disabled class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+
+@endif
+
+
+
+{{-- mostrar todos os produtos --}}
+<div class="container p-0 mt-5 mb-5">
+  <div id='todosProdutos'>
+
+    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+
+      @if(session()->get('all_fornecedor_produtos')!=null)
+        @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
+        <?php
+        $comCadeia = 0;
+        $id  = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
+        if(session()->get('produto_cadeia_logistica')  !=  null)
+          for($c = 0; $c < sizeOf(session()->get('produto_cadeia_logistica')); $c++)
+            if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
+              $comCadeia = 1;
+        ?>
+        
+          <div class="col">
+            <div class="card">
+              <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
+              <h5 class="card-title mt-3 text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
+              <h4 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
+              
+              <div class="card-body text-center">
+                <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
+                @if($comCadeia == 0)
+                <p>Este produto não possui cadeias logisticas</p>
+                <img src="images/warning.png" class="warning card-img-top" alt="...">
+                @endif
+                <button type="button" id="showProductInfo"  class="btn btn-outline-primary">Ver informações do produto</button>
+                <br>
+                
+                <a id="hideAnchor" href="{{ URL::to('produto/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
+                <button type="button" id="addCadeia" class="btn btn-outline-primary">Adicionar cadeias</button>
+                </a>
+                <br>
+                <button type="button" id='buttonApagarProdutoWarning' name="{{ route('product-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>','<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
+                
+              </div>
+
+            </div>
+          </div>
+
+          @if($i > 0 && $i % 3==0)
+            </div>
+            <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+          @endif
+          @endfor
+
+        @endif
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+{{-- /////////////////////////////////////////////////////////////////// --}}
+
+
 <div id="productForm" v-show="fundoDiv" class="forForm">
   <button type="button" @click="mostrarCriarProduto();" class="btn-close" id="button-close-div"  aria-label="Close"></button>
 
   {{-- Criar produto--}}
-  <form @submit.prevent="criarProduto" method="post" action="{{ route('product-register-controller') }}" id="criar_um_produto" enctype="multipart/form-data">
+  <form method="post" action="{{ route('product-register-controller') }}" id="criar_um_produto" enctype="multipart/form-data">
     @csrf
     <h2>Informação principal do produto</h2>
       
@@ -127,125 +213,11 @@
       </div>
 
       
-
-      <button class="w-100 btn btn-lg btn-primary">Próximo passo</button>
+      <button type = "submit" class="w-100 btn btn-lg btn-primary">Criar produto</button>
   
   </form>
 
 </div>
-
-
-{{-- div para apresentar as cadeias logisticas associadas ao  produto acabado de criar e poder criar mais--}}
-<div id="todaCadeiaLogistica" class="forForm">
-
-  {{-- <button type="button" @click="mostrarTodaCadeiaLogistica()" class="btn-close" id="button-close-div"  aria-label="Close"></button> --}}
-  <h3>A cadeia logística associada ao novo produto</h3>
-  
-  <div id='mostrarCadeiaLogistica'></div>
-
-
-  <div>
-    <form @submit.prevent="apagarUltimoProduto" method="post" action="{{ route('product-remove-last-added')}}">
-      @csrf
-      <div class="container">
-        <div class="row">
-          <div class="col text-left">
-            <button type="submit" class="btn btn-primary btn-lg">Passo anterior</button>
-          </div>
-          <div class="col text-center">
-            <button type="button" class="btn btn-success btn-lg" @click="criarUmaCadeiaLogistica()">Add</button>
-          </div>
-          <div class="col text-right">
-            <button type="button" class="btn btn-warning btn-lg" @click="finalizarAdicaoProduto()">Finalizar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-{{-- div para adicionar cadeia logistica --}}
-<div id="criarUmaCadeiaLogistica" class="forForm">
-  <button type="button" @click="criarUmaCadeiaLogistica()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <form @submit.prevent="criarEvento" method="post" action="{{ route('product-add-event-controller')}}">
-    @csrf
-
-    <h3>Adicionar novo evento à cadeia logística do novo produto</h3>
-    <label for="image" class="form-label">Nome do novo evento</label>
-    <div class="input-group mb-3">  
-      <input type="text" class="form-control" name="nomeCadeia" id="image"  aria-describedby="basic-addon1" required>
-    </div>
-
-    
-
-    <label class="form-label">Tipo de energia consumida no evento</label>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" @click="mostrarRegistoCo2()">
-      <label class="form-check-label" for="flexCheckDefault">
-        CO2
-      </label>
-    </div>
-
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" @click="mostrarRegistoKWh()">
-      <label class="form-check-label" for="flexCheckChecked">
-        KWh
-      </label>
-    </div>
-    
-    <div id="co2quantidade">
-      <label for="co2_produzido" class="form-label">CO2(kg) produzido pelo evento</label>
-      <div class="input-group mb-3">       
-        <input type="number" min="0" step  ="any" class="form-control" name="co2_produzido" id="co2_produzido" aria-describedby="basic-addon1" >
-      </div>
-    </div>
-
-    <div id="kwhquantidade">
-      <label for="kwh_consumidos" class="form-label">KWh de energia consumidos</label>
-      <div class="input-group mb-3">       
-        <input type="number"  min="0" step ="any" class="form-control" name="kwh_consumidos" id="kwh_consumidos" aria-describedby="basic-addon1">
-      </div>
-    </div>
-
-    <br>
-    <div class="input-group mb-3"> 
-      <span class="input-group-text">Descrição</span>
-      <textarea class="form-control" name="descricaoCadeia" aria-label="With textarea" required></textarea>
-    </div>
-
-    <button class="w-100 btn btn-lg btn-primary" id='botaoAdicionarEvento' type="submit">Adicionar</button>
-    
-    <button id='spinnerAdicionarEvento' class="w-100 btn btn-lg btn-primary" ><a class="spinner-border text-light"></a></button>
-    
-      
-    </p>
-
-  </form>
-</div>
-
-
-
-
-
-{{-- dropdown menu para selecionar o armazem --}}
-<label for="nome_categoria" class="form-label">Filtrar por armazém</label>
-<select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
-  <option default value="reset">-- Todos os produtos --</option>
-  @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-  <?php $category= session()->get('armazens')[$i] ?>
-  <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
-  @endfor
-</select>
-
-@if(sizeOf(session()->get('armazens'))  >  0)
-<button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-@else
-
-<button type="submit"  @click ="mostrarCriarProduto()" disabled class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-
-@endif
-
 
 
 
@@ -271,61 +243,6 @@
 </div>
 
 
-
-
-{{-- mostrar todos os produtos --}}
-<div class="container p-0 mt-5 mb-5">
-  <div id='todosProdutos'>
-
-    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-
-      @if(session()->get('all_fornecedor_produtos')!=null)
-        @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
-        <?php
-        $comCadeia = 0;
-        $id  = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
-        if(session()->get('produto_cadeia_logistica')  !=  null)
-          for($c = 0; $c < sizeOf(session()->get('produto_cadeia_logistica')); $c++)
-            if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
-              $comCadeia = 1;
-        ?>
-        
-          <div class="col">
-            <div class="card">
-              <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
-              <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
-              <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
-              <div class="card-body text-center">
-                <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                @if($comCadeia == 0)
-                <p>Este produto não possui cadeias logisticas</p>
-                <img src="images/warning.png" class="warning card-img-top" alt="...">
-                @endif
-                <button type="button" id="showProductInfo" name="{{ route('product-info')}}" onclick="showInfoProduct(<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>)" class="btn btn-outline-primary">Ver informações do produto</button>
-                <br>
-                <button type="button" class="btn btn-outline-primary">Editar</button>
-
-                <button type="button" id='buttonApagarProdutoWarning' name="{{ route('product-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>','<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
-                
-              </div>
-
-            </div>
-          </div>
-
-          @if($i > 0 && $i % 3==0)
-            </div>
-            <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-          @endif
-          @endfor
-
-        @endif
-
-      </div>
-
-    </div>
-
-  </div>
-</div>
 
 <div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

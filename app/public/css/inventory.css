@@ -7,6 +7,42 @@
     overflow: auto;
 }
 
+.evento-size{
+
+    width: 250px;
+    height: 250px
+}
+#botao_criar {
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+.sem_cadeias_img {
+    height: auto;
+    width: auto;
+    max-width: 400px;
+    max-height: 300px;
+}
+
+#addCadeia{
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 234px;
+    
+}
+
+#hideAnchor{
+
+    text-decoration: none;
+}
+#noCadeias{
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #noProducts{
     width: 100%;
     min-height: 600px;

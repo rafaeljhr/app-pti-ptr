@@ -105,11 +105,7 @@ class ArmazensController extends Controller
             $armazem_info = array();
             array_push($armazem_info, $atributos_novo_armazem);
             session()->put('armazens', $armazem_info);
-        }
-
-        
-
-        
+        } 
 
         return redirect('/storage');
 

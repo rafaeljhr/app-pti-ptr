@@ -69,6 +69,18 @@ Route::get('/inventory', function () {
     }
 })->name('inventory');
 
+
+Route::get('/cadeia', function () {
+
+    
+    return view('cadeia');
+
+    
+})->name('cadeia');
+
+
+Route::get('/produto/{id}/', [ProductsController::class, "cadeiaPage"]);
+
 Route::get('/products', [ProductsController::class, "allProducts"])->name('products');
 
 
@@ -115,6 +127,8 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
 
 Route::post('/product-warning-controller', [ProductsController::class, "deleteWarning"])->name('product-delete-warning');
+
+Route::post('/product-add-cadeia-controller', [ProductsController::class, "cadeiaPage"])->name('product-cadeia-page');
 
 
 Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');

@@ -109,6 +109,34 @@ class ProductsController extends Controller
         if(!(session()->has('armazens'))){
             (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
         }
+
+        if(!(session()->has('produto_cadeia_logistica'))){
+            $fornecedor_eventos = Evento::where('id_fornecedor', session()->get('user_id'))->get();
+
+            $all_fornecedor_eventos = array();
+
+            foreach($fornecedor_eventos as $evento) {
+
+                
+
+
+                $atributos_novo_evento = [
+                    "evento_id_produto" => $evento->id_produto,
+                    "evento_nome" => $evento->nome,
+                    "evento_co2_produzido" => $evento->co2_produzido,
+                    "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                    "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                    "id_fornecedor" => $evento->id_fornecedor,
+                ];
+                
+
+
+                array_push($all_fornecedor_eventos, $atributos_novo_evento);
+            }
+
+            session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
+        }
+
         
 
     }
@@ -173,7 +201,8 @@ class ProductsController extends Controller
             'informacoes_adicionais' => $request->get('informacoes_adicionais'),
             'data_producao_do_produto' => $request->get('data_producao_do_produto'),
             'data_insercao_no_site' => $request->get('data_insercao_no_site'),
-            'kwh_consumidos_por_dia_no_armazem' => $request->get('kwh_consumidos_por_dia')
+            'kwh_consumidos_por_dia_no_armazem' => $request->get('kwh_consumidos_por_dia'),
+            'pronto_a_vender' => 0,
         ]);
 
         foreach($catField as $catFields){
@@ -200,6 +229,7 @@ class ProductsController extends Controller
             "produto_data_producao_do_produto" => $newProduto->data_producao_do_produto,
             "produto_data_insercao_no_site" => $newProduto->data_insercao_no_site,
             "produto_kwh_consumidos_por_dia" => $newProduto->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => $newProduto->pronto_a_vender,
         ];
 
         $noti ="O Produto ";
@@ -223,30 +253,11 @@ class ProductsController extends Controller
 
         session()->push('all_fornecedor_produtos', $atributos_novo_produto);
         session()->put('last_added_product_id', $newProduto->id);
+
+        return redirect('/inventory');
     }
 
 
-    public function productRemoveLastAdded(Request $request){
-
-        Evento::where('id_produto', session()->get('last_added_product_id'))->delete();
-
-        Produto_campos_extra::where('id_produto', session()->get('last_added_product_id'))->delete();
-
-        $produto = Produto::where('id', session()->get('last_added_product_id'))->first();
-
-       
-
-        session()->forget('last_added_product_id');
-        session()->forget('produto_cadeia_logistica');
-
-        if ($produto->path_imagem != "images/default_produto.jpg") {
-            unlink($produto->path_imagem); // apagar a imagem do produto
-        }
-
-        $produto->delete();
-
-        self::rebuild_fornecedor_session(); // rebuild products on session
-    }
 
 
 
@@ -361,33 +372,43 @@ class ProductsController extends Controller
 
     }
 
+    public function cadeiaPage($id){
+        $produto = Produto::where('id', $id)->first();
+        if(session()->get('prod_cadeia_actual') == null){
+            session()->put('prod_cadeia_actual', $produto->id);
+            session()->put('prod_nome_cadeia_actual', $produto->nome);
+        }else{
+            session()->forget('prod_cadeia_actual');
+            session()->put('prod_cadeia_actual', $produto->id);
+            session()->forget('prod_nome_cadeia_actual');
+            session()->put('prod_nome_cadeia_actual', $produto->nome);
+        }
+       
+        return redirect('/cadeia');
+        
+    }
+
+
 
     public function productAddEvent(Request $request){
 
         $request->validate([
             'nomeCadeia'=>'required|string',
+            'co2_produzido'=>'required|number',
+            'kwh_consumidos'=>'required|number',
             'descricaoCadeia'=>'required|string',
         ]);
 
-        if ($request->get('co2_produzido')== null) {
-            $co2_produzido = 0;
-        } else {
-            $co2_produzido = $request->get('co2_produzido');
-        }
-
-        if ($request->has('kwh_consumidos') == null) {
-            $kwh_consumidos = 0;
-        } else {
-            $kwh_consumidos = $request->get('kwh_consumidos');
-        }
+        
 
 
         $newEvento = Evento::create([
-            'id_produto' => session()->get('last_added_product_id'),
+            'id_produto' => session()->get('prod_cadeia_actual'),
             'nome' => $request->get('nomeCadeia'),
-            'poluicao_co2_produzida' => $co2_produzido,
-            'kwh_consumidos' => $kwh_consumidos,
+            'poluicao_co2_produzida' => $request->get('co2_produzido'),
+            'kwh_consumidos' => $request->get('kwh_consumidos'),
             'descricao_do_evento' => $request->get('descricaoCadeia'),
+            'id_fornecedor' => session()->get('user_id'),
         ]);
 
 
@@ -397,6 +418,7 @@ class ProductsController extends Controller
             "evento_co2_produzido" => $newEvento->co2_produzido,
             "evento_kwh_consumidos" => $newEvento->kwh_consumidos,
             "evento_descricao_do_evento" => $newEvento->descricao_do_evento,
+            "id_fornecedor" => $newEvento->id_fornecedor,
         ];
 
 
@@ -408,45 +430,8 @@ class ProductsController extends Controller
             session()->put('produto_cadeia_logistica', $produto_cadeia_logistica);
         }
 
-        //
-        // Constucao da cadeia logistica para ser mostrada no html
-        //
-        $html =
-        '<div class="row">'
-        ;
 
-        
-        for($i = 0; $i < sizeOf(session()->get('produto_cadeia_logistica')); $i++) {
-
-            $html=$html.'
-            <div class="col">
-              <div class="card"  style="width: 18rem;"> 
-                <div class="card-body">
-                  <h5 class="card-title">'.session()->get('produto_cadeia_logistica')[$i]["evento_nome"].'</h5>
-                  <p class="card-text">'.session()->get('produto_cadeia_logistica')[$i]["evento_descricao_do_evento"].'</p>         
-                </div>
-              </div>
-            </div>'
-            ;
-
-            if($i > 0 && $i % 3==0) {
-                $html=$html.
-                '</div>'.
-                '<div class="row">'
-                ;
-            }
-        }
-
-        if(sizeOf(session()->get('produto_cadeia_logistica')) % 3!=0) {
-            $html=$html.
-            '</div>'
-            ;
-        }
-
-
-
-
-        return $html; //devolver a cadeia logistica do produto
+        return redirect('/cadeia'); //devolver a cadeia logistica do produto
 
     }
 
@@ -454,7 +439,6 @@ class ProductsController extends Controller
 
     public function productInfo(Request $request){
        
-        
         $produto = Produto::where('id', $request->get('id_produto'))->first();
         $armazem = Armazem::where('id', $produto->id_armazem)->first();
         $htmlA = "
@@ -655,6 +639,7 @@ class ProductsController extends Controller
         }   
     }
 
+    
     public function productAddCarrinho(Request $request) {
         
         $html = "".$request->get('nome_produto')." adicionado ao carrinho com sucesso!";
