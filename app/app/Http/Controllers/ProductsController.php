@@ -252,7 +252,7 @@ class ProductsController extends Controller
         session()->push('notificacoes', $atributos_notificacao);
 
         session()->push('all_fornecedor_produtos', $atributos_novo_produto);
-        session()->put('last_added_product_id', $newProduto->id);
+        
 
         return redirect('/inventory');
     }
@@ -394,8 +394,8 @@ class ProductsController extends Controller
 
         $request->validate([
             'nomeCadeia'=>'required|string',
-            'co2_produzido'=>'required|number',
-            'kwh_consumidos'=>'required|number',
+            'co2_produzido'=>'required',
+            'kwh_consumidos'=>'required',
             'descricaoCadeia'=>'required|string',
         ]);
 
@@ -420,6 +420,25 @@ class ProductsController extends Controller
             "evento_descricao_do_evento" => $newEvento->descricao_do_evento,
             "id_fornecedor" => $newEvento->id_fornecedor,
         ];
+
+        $noti ="A cadeia logistica ";
+        $noti .= $request->get('nomeCadeia');
+        $noti.=" foi criada com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
+        
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
 
 
         if(session()->has('produto_cadeia_logistica')){

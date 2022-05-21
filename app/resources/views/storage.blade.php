@@ -38,8 +38,6 @@
 
   </div>
   
-  
-  
         <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
   
         
@@ -64,13 +62,15 @@
                 <h4 class="card-text"><?php echo session()->get('armazens')[$i]['armazem_morada'] ?></h4>
                 
                 <p>Consumo total: <?php echo $sum ?> kwh por dia</p>
-                
-                <button id="storageInfo" name="{{ route('storage-info')}}" type="button" onclick="infoAdicional('<?php echo session()->get('armazens')[$i]['armazem_id']?>', '<?php echo session()->get('armazens')[$i]['armazem_nome'] ?>')" class="btn btn-outline-primary">info</button>
+                <a href="{{ URL::to('storage/'.session()->get('armazens')[$i]['armazem_id']) }}">
+                  <button id="storageInfo" type="button" class="btn btn-outline-primary">Detalhes do armazém</button>
+                </a>  
                 <br>  
                 
-  
+                
                   <button type="button" id='buttonApagarArmazemWarning' name="{{ route('armazem-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('armazens')[$i]['armazem_id'] ?>', '<?php echo session()->get('armazens')[$i]['armazem_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
-                  </div>
+                
+                </div>
   
               </div>
             </div>

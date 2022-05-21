@@ -94,8 +94,8 @@
         <img src="images/armazens.png" class="sem_cadeias_img" alt="">
         <br>
         <br>
-        <h2>Parece que não cadeias logisticas.</h2>
-        <p>As bases são necessárias para possuir veículos, então crie uma primeiramente!</p>
+        <h2>Parece que não possui cadeias logisticas associadas ao produto <?php echo session()->get('prod_nome_cadeia_actual')?>.</h2>
+        <p>Para o seu produto ser colocado para venda necessita deve ter no mínimo, uma cadeia logistica associada!</p>
         <br>
         <button class="btn btn-success" @click="criarUmaCadeiaLogistica()" id="botao_criar">Criar cadeia</button>
       </div>

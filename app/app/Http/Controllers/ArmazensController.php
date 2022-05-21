@@ -215,53 +215,183 @@ class ArmazensController extends Controller
          
     }
 
-    public function storageInfo(Request $request){
+    public function storageInfo($id){
 
-        $produtos = Produto::where('id_armazem', $request->get('id_armazem'))->get();
-        $armazemNome = Armazem::where('id', $request->get('id_armazem'))->first();
-        if($produtos != null  && count($produtos) ){
-            $htmlP="Armazem: ";
-            $htmlP .= $armazemNome->nome;
-            $html =
-            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-            ;
+        $armazem =  Armazem::where('id', $id)->first();
 
-            $i = 0;
-            foreach($produtos as $armazemSel){
+        $atributos_armazem= [
+            "armazem_id" => $id,
+            "id_fornecedor" => $armazem->id_fornecedor,
+            "armazem_morada" => $armazem->morada,
+            "armazem_nome" => $armazem->nome,
+            "path_imagem" => $armazem->path_imagem,
+            "armazem_codigo_postal" => $armazem->codigo_postal,
+            "armazem_cidade" => $armazem->cidade,
+            "armazem_pais" => $armazem->pais,
+        ];
 
-                $html=$html."
-                <div class='col'>
-                    <div class='card'>
-                        
-                        <h5 class='card-title'>".$armazemNome->nome."</h5>
-                        <h4 class='card-text-center text-danger'>".$armazemSel->preco." €</h4>
-                        <img src='".$armazemSel->path_imagem."' class='imagemProduto card-img-top'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title'>Informacões adicionais: ".$armazemSel->informacoes_adicionais."</h5>                
-                        </div>
-                    </div>
-                </div>"
-                ;
-
-                if($i > 0 && $i % 3==0) {
-                    $html=$html.
-                    "</div>".
-                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                    ;
-                }
-                $i = $i + 1;
-                
-            }
+        session()->put('armazem_atual', $atributos_armazem);
 
 
-            
-        }else{
-            $html ="";
-            $htmlP ="Não possui nenhum produto associado ao armazem ";
-            $htmlP .= $armazemNome->nome;
+        $armazem_produtos = Produto::where('id_armazem', $id)->get();
+
+        $all_armazem_produtos = array();
+
+        foreach($armazem_produtos as $produto) {
+
+            $produto_id = $produto->id;
+            $produto_nome = $produto->nome;
+            $produto_preco = $produto->preco;
+            $produto_id_armazem = $produto->id_armazem;
+            $produto_id_fornecedor = $produto->id_fornecedor;
+            $produto_quantidade = $produto->quantidade;
+            $produto_nome_categoria = $produto->nome_categoria;
+            $produto_path_imagem = $produto->path_imagem;
+            $produto_nome_subcategoria = $produto->nome_subcategoria;
+            $produto_informacoes_adicionais = $produto->informacoes_adicionais;
+            $produto_data_producao_do_produto = $produto->data_producao_do_produto;
+            $produto_data_insercao_no_site = $produto->data_insercao_no_site;
+            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia_no_armazem;
+
+            $atributos_produto = [
+                "produto_id" => $produto_id,
+                "produto_nome" => $produto_nome,
+                "produto_preco" => $produto_preco,
+                "produto_id_armazem" => $produto_id_armazem,
+                "produto_id_fornecedor" => $produto_id_fornecedor,
+                "produto_quantidade" => $produto_quantidade,
+                "produto_nome_categoria" => $produto_nome_categoria,
+                "produto_path_imagem" => $produto_path_imagem,
+                "produto_nome_subcategoria" => $produto_nome_subcategoria,
+                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
+                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
+                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
+                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+            ];
+
+
+            array_push($all_armazem_produtos, $atributos_produto);
         }
 
-        return array($html, $htmlP);
+        session()->put('armazem_actual_produtos', $all_armazem_produtos);
+        return redirect('/storage-edit');
+    }
+
+
+    public  function  armazemEdit(Request $request){
+        $request->validate([
+            'nome'=>'sometimes|required|string',
+            'morada'=>'sometimes|required|string',
+            'cidade'=>'sometimes|required|string',
+            'codigo_postal_1'=>'sometimes|required|integer',
+            'codigo_postal_2'=>'sometimes|required|integer',
+            'pais'=>'sometimes|required|string',
+        ]);
+
+        
+        $armazem = Armazem::where('id', session()->get('armazem_atual')['armazem_id'])->first();
+        $armazem->update($request->all());
+        
+        $atributos_armazem= [
+            "armazem_id" => $armazem->id,
+            "id_fornecedor" => $armazem->id_fornecedor,
+            "armazem_morada" => $armazem->morada,
+            "armazem_nome" => $armazem->nome,
+            "path_imagem" => $armazem->path_imagem,
+            "armazem_codigo_postal" => $armazem->codigo_postal,
+            "armazem_cidade" => $armazem->cidade,
+            "armazem_pais" => $armazem->pais,
+        ];
+
+        session()->put('armazem_atual', $atributos_armazem);
+
+        $notificacao = Notificacao::create([
+            'id_utilizador' => session()->get('user_id'),
+            'mensagem' => "A  informação do armazém '".$armazem->nome."' foi atualizada!",
+            'estado' => 1,
+        ]);
+
+        $atributos_notificacao = [
+            "notificacao_id" => $notificacao->id,
+            "notificacao_id_utilizador" => $notificacao->id_utilizador,
+            "notificacao_mensagem" => $notificacao->mensagem,
+            "notificacao_estado" => $notificacao->estado,
+        ];
+
+        session()->push('notificacoes', $atributos_notificacao);
+
+
+        self::getAllArmazens(); // put all session bases and veiculos up to date
+
+        return redirect('/storage-edit');
+    }
+
+    public function changeImg(Request $request){
+        $armazem = Armazem::where('id', session()->get('armazem_atual')['armazem_id'])->first();
+
+        if($request->file('mudar_path_imagem')){
+                
+            $allowedMimeTypes = ['image/jpeg', 'image/jpg','image/gif','image/png'];
+            $contentType = $request->file('mudar_path_imagem')->getClientMimeType();
+
+            if(!in_array($contentType, $allowedMimeTypes) ){
+                return response()->json('error: Not an image submited in the form');
+            }
+
+            $file= $request->file('mudar_path_imagem');
+            $filename= uniqid().$file->getClientOriginalName();
+
+            if (!$file-> move(public_path('images/users_images/'), $filename)) {
+                return 'Error saving the file';
+            }
+
+            $filename = 'images/users_images/' . $filename;
+            
+        } else {
+            return "falhou mudar avatar";
+        }
+
+        if (!(str_contains($armazem->path_imagem , 'http'))) {
+            if ($armazem->path_imagem != "images/default_armazem.jpg") {
+                unlink($armazem->path_imagem); // apagar a imagem antiga
+            }
+        }
+
+        $armazem->path_imagem = $filename;
+        $armazem->save();
+
+        $atributos_armazem= [
+            "armazem_id" => $armazem->id,
+            "id_fornecedor" => $armazem->id_fornecedor,
+            "armazem_morada" => $armazem->morada,
+            "armazem_nome" => $armazem->nome,
+            "path_imagem" => $armazem->path_imagem,
+            "armazem_codigo_postal" => $armazem->codigo_postal,
+            "armazem_cidade" => $armazem->cidade,
+            "armazem_pais" => $armazem->pais,
+        ];
+
+        session()->put('armazem_atual', $atributos_armazem);
+
+        $notificacao = Notificacao::create([
+            'id_utilizador' => session()->get('user_id'),
+            'mensagem' => "A imagem da seu armazém ".$armazem->nome." foi atualizada!",
+            'estado' => 1,
+        ]);
+
+        $atributos_notificacao = [
+            "notificacao_id" => $notificacao->id,
+            "notificacao_id_utilizador" => $notificacao->id_utilizador,
+            "notificacao_mensagem" => $notificacao->mensagem,
+            "notificacao_estado" => $notificacao->estado,
+        ];
+
+        session()->push('notificacoes', $atributos_notificacao);
+
+
+        self::getAllArmazens(); // put all session bases and veiculos up to date
+
+        return redirect('/storage-edit');
     }
 
 }

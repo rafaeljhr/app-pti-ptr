@@ -155,10 +155,19 @@ Route::post('/armazem-info-controller', [ArmazensController::class, "storageInfo
 
 Route::post('/armazem-warning-controller', [ArmazensController::class, "deleteWarning"])->name('armazem-delete-warning');
 
+Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
+
+Route::post('/update-imagem-armazem-controller', [ArmazensController::class, 'changeImg'])->name('update-imagem-armazem-controller');
+
 Route::post('/armazem-register-controller', [ArmazensController::class, "armazemRegister"])->name('armazem-register-controller');
 Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit"])->name('armazem-edit-controller');
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
 
+Route::get('/storage/{id}/', [ArmazensController::class, "storageInfo"]);
+
+Route::get('/storage-edit', function () {
+    return view('informacoes_armazem');
+})->name('info_armazem');
 
 // ##############################################
 // BASES RELATED ROUTES
