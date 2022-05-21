@@ -40,13 +40,15 @@ Session_start();
         @endif
 
 
-        @if(Session::get('loggedIn') == 'yes')
+        
        
-            <div class="dropdown" id="menu_perfil_utilizador">
+        <div class="dropdown" id="menu_perfil_utilizador">
 
-                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
-                    <img class="icons_navbar" src="images/carrinho_de_compras.png">
-                </a>
+            <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
+                <img class="icons_navbar" src="images/carrinho_de_compras.png">
+            </a>
+
+            @if(Session::get('loggedIn') == 'yes')
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="icons_navbar" src="images/notification.png">
@@ -56,7 +58,7 @@ Session_start();
                 <ul class="dropdown-menu" id='notificationsDiv'>
 
                     <h4 style="margin-left: 10px;" class="text-center">
-                         <p>As suas notificações</p>
+                        <p>As suas notificações</p>
                     </h4>
 
                     <hr class="dropdown-divider" style="width: 90%; margin: auto;">
@@ -133,11 +135,8 @@ Session_start();
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
                 </ul>
-            </div>
-            
-        @endif
-
+            @endif
+        </div>
     </nav>
-
 </header>
        
