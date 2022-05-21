@@ -4,6 +4,22 @@ let app = Vue.createApp({
     },
 
     methods: {
+        calculatePrices() {
+            var subTotal = 0;
+
+            var productRows = document.getElementById("todosProdutos").children;
+            for (var i = 0; i < productRows.length; i++) {
+                console.log(i+1);
+                console.log(document.getElementsByTagName('h4').length);
+                subTotal += parseFloat(document.getElementsByTagName('h4')[i+1].innerHTML.slice(0,-2));
+            }
+
+            this.$refs.subTotal.innerHTML = subTotal + " €";
+            //atualizar preço entrega
+            this.$refs.totalCost.innerHTML = subTotal + " €";
+
+        },
+
         removeProduto(productKey, productName) {
             let route = document.getElementById("removeCartButton").name;
             document.getElementById(productKey).remove();
@@ -28,6 +44,7 @@ let app = Vue.createApp({
             };
 
             xhr.send(data);
+            this.calculatePrices();
         },
 
         fecharAlerta() {

@@ -24,7 +24,7 @@ $custoEntrega = 5;
             <div class="card overflow-auto p-3 mb-3 lista-produtos">
 
                 {{-- mostrar todos os produtos --}}
-                <div class="container px-2 mt-2 mb-5">
+                <div id="productsContainer" class="container px-2 mt-2 mb-5">
                     
                     <h5>O teu carrinho</h5>
 
@@ -84,7 +84,7 @@ $custoEntrega = 5;
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <p><?php echo $subTotal ?>€</p>
+                        <p ref="subTotal" id="subTotal"><?php echo $subTotal ?>€</p>
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@ $custoEntrega = 5;
                     </div>
 
                     <div class="col-md-6 text-end">
-                        <p><?php echo ($custoEntrega + $subTotal) ?>€</p>
+                        <p ref="totalCost"><?php echo ($custoEntrega + $subTotal) ?>€</p>
                     </div>
                 </div>
 

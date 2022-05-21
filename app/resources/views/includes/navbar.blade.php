@@ -56,7 +56,7 @@ Session_start();
                 <ul class="dropdown-menu" id='notificationsDiv'>
 
                     <h4 style="margin-left: 10px;" class="text-center">
-                         <p>As suas notificações</p>
+                        <p>As suas notificações</p>
                     </h4>
 
                     <hr class="dropdown-divider" style="width: 90%; margin: auto;">
@@ -133,11 +133,13 @@ Session_start();
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
                 </ul>
-            </div>
-            
+        @else
+            <div class="dropdown" id="menu_perfil_utilizador">
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
+                    <img class="icons_navbar" src="images/carrinho_de_compras.png">
+                </a>
         @endif
-
+            </div>
     </nav>
-
 </header>
        
