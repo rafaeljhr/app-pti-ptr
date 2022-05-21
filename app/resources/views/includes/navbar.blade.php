@@ -40,15 +40,13 @@ Session_start();
         @endif
 
 
-        
+        @if(Session::get('loggedIn') == 'yes')
        
-        <div class="dropdown" id="menu_perfil_utilizador">
+            <div class="dropdown" id="menu_perfil_utilizador">
 
-            <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
-                <img class="icons_navbar" src="images/carrinho_de_compras.png">
-            </a>
-
-            @if(Session::get('loggedIn') == 'yes')
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
+                    <img class="icons_navbar" src="images/carrinho_de_compras.png">
+                </a>
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="icons_navbar" src="images/notification.png">
@@ -135,8 +133,13 @@ Session_start();
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
                 </ul>
-            @endif
-        </div>
+        @else
+            <div class="dropdown" id="menu_perfil_utilizador">
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
+                    <img class="icons_navbar" src="images/carrinho_de_compras.png">
+                </a>
+        @endif
+            </div>
     </nav>
 </header>
        
