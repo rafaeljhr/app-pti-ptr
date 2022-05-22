@@ -1,5 +1,5 @@
 .lista-produtos{
-    height: 90%;
+    max-height: 75vh;
 }
 
 #divAvisoCarrinho {
@@ -9,4 +9,8 @@
     background-color: #04AA6D;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.emptyCart {
+    transform: scale(0.50);
 }

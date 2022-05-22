@@ -21,12 +21,16 @@ $custoEntrega = 5;
 
         <div class="col-md-8">
 
-            <div class="card overflow-auto p-3 mb-3 lista-produtos">
+            <div class="card overflow-auto p-3 mt-1 lista-produtos">
 
                 {{-- mostrar todos os produtos --}}
                 <div id="productsContainer" class="container px-2 mt-2 mb-5">
-                    
-                    <h5>O teu carrinho</h5>
+
+                    @if(session()->get('carrinho_produtos')!=null)
+                        <h5 id="msgCarrinho">O teu carrinho</h5>
+                    @else
+                        <h5>O teu carrinho está vazio, <a href="{{ route('products') }}"> adiciona</a> algo para o fazer feliz!</h5>
+                    @endif
 
                     <hr>
 
@@ -61,7 +65,14 @@ $custoEntrega = 5;
                             </div>
                                 
                         @endfor
+
+                        @else
+                            
+                            <img class="mx-auto emptyCart" src="images/empty_cart.png" alt="Empty Box">
+                        
                         @endif
+
+                            <img v-show="emptyCart" class="mx-auto emptyCart" src="images/empty_cart.png" alt="Empty Box">
                 
                     </div>
                 </div>

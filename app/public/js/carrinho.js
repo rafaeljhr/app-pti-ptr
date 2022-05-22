@@ -1,6 +1,8 @@
 let app = Vue.createApp({
     data: function() {
-        return {}
+        return {
+            emptyCart: false,
+        }
     },
 
     methods: {
@@ -8,10 +10,13 @@ let app = Vue.createApp({
             var subTotal = 0;
 
             var productRows = document.getElementById("todosProdutos").children;
-            for (var i = 0; i < productRows.length; i++) {
-                console.log(i+1);
-                console.log(document.getElementsByTagName('h4').length);
-                subTotal += parseFloat(document.getElementsByTagName('h4')[i+1].innerHTML.slice(0,-2));
+            for (var i = 0; i < productRows.length - 1; i++) {
+                subTotal += parseFloat(document.getElementsByTagName('h4')[i].innerHTML.slice(0,-2));
+            }
+
+            if (subTotal === 0) {
+                document.getElementById("msgCarrinho").innerHTML= "O teu carrinho está vazio, adiciona algo para o fazer feliz!";
+                this.emptyCart = true;
             }
 
             this.$refs.subTotal.innerHTML = subTotal + " €";
