@@ -39,8 +39,9 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form method="post" action="{{ route('base-delete-controller') }}">
+                <form method="post" action="{{ route('armazem-delete-controller') }}">
                     @csrf
+                    <input hidden value="<?php echo session()->get('armazem_atual')['armazem_id']?>" name="id_armazem">
                     <button type="submit" class="btn btn-danger">Confirmar</button>
                 </form>
                 </div>

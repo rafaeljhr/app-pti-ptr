@@ -63,6 +63,7 @@ class ProductsController extends Controller
         $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
 
         $all_fornecedor_produtos = array();
+    
 
         foreach($fornecedor_produtos as $produto) {
 
@@ -79,6 +80,7 @@ class ProductsController extends Controller
             $produto_data_producao_do_produto = $produto->data_producao_do_produto;
             $produto_data_insercao_no_site = $produto->data_insercao_no_site;
             $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia_no_armazem;
+            $produto_state = $produto->pronto_a_vender;
 
             $atributos_produto = [
                 "produto_id" => $produto_id,
@@ -94,6 +96,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "estado" => $produto_state,
             ];
 
 
@@ -117,13 +120,10 @@ class ProductsController extends Controller
 
             foreach($fornecedor_eventos as $evento) {
 
-                
-
-
                 $atributos_novo_evento = [
                     "evento_id_produto" => $evento->id_produto,
                     "evento_nome" => $evento->nome,
-                    "evento_co2_produzido" => $evento->co2_produzido,
+                    "evento_co2_produzido" => $evento->poluicao_co2_produzida,
                     "evento_kwh_consumidos" => $evento->kwh_consumidos,
                     "evento_descricao_do_evento" => $evento->descricao_do_evento,
                     "id_fornecedor" => $evento->id_fornecedor,
@@ -411,11 +411,34 @@ class ProductsController extends Controller
             'id_fornecedor' => session()->get('user_id'),
         ]);
 
+        $produto = Produto::where('id', session()->get('prod_cadeia_actual'))->first();
+
+
+        $atributos_update_produto = [
+            "produto_id" => $produto->id,
+            "produto_nome" => $produto->nome,
+            "produto_preco" => $produto->preco,
+            "produto_id_armazem" => $produto->id_armazem,
+            "produto_id_fornecedor" => $produto->id_fornecedor,
+            "produto_quantidade" => $produto->quantidade,
+            "produto_nome_categoria" => $produto->nome_categoria,
+            "produto_path_imagem" => $produto->path_imagem,
+            "produto_nome_subcategoria" => $produto->nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => 1,
+        ];
+        $produto->update($atributos_update_produto);
+        
+        self::rebuild_fornecedor_session();
+
 
         $atributos_novo_evento = [
             "evento_id_produto" => $newEvento->id_produto,
             "evento_nome" => $newEvento->nome,
-            "evento_co2_produzido" => $newEvento->co2_produzido,
+            "evento_co2_produzido" => $newEvento->poluicao_co2_produzida,
             "evento_kwh_consumidos" => $newEvento->kwh_consumidos,
             "evento_descricao_do_evento" => $newEvento->descricao_do_evento,
             "id_fornecedor" => $newEvento->id_fornecedor,
