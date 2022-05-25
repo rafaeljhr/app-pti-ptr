@@ -18,44 +18,77 @@
 @section('background') 
 
 <div id="fundoDivOpac" v-show="fundoDivOpac" class="backgroundSee"></div>
-<p class="lead">
-  Bem vindo à sua área de produtos <?php echo session()->get('user_nome')?>!
-</p>
 
+<div id="apresentação" class="mx-auto mt-4 mb-4">
+  
 @if(sizeOf(session()->get('armazens'))  == 0)
-<p>Não possui nenhum armazém associado à sua conta logo não pode criar produtos!</p>
-<p>Diriga-se à página dos armazens onde poderá criar um ou mais</p>
+<div id="noProdutos">
+
+  <div align="center">
+    <img src="images/armazens.png" class="sem_bases_img" alt="">
+    <br>
+    <br>
+    <h2>Parece que não possui nenhum armazém.</h2>
+    <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
+  </div>
+  
+
+</div>
+@endif
+
+@if(session()->get('all_fornecedor_produtos')==null)
+<div id="noProdutos">
+
+  <div align="center">
+    <img src="images/armazens.png" class="sem_bases_img" alt="">
+    <br>
+    <br>
+    <h2>Parece que não possui nenhum produto.</h2>
+    <p>Pode criar um produto nesta página usando o botão abaixo!.</p>
+  </div>
+  <button @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+
+</div>
 @endif
 
 
 
-{{-- dropdown menu para selecionar o armazem --}}
-<label for="nome_categoria" class="form-label">Filtrar por armazém</label>
-<select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
-  <option default value="reset">-- Todos os produtos --</option>
-  @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-  <?php $category= session()->get('armazens')[$i] ?>
-  <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
-  @endfor
-</select>
+@if(session()->get('all_fornecedor_produtos')!=null)
 
-@if(sizeOf(session()->get('armazens'))  >  0)
-<button type="submit"  @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-@else
+<div class="container p-0 mt-5 mb-5">
 
-<button type="submit"  @click ="mostrarCriarProduto()" disabled class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+  <div class="row w-100 mt-4 mb-4">
+    <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
+    <div class="float-left">
+      <h5>Aqui pode ver todos os produtos que se encontram associados à sua conta de momento </h5> 
+    </div>
+    
+    {{-- dropdown menu para selecionar o armazem --}}
+    <label for="nome_categoria" class="form-label">Filtrar por armazém</label>
+    <select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
+      <option default value="reset">-- Todos os armazens --</option>
+      @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+      <?php $category= session()->get('armazens')[$i] ?>
+      <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
+      @endfor
+    </select>
 
-@endif
+    <div class="float-right">
+      <button type="submit" @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+      </div>
+
+  </div>
 
 
 
 {{-- mostrar todos os produtos --}}
-<div class="container p-0 mt-5 mb-5">
+
+
   <div id='todosProdutos'>
 
     <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
 
-      @if(session()->get('all_fornecedor_produtos')!=null)
+      
         @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
         <?php
         $comCadeia = 0;
@@ -65,7 +98,17 @@
             if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
               $comCadeia = 1;
         ?>
-        
+        <div>
+          @if($comCadeia == 0)
+          <div id ="displayWarning">
+            
+            <p>Este produto não possui cadeias logisticas</p>
+            <img src="images/warning.png" class="warning card-img-top" alt="...">
+          </div>
+          @else
+          <div id ="displayNoWarning">
+          </div>
+          @endif
           <div class="col">
             <div class="card">
               <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
@@ -74,15 +117,12 @@
               
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                @if($comCadeia == 0)
-                <p>Este produto não possui cadeias logisticas</p>
-                <img src="images/warning.png" class="warning card-img-top" alt="...">
-                @endif
+                
                 <button type="button" id="showProductInfo"  class="btn btn-outline-primary">Ver informações do produto</button>
                 <br>
                 
                 <a id="hideAnchor" href="{{ URL::to('produto/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
-                <button type="button" id="addCadeia" class="btn btn-outline-primary">Adicionar cadeias</button>
+                <button type="button" id="addCadeia" class="btn btn-info">Adicionar cadeias</button>
                 </a>
                 <br>
                 <button type="button" id='buttonApagarProdutoWarning' name="{{ route('product-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>','<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
@@ -90,7 +130,10 @@
               </div>
 
             </div>
-          </div>
+          
+        </div>
+
+        </div>
 
           @if($i > 0 && $i % 3==0)
             </div>
@@ -98,8 +141,7 @@
           @endif
           @endfor
 
-        @endif
-
+          @endif
       </div>
 
     </div>
@@ -107,6 +149,8 @@
   </div>
 </div>
 
+
+</div>
 
 
 
@@ -265,6 +309,8 @@
   </div>
   </div>
 </div>
+
+
 
 <script src="./js/inventory.js"></script>
 

@@ -7,6 +7,14 @@
     overflow: auto;
 }
 
+#noProdutos{
+    width: 100%;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
 .evento-size{
 
     width: 250px;
@@ -27,7 +35,7 @@
 #addCadeia{
     background-color: #008B8B !important;
     color: white !important;
-    width: 234px;
+    width: 279px;
     
 }
 
@@ -115,11 +123,18 @@
 }
 .warning{
     width: 210px;
-    height: 100px;
+    height: 150px;
 }
 
 #filtroA{
     width: 15%;
+}
+#displayNoWarning{
+    height:190px;
+}
+#displayWarning{
+    border:solid;
+    
 }
 
 #infoAdicional{
@@ -203,11 +218,7 @@
 
 }
 
-#btn-id{
-    margin: 0;
-    display: block;
-    float: center;
-}
+
 #btn-id-id{
     margin: 0;
     display: block;

@@ -21,11 +21,11 @@
   <div id="fundoDivOpac"  class="backgroundSee"></div>
 
  
-  
-  @if(session()->get('armazens') != null)
   <div id="apresentação" class="mx-auto mt-4 mb-4">
+  @if(session()->get('armazens') != null)
+  
    
-    <div  class="container p-0 mt-5 mb-5">
+    <div class="container p-0 mt-5 mb-5">
       <div class="row w-100 mt-4 mb-4">
     <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
     <div class="float-left">
@@ -110,13 +110,13 @@
 </div>
 
 
-<div id="storage_info"> 
+{{-- <div id="storage_info"> 
   <button type="button" @click="closeInfo()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
   <h3>Produtos do armazém:</h3>
   <p id="info"></p>
   <div id="prods"></div>
 </div>
-
+ --}}
 
 
 <div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
