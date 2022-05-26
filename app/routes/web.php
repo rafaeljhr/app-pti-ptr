@@ -81,7 +81,7 @@ Route::get('/cadeia', function () {
 })->name('cadeia');
 
 
-Route::get('/produto/{id}/', [ProductsController::class, "cadeiaPage"]);
+Route::get('/cadeias/{id}/', [ProductsController::class, "cadeiaPage"]);
 
 Route::get('/products', [ProductsController::class, "allProducts"])->name('products');
 
@@ -126,7 +126,19 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // PRODUCTS RELATED ROUTES
 // ##############################################
 
-Route::post('/product-info-controller', [ProductsController::class, "productInfo"])->name('product-info');
+Route::get('/produtosEdit/{id}/', [ProductsController::class, "productInfo"]);
+
+
+
+Route::get('/products-edit', function () {
+    return view('informacoes_produto');
+})->name('info_produto');
+
+
+Route::post('/update-imagem-produto-controller', [ProductsController::class, 'changeImgProd'])->name('update-imagem-produto-controller');
+
+
+
 
 Route::post('/product-warning-controller', [ProductsController::class, "deleteWarning"])->name('product-delete-warning');
 
@@ -138,13 +150,12 @@ Route::post('/product-categories', [ProductsController::class, "changeSub"])->na
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');
 
-Route::post('/product-remove-last-added', [ProductsController::class, "productRemoveLastAdded"])->name('product-remove-last-added');
 Route::post('/product-remove', [ProductsController::class, "productRemove"])->name('product-remove');
 Route::post('/product-edit-controller', [ProductsController::class, "productEdit"])->name('product-edit-controller');
 
 Route::post('/product-add-event-controller', [ProductsController::class, "productAddEvent"])->name('product-add-event-controller');
 Route::post('/product-edit-event-controller', [ProductsController::class, "productEditEvent"])->name('product-edit-event-controller');
-Route::post('/product-remove-event-controller', [ProductsController::class, "productRemoveEvent"])->name('product-remove-event-controller');
+
 
 Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
 Route::post('/product-remove-carrinho-controller', [ProductsController::class, "productRemoveCarrinho"])->name('product-remove-carrinho');

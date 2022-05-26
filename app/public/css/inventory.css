@@ -235,8 +235,8 @@
 
 .imagemProduto {
 
-    max-height: 310px !important;
-    max-width: 310px !important;
+    height: 300px !important;
+    
 
 }
 

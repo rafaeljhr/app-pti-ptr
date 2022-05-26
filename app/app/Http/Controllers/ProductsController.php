@@ -511,63 +511,147 @@ class ProductsController extends Controller
 
     }
 
+    public function productInfo($id){
+
+        $produto = Produto::where('id', $id)->first();
+        $campo_extra = Produto_campos_extra::where('id_produto',  $id)->get();
+        $cadeias  = Evento::where('id_produto', $id)->get();
+        $atributos_produto = [
+            "produto_id" => $produto->id,
+            "produto_nome" => $produto->nome,
+            "produto_preco" => $produto->preco,
+            "produto_id_armazem" => $produto->id_armazem,
+            "produto_id_fornecedor" => $produto->id_fornecedor,
+            "produto_quantidade" => $produto->quantidade,
+            "produto_nome_categoria" => $produto->nome_categoria,
+            "produto_path_imagem" => $produto->path_imagem,
+            "produto_nome_subcategoria" => $produto->nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => $produto->pronto_a_vender,
+        ];
+        session()->put('produto_atual', $atributos_produto);
+
+        $all_campos_extra_produtos = array();
+
+        foreach($campo_extra as $campo) {
+
+            $campo_nome = $campo->campo_extra;
+            $campo_valor = $campo->valor_campo;
+            
+
+            $atributos_campo_extra = [
+                "nome_campo" => $campo_nome,
+                "valor_campo" => $campo_valor,   
+            ];
 
 
-    public function productInfo(Request $request){
+            array_push($all_campos_extra_produtos, $atributos_campo_extra);
+        }
+
+        session()->put('campos_extra_atuais', $all_campos_extra_produtos);
+
+
+        $all_eventos_produtos = array();
+
+        foreach($cadeias as $evento) {
+
+            $evento_nome = $evento->nome;
+            $evento_co2 = $evento->poluicao_co2_produzida;
+            $evento_kwh = $evento->kwh_consumidos;
+            $evento_desc = $evento->descricao_do_evento;
+            
+
+            $atributos_evento = [
+                "evento_nome" => $evento_nome,
+                "evento_co2" => $evento_co2,   
+                "evento_kwh" => $evento_kwh,
+                "evento_desc" => $evento_desc,   
+            ];
+
+
+            array_push($all_eventos_produtos, $atributos_evento);
+        }
+
+        session()->put('cadeias_produto_atual', $all_eventos_produtos);
        
-        $produto = Produto::where('id', $request->get('id_produto'))->first();
-        $armazem = Armazem::where('id', $produto->id_armazem)->first();
-        $htmlA = "
-        <div class='card' id='prudInfoA'>
-                   
-            <h5 class='card-title'>Nome: ".$armazem->nome."</h5>
-            <img src='".$armazem->path_imagem."' class='imagemProduto card-img-top'>
-            
-            <h5 class='card-title'>Morada: ".$armazem->morada."</h5>
-            
+        return redirect('/products-edit');
+    }
 
-        </div>";
-        $htmlE='<div class="row">'
-        ;
-        if(Evento::where('id_produto', $request->get('id_produto'))  != null){
-            $evento = Evento::where('id_produto', $request->get('id_produto'))->get();
-            $i = 0;
-            foreach($evento as $eventos ){
-                $htmlE=$htmlE.'
-                <div class="col">
-                <div class="card"  style="width: 18rem;"> 
-                    <div class="card-body">
-                    <h5 class="card-title">Nome   :'.$eventos->nome.'</h5>
-                    <p>Descrição geral das despesas ecoloógicas e energéticas</p>
-                    <p class="card-text">'.$eventos->poluicao_co2_produzida.'</p>  
-                    <p class="card-text">'.$eventos->kwh_consumidos.'</p>  
-                    <p class="card-text">Descrição geral: '.$eventos->descricao_do_evento.'</p>         
-                    </div>
-                </div>
-                </div>'
-                ;
+    public function changeImgProd(Request $request){
+        $produto = Produto::where('id', session()->get('produto_atual')['produto_id'])->first();
 
-            if($i > 0 && $i % 3==0) {
-                $htmlE=$htmlE.
-                '</div>'.
-                '<div class="row">'
-                ;
+        if($request->file('mudar_path_imagem')){
+                
+            $allowedMimeTypes = ['image/jpeg', 'image/jpg','image/gif','image/png'];
+            $contentType = $request->file('mudar_path_imagem')->getClientMimeType();
+
+            if(!in_array($contentType, $allowedMimeTypes) ){
+                return response()->json('error: Not an image submited in the form');
             }
-            $i = $i + 1;
+
+            $file= $request->file('mudar_path_imagem');
+            $filename= uniqid().$file->getClientOriginalName();
+
+            if (!$file-> move(public_path('images/users_images/'), $filename)) {
+                return 'Error saving the file';
+            }
+
+            $filename = 'images/users_images/' . $filename;
+            
+        } else {
+            return "falhou mudar avatar";
+        }
+
+        if (!(str_contains($produto->path_imagem , 'http'))) {
+            if ($produto->path_imagem != "images/default_produto.jpg") {
+                unlink($produto->path_imagem); // apagar a imagem antiga
             }
         }
 
-       
+        $produto->path_imagem = $filename;
+        $produto->save();
 
-        $htmlt='<p>Categoria: '.$produto->nome_categoria.'</p>
-        <p>Subcategoria: '.$produto->nome_subcategoria.'</p>
-        <p>Data de produção: '.$produto->data_producao_do_produto.'</p>
-        <p>Data de inserção: '.$produto->data_insercao_no_site.'</p>
-        <p>kw consumidos por dia no armazém: '.$produto->kwh_consumidos_por_dia_no_armazem.'</p>
-        <p id="toOverflow">Informações adicionais: '.$produto->informacoes_adicionais.'</p>
-        ';
+        $atributos_produto = [
+            "produto_id" => $produto->id,
+            "produto_nome" => $produto->nome,
+            "produto_preco" => $produto->preco,
+            "produto_id_armazem" => $produto->id_armazem,
+            "produto_id_fornecedor" => $produto->id_fornecedor,
+            "produto_quantidade" => $produto->quantidade,
+            "produto_nome_categoria" => $produto->nome_categoria,
+            "produto_path_imagem" => $produto->path_imagem,
+            "produto_nome_subcategoria" => $produto->nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => $produto->pronto_a_vender,
+        ];
 
-        return  array($htmlA, $htmlE, $htmlt);
+        session()->put('produto_atual', $atributos_produto);
+
+        $notificacao = Notificacao::create([
+            'id_utilizador' => session()->get('user_id'),
+            'mensagem' => "A imagem da seu produto ".$produto->nome." foi atualizada!",
+            'estado' => 1,
+        ]);
+
+        $atributos_notificacao = [
+            "notificacao_id" => $notificacao->id,
+            "notificacao_id_utilizador" => $notificacao->id_utilizador,
+            "notificacao_mensagem" => $notificacao->mensagem,
+            "notificacao_estado" => $notificacao->estado,
+        ];
+
+        session()->push('notificacoes', $atributos_notificacao);
+
+
+        self::rebuild_fornecedor_session(); 
+
+        return redirect('/products-edit');
     }
 
 

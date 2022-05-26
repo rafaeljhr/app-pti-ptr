@@ -117,11 +117,12 @@
               
               <div class="card-body text-center">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                
+                <a id="hideAnchor" href="{{ URL::to('produtosEdit/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
                 <button type="button" id="showProductInfo"  class="btn btn-outline-primary">Ver informações do produto</button>
+                </a>
                 <br>
                 
-                <a id="hideAnchor" href="{{ URL::to('produto/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
+                <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
                 <button type="button" id="addCadeia" class="btn btn-info">Adicionar cadeias</button>
                 </a>
                 <br>

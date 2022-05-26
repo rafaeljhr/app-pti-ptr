@@ -278,7 +278,7 @@ class ArmazensController extends Controller
     }
 
 
-    public  function  armazemEdit(Request $request){
+    public function  armazemEdit(Request $request){
         $request->validate([
             'nome'=>'sometimes|required|string',
             'morada'=>'sometimes|required|string',
