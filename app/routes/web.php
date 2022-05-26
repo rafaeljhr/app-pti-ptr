@@ -64,9 +64,11 @@ Route::get('/inventory', function () {
     } else {
 
         ProductsController::rebuild_fornecedor_session();
-        return view('inventory');
+        return view('inventory'); 
 
     }
+
+    
 })->name('inventory');
 
 

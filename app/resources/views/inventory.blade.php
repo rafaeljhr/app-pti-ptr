@@ -21,7 +21,7 @@
 
 <div id="apresentação" class="mx-auto mt-4 mb-4">
   
-@if(sizeOf(session()->get('armazens'))  == 0)
+@if(session()->get('armazens') == null || sizeOf(session()->get('armazens'))  == 0)
 <div id="noProdutos">
 
   <div align="center">

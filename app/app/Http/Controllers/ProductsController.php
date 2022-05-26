@@ -105,6 +105,40 @@ class ProductsController extends Controller
 
         session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
 
+        if(session()->get('notificado') == null){
+            $now = time(); 
+
+            
+
+            foreach(session()->get('all_fornecedor_produtos') as $produto){
+                $your_date = strtotime($produto['produto_data_insercao_no_site']);
+                $datediff = $now - $your_date;
+
+                if(round($datediff / (60 * 60 * 24)) < 7){
+                    $noti ="O Produto ";
+                    $noti .= $produto['produto_nome'];
+                    $noti.=" tem apenas ".round($datediff / (60 * 60 * 24))." dias antes de expirar";
+
+                    $notis = Notificacao::create([
+                        'id_utilizador'=>session()->get('user_id'),
+                        'mensagem'=>$noti,
+                        'estado'=>1,
+                    ]);
+                    
+                    $atributos_notificacao = [
+                        "notificacao_id" => $notis->id,
+                        "notificacao_id_utilizador" => $notis->id_utilizador,
+                        "notificacao_mensagem" => $notis->mensagem,
+                        "notificacao_estado" => $notis->estado,
+                    ];
+                
+                    session()->push('notificacoes', $atributos_notificacao);
+                }
+            }
+            session()->put('notificado', 1);
+
+        }
+
         if(!(session()->has('categories'))){
             self::getAllCategoriesAndSubcategories(); // put all categories and subcategories in session
         }
