@@ -8,6 +8,7 @@ let app = Vue.createApp({
             data_i: "",
             kwh: "",
             info: "",
+            campo_extra:"",
             editable: false,
 
             nome_valid: true,
@@ -21,6 +22,9 @@ let app = Vue.createApp({
     },
 
     methods: {
+
+
+        
 
         changeSubcat(cat){
             console.log(cat.target.value);    
