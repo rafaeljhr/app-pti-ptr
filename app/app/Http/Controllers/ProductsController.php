@@ -112,7 +112,7 @@ class ProductsController extends Controller
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
                 $your_date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff = $now - $your_date;
+                $datediff =   $now - $your_date;
 
                 if(round($datediff / (60 * 60 * 24)) < 7){
                     $noti ="O Produto ";
@@ -301,6 +301,8 @@ class ProductsController extends Controller
             'data_i'=>'sometimes|required|string',
             'kwh'=>'sometimes|required|string',
             'info'=>'sometimes|required|string',
+            'nome_categoria'=> 'sometimes|required|string',
+            'nome_subcategoria'
         ]);
 
         
@@ -368,8 +370,8 @@ class ProductsController extends Controller
             
             return redirect('/campos-extra-edit');
         }else{//update  de campos  extra
-            /* $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
-            $counter = 0;
+            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+            
             foreach($campos_extra as $campo){
                 $name = $campo->campo_extra;
                 $to_update = [   
@@ -378,9 +380,9 @@ class ProductsController extends Controller
                     'valor_campo' => $request->$name,
                 ];
                 $campo->update($to_update);
-                $counter = $counter + 1;
+                
             }
-            */
+           
         }
 
 

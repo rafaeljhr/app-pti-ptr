@@ -190,7 +190,7 @@ class ArmazensController extends Controller
         }
         $armazem->delete();
         (new ArmazensController)->getAllArmazens(); // rebuild armazens of fornecedor in session
-        self::rebuild_fornecedor_session();
+        ProductsController::rebuild_fornecedor_session();
 
         $noti ="O armazem ";
         $noti .= $armazem->nome;

@@ -7,7 +7,7 @@
 
 //dd(session()->all());
 
-//session()->forget('produto_cadeia_logistica');
+
 
 ?>
 
@@ -18,10 +18,28 @@
 @section('background') 
 
 <div id="fundoDivOpac" v-show="fundoDivOpac" class="backgroundSee"></div>
-
 <div id="apresentação" class="mx-auto mt-4 mb-4">
+
+@if(session()->get('all_fornecedor_produtos')==null && session()->get('armazens') != null)
+
+<div id="noProdutos">
+
+  <div align="center">
+    <img src="images/armazens.png" class="sem_bases_img" alt="">
+    <br>
+    <br>
+    <h2>Parece que não possui nenhum produto.</h2>
+    <p>Pode criar um produto nesta página usando o botão abaixo!.</p>
+    <button @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+  </div>
   
-@if(session()->get('armazens') == null || sizeOf(session()->get('armazens'))  == 0)
+
+</div>
+
+
+
+@elseif(session()->get('armazens') == null || sizeOf(session()->get('armazens'))  == 0)
+
 <div id="noProdutos">
 
   <div align="center">
@@ -34,26 +52,13 @@
   
 
 </div>
-@endif
-
-@if(session()->get('all_fornecedor_produtos')==null)
-<div id="noProdutos">
-
-  <div align="center">
-    <img src="images/armazens.png" class="sem_bases_img" alt="">
-    <br>
-    <br>
-    <h2>Parece que não possui nenhum produto.</h2>
-    <p>Pode criar um produto nesta página usando o botão abaixo!.</p>
-  </div>
-  <button @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
-
-</div>
-@endif
 
 
 
-@if(session()->get('all_fornecedor_produtos')!=null)
+
+
+@else
+
 
 <div class="container p-0 mt-5 mb-5">
 
@@ -142,16 +147,16 @@
           @endif
           @endfor
 
-          @endif
+          
       </div>
-
     </div>
-
+    </div>
+    @endif
   </div>
 </div>
 
 
-</div>
+
 
 
 
@@ -266,26 +271,7 @@
 
 
 
-<div id="infoAdicional" >
-  <button type="button" @click="hideShowInfoProduct()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
- <div class="row">
-   <div class="col">
-  <h3>O armazém:</h3>
 
-  <div id="produtoArmazens"></div>
- 
-  
-  <h3>As suas cadeias Logisticas</h3>
-  <div id="produtoCadeias"></div></div>
-
-
-  <h4>Informação principal do produto</h4>
-<div class="col" id="descriptionGeral"></div>
-
-</div>
-
-  
-</div>
 
 
 

@@ -186,7 +186,7 @@
                           <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
                           <div id="toChangeOnCmd">
                             <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
-                          <select class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria"  disabled required>
+                          <select class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria" required>
                               <option selected value="<?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?>"><?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?></option>
                             </select>
                         </div>       

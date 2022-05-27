@@ -108,15 +108,10 @@
 
 @endif
 </div>
-
-
-{{-- <div id="storage_info"> 
-  <button type="button" @click="closeInfo()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-  <h3>Produtos do armazém:</h3>
-  <p id="info"></p>
-  <div id="prods"></div>
 </div>
- --}}
+
+
+
 
 
 <div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
