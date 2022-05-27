@@ -291,6 +291,105 @@ class ProductsController extends Controller
         return redirect('/inventory');
     }
 
+    public function productEdit(Request  $request){
+        //$request->input();
+        $request->validate([
+            'nome'=>'sometimes|required|string',
+            'preco'=>'sometimes|required|string',
+            'quantidade'=>'sometimes|required|integer',
+            'data_p'=>'sometimes|required|string',
+            'data_i'=>'sometimes|required|string',
+            'kwh'=>'sometimes|required|string',
+            'info'=>'sometimes|required|string',
+        ]);
+
+        
+        
+        $produto = Produto::where('id', session()->get('produto_atual')['produto_id'])->first();
+        $atributo_to_update = [
+            'nome' => $request->nome,
+            'preco' => $request->preco,
+            'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+            'id_fornecedor' => session()->get('user_id'),
+            'quantidade' => $request->quantidade,
+            'nome_categoria' => session()->get('produto_atual')['produto_nome_categoria'],
+            'nome_subcategoria' => session()->get('produto_atual')['produto_nome_subcategoria'],
+            'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+            'informacoes_adicionais' => $request->info,
+            'data_producao_do_produto' => $request->data_p,
+            'data_insercao_no_site' => $request->data_i,
+            'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+            'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+        ];
+
+        $produto->update($atributo_to_update);
+        $atributos_produto = [
+            'produto_id' => $produto->id,
+            'produto_nome' => $produto->nome,
+            'produto_preco' => $produto->preco,
+            'produto_id_armazem' => $produto->id_armazem,
+            'produto_id_fornecedor' => $produto->id_fornecedor,
+            'produto_quantidade' => $produto->quantidade,
+            'produto_nome_categoria' => $produto->nome_categoria,
+            'produto_path_imagem' => $produto->path_imagem,
+            'produto_nome_subcategoria' => $produto->nome_subcategoria,
+            'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+            'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+            'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+            'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+            'pronto_a_vender' => $produto->pronto_a_vender,
+        ];
+        session()->put('produto_atual', $atributos_produto);
+
+        $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+        $counter =  0;
+        foreach($campos_extra as $campo){
+            $name = $campo->campo_extra;
+            $to_update = [   
+                'id_produto' => session()->get('produto_atual')['produto_id'],
+                'campo_extra' => $campo->campo_extra,
+                'valor_campo' => $request->$name,
+            ];
+            $campo->update($to_update);
+            $counter = $counter + 1;
+        }
+        
+        
+        
+        /* $atributos_armazem= [
+            "armazem_id" => $armazem->id,
+            "id_fornecedor" => $armazem->id_fornecedor,
+            "armazem_morada" => $armazem->morada,
+            "armazem_nome" => $armazem->nome,
+            "path_imagem" => $armazem->path_imagem,
+            "armazem_codigo_postal" => $armazem->codigo_postal,
+            "armazem_cidade" => $armazem->cidade,
+            "armazem_pais" => $armazem->pais,
+        ];
+
+        session()->put('armazem_atual', $atributos_armazem); */
+
+        /* $notificacao = Notificacao::create([
+            'id_utilizador' => session()->get('user_id'),
+            'mensagem' => "A  informação do armazém '".$armazem->nome."' foi atualizada!",
+            'estado' => 1,
+        ]);
+
+        $atributos_notificacao = [
+            "notificacao_id" => $notificacao->id,
+            "notificacao_id_utilizador" => $notificacao->id_utilizador,
+            "notificacao_mensagem" => $notificacao->mensagem,
+            "notificacao_estado" => $notificacao->estado,
+        ];
+
+        session()->push('notificacoes', $atributos_notificacao); */
+
+
+        self::rebuild_fornecedor_session(); // put all session bases and veiculos up to date
+
+        return redirect('/products-edit');
+    }
+
 
 
 

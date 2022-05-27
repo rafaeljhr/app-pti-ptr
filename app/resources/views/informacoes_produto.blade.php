@@ -85,7 +85,107 @@
             <br>
 
             <div class="px-4">
-                
+                <form method="post" action="{{ route('product-edit-controller') }}">
+                    @csrf
+
+                    <div class="row">
+
+                        <div class="col">
+                            <label class="mb-2" for="nome">Nome</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="nome" type="text" name="nome" class="form-control mb-3" value="<?php echo session()->get('produto_atual')['produto_nome'] ?>" :disabled="!editable">
+                                <i v-show="nome_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir um nome"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col">
+                            <label class="mb-2" for="preco">Preço</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="preco" type="number" name="preco" class="form-control mb-3" value="<?php echo session()->get('produto_atual')['produto_preco'] ?>" :disabled="!editable">
+                                <i v-show="preco_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir um preço"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label class="mb-2" for="quantidade">Quantidade</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="quantidade" type="number" name="quantidade" class="form-control w-50" value="<?php echo session()->get('produto_atual')['produto_quantidade'] ?>" :disabled="!editable" >
+                                <i v-show="quantidade_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Quantidade inválida"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col">
+                            <label for="data_p" class="mb-2">Data de produção</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="data_p" type="date" name="data_p" class="form-control" value="<?php echo session()->get('produto_atual')['produto_data_producao_do_produto']  ?>" :disabled="!editable">
+                                <i v-show="data_p_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir uma data correta"></i>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <label for="data_i" class="mb-2">Data de inserção</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="data_i" type="date" name="data_i" class="form-control" value="<?php echo session()->get('produto_atual')['produto_data_insercao_no_site'] ?>" :disabled="!editable">
+                                <i v-show="data_i_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir uma data correta"></i>
+                            </div>
+                        </div>
+
+                        {{-- <div class="col">
+                            <label for="pais" class="mb-2">País</label>
+                            <select class="form-control" ref="pais" name="pais" :disabled="!editable">
+                                <option selected>Portugal</option>
+                            </select>
+                        </div> --}}
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class ="col">
+                            <label class="mb-2" for="kwh">Kwh consumidos por dia</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="kwh" type="number" name="kwh" class="form-control mb-3" value="<?php echo session()->get('produto_atual')['produto_kwh_consumidos_por_dia'] ?>" :disabled="!editable">
+                                <i v-show="kwh_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir um valor"></i>
+                            </div>
+
+                        </div>
+
+                        <div class ="col">
+
+                            <label class="mb-2" for="info">Informação adicional</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="info" type="text" name="info" class="form-control mb-3" value="<?php echo session()->get('produto_atual')['produto_informacoes_adicionais'] ?>" :disabled="!editable">
+                                <i v-show="info_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir informação"></i>
+                            </div>
+                        </div>
+                    
+
+
+                    <br>
+
+                    <div class="row">
+                        @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
+
+                        <div class ="col">
+                            <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
+                            <div class="inline-icon">
+                                <input type="text" {{-- id="campoExtra" --}} name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" required>
+                            </div>
+
+                        </div>
+                        @endfor
+
+                        
+                    
 
                     <br>
 
@@ -144,7 +244,7 @@
                         <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">APAGAR PRODUTO</button>
                     </div>
 
-                
+                </form>
                 </div>
             </div>
         </div>  
@@ -153,6 +253,6 @@
 
 @include('includes.footer')
 
-<script src="./js/informacoes_armazem.js"></script>
+<script src="./js/informacoes_produto.js"></script>
     
 @endsection
