@@ -223,16 +223,25 @@ CREATE TABLE eventos_da_cadeia_logistica_do_produto (
 );
 
 
+CREATE TABLE estado_encomenda (
+  nome VARCHAR(255) PRIMARY KEY
+);
+
+
 CREATE TABLE encomenda (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   preco DECIMAL(10,2) NOT NULL,
-  morada_de_entrega VARCHAR(255) NOT NULL,
+  morada VARCHAR(255) NOT NULL,
+  codigo_postal VARCHAR(255) NOT NULL,
+  cidade varchar(255) NOT NULL,
+  pais varchar(255) NOT NULL,
   quantidade INTEGER NOT NULL,
   data_realizada DATETIME NOT NULL,
   data_finalizada DATETIME DEFAULT NULL,
   id_consumidor INTEGER NOT NULL,
   id_produto INTEGER NOT NULL,
   id_transportadora INTEGER NOT NULL,
+  estado_encomenda VARCHAR(255) NOT NULL,
 
     CONSTRAINT fk_encomenda_id_consumidor
         FOREIGN KEY (id_consumidor)
@@ -244,5 +253,9 @@ CREATE TABLE encomenda (
 
     CONSTRAINT fk_encomenda_id_transportadora
         FOREIGN KEY (id_transportadora)
-        REFERENCES utilizador(id)
+        REFERENCES utilizador(id),
+        
+    CONSTRAINT fk_encomenda_estado
+        FOREIGN KEY (estado_encomenda)
+        REFERENCES estado_encomenda(nome)
 );
