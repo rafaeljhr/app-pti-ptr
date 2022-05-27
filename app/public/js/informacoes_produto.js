@@ -22,7 +22,39 @@ let app = Vue.createApp({
 
     methods: {
 
-     
+        changeSubcat(cat){
+            console.log(cat.target.value);    
+                    
+            let route = document.getElementById("routeSubCat").name;
+            var data = new FormData()
+            
+            data.append('categoria', cat.target.value);
+        
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', route, true)
+            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+        
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("toChangeOnCmd").innerHTML = JSON.parse(xhr.responseText)[0];
+                    document.getElementById("camposExtra").innerHTML = JSON.parse(xhr.responseText)[1];
+        
+                } else if (this.status >= 400) {
+                    console.log(xhr.responseText);
+                }
+            };
+        
+            xhr.send(data);
+            if(cat.target.value == ""){
+                document.getElementById('guardar_alteracoes').disabled = true;
+            }else{
+                document.getElementById('guardar_alteracoes').disabled = false;
+            }
+                      
+            
+        },
 
 
         cancelChanges() {

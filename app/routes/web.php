@@ -134,16 +134,20 @@ Route::get('/products-edit', function () {
     return view('informacoes_produto');
 })->name('info_produto');
 
+Route::get('/campos-extra-edit', function () {
+    return view('alterar_cat');
+})->name('campos_extra');
+
+Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
+
+
+
 
 Route::post('/update-imagem-produto-controller', [ProductsController::class, 'changeImgProd'])->name('update-imagem-produto-controller');
-
-
-
 
 Route::post('/product-warning-controller', [ProductsController::class, "deleteWarning"])->name('product-delete-warning');
 
 Route::post('/product-add-cadeia-controller', [ProductsController::class, "cadeiaPage"])->name('product-cadeia-page');
-
 
 Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');
 Route::post('/product-categories', [ProductsController::class, "changeSub"])->name('product-changeSub');

@@ -203,7 +203,7 @@
           <div class="col">
             <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
             <div id="toChangeOnCmd">
-              <label for="nome_subcategoria" class="form-label">Selecione uma categoria</label>
+              <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
             <select class="form-control" disabled name="nome_subcategoria" id="novo_produto_subcategoria" required>
                 <option default value="">-- Selecione uma subcategoria --</option>
               </select>
