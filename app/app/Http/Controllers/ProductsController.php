@@ -112,7 +112,7 @@ class ProductsController extends Controller
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
                 $your_date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff = $now - $your_date;
+                $datediff =  $your_date  -  $now ;
 
                 if(round($datediff / (60 * 60 * 24)) < 7){
                     $noti ="O Produto ";
