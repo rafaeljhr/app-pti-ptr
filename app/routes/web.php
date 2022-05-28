@@ -8,6 +8,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\BasesController;
 use App\Http\Controllers\VeiculosController;
+use App\Http\Controllers\EncomendaController;
 
 // ##############
 // NAVBAR ROUTES
@@ -253,3 +254,14 @@ Route::get('/forget-google-user', function () {
 // ##############################################
 
 Route::post('/delete-notification', [NotificationController::class, 'hideNotification'])->name('delete-notification');
+
+
+
+// ##############################################
+// ROUTES TO HANDLE ENCOMENDAS
+// ##############################################
+
+Route::get('/encomenda-consumidor', function () {
+    EncomendaController::encomendasDoUtilizador();
+    return view('encomenda_consumidor');
+})->name('encomenda-consumidor');

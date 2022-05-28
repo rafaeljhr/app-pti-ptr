@@ -1,0 +1,17 @@
+.encomendas {
+    width: 90%;
+    min-height: 70%;
+    overflow: auto;
+}
+
+
+/* .encomenda {
+    background-color: white;
+    border: 1px solid black;
+} */
+
+.detalhes {
+    float: right;
+    text-decoration: underline;
+    color: black;
+}

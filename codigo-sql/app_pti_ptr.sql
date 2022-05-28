@@ -241,6 +241,7 @@ CREATE TABLE encomenda (
   id_consumidor INTEGER NOT NULL,
   id_produto INTEGER NOT NULL,
   id_transportadora INTEGER NOT NULL,
+  id_fornecedor INTEGER NOT NULL,
   estado_encomenda VARCHAR(255) NOT NULL,
 
     CONSTRAINT fk_encomenda_id_consumidor
@@ -253,6 +254,10 @@ CREATE TABLE encomenda (
 
     CONSTRAINT fk_encomenda_id_transportadora
         FOREIGN KEY (id_transportadora)
+        REFERENCES utilizador(id),
+       
+    CONSTRAINT fk_encomenda_id_fornecedor
+        FOREIGN KEY (id_fornecedor)
         REFERENCES utilizador(id),
         
     CONSTRAINT fk_encomenda_estado
