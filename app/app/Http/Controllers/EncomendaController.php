@@ -35,6 +35,7 @@ class EncomendaController extends Controller
             $encomenda_id_consumidor = $encomenda->id_consumidor;
             $encomenda_id_produto = $encomenda->id_produto;
             $encomenda_id_transportadora = $encomenda->id_transportadora;
+            $encomenda_id_fornecedor = $encomenda->id_fornecedor;
             $encomenda_estado_encomenda = $encomenda->estado_encomenda;
 
             $atributos_encomenda = [
@@ -50,6 +51,7 @@ class EncomendaController extends Controller
                 "encomenda_id_consumidor" => $encomenda_id_consumidor,
                 "encomenda_id_produto" => $encomenda_id_produto,
                 "encomenda_id_transportadora" => $encomenda_id_transportadora,
+                "encomenda_id_fornecedor" => $encomenda_id_fornecedor,
                 "encomenda_estado_encomenda" => $encomenda_estado_encomenda,
             ];
 
