@@ -8,7 +8,9 @@ let app = Vue.createApp({
             data_i: "",
             kwh: "",
             info: "",
-            campo_extra:"",
+            
+            cat:"",
+            subcat:"",
             editable: false,
 
             nome_valid: true,
@@ -27,7 +29,7 @@ let app = Vue.createApp({
         
 
         changeSubcat(cat){
-            console.log(cat.target.value);    
+               
                     
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()
@@ -43,19 +45,14 @@ let app = Vue.createApp({
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
                     document.getElementById("toChangeOnCmd").innerHTML = JSON.parse(xhr.responseText)[0];
-                    document.getElementById("camposExtra").innerHTML = JSON.parse(xhr.responseText)[1];
-        
+                   
                 } else if (this.status >= 400) {
                     console.log(xhr.responseText);
                 }
             };
         
             xhr.send(data);
-            if(cat.target.value == ""){
-                document.getElementById('guardar_alteracoes').disabled = true;
-            }else{
-                document.getElementById('guardar_alteracoes').disabled = false;
-            }
+            
                       
             
         },
@@ -68,13 +65,27 @@ let app = Vue.createApp({
             this.$refs.quantidade.value = this.quantidade;
             this.$refs.data_p.value = this.data_p;
             this.$refs.data_i.value = this.data_i;
-
+            this.$refs.cat.value = this.cat;
+            console.log(this.subcat);
+            /* this.$refs.subcat.value = this.subcat; */
+            selectBox = document.getElementById("novo_produto_subcategoria");
+            newOption = new Option(this.subcat,this.subcat);
+            selectBox.add(newOption,undefined);
+            document.querySelector('#novo_produto_subcategoria').value = this.subcat;
+            document.getElementById("novo_produto_subcategoria").disabled = true;
             this.$refs.kwh.value = this.kwh;
             this.$refs.info.value = this.info;
         },
 
         checkForm() {
-
+            if(this.$refs.cat.value != this.cat){
+                document.getElementById("camposExtraNone").style.display = "none";
+            }else{
+                document.getElementById("camposExtraNone").style.display = "block";
+            }
+            
+            
+    
             if (this.$refs.nome.value.length > 0) {
                 this.nome_valid = true; 
             } else {
@@ -86,7 +97,7 @@ let app = Vue.createApp({
             } else {
                 this.preco_valid = false; 
             }
-            console.log(this.$refs.quantidade.value);
+            
             if (this.$refs.quantidade.value > 0) {
                 this.quantidade_valid = true; 
             } else {
@@ -130,9 +141,11 @@ let app = Vue.createApp({
                 this.info_valid && this.nome_valid &&  this.data_i_valid && this.kwh_valid &&
                 !(this.$refs.nome.value == this.nome && this.$refs.preco.value == this.preco 
                 && this.$refs.data_i.value==this.data_i && this.$refs.quantidade.value == this.quantidade && this.$refs.info.value == this.info
-                && this.$refs.kwh.value == this.kwh && this.$refs.data_p.value == this.data_p)) {
+                && this.$refs.kwh.value == this.kwh && this.$refs.data_p.value == this.data_p &&  this.$refs.cat.value == this.cat)) {
+                    console.log('ola3');
                     document.getElementById("guardar_alteracoes").disabled = false;
             } else {
+                console.log('ola4');
                 document.getElementById("guardar_alteracoes").disabled = true;
             }
         }
@@ -144,9 +157,11 @@ let app = Vue.createApp({
         this.quantidade = this.$refs.quantidade.value;
         this.data_p = this.$refs.data_p.value;
         this.data_i = this.$refs.data_i.value;
-
+        this.subcat = this.$refs.subcat.value;
+        this.cat = this.$refs.cat.value;
         this.kwh = this.$refs.kwh.value;
         this.info = this.$refs.info.value;
+        console.log(this.cat);
         
     }
 })

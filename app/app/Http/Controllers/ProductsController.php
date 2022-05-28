@@ -961,7 +961,7 @@ class ProductsController extends Controller
 
         if($request->get('categoria') != null){
             $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
-            <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             foreach($subCat as $sub){
                 $html=$html."
@@ -972,7 +972,7 @@ class ProductsController extends Controller
             
         }else{
             $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
-            <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             
         }
@@ -988,7 +988,7 @@ class ProductsController extends Controller
             $htmlC=$htmlC."
                 <div class='col'>
                    <label for='".$camposExtras->campo_extra."' class='form-label'> ".$camposExtras->nome_campo_extra.":</label>
-                   <input name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
+                   <input  name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
                 </div>"
                 ;
     
