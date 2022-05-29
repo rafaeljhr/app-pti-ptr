@@ -27,7 +27,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Tem a certeza que deseja apagar a sua base?</p>
+                    <p>Tem a certeza que deseja apagar o seu produto?</p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -173,7 +173,7 @@
                     <div class="row" >
                         <div class="col">
                           <label for="nome_categoria" class="form-label">Categoria do produto</label>
-                          <select ref="info" class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" value="<?php echo session()->get('produto_atual')['produto_nome_categoria'] ?>" :disabled="!editable" required>
+                          <select ref="cat" @input="checkForm()" class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" value="<?php echo session()->get('produto_atual')['produto_nome_categoria'] ?>" :disabled="!editable" required>
                             <option value="">-- Selecione uma categoria --</option>
                             @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
                             <?php $category= session()->get('categories')[$i] ?>
@@ -186,7 +186,7 @@
                           <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
                           <div id="toChangeOnCmd">
                             <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
-                          <select class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria"  disabled required>
+                          <select ref="subcat" class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria"  disabled required>
                               <option selected value="<?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?>"><?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?></option>
                             </select>
                         </div>       
@@ -195,20 +195,19 @@
                       </div>
 
                    
-
+                    <div id="camposExtraNone">
                     <div class="row">
                         @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
-
                         <div class ="col">
                             <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
                             <div class="inline-icon">
-                                <input type="text" {{-- id="campoExtra" --}} name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
+                                <input type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
                             </div>
 
                         </div>
                         @endfor
 
-                        
+                    </div>    
                     </div>
 
                     <br> <br>

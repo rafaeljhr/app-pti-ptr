@@ -112,7 +112,7 @@ class ProductsController extends Controller
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
                 $your_date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff = $now - $your_date;
+                $datediff =   $now - $your_date;
 
                 if(round($datediff / (60 * 60 * 24)) < 7){
                     $noti ="O Produto ";
@@ -178,7 +178,8 @@ class ProductsController extends Controller
 
     public function productRegister(Request $request)
     {
-
+        //dd($campos_extra);
+       
         $catField = Categoria_campos_extra::where('nome_categoria', $request->get('nome_categoria'))->get();
 
 
@@ -301,27 +302,47 @@ class ProductsController extends Controller
             'data_i'=>'sometimes|required|string',
             'kwh'=>'sometimes|required|string',
             'info'=>'sometimes|required|string',
+            'nome_categoria'=> 'sometimes|required|string',
+            'nome_subcategoria'=>'sometimes|required|string',
         ]);
 
         
         
         $produto = Produto::where('id', session()->get('produto_atual')['produto_id'])->first();
         $catAntiga = $produto->nome_categoria;
-        $atributo_to_update = [
-            'nome' => $request->nome,
-            'preco' => $request->preco,
-            'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
-            'id_fornecedor' => session()->get('user_id'),
-            'quantidade' => $request->quantidade,
-            'nome_categoria' => $request->nome_categoria,
-            'nome_subcategoria' => $request->nome_subcategoria,
-            'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
-            'informacoes_adicionais' => $request->info,
-            'data_producao_do_produto' => $request->data_p,
-            'data_insercao_no_site' => $request->data_i,
-            'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
-            'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
-        ];
+        if($catAntiga == $request->nome_categoria){
+            $atributo_to_update = [
+                'nome' => $request->nome,
+                'preco' => $request->preco,
+                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+                'id_fornecedor' => session()->get('user_id'),
+                'quantidade' => $request->quantidade,
+                'nome_categoria' => $request->nome_categoria,
+                'nome_subcategoria' => session()->get('produto_atual')['produto_nome_subcategoria'],
+                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+                'informacoes_adicionais' => $request->info,
+                'data_producao_do_produto' => $request->data_p,
+                'data_insercao_no_site' => $request->data_i,
+                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+            ];
+        }else{
+            $atributo_to_update = [
+                'nome' => $request->nome,
+                'preco' => $request->preco,
+                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+                'id_fornecedor' => session()->get('user_id'),
+                'quantidade' => $request->quantidade,
+                'nome_categoria' => $request->nome_categoria,
+                'nome_subcategoria' =>  $request->nome_subcategoria,
+                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+                'informacoes_adicionais' => $request->info,
+                'data_producao_do_produto' => $request->data_p,
+                'data_insercao_no_site' => $request->data_i,
+                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+            ];
+        }
 
         $produto->update($atributo_to_update);
         $atributos_produto = [
@@ -368,19 +389,36 @@ class ProductsController extends Controller
             
             return redirect('/campos-extra-edit');
         }else{//update  de campos  extra
-            /* $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
-            $counter = 0;
+            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+            
             foreach($campos_extra as $campo){
                 $name = $campo->campo_extra;
-                $to_update = [   
-                    'id_produto' => session()->get('produto_atual')['produto_id'],
-                    'campo_extra' => $campo->campo_extra,
-                    'valor_campo' => $request->$name,
-                ];
-                $campo->update($to_update);
-                $counter = $counter + 1;
+                if($campo->valor_campo != $request->$name){
+                    Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])
+                    ->where('campo_extra', $campo->campo_extra)
+                    ->update(array('valor_campo' => $request->$name)) ;
+                }
+                
+                
             }
-            */
+            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+            $all_campos_extra_produtos = array();
+            foreach($campos_extra as $campo){
+                $campo_nome = $campo->campo_extra;
+                $campo_valor = $campo->valor_campo;
+                
+
+                $atributos_campo_extra = [
+                    "nome_campo" => $campo_nome,
+                    "valor_campo" => $campo_valor,   
+                ];
+
+
+                array_push($all_campos_extra_produtos, $atributos_campo_extra);
+            }
+
+            session()->put('campos_extra_atuais', $all_campos_extra_produtos);
+            
         }
 
 
@@ -923,7 +961,7 @@ class ProductsController extends Controller
 
         if($request->get('categoria') != null){
             $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
-            <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             foreach($subCat as $sub){
                 $html=$html."
@@ -934,7 +972,7 @@ class ProductsController extends Controller
             
         }else{
             $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
-            <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             
         }
@@ -950,7 +988,7 @@ class ProductsController extends Controller
             $htmlC=$htmlC."
                 <div class='col'>
                    <label for='".$camposExtras->campo_extra."' class='form-label'> ".$camposExtras->nome_campo_extra.":</label>
-                   <input name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
+                   <input  name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
                 </div>"
                 ;
     
