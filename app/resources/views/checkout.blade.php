@@ -5,6 +5,7 @@
 <?php
 $subTotal = 0;
 $custoEntrega = 5;
+$kwhConsumidos = 0;
 /* session()->forget('carrinho_produtos');  */
 /* dd(session()->all()); */
 ?>
@@ -40,7 +41,8 @@ $custoEntrega = 5;
                         @for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) 
 
                         <?php
-                            $subTotal += session()->get('carrinho_produtos')[$i]['produto_preco']; 
+                            $subTotal += session()->get('carrinho_produtos')[$i]['produto_preco'];
+                            $kwhConsumidos += session()->get('carrinho_produtos')[$i]['produto_kwh_consumidos_por_dia_no_armazem'];
                         ?>
 
                             <div id="<?php echo $i ?>" class="row px-2">
@@ -53,7 +55,7 @@ $custoEntrega = 5;
                                     <h4 class="card-text text-danger"><?php echo session()->get('carrinho_produtos')[$i]['produto_preco'] ?> €</h4>
                                     <h5 class="card-title"><?php echo session()->get('carrinho_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
                                     <label for="quantity">Qtd.</label>
-                                    <input class="ms-2" type="number" id="quantity" name="quantity" min="1" max="99" value="1">
+                                    <input class="ms-2 mb-2" type="number" id="quantity" name="quantity" min="1" max="99" value="1">
                                 </div>
                                     
                                 <div class="col-md-2">  
@@ -87,6 +89,17 @@ $custoEntrega = 5;
                 <h5>TOTAL</h5>  
 
                 <hr>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <h6 class="font-weight-bold">kWh consumidos:</h6>
+                    </div>
+
+                    <div class="col-md-6 text-end">
+                        <p ref="kwConsumed" id="kwConsumed"><?php echo $kwhConsumidos ?> KW/H</p>
+                    </div>
+                </div>
 
                 <div class="row">
 
