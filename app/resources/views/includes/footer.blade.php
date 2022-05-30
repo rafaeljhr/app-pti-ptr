@@ -15,7 +15,7 @@
           <p>
             O objectivo da EcoSmart Store é ser transparente com os nossos clientes
             e com o ambiente.
-            Quando compra na EcoSmart Store saberá o histórico de poluição daquilo
+            Quando compra na EcoSmart Store saberá o histórico de poluição do produto 
             que encomenda, desde a produção à entrega. Desta forma saberá de forma
             consciente se se encontra a fazer compras verdadeiramente eco-friendly!
             <br><i>"Be smart, be EcoSmart"</i>
