@@ -231,6 +231,7 @@ CREATE TABLE estado_encomenda (
 CREATE TABLE encomenda (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   preco DECIMAL(10,2) NOT NULL,
+  preco_transporte DECIMAL(10,2) NOT NULL,
   morada VARCHAR(255) NOT NULL,
   codigo_postal VARCHAR(255) NOT NULL,
   cidade varchar(255) NOT NULL,
