@@ -588,6 +588,7 @@ class ProductsController extends Controller
             $produto_data_producao_do_produto = $produto->data_producao_do_produto;
             $produto_data_insercao_no_site = $produto->data_insercao_no_site;
             $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+            $produto_pronto_a_vender = $produto->pronto_a_vender;
 
             $atributos_produto = [
                 "produto_id" => $produto_id,
@@ -603,6 +604,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "pronto_a_vender" => $produto->pronto_a_vender,
             ];
 
 
@@ -1027,7 +1029,8 @@ class ProductsController extends Controller
         $produto_informacoes_adicionais = $produto->informacoes_adicionais;
         $produto_data_producao_do_produto = $produto->data_producao_do_produto;
         $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-        $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+        $produto_kwh_consumidos_por_dia_no_armazem = $produto->kwh_consumidos_por_dia_no_armazem;
+        $produto_pronto_a_vender = $produto->pronto_a_vender;
 
         $atributos_produto = [
             "produto_id" => $produto_id,
@@ -1042,7 +1045,8 @@ class ProductsController extends Controller
             "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
             "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
             "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+            "produto_kwh_consumidos_por_dia_no_armazem" => $produto_kwh_consumidos_por_dia_no_armazem,
+            "produto_pronto_a_vender" => $produto_pronto_a_vender,
         ];
 
         if(session()->has('carrinho_produtos')){

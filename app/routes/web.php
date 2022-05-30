@@ -262,7 +262,18 @@ Route::post('/delete-notification', [NotificationController::class, 'hideNotific
 // ROUTES TO HANDLE ENCOMENDAS
 // ##############################################
 
-Route::get('/encomenda-consumidor', function () {
+Route::get('/encomendas', function () {
+    EncomendaController::atualizar_encomendas_que_ja_nao_podem_ser_canceladas();
     EncomendaController::encomendasDoUtilizador();
-    return view('encomenda_consumidor');
-})->name('encomenda-consumidor');
+    return view('encomendas_consumidor');
+})->name('encomendas');
+
+Route::post('/cancelar-encomenda', [EncomendaController::class, 'cancelar_encomenda'])->name('cancelar-encomenda');
+
+
+Route::get('/encomenda/{id}/', [EncomendaController::class, "encomenda_infos"]);
+
+
+Route::get('/encomenda', function () {
+    return view('informacoes_encomenda');
+})->name('encomenda');

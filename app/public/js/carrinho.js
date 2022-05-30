@@ -10,7 +10,8 @@ let app = Vue.createApp({
             var subTotal = 0;
 
             var productRows = document.getElementById("todosProdutos").children;
-            for (var i = 0; i < productRows.length - 1; i++) {
+            for (var i = 1; i < productRows.length; i++) {
+                console.log(parseFloat(document.getElementsByTagName('h4')[i].innerHTML.slice(0,-2)));
                 subTotal += parseFloat(document.getElementsByTagName('h4')[i].innerHTML.slice(0,-2));
             }
 
@@ -20,7 +21,8 @@ let app = Vue.createApp({
             }
 
             this.$refs.subTotal.innerHTML = subTotal + " €";
-            //atualizar preço entrega
+
+            //atualizar preço total adicionando o preço de entrega
             this.$refs.totalCost.innerHTML = subTotal + " €";
 
         },

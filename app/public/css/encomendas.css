@@ -15,3 +15,17 @@
     text-decoration: underline;
     color: black;
 }
+
+
+.cancelar_encomenda {
+    text-decoration: underline;
+    color: black;
+}
+
+.recibo {
+    background-color: #f5f5f5;
+}
+
+.preco_info {
+    float: right;
+}

@@ -37,6 +37,7 @@ function isInCarrinho($productID) {
         @if(session()->get('all_fornecedores_produtos')!=null)
             @for($i = 0; $i < sizeOf(session()->get('all_fornecedores_produtos')); $i++) 
             
+            @if (session()->get('all_fornecedores_produtos')[$i]['pronto_a_vender'] == 1)
             <div class="col">
                 <div id="<?php echo $i ?>" class="card">
                 <h5 class="card-title"><?php echo session()->get('all_fornecedores_produtos')[$i]['produto_nome'] ?></h5>
@@ -53,6 +54,22 @@ function isInCarrinho($productID) {
 
                 </div>
             </div>
+
+            @else
+            <div class="col">
+                <div id="<?php echo $i ?>" class="card">
+                <h5 class="card-title"><?php echo session()->get('all_fornecedores_produtos')[$i]['produto_nome'] ?></h5>
+                <h4 class="card-text text-danger"><?php echo session()->get('all_fornecedores_produtos')[$i]['produto_preco'] ?> €</h4>
+                <img src='<?php echo session()->get('all_fornecedores_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><?php echo session()->get('all_fornecedores_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
+                    <h4 class="card-text text-danger">Produto dísponivel em breve</h4>
+                </div>
+
+                </div>
+            </div>
+
+            @endif
 
             @if($i > 0 && $i % 3==0)
                 </div>
