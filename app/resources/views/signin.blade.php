@@ -44,7 +44,7 @@ Session::put('login_ou_registo', "login");
 
               <div class="checkbox mb-3">
                 <label>
-                  <input type="checkbox" value="remember-me"> Lembrar-me
+                  <input type="checkbox" value="remember-me"> Não sou um robô
                 </label>
               </div>
 
