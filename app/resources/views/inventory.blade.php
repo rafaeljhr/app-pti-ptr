@@ -90,14 +90,20 @@
 
 
   <div id='todosProdutos'>
-
+    <form id="compareForm" method="post" action="routeToDefine">
+      <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">COMPARAR PRODUTOS</button>
+      <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
+      <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelCompare()">CANCELAR ALTERAÇÕES</button>
+        
     <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
 
-      
+        
+         
         @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
+                   
         <?php
         $comCadeia = 0;
-        $id  = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
+        $id = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
         if(session()->get('produto_cadeia_logistica')  !=  null)
           for($c = 0; $c < sizeOf(session()->get('produto_cadeia_logistica')); $c++)
             if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
@@ -116,7 +122,9 @@
           @endif
           <div class="col">
             <div class="card">
-              <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
+              <?php $idProd = session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>
+              <input onclick="countCompare(<?php echo $idProd?>)" type="checkbox" name="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>" value="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id']?>":disabled="!editable">
+              <img src="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>" class="imagemProduto card-img-top" alt="...">
               <h5 class="card-title mt-3 text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
               <h4 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
               
@@ -146,6 +154,7 @@
             <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
           @endif
           @endfor
+          </form>
 
           
       </div>

@@ -40,7 +40,7 @@
           <h1>As cadeias do produto <?php echo session()->get('prod_nome_cadeia_actual')?></h1>
         </div>
         <div class="col-auto">
-            <button class="btn btn-success" @click="criarUmaCadeiaLogistica()" id="botao_criar">Criar base</button>
+            <button class="btn btn-success" @click="criarUmaCadeiaLogistica()" id="botao_criar">Criar cadeia</button>
         </div>
         
       </div>

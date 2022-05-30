@@ -141,6 +141,7 @@ Route::get('/campos-extra-edit', function () {
 
 Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
 
+Route::post('/compare-products', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
 
 
 
