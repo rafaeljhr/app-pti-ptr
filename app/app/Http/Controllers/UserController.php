@@ -207,6 +207,8 @@ class UserController extends Controller
                 'pais' => $request->get('pais'),
                 'google_id' => session()->get('user_google_id'),
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
+                'latitude' => $request->get('latitude'),
+                'longitude' => $request->get('longitude'),
             ]);
 
             // notificacao de bem-vindo 
@@ -254,6 +256,8 @@ class UserController extends Controller
                 'pais' => $request->get('pais'),
                 'google_id' => null,
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
+                'latitude' => $request->get('latitude'),
+                'longitude' => $request->get('longitude'),
             ]);
 
             // notificacao de bem-vindo 
@@ -277,6 +281,8 @@ class UserController extends Controller
         session()->put('user_codigo_postal', $newUtilizador->codigo_postal);
         session()->put('user_cidade', $newUtilizador->cidade);
         session()->put('user_pais', $newUtilizador->pais);
+        session()->put('user_latitude', $newUtilizador->latitude);
+        session()->put('user_longitude', $newUtilizador->longitude);
         if ($newUtilizador->google_id != null || $newUtilizador->google_id != "NULL" || $newUtilizador->google_id != "null" || $newUtilizador->google_id != "Null") {
             session()->put('user_google_id', $newUtilizador->google_id);
         }

@@ -27,6 +27,8 @@ class Utilizador extends Model
         'pais',
         'google_id', 
         'tipo_de_conta',
+        'latitude',
+        'longitude'
     ];
 
     protected $hidden = [
@@ -37,6 +39,8 @@ class Utilizador extends Model
         'codigo_postal',
         'cidade',
         'google_id',
+        'latitude',
+        'longitude'
     ];
 	
     use HasApiTokens, HasFactory;

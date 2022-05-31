@@ -181,6 +181,10 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
+                                {{-- Hidden inputs para a latitude e longitude da morada do utilizador --}}
+                                <input ref="latitude" type="hidden" name ="latitude" value="default">
+                                <input ref="longitude" type="hidden" name ="longitude" value="default">
+
                             </div>
                         
                             <div class="tab" style="display:none;">
