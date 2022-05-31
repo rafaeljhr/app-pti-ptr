@@ -90,7 +90,8 @@
 
 
   <div id='todosProdutos'>
-    <form id="compareForm" method="post" action="routeToDefine">
+    <form id="compareForm" method="post" action="{{ route('compare-products')}}">
+      @csrf
       <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">COMPARAR PRODUTOS</button>
       <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
       <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelCompare()">CANCELAR ALTERAÇÕES</button>

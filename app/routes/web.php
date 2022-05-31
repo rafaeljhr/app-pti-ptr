@@ -139,9 +139,13 @@ Route::get('/campos-extra-edit', function () {
     return view('alterar_cat');
 })->name('campos_extra');
 
+Route::get('/comparar-prods', function () {
+    return view('compare_prods');
+})->name('comparar_prods');
+
 Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
 
-Route::post('/compare-products', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
+Route::post('/compare-products', [ProductsController::class, 'compareProds'])->name('compare-products');
 
 
 

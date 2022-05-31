@@ -33,6 +33,13 @@
     display: none;
 }
 
+.imagemProduto {
+
+    height: 300px !important;
+    
+
+}
+
 #storageinfo{
     
     background-color: #008B8B !important;

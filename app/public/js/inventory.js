@@ -36,7 +36,7 @@ function countCompare(id){
         countProds.push(id);
     }else{
         index = countProds.indexOf(id);
-        countProds.splice(index, 1)
+        countProds.splice(index, 1);
     }
     console.log(countProds);
     if(countProds.length < 2 || countProds.length > 2){
@@ -48,10 +48,7 @@ function countCompare(id){
 
  
 
-function compareProds(){
 
-    console.log("1");
-}
 
 
 let app = Vue.createApp({
@@ -108,6 +105,7 @@ let app = Vue.createApp({
             };
         
             xhr.send(data);
+
                       
             
         },
