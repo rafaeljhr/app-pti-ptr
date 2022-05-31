@@ -8,10 +8,10 @@ use App\Models\Utilizador;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 
-class ConsumidoresController extends Controller
+class TransportadorasController extends Controller
 {
     public function tipo_conta(){
-        return DB::table('tipo_de_conta')->where('nome', 'consumidor')->value('id');
+        return DB::table('tipo_de_conta')->where('nome', 'transportadora')->value('id');
     }
 
 
@@ -25,16 +25,16 @@ class ConsumidoresController extends Controller
             $allData = DataTables::of($users)
             ->addColumn('action', function($row){
                 $btn = '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.
-                $row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editConsumidor">Edit</a>';
+                $row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editTransportadora">Edit</a>';
                 $btn .= '<a href="javascript:void(0)" data-toggle="tooltip" data-id="'.
-                $row->id.'" data-original-title="Delete" class="edit btn btn-danger btn-sm deleteConsumidor">Delete</a>';
+                $row->id.'" data-original-title="Delete" class="edit btn btn-danger btn-sm deleteTransportadora">Delete</a>';
                 return $btn;
             })->rawColumns(['action'])
             ->make(true);
             return $allData;
 
         }
-        return view('consumidores', compact('users'));
+        return view('transportadoras', compact('users'));
     } 
 
     public function store(Request $request){
@@ -51,7 +51,7 @@ class ConsumidoresController extends Controller
             'pais'=>'required|string',
         ]);
         
-        $consumidor = Utilizador::updateOrCreate(['id'=>$request->consumidor_id],
+        $user = Utilizador::updateOrCreate(['id'=>$request->transportadora_id],
         [
             'email' => $request->email,
             'primeiro_nome' => $request->primeiro_nome,
@@ -66,19 +66,19 @@ class ConsumidoresController extends Controller
             'tipo_de_conta' => $this->tipo_conta()
         ]);
 
-        return response()->json(['success'=>'Consumidor Criado Com Sucesso']);
+        return response()->json(['success'=>'Transportadora Criado Com Sucesso']);
     }
 
     public function destroy($id){
         Utilizador::find($id)->delete();
     
-        return response()->json(['success'=>'Consumidor Apagado Com Sucesso']);
+        return response()->json(['success'=>'Transportadora Apagado Com Sucesso']);
     }
 
     public function edit($id){
 
-        $consumidor = Utilizador::find($id);
+        $user = Utilizador::find($id);
 
-        return response()->json($consumidor);
+        return response()->json($user);
     }
 }
