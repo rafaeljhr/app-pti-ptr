@@ -53,11 +53,4 @@
             <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
           @endif
           @endfor
-        </form>
-
-          
-    </div>
-  </div>
-  </div>
-  @endif
-</div>
+        
