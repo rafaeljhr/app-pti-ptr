@@ -173,7 +173,7 @@
           </div>
 
           <div class="col">
-            <label for="consumo_por_100km" class="form-label">Consumo por 100Km</label>
+            <label for="consumo_por_100km" class="form-label">Consumo (L) por 100Km</label>
             <div class="input-group mb-3">  
               <input name="consumo_por_100km" class="form-control" type="number" step="any" required>
             </div>

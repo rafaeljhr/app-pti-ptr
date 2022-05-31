@@ -219,6 +219,7 @@ CREATE TABLE produto_campos_extra(
 CREATE TABLE eventos_da_cadeia_logistica_do_produto (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_produto INTEGER NOT NULL,
+  id_fornecedor INTEGER NOT NULL,
   nome VARCHAR(255) NOT NULL,
   poluicao_co2_produzida DECIMAL(10,2) DEFAULT NULL,
   kwh_consumidos DECIMAL(10,2) DEFAULT NULL,
@@ -227,6 +228,10 @@ CREATE TABLE eventos_da_cadeia_logistica_do_produto (
     CONSTRAINT fk_eventos_id_produto
         FOREIGN KEY (id_produto)
         REFERENCES produto(id)
+        
+    CONSTRAINT fk_encomenda_id_fornecedor
+        FOREIGN KEY (id_fornecedor)
+        REFERENCES utilizador(id),
 );
 
 
