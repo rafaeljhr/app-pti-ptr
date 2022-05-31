@@ -62,7 +62,7 @@ Session_start();
                     <hr class="dropdown-divider" style="width: 90%; margin: auto;">
 
 
-                    @if(Session::get('notificacoes') == [])
+                    @if(Session::get('notificacoes') == [] || Session::get('notificacoes') == null)
 
                         <li class='notificationElement mt-3 text-center'>
                             <p class='textoNotificacao'>Não possui notificações!</p>
@@ -117,12 +117,12 @@ Session_start();
                     <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
-                    <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     <li><a class="dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
-                    <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('bases') }}">BASES</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('veiculos') }}">VEÍCULOS</a></li>
                     @endif

@@ -19,7 +19,17 @@
 
 <div class="encomendas mx-auto">
 
-    <h1 class="mt-5">As suas encomendas</h1>
+    @if(session()->get('userType') == "consumidor")
+        <h1 class="mt-5">ENCOMENDAS REALIZADAS</h1>
+    @endif
+
+    @if(session()->get('userType') == "fornecedor")
+        <h1 class="mt-5">ENCOMENDAS A PROCESSAR</h1>
+    @endif
+
+    @if(session()->get('userType') == "transportadora")
+        <h1 class="mt-5">ENCOMENDAS ATRIBUÍDAS PARA ENTREGA</h1>
+    @endif
 
     @if(sizeOf(session()->get('all_encomendas')) != 0)
 
@@ -41,7 +51,82 @@
                 <div class="col">
                     <h5>Encomenda Nº <?php echo session()->get('all_encomendas')[$i]['encomenda_id'] ?> - <?php echo session()->get('all_encomendas')[$i]['encomenda_estado_encomenda'] ?></h5>
                 
-                    <p><?php echo session()->get('all_encomendas')[$i]['encomenda_data_realizada'] ?></p>
+                    <br>
+
+                    <div class="row">
+                        <div class="col">
+                            <h6>Data e Hora</h6>
+                        </div>
+
+                        @if(session()->get('userType') == "consumidor")
+                        <div class="col">
+                            <h6>Fornecedor</h6>
+                        </div>
+
+                        <div class="col">
+                            <h6>Transportadora</h6>
+                        </div>
+                        @endif
+
+                        @if(session()->get('userType') != "consumidor")
+                        <div class="col">
+                            <h6>Cliente</h6>
+                        </div>
+
+                            @if(session()->get('userType') == "fornecedor")
+                            <div class="col">
+                                <h6>Transportadora</h6>
+                            </div>
+                            @endif
+
+                            @if(session()->get('userType') == "transportadora")
+                            <div class="col">
+                                <h6>Fornecedor</h6>
+                            </div>
+                            @endif
+                        @endif
+                        
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <p><?php echo session()->get('all_encomendas')[$i]['encomenda_data_realizada']?></p>
+                        </div>
+
+                        @if(session()->get('userType') == "consumidor")
+                        <div class="col">
+                            <p><?php echo session()->get('all_encomendas')[$i]['encomenda_fornecedor_nome']?></p>
+                        </div>
+
+                        <div class="col">
+                            <p><?php echo session()->get('all_encomendas')[$i]['encomenda_transportadora_nome']?></p>
+                        </div>
+                        @endif
+
+                        @if(session()->get('userType') != "consumidor")
+                        <div class="col">
+                            <p><?php echo session()->get('all_encomendas')[$i]['encomenda_consumidor_nome']?></p>
+                        </div>
+
+                            @if(session()->get('userType') == "fornecedor")
+                            <div class="col">
+                                <p><?php echo session()->get('all_encomendas')[$i]['encomenda_transportadora_nome']?></p>
+                            </div>
+                            @endif
+
+                            @if(session()->get('userType') == "transportadora")
+                            <div class="col">
+                                <p><?php echo session()->get('all_encomendas')[$i]['encomenda_fornecedor_nome']?></p>
+                            </div>
+                            @endif
+                        @endif
+                        
+                        
+                    </div>
+
+                    <br>
+                    
                     <h5 class="text-danger"><?php echo session()->get('all_encomendas')[$i]['encomenda_preco'] ?>€</h5>
                 </div>
 

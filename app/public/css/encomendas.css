@@ -29,3 +29,13 @@
 .preco_info {
     float: right;
 }
+
+.alterar_estado {
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+
+.campo_morada {
+    margin-top: -10px !important;
+}

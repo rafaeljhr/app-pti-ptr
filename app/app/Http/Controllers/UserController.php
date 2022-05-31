@@ -46,6 +46,29 @@ class UserController extends Controller
             session()->put('user_codigo_postal', $utilizador->codigo_postal);
             session()->put('user_cidade', $utilizador->cidade);
             session()->put('user_pais', $utilizador->pais);
+
+            $notificacoes = Notificacao::where('id_utilizador', $utilizador->id)->where('estado','1')->get();
+                
+            $all_notificacoes = array();
+
+            foreach($notificacoes as $notificacao) {
+
+                $notificacao_id = $notificacao->id;
+                $notificacao_id_utilizador = $notificacao->id_utilizador;
+                $notificacao_mensagem = $notificacao->mensagem;
+                $notificacao_estado = $notificacao->id;
+
+                $atributos_notificacao = [
+                    "notificacao_id" => $notificacao_id,
+                    "notificacao_id_utilizador" => $notificacao_id_utilizador,
+                    "notificacao_mensagem" => $notificacao_mensagem,
+                    "notificacao_estado" => $notificacao_estado,
+                ];
+
+                array_push($all_notificacoes, $atributos_notificacao);
+            }
+
+            session()->put('notificacoes', $all_notificacoes);
             
             return redirect('/');
         }
