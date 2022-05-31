@@ -64,13 +64,8 @@ class GoogleController extends Controller
                     session()->put('user_google_id', $utilizador->google_id);
 
 
-                    // put all user notifications on session
-                    // $notificacoes = Notificacao::where('id_utilizador', $utilizador->id)->where('estado','1');
-                    // $notificacoes = Notificacao::where('id_utilizador', $utilizador->id);
                     $notificacoes = Notificacao::where('id_utilizador', $utilizador->id)->where('estado','1')->get();
-                    //return $notificacoes->estado;
-                    
-
+                
                     $all_notificacoes = array();
 
                     foreach($notificacoes as $notificacao) {

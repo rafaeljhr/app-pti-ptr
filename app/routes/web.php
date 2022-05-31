@@ -269,6 +269,7 @@ Route::get('/encomendas', function () {
 
 Route::post('/cancelar-encomenda', [EncomendaController::class, 'cancelar_encomenda'])->name('cancelar-encomenda');
 
+Route::post('/update-estado-encomenda', [EncomendaController::class, 'alterar_estado_encomenda'])->name('update-estado-encomenda');
 
 Route::get('/encomenda/{id}/', [EncomendaController::class, "encomenda_infos"]);
 
