@@ -389,6 +389,12 @@ class EncomendaController extends Controller
         $encomenda = Encomenda::where('id', session()->get('encomenda')['encomenda_id'])->first();
 
         $encomenda->estado_encomenda = $request->estado;
+
+        if ($request->estado == "Concluída") {
+            $hoje = date("Y-m-d H:i:s");
+            $encomenda->data_finalizada = $hoje;
+        }
+
         $encomenda->save();
 
         $consumidor = Utilizador::where('id', $encomenda->id_consumidor)->first();
@@ -423,27 +429,147 @@ class EncomendaController extends Controller
         session()->put('encomenda', $atributos_encomenda);
 
 
-        // notificacao de estado ao consumidor
-        $notificacao_consumidor = Notificacao::create([
-            'id_utilizador' => $encomenda->id_consumidor,
-            'mensagem' => "A sua encomenda nº ".$encomenda->id." encontra-se agora no estado '". $request->estado ."'",
-            'estado' => 1,
-        ]);
+        if ($request->estado == "Em processamento pelo fornecedor") {
+            
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." encontra-se em processamento pelo fornecedor!",
+                'estado' => 1,
+            ]);
 
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." aguarda processamento!",
+                'estado' => 1,
+            ]);
 
-        // notificacao de estado ao fornecedor
-        $notificacao_fornecedor = Notificacao::create([
-            'id_utilizador' => $encomenda->id_fornecedor,
-            'mensagem' => "A encomenda de nº ".$encomenda->id." passou ao estado '". $request->estado ."'",
-            'estado' => 1,
-        ]);
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." encontra-se em processamento pelo fornecedor!",
+                'estado' => 1,
+            ]);
 
-        // notificacao de estado a transportadora
-        $notificacao_transportadora = Notificacao::create([
-            'id_utilizador' => $encomenda->id_transportadora,
-            'mensagem' => "A encomenda de nº ".$encomenda->id." passou ao estado '". $request->estado ."'",
-            'estado' => 1,
-        ]);
+        } else if ($request->estado == "A aguardar recolha pela transportadora") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." aguarda recolha pela transportadora!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." aguarda recolha pela transportadora!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." aguarda recolha do armazem do fornecedor!",
+                'estado' => 1,
+            ]);
+
+        } else if ($request->estado == "Em recolha pela transportadora") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." será recolhida em menos de 24h pela transportadora, do armazem do fornecedor!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." será recolhida em menos de 24h pela transportadora!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." deve ser recolhida em menos de 24h do armazem do fornecedor!",
+                'estado' => 1,
+            ]);
+
+        } else if ($request->estado == "Recolhida pela transportadora") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." foi recolhida pela transportadora, do armazem do fornecedor!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi recolhida pela transportadora!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi recolhida do armazem do fornecedor!",
+                'estado' => 1,
+            ]);
+
+        } else if ($request->estado == "Em distribuição") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." será entregue nas próximas 24h!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." encontra-se em distribuição pela transportadora!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." encontra-se em distribuição!",
+                'estado' => 1,
+            ]);
+
+        } else if ($request->estado == "Concluída") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "A sua encomenda nº ".$encomenda->id." foi entregue!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi entregue!",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi entregue!",
+                'estado' => 1,
+            ]);
+
+        } else {
+            return "Erro na criacao de notificacoes sobre o novo estado da encomenda.";
+        }
 
 
         if (session()->get('userType') == "consumidor") {
@@ -472,11 +598,13 @@ class EncomendaController extends Controller
                 "notificacao_estado" => $notificacao_transportadora->estado,
             ];
 
+        } else {
+            return "Erro na colocacao da notificacao em sessao.";
         }
         
         session()->push('notificacoes', $atributos_notificacao);
 
-        return redirect('/encomenda');
+        return redirect('/encomendas');
 
     }
 

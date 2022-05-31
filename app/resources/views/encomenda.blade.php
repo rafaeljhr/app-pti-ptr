@@ -19,7 +19,7 @@
 
 <div class="encomendas mx-auto">
 
-    <!-- Modal Apagar Conta -->
+    <!-- Modal Cancelar Encomenda -->
     <div class="modal fade" id="modalCancelarEncomenda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCancelarEncomendaLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -40,21 +40,22 @@
         </div>
         </div>
     </div>
+    <div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>
 
 
-    <!-- Modal Apagar Conta -->
-    <div class="modal fade" id="modalAlterarEstadoEncomenda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAlterarEstadoEncomenda" aria-hidden="true">
+    <!-- Modal Alterar estado encomenda -->
+    <div class="modal fade" id="modalAlterarEstadoEncomenda" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalAlterarEstadoEncomenda" aria-modal="true">
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalApagarLabel">Atenção!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" onclick="hide_modal_alterar()" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Tem a certeza que deseja alterar o estado da encomenda?</p>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-secondary">Cancelar</button>
             <form method="post" action="{{ route('update-estado-encomenda') }}" name="alterar_estado" id="alterar_estado" >
                 @csrf
                 <input id='estado_a_colocar' type="text" value="" name="estado" hidden>
@@ -79,6 +80,15 @@
             <h6>DATA E HORA DA ENCOMENDA</h6>
         </div>
 
+        <div class="col">
+            <h6>DATA E HORA DA ENTREGA</h6>
+        </div>
+
+        @if(session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
+            <div class="col">
+            </div>
+        @endif
+
     </div>
 
     <br>
@@ -97,15 +107,21 @@
             <p><?php echo session()->get('encomenda')['encomenda_data_realizada']?></p>
         </div>
 
+        
+
         <div class="col">
-            @if(session()->get('userType') == "consumidor")
-                @if(session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
-                    <p class="detalhes text-danger" data-bs-toggle="modal" data-bs-target="#modalCancelarEncomenda">Cancelar encomenda</p>
-                @else
-                    <p>Cancelamento de encomenda indisponível</p>
-                @endif
+            @if(session()->get('encomenda')['encomenda_data_finalizada'] != null)
+            <p><?php echo session()->get('encomenda')['encomenda_data_finalizada']?></p>
+            @else
+            <p>Por entregar</p>
             @endif
         </div>
+
+        @if(session()->get('userType') == "consumidor" && session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
+            <div class="col">
+                <p class="detalhes text-danger" data-bs-toggle="modal" data-bs-target="#modalCancelarEncomenda">Cancelar encomenda</p>
+            </div>
+        @endif
 
     </div>
 
@@ -118,9 +134,6 @@
                 <h5 class="text-danger">ALTERAR ESTADO DA ENCOMENDA</h5>
 
                 <br>
-
-                {{-- <form method="post" action="{{ route('update-estado-encomenda') }}"> --}}
-                    
                     
                 <div class="row">
                     <div class="col-1 my-auto">
@@ -132,7 +145,9 @@
                             @for($i = 0; $i < sizeOf(session()->get('all_estados')); $i++)
 
                                 @if(session()->get('all_estados')[$i]['estado_nome'] != session()->get('encomenda')['encomenda_estado_encomenda'])
-                                    <option value="<?php echo session()->get('all_estados')[$i]['estado_nome']?>"><?php echo session()->get('all_estados')[$i]['estado_nome']?></option>
+                                    @if(session()->get('all_estados')[$i]['estado_nome'] == "Em processamento pelo fornecedor" || session()->get('all_estados')[$i]['estado_nome'] == "A aguardar recolha pela transportadora"))
+                                        <option value="<?php echo session()->get('all_estados')[$i]['estado_nome']?>"><?php echo session()->get('all_estados')[$i]['estado_nome']?></option>
+                                    @endif
                                 @endif
 
                             @endfor
@@ -156,12 +171,14 @@
                         <label for="estado" class="form-label">ESTADO</label>
                     </div>
                     <div class="col my-auto">
-                        <select onchange="atribuir_estado_ao_input()" class="form-select" id='estado_selecionado' required data-bs-toggle="modal" data-bs-target="#modalAlterarEstadoEncomenda">
+                        <select onchange="atribuir_estado_ao_input()" class="form-select" id='estado_selecionado'>
                             <option selected value="<?php echo session()->get('encomenda')['encomenda_estado_encomenda']?>"><?php echo session()->get('encomenda')['encomenda_estado_encomenda']?></option>
                             @for($i = 0; $i < sizeOf(session()->get('all_estados')); $i++)
 
                                 @if(session()->get('all_estados')[$i]['estado_nome'] != session()->get('encomenda')['encomenda_estado_encomenda'])
-                                    <option value="<?php echo session()->get('all_estados')[$i]['estado_nome']?>"><?php echo session()->get('all_estados')[$i]['estado_nome']?></option>
+                                    @if(session()->get('all_estados')[$i]['estado_nome'] == "Em recolha pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Recolhida pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Em distribuição"  || session()->get('all_estados')[$i]['estado_nome'] == "Concluída")
+                                        <option value="<?php echo session()->get('all_estados')[$i]['estado_nome']?>"><?php echo session()->get('all_estados')[$i]['estado_nome']?></option>
+                                    @endif
                                 @endif
 
                             @endfor
