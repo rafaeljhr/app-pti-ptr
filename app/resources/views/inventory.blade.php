@@ -100,7 +100,14 @@
 
       @include('includes.apresentacao_produtos')
          
-        
+    </form>
+
+          
+  </div>
+</div>
+</div>
+@endif
+</div>
 
 
         
