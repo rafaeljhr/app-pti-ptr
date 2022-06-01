@@ -437,10 +437,12 @@ class ProductsController extends Controller
             
             foreach($campos_extra as $campo){
                 $name = $campo->campo_extra;
+                $string_check = htmlentities( $campo->valor_campo , ENT_QUOTES, "UTF-8");
+            
                 if($campo->valor_campo != $request->$name){
                     Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])
                     ->where('campo_extra', $campo->campo_extra)
-                    ->update(array('valor_campo' => $request->$name)) ;
+                    ->update(array('valor_campo' => $string_check)) ;
                 }
                 
                 

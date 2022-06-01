@@ -192,22 +192,7 @@ let app = Vue.createApp({
 
         
 
-        criarUmaCadeiaLogistica() {
-
-            if (document.getElementById("criarUmaCadeiaLogistica").style.display == "block") {
-                document.getElementById("criarUmaCadeiaLogistica").style.display = "none";
-            } else {
-                document.getElementById("criarUmaCadeiaLogistica").style.display = "block";
-            }
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-            
-
-        },
+        
 
         mostrarCriarProduto() {
             
