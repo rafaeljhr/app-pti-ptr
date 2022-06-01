@@ -71,7 +71,8 @@
             <h2>ESTADO DA ENCOMENDA</h2>
         </div>
         <div class="col">
-            <a href="{{ URL::to('encomenda/json/'.session()->get('encomenda')['encomenda_id']) }}" class="download">Download JSON da encomenda</a>
+            <a href="{{ URL::to('encomenda/json/'.session()->get('encomenda')['encomenda_id']) }}" class="download"><button class="btn btn-success" id="botao_criar">Download JSON da encomenda</button></a>
+            
         </div>
     </div>
     

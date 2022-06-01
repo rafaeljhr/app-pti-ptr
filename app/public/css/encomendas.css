@@ -48,6 +48,9 @@
     bottom: 0px !important;
 }
 
-.download:hover {
-    color: green;
-  }
+
+
+#botao_criar {
+    font-size: 17px;
+    padding: 10px;
+}
