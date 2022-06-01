@@ -1,5 +1,6 @@
 countProds = [];
 
+
 function deleteWarning(id, nome){
     
     route = document.getElementById("buttonApagarProdutoWarning").name;
@@ -32,6 +33,7 @@ function deleteWarning(id, nome){
 
 function countCompare(id){
     
+    console.log(this.editable);
     if(document.getElementsByName(id)[0].checked == true){
         countProds.push(id);
     }else{
@@ -71,14 +73,49 @@ let app = Vue.createApp({
     methods: {
 
 
-        
+       
 
         cancelCompare(){
             this.editable = false;
+            console.log(this.editable);
             document.getElementById("compareForm").reset();
             countProds.splice(0, countProds.length)
             
         },
+
+
+        searchCat(e){
+            
+            
+            e.preventDefault();
+
+            
+            var form = e.target
+            var data = new FormData(form)
+
+            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            let xhr1 = new XMLHttpRequest();
+            xhr1.open(form.method, form.action, true)
+            xhr1.setRequestHeader('X-CSRF-TOKEN', csrf);
+
+            xhr1.onreadystatechange = function() {
+                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("prodDisplay").innerHTML = xhr1.responseText;
+                    console.log('mudou');
+
+
+                } else if (this.status >= 400) {
+                    console.log(xhr1.responseText);
+                }
+            };
+
+            xhr1.send(data);
+
+                      
+            
+        },
+
 
         changeSubcat(cat){
             console.log(cat.target.value);    
@@ -125,7 +162,13 @@ let app = Vue.createApp({
             let route = filter.target.name;
             
             var data = new FormData()
-            data.append('id_armazem', filter.target.value);
+            console.log(filter.target.value);
+            if(filter.target.value == 'reset'){
+                data.append('id_armazem', -1);
+            }else{
+                data.append('id_armazem', filter.target.value);
+            }
+            
 
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -135,7 +178,7 @@ let app = Vue.createApp({
 
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                    document.getElementById("todosProdutos").innerHTML = xhr.responseText;
+                    document.getElementById("prodDisplay").innerHTML = xhr.responseText;
                     
 
                 } else if (this.status >= 400) {
