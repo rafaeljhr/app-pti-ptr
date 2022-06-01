@@ -118,7 +118,7 @@ let app = Vue.createApp({
 
 
         changeSubcat(cat){
-            console.log(cat.target.value);    
+              
                     
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()

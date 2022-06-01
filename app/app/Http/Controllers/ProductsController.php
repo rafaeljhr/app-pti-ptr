@@ -797,18 +797,60 @@ class ProductsController extends Controller
         return redirect('/cadeia-edit');
     }
 
-    public function cadeiaEdit(Request $request){
-        $request->validate([
-            'nome'=>'sometimes|required|string',
-            'co2'=>'sometimes|required|string',
-            'kwh'=>'sometimes|required|string',
-            'desc'=>'sometimes|required|integer',
-           
-        ]);
+    public function cadeiaDelete(Request $request){
+
+        $cadeia = Evento::where('id', $request->get('id_cadeia'))->first();
+        
 
         
+        $cadeia->delete();
+         // rebuild armazens of fornecedor in session
+        self::rebuild_fornecedor_session();
+
+        $noti ="A cadeia ";
+        $noti .= $cadeia->nome;
+        $noti.=" foi apagada com sucesso";
+
+        $notis = Notificacao::create([
+            'id_utilizador'=>session()->get('user_id'),
+            'mensagem'=>$noti,
+            'estado'=>1,
+        ]);
+        
+        $atributos_notificacao = [
+            "notificacao_id" => $notis->id,
+            "notificacao_id_utilizador" => $notis->id_utilizador,
+            "notificacao_mensagem" => $notis->mensagem,
+            "notificacao_estado" => $notis->estado,
+        ];
+       
+        session()->push('notificacoes', $atributos_notificacao);
+        return redirect('/cadeia');
+    }
+
+    public function cadeiaEdit(Request $request){
+        
+        $request->validate([
+            'nome'=>'sometimes|required|string',
+            'co2'=>'sometimes|required',
+            'kwh'=>'sometimes|required',
+            'desc'=>'sometimes|required|string',
+           
+        ]);
+        //dd($request->all());
+
+        
+        
         $evento = Evento::where('id', session()->get('cadeia_atual')['cadeia_id'])->first();
-        $evento->update($request->all());
+        
+        $historico_to_update = [
+            //'id_produto' => session()->get('prod_cadeia_actual'),
+            'nome' => $request->get('nome'),
+            'poluicao_co2_produzida' => $request->get('co2'),
+            'kwh_consumidos' => $request->get('kwh'),
+            'descricao_do_evento' => $request->get('desc'),
+        ];
+        $evento->update($historico_to_update);
         
         $atributos_cadeia= [
             "cadeia_id" => session()->get('cadeia_atual')['cadeia_id'],
@@ -990,14 +1032,14 @@ class ProductsController extends Controller
     public function filterProduct(Request $request){
 
         //View::share('testerView', 'Steve');
-        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')],['filtroCat' => ""]);
+        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')]);
         
     }
 
     public function searchCat(Request $request){
 
         //View::share('testerView', 'Steve');
-        return view("apresentacao_produtos",['filtroCat' => $request->get('categoria')], ['filtroArmazem' => -1]);
+        return view("apresentacao_produtos_cat",['filtroCat' => $request->get('categoria')]);
         
     }
 

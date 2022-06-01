@@ -32,11 +32,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Tem a certeza que deseja apagar o seu armazém?</p>
+                    <p>Tem a certeza que deseja apagar a sua cadeia logistica?</p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form method="post" action="{{ route('armazem-delete-controller') }}">
+                <form method="post" action="{{ route('cadeia-delete-controller') }}">
                     @csrf
                     <input hidden value="<?php echo session()->get('cadeia_atual')['cadeia_id']?>" name="id_cadeia">
                     <button type="submit" class="btn btn-danger">Confirmar</button>

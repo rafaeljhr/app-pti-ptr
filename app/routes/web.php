@@ -194,6 +194,7 @@ Route::get('/cadeia-edit', function () {
 
 Route::post('/cadeia-edit-controller', [ProductsController::class, "cadeiaEdit"])->name('cadeia-edit-controller');
 
+Route::post('/cadeia-delete-controller', [ProductsController::class, "cadeiaDelete"])->name('cadeia-delete-controller');
 
 // ##############################################
 // ARMAZENS RELATED ROUTES
