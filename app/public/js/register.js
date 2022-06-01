@@ -139,7 +139,6 @@ let app = Vue.createApp({
                 this.$refs.userCod_Postal_3.value = this.$refs.userCod_Postal_1.value;
                 this.$refs.userCod_Postal_4.value = this.$refs.userCod_Postal_2.value;
                 this.$refs.pais2.value = this.$refs.pais.value;
-                document.getElementById("image_do_utilizador2").src = this.$refs.redUploadImagem.value;
                 
             } 
         

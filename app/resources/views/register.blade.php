@@ -33,7 +33,7 @@ Session::put('login_ou_registo', "registo");
             @endif           
 
             <div class="container-form">
-                <div class="row">
+                <div class="row w-100">
                     <div class="col"> <br><br>
                         <form @submit.prevent="finalizarRegisto" id="regForm" class="form-signin" method="post"  action="{{ route('register-controller') }}" enctype="multipart/form-data">
                             @csrf
@@ -43,7 +43,7 @@ Session::put('login_ou_registo', "registo");
                             
                             <div class="tab" id="tab_1">
                                 <p class="d-flex justify-content-center">Registar-me com a minha conta Google</p>
-                                <div class="row d-flex justify-content-center">
+                                <div class="row w-100 d-flex justify-content-center">
                                     
                                     <div class="google_wrap">
                                         <a href="{{ route('auth/google') }}">
@@ -73,7 +73,7 @@ Session::put('login_ou_registo', "registo");
                                 <h4>Dados Principais</h4>
                                 <hr class="my-4">
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Tipo de conta a registar</label>
                                         <select @change="switchSelect($event)" ref="user_conta" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
@@ -84,7 +84,7 @@ Session::put('login_ou_registo', "registo");
                                     </div> 
                                 </div>
                                 
-                                <div class="row"> 
+                                <div class="row w-100"> 
                                     <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Email</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
@@ -92,7 +92,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-6 mb-4">
                                         <label for="primeiro_nome" class="form-label">Primeiro Nome</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
@@ -117,7 +117,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
                                             <label v-if="clientConsumer" for="telemovel" class="form-label">Telemóvel</label>
@@ -148,7 +148,7 @@ Session::put('login_ou_registo', "registo");
                                 <h4>Morada Principal</h4>
                                 <hr class="my-4">
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="form-outline mb-4">
                                         <label v-if="clientConsumer" for="address" class="form-label">Morada</label>
                                         <label v-else for="morada" class="form-label">Morada Fiscal</label>
@@ -161,7 +161,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-4 mb-4">
                                         <div class="form-outline">
                                             <label for="cidade" class="form-label">Cidade</label>
@@ -196,7 +196,7 @@ Session::put('login_ou_registo', "registo");
                             </div>
                         
                             <div class="tab" style="display:none;">
-                                <div class="row d-flex justify-content-center">
+                                <div class="row w-100 d-flex justify-content-center">
                                     <div class="form-outline col-sm-4 mb-4">
                                         <label for="password" class="form-label">Palavra-passe</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
@@ -238,33 +238,26 @@ Session::put('login_ou_registo', "registo");
                             </div>
 
                             <div ref="last_tab" class="tab">
+                                <br>
                                 <h3>Verique se todos os dados introduzidos estão corretos!</h3>
 
-                                
-                                <div class="row">
-                                    <div class="form-outline mb-4 text-center">
-                                        <br>
-                                        <img ref="redUploadImagem2" id="image_do_utilizador2" width="200" class="d-grid mx-auto" alt="">
-                                    
-                                    </div>
-                                </div>
                                 <h4>Dados Principais</h4>
                                 <hr class="my-4">
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="form-outline mb-4">
                                         <label for="nome2" class="form-label">Tipo de conta a registar</label>
                                         <input @change="switchSelect($event)" ref="user_conta2" class="form-control" aria-label="Tipo de Utilizador" disabled>
                                     </div> 
                                 </div>
                                 
-                                <div class="row"> 
+                                <div class="row w-100"> 
                                     <div class="form-outline mb-4">
                                         <label for="nome2" class="form-label">Email</label>
                                         <input ref="userInputEmail2" type="text" id="user_input_email" class="form-control" value="<?php echo session()->get('user_email')?>" disabled>
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-6 mb-4">
                                         <label for="primeiro_nome2" class="form-label">Primeiro Nome</label>
                                         <div class="inline-icon">
@@ -279,7 +272,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
                                             <label v-if="clientConsumer2" for="telemovel2" class="form-label">Telemóvel</label>
@@ -304,7 +297,7 @@ Session::put('login_ou_registo', "registo");
                                 <h4>Morada Principal</h4>
                                 <hr class="my-4">
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="form-outline mb-4">
                                         <label v-if="clientConsumer2" for="address2" class="form-label">Morada</label>
                                         <label v-else for="morada2" class="form-label">Morada Fiscal</label>
@@ -314,7 +307,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row w-100">
                                     <div class="col-md-4 mb-4">
                                         <div class="form-outline">
                                             <label for="cidade2" class="form-label">Cidade</label>
