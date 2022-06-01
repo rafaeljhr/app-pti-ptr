@@ -341,7 +341,7 @@ Session::put('login_ou_registo', "registo");
                                 <div class="gap-2 d-grid mx-auto col-4"> 
                                     <button ref="prevBtn" type="button" class="btn" id="prevBtn" @click="back_track = true; nextPrev(-1);">Anterior</button> 
                                     <button ref="nextBtn" :disabled="!form_valid" type="button" class="btn btn-color" id="nextBtn" @click="nextPrev(1)">Seguinte</button>
-                                    <button ref="btn_finalizar" type="submit" class="btn btn-color" id="btn-finalizar">Finalizar</button>
+                                    <button ref="btn_finalizar" type="button" class="btn btn-color" id="btn-finalizar" @click="submitFormRegister()">Finalizar</button>
                                 
                                 </div>
                             </div>

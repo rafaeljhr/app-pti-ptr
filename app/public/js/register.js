@@ -126,6 +126,7 @@ let app = Vue.createApp({
                 this.$refs.header.innerHTML = "PALAVRA-PASSE";
             } else if (this.current_tab == 3){
                 this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
+                document.getElementById('nextBtn').disabled = false;
             } else {
                 this.$refs.header.innerHTML = "CONFIRMAR OS DADOS";
                 this.$refs.userInputEmail2.value = this.$refs.userEmail.value;    
@@ -332,6 +333,11 @@ let app = Vue.createApp({
                 if (valid) { 
                     this.steps[this.current_tab].className +=" finish" ; } 
                     return valid;
+        }, 
+
+        submitFormRegister() {
+
+            document.getElementById("regForm").submit();
         }
         
         
