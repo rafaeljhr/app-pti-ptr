@@ -2,7 +2,7 @@
 
 {{-- Verifica se fez login para poder acessar esta página --}}
 
-@if (!(session()->has('user_email')) or !(session()->has('tipo_conta')))
+@if (!(session()->has('user')) or !(session()->has('user_nome')))
     @php
         header("Location: " . URL::to('/login'), true, 302);
         exit();

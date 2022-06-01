@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Utilizador;
+use App\Models\Encomenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,8 +21,12 @@ class ConsumidorController
      */
     public function index()
     {   
-        return Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
-        return DB::table('utilizador')->where('tipo_de_conta', $this->tipo_conta())->get();
+        $users = Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
+
+        return response()->json([
+            'Consumidores' => $users,
+            'status' => 200,
+        ]);
     }
 
     /**
@@ -50,8 +55,8 @@ class ConsumidorController
             'password' => bcrypt($request->password),
             'primeiro_nome' => $request->nome,
             'ultimo_nome' => $request->apelido,
-            'telemovel' => $request->telemovel,
-            'nif' => $request->nif,
+            'numero_telemovel' => $request->telemovel,
+            'numero_contribuinte' => $request->nif,
             'morada' => $request->morada,
             'codigo_postal' => $request->codigo_postal,
             'cidade' => $request->cidade,
@@ -64,8 +69,8 @@ class ConsumidorController
         return response()->json([
             'consumidor' => $consumidor,
             'token' => $token,
-            'status' => 404,
-        ]);
+            'status' => 201,
+        ], 201);
     }
 
     /**
@@ -90,8 +95,8 @@ class ConsumidorController
 
         return response()->json([
             'consumidor' => $user,
-            'status' => 201,
-        ]);
+            'status' => 200,
+        ], 200);
     }
 
     /**
@@ -103,12 +108,11 @@ class ConsumidorController
      */
     public function update(Request $request, $id)
     {
-
         $consumidor = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 
-        if ($user_id == $consumidor->id){
+        if ($user_id == $consumidor->id and $consumidor->tipo_de_conta == $this->tipo_conta()){
             $consumidor->update($request->all());
 
             return $consumidor;
@@ -131,12 +135,12 @@ class ConsumidorController
      */
     public function destroy($id)
     {   
-        $consumidor = Consumidor::findOrFail($id);
+        $consumidor = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 
-        if ($user_id == $consumidor->id){
-            return Consumidor::destroy($id);
+        if ($user_id == $consumidor->id and $consumidor->tipo_de_conta == $this->tipo_conta()){
+            return Utilizador::destroy($id);
         }
 
         $response = [
@@ -150,12 +154,16 @@ class ConsumidorController
 
     public function show_orders($id)
     {
-        $consumidor = Consumidor::findOrFail($id);
+        $consumidor = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 
-        if ($user_id == $consumidor->id){
-            return $consumidor->encomendas;
+        if ($user_id == $consumidor->id and $consumidor->tipo_de_conta == $this->tipo_conta()){
+
+            return response()->json([
+                'encomendas' => $consumidor->encomendas,
+                'status' => 200,
+            ], 200);
         }
 
         $response = [

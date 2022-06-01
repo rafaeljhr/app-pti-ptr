@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fornecedor;
+use Illuminate\Support\Facades\DB;
+use App\Models\Utilizador;
 use Illuminate\Http\Request;
 
 class FornecedorController extends Controller
 {
+
+    public function tipo_conta(){
+        return DB::table('tipo_de_conta')->where('nome', 'fornecedor')->value('id');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,12 @@ class FornecedorController extends Controller
      */
     public function index()
     {
-        return fornecedor::all();
+        $users = Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
+
+        return response()->json([
+            'Fornecedores' => $users,
+            'status' => 200,
+        ]);
     }
 
     /**
@@ -26,31 +37,39 @@ class FornecedorController extends Controller
     public function register(Request $request){
 
         $request->validate([
-            'morada'=>'required|string',
-            'telefone'=>'required|string',
-            'nif'=>'required|string',
-            'nome'=>'required|string',
             'email'=>'required|string',
             'password'=>'required|string',
+            'nome'=>'required|string',
+            'apelido'=>'required|string',
+            'telemovel'=>'required|string',
+            'nif'=>'required|string',
+            'codigo_postal'=>'required|string',
+            'morada'=>'required|string',
+            'cidade'=>'required|string',
+            'pais'=>'required|string',
         ]);
 
-        $fornecedor = fornecedor::create([
-            'nome' => $request->nome,
-            'telefone' => $request->telefone,
-            'nif' => $request->nif,
-            'morada' => $request->morada,
+        $user = Utilizador::create([
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'primeiro_nome' => $request->nome,
+            'ultimo_nome' => $request->apelido,
+            'numero_telemovel' => $request->telemovel,
+            'numero_contribuinte' => $request->nif,
+            'morada' => $request->morada,
+            'codigo_postal' => $request->codigo_postal,
+            'cidade' => $request->cidade,
+            'pais' => $request->pais,
+            'tipo_de_conta' => $this->tipo_conta(),
         ]);
 
-        $token = $fornecedor->createToken('primeirotoken',['fornecedor'])-> plainTextToken;
+        $token = $user->createToken('primeirotoken',['fornecedor'])-> plainTextToken;
 
-        $response = [
-            'fornecedor' => $fornecedor,
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response()->json([
+            'fornecedor' => $user,
+            'token' => $token,
+            'status' => 201,
+        ], 201);
     }
 
     /**
@@ -61,7 +80,22 @@ class FornecedorController extends Controller
      */
     public function show($id)
     {
-        return fornecedor::findOrFail($id);
+        $user = Utilizador::where('tipo_de_conta', $this->tipo_conta()) ->where('id', $id)->get();
+
+        if($user->isEmpty()){
+
+            return response()->json([
+                'fornecedor' => $user,
+                'erro' => 'Não Encontrado',
+                'detalhes' => "Fornecedor com o ID $id não foi encontrado",
+                'status' => 404,
+            ]);
+        }
+
+        return response()->json([
+            'fornecedor' => $user,
+            'status' => 200,
+        ], 200);
     }
 
     /**
@@ -73,14 +107,14 @@ class FornecedorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Utilizador::findOrFail($id);
+
         $user_id = auth()->user()->id;
 
-        if ($user_id == $id) {
-            $fornecedor = fornecedor::findOrFail($id);
+        if ($user_id == $user->id and $user->tipo_de_conta == $this->tipo_conta()){
+            $user->update($request->all());
 
-            $fornecedor->update($request->all());
-    
-            return $fornecedor;
+            return $user;
         }
 
         $response = [
@@ -100,10 +134,12 @@ class FornecedorController extends Controller
      */
     public function destroy($id)
     {
+        $user = Utilizador::findOrFail($id);
+
         $user_id = auth()->user()->id;
 
-        if ($user_id == $id) {
-            return fornecedor::destroy($id);
+        if ($user_id == $user->id and $user->tipo_de_conta == $this->tipo_conta()){
+            return Utilizador::destroy($id);
         }
 
         $response = [
@@ -123,7 +159,7 @@ class FornecedorController extends Controller
      */
     public function show_inventory($id)
     {
-        $fornecedor = fornecedor::findOrFail($id);
+        $fornecedor = Utilizador::findOrFail($id);
 
         return $fornecedor->produto;
     }
@@ -133,7 +169,7 @@ class FornecedorController extends Controller
         $user_id = auth()->user()->id;
 
         if ($user_id == $id) {
-            $fornecedor = fornecedor::findOrFail($id);
+            $fornecedor = Utilizador::findOrFail($id);
 
             return $fornecedor->armazem;
         }

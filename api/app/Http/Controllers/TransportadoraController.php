@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transportadora;
+use Illuminate\Support\Facades\DB;
+use App\Models\Utilizador;
 
 class TransportadoraController extends Controller
 {
+
+    public function tipo_conta(){
+        return DB::table('tipo_de_conta')->where('nome', 'transportadora')->value('id');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,12 @@ class TransportadoraController extends Controller
      */
     public function index()
     {
-        return Transportadora::all();
+        $users = Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
+
+        return response()->json([
+            'Transportadoras' => $users,
+            'status' => 200,
+        ]);
     }
 
     /**
@@ -26,31 +37,39 @@ class TransportadoraController extends Controller
     public function register(Request $request){
 
         $request->validate([
-            'morada'=>'required|string',
-            'telefone'=>'required|string',
-            'nif'=>'required|string',
-            'nome'=>'required|string',
             'email'=>'required|string',
             'password'=>'required|string',
+            'nome'=>'required|string',
+            'apelido'=>'required|string',
+            'telemovel'=>'required|string',
+            'nif'=>'required|string',
+            'codigo_postal'=>'required|string',
+            'morada'=>'required|string',
+            'cidade'=>'required|string',
+            'pais'=>'required|string',
         ]);
 
-        $transportadora = Transportadora::create([
-            'nome' => $request->nome,
-            'telefone' => $request->telefone,
-            'nif' => $request->nif,
-            'morada' => $request->morada,
+        $user = Utilizador::create([
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'primeiro_nome' => $request->nome,
+            'ultimo_nome' => $request->apelido,
+            'numero_telemovel' => $request->telemovel,
+            'numero_contribuinte' => $request->nif,
+            'morada' => $request->morada,
+            'codigo_postal' => $request->codigo_postal,
+            'cidade' => $request->cidade,
+            'pais' => $request->pais,
+            'tipo_de_conta' => $this->tipo_conta(),
         ]);
 
-        $token = $transportadora->createToken('primeirotoken',['transportadora'])-> plainTextToken;
+        $token = $user->createToken('primeirotoken',['transportadora'])-> plainTextToken;
 
-        $response = [
-            'transportadora' => $transportadora,
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        return response()->json([
+            'transportadora' => $user,
+            'token' => $token,
+            'status' => 201,
+        ], 201);
     }
 
     /**
@@ -61,7 +80,22 @@ class TransportadoraController extends Controller
      */
     public function show($id)
     {
-        return Transportadora::findOrFail($id);
+        $user = Utilizador::where('tipo_de_conta', $this->tipo_conta()) ->where('id', $id)->get();
+
+        if($user->isEmpty()){
+
+            return response()->json([
+                'transportadora' => $user,
+                'erro' => 'Não Encontrada',
+                'detalhes' => "Transportadora com o ID $id não foi encontrada",
+                'status' => 404,
+            ]);
+        }
+
+        return response()->json([
+            'transportadora' => $user,
+            'status' => 200,
+        ], 200);
     }
 
     /**
@@ -73,20 +107,19 @@ class TransportadoraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $transportadora = Transportadora::findOrFail($id);
+        $user = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 
-        if ($user_id == $transportadora->id){
+        if ($user_id == $user->id and $user->tipo_de_conta == $this->tipo_conta()){
+            $user->update($request->all());
 
-            $transportadora->update($request->all());
-            
-            return $transportadora;
+            return $user;
         }
-        
+
         $response = [
             'erro' => 'Não Autorizado',
-            'detalhes' => 'O token fornecido não possui permissões para atualizar o recurso',
+            'detalhes' => 'O token fornecido não possui permissões para aceder ao recurso',
             'status' => 403
         ];
 
@@ -101,18 +134,17 @@ class TransportadoraController extends Controller
      */
     public function destroy($id)
     {
-        $transportadora = Transportadora::findOrFail($id);
+        $user = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 
-        if ($user_id == $transportadora->id){
-            return Transportadora::destroy($id);
-        } 
+        if ($user_id == $user->id and $user->tipo_de_conta == $this->tipo_conta()){
+            return Utilizador::destroy($id);
+        }
 
-        
         $response = [
             'erro' => 'Não Autorizado',
-            'detalhes' => 'O token fornecido não possui permissões para apagar o recurso',
+            'detalhes' => 'O token fornecido não possui permissões para aceder ao recurso',
             'status' => 403
         ];
 
@@ -123,12 +155,12 @@ class TransportadoraController extends Controller
     {
         $user_id = auth()->user()->id;
 
-        if ($user_id == $transportadora->id){
-            $transportadora = Transportadora::findOrFail($id);
+        $transportadora = Utilizador::findOrFail($id);
+
+        if ($user_id == $transportadora->id and $transportadora->tipo_de_conta == $this->tipo_conta()){
 
             return $transportadora->base_transportadora;
         }
-
         
         $response = [
             'erro' => 'Não Autorizado',
