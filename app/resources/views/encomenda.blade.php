@@ -66,7 +66,15 @@
         </div>
     </div>
 
-    <h3 class="mt-5">ESTADO DA ENCOMENDA</h3>
+    <div class="row mt-5 w-100">
+        <div class="col">
+            <h2>ESTADO DA ENCOMENDA</h2>
+        </div>
+        <div class="col">
+            <a href="{{ URL::to('encomenda/json/'.session()->get('encomenda')['encomenda_id']) }}" class="download">Download JSON da encomenda</a>
+        </div>
+    </div>
+    
 
     <br>
 
@@ -196,7 +204,7 @@
 
     <br>
 
-    <h3 class="mt-5">ARTIGO ENCOMENDADO</h3>
+    <h2 class="mt-5">ARTIGO ENCOMENDADO</h2>
 
     <br>
 
@@ -258,7 +266,7 @@
 
     <br>
 
-    <h3 class="mt-5">FATURA</h3>
+    <h2 class="mt-5">FATURA</h2>
 
     <br>
 
@@ -332,7 +340,7 @@
 
     <br>
 
-    <h3 class="mt-5">MORADAS</h3>
+    <h2 class="mt-5">MORADAS</h2>
     <br>
 
         <div class="row w-100">

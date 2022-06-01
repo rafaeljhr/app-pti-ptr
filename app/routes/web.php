@@ -296,6 +296,8 @@ Route::post('/update-estado-encomenda', [EncomendaController::class, 'alterar_es
 
 Route::get('/encomenda/{id}/', [EncomendaController::class, "encomenda_infos"]);
 
+Route::get('/encomenda/json/{id}/', [EncomendaController::class, "JSONdownload"]);
+
 
 Route::get('/encomenda', function () {
     NotificationController::obter_notificacoes_do_utilizador();

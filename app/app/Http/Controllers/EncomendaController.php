@@ -13,6 +13,9 @@ use App\Models\Base;
 use App\Models\Utilizador;
 use App\Models\Notificacao;
 use DateTime;
+use Response;
+use Illuminate\Filesystem\Filesystem;
+use File;
 
 class EncomendaController extends Controller
 {
@@ -326,6 +329,73 @@ class EncomendaController extends Controller
 
 
     }
+
+
+
+    public static function JSONdownload($id)
+    {
+
+        $encomenda = Encomenda::where('id', $id)->first();
+        $produto = Produto::where('id', $encomenda->id_produto)->first();
+        $armazem = Armazem::where('id', $produto->id_armazem)->first();
+        $base = Base::where('id', $encomenda->id_base)->first();
+
+        $consumidor = Utilizador::where('id', $encomenda->id_consumidor)->first();
+        $encomenda_consumidor_nome = $consumidor->primeiro_nome . " " . $consumidor->ultimo_nome;
+        $transportadora = Utilizador::where('id', $encomenda->id_transportadora)->first();
+        $encomenda_transportadora_nome = $transportadora->primeiro_nome . " " . $transportadora->ultimo_nome;
+        $fornecedor = Utilizador::where('id', $encomenda->id_fornecedor)->first();
+        $encomenda_fornecedor_nome = $fornecedor->primeiro_nome . " " . $fornecedor->ultimo_nome;
+
+        $atributos_encomenda = [
+            "encomenda_id" => $encomenda->id,
+            "encomenda_preco" => $encomenda->preco,
+            "encomenda_preco_transporte" => $encomenda->preco_transporte,
+            "encomenda_morada_entrega" => $encomenda->morada,
+            "encomenda_codigo_postal_entrega" => $encomenda->codigo_postal,
+            "encomenda_cidade_entrega" => $encomenda->cidade,
+            "encomenda_pais_entrega" => $encomenda->pais,
+            "encomenda_quantidade" => $encomenda->quantidade,
+            "encomenda_data_realizada" => $encomenda->data_realizada,
+            "encomenda_data_finalizada" => $encomenda->data_finalizada,
+            "encomenda_consumidor_nome" => $encomenda_consumidor_nome,
+            "encomenda_consumidor_email" => $consumidor->email,
+            "encomenda_consumidor_numero_telemovel" => $consumidor->numero_telemovel,
+            "encomenda_consumidor_numero_contribuinte" => $consumidor->numero_contribuinte,
+            "encomenda_id_produto" => $encomenda->id_produto,
+            "encomenda_produto_nome" => $produto->nome,
+            "encomenda_produto_categoria" => $produto->nome_categoria,
+            "encomenda_produto_subcategoria" => $produto->nome_subcategoria,
+            "encomenda_produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+            "encomenda_armazem_nome" => $armazem->nome,
+            "encomenda_armazem_morada" => $armazem->morada,
+            "encomenda_armazem_codigo_postal" => $armazem->codigo_postal,
+            "encomenda_armazem_cidade" => $armazem->cidade,
+            "encomenda_armazem_pais" => $armazem->pais,
+            "encomenda_transportadora_nome" => $encomenda_transportadora_nome,
+            "encomenda_transportadora_email" => $transportadora->email,
+            "encomenda_transportadora_numero_telemovel" => $transportadora->numero_telemovel,
+            "encomenda_transportadora_numero_contribuinte" => $transportadora->numero_contribuinte,
+            "encomenda_fornecedor_nome" => $encomenda_fornecedor_nome,
+            "encomenda_fornecedor_email" => $fornecedor->email,
+            "encomenda_fornecedor_numero_telemovel" => $fornecedor->numero_telemovel,
+            "encomenda_fornecedor_numero_contribuinte" => $fornecedor->numero_contribuinte,
+            "encomenda_base_da_transportadora_nome" => $base->nome,
+            "encomenda_base_da_transportadora_morada" => $base->morada,
+            "encomenda_base_da_transportadora_codigo_postal" => $base->codigo_postal,
+            "encomenda_base_da_transportadora_cidade" => $base->cidade,
+            "encomenda_base_da_transportadora_pais" => $base->pais,
+            "encomenda_estado_encomenda" => $encomenda->estado_encomenda,
+        ];
+
+        $data = json_encode($atributos_encomenda, JSON_UNESCAPED_UNICODE);
+	  
+        $jsongFile = time() . '_encomenda_'.$id.'.json';
+        File::put(public_path('json/'.$jsongFile), $data);
+        
+        return Response::download(public_path('json/'.$jsongFile));
+    }
+
 
 
     public function cancelar_encomenda()
