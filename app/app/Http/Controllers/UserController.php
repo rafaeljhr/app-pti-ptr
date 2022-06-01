@@ -300,7 +300,7 @@ class UserController extends Controller
         // return $request->input();
         $request->validate([
             'email'=>'sometimes|required|string',
-            'primeiro_nome'=>'suser_emailmetimes|required|string',
+            'primeiro_nome'=>'sometimes|required|string',
             'ultimo_nome'=>'sometimes|required|string',
             'telemovel'=>'sometimes|required|integer',
             'numero_contribuinte'=>'sometimes|required|integer',
