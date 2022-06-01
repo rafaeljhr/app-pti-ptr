@@ -126,9 +126,10 @@ let app = Vue.createApp({
                 this.$refs.header.innerHTML = "PALAVRA-PASSE";
             } else if (this.current_tab == 3){
                 this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
+                this.form_valid = true;
             } else {
                 this.$refs.header.innerHTML = "CONFIRMAR OS DADOS";
-                this.$refs.userInputEmail2.value = this.$refs.userEmail.value;    
+                this.$refs.userInputEmail2.value = this.$refs.userInputEmail.value;    
                 this.$refs.user_conta2.value = this.$refs.user_conta.value;    
                 this.$refs.primeiro_nome2.value = this.$refs.primeiro_nome.value;    
                 this.$refs.ultimo_nome2.value = this.$refs.ultimo_nome.value;
@@ -304,8 +305,7 @@ let app = Vue.createApp({
             }
         },
 
-        finalizarRegisto(e) {
-            e.preventDefault();
+        finalizarRegisto() {
 
             this.$refs.loading.style.display = "block";
 
@@ -349,5 +349,4 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 function alterarImagemUser(event) {
     document.getElementById("image_do_utilizador").src=URL.createObjectURL(event.target.files[0]);
     document.getElementById('nextBtn').disabled = false;
-
 }

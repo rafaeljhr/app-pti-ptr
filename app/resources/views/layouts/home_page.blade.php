@@ -35,11 +35,11 @@
       <div class="carousel-item active">
         <svg class="bd-placeholder-img" id="back1" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"></svg>
 
-        <div class="container">
-          <div class="carousel-caption text-start">
-            <h1 class="text-dark">Uma nova loja para si</h1>
-            <p class="text-danger">Promoções para novos membros.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">LOJA</a></p>
+        <div class="container ">
+          <div class="carousel-caption mb-5">
+            <h1 class="text-dark">UMA NOVA LOJA PARA SI</h1>
+            <p class="text-dark">A ECOSMART DÁ-LHE A POSSIBILIDADE DE COMPRAR PRODUTOS A PENSAR NO IMPACTO AMBIENTAL!</p>
+            <p><a class="btn btn-lg btn-primary mb-5" href="{{ route('products') }}">LOJA</a></p>
           </div>
         </div>
       </div>
@@ -48,10 +48,10 @@
         <svg class="bd-placeholder-img" id="back2" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"></svg>
 
         <div class="container">
-          <div class="carousel-caption text-dark">
-            <h1>Another example headline.</h1>
-            <p>Some representative placeholder content for the second slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+          <div class="carousel-caption text-dark mb-5">
+            <h1>ESCOLHA OS LOOKS QUE MAIS GOSTA</h1>
+            <p>E NA HORA DE COMPRAR, NÃO SE ESQUEÇA DO AMBIENTE!</p>
+            <p><a class="btn btn-lg btn-primary mb-5" href="{{ route('products') }}">LOJA</a></p>
           </div>
         </div>
       </div>
@@ -59,10 +59,10 @@
         <svg class="bd-placeholder-img" id="back3" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"></svg>
 
         <div class="container">
-          <div class="carousel-caption text-end text-dark ">
-            <h1>One more for good measure.</h1>
-            <p>Some representative placeholder content for the third slide of this carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+          <div class="carousel-caption text-dark mb-5">
+            <h1> ENORME VARIEDADE DE PRODUTOS </h1>
+            <p>A ECOSMART TEM TUDO O QUE VOCÊ PRECISA!</p>
+            <p><a class="btn btn-lg btn-primary mb-5" href="{{ route('products') }}">LOJA</a></p>
           </div>
         </div>
       </div>
