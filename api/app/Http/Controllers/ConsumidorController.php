@@ -20,6 +20,7 @@ class ConsumidorController
      */
     public function index()
     {   
+        return Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
         return DB::table('utilizador')->where('tipo_de_conta', $this->tipo_conta())->get();
     }
 
