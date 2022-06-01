@@ -43,22 +43,29 @@ Session_start();
         @if(Session::get('loggedIn') == 'yes')
        
             <div class="dropdown" id="menu_perfil_utilizador">
-
-                <a href="#" style="text-decoration:none; margin-right: 15px;">
-                    <img class="icons_navbar" src="images/favoritos.png">
-                </a>
-
-                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
+                <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 20px;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
-
                 
+
+                <a href="#" style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="icons_navbar" src="images/favoritos.png">
+                </a>
+                <ul class="dropdown-menu" id='favoritosDiv'>
+
+                    <h4 style="margin-left: 10px;" class="text-center">
+                        <p>Favoritos</p>
+                    </h4>
+
+                    <hr class="dropdown-divider" style="width: 90%; margin: auto;">
+                    
+                </ul>
+
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="icons_navbar" src="images/notification.png">
                     <span id='numNotificacoes' class="badge badge-light"><?php echo sizeOf(session()->get('notificacoes')) ?></span>
                 </a>
-
                 <ul class="dropdown-menu" id='notificationsDiv'>
 
                     <h4 style="margin-left: 10px;" class="text-center">
