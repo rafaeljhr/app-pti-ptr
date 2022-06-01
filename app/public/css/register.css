@@ -1,7 +1,3 @@
-#separar_tipo_login {
-    margin-top: 30px;
-}
-
 .logo {
     max-width: 50%;
     height: auto;
@@ -63,7 +59,6 @@ input.invalid {
     display: none
 }
 
-
 .btn-color {
     background-color: #05591A!important;
     color: white!important;
@@ -86,7 +81,7 @@ button:hover {
 }
 .step {
     height: 15px;
-    width: 22%;
+    width: 19%;
     margin: 0 1px;
     background-color: #bbbbbb;
     border: none;
@@ -217,3 +212,40 @@ hr {
       display: none;
 }
 
+.or-container {
+    align-items: center;
+    display: flex;
+    margin: 25px 0;
+}
+
+.line-separator {
+    background-color: #ccc;
+    flex-grow: 5;
+    height: 1px;
+    margin-top: 30px;
+}
+
+.or-label {
+    flex-grow: 1;
+    margin: 0 15px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+#loading {
+    width: 7rem;
+    height: 7rem;
+    color: #05591A!important;
+    opacity: 1!important;
+    margin: auto;
+    margin-top: 20%;
+}
+
+.div_final {
+    z-index: 99999999;
+    background-color: #aaaaaa;
+    opacity: 0.5;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+}

@@ -52,7 +52,7 @@ let app = Vue.createApp({
         
             }
         
-            if (n == 3) {
+            if (n == 4) {
                 this.$refs.nextBtn.style.display = "none";
                 this.$refs.btn_finalizar.style.display = "block";
                 
@@ -124,16 +124,32 @@ let app = Vue.createApp({
         
             } else if (this.current_tab == 2) {
                 this.$refs.header.innerHTML = "PALAVRA-PASSE";
-            } else {
+            } else if (this.current_tab == 3){
                 this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
-            }
+            } else {
+                this.$refs.header.innerHTML = "CONFIRMAR OS DADOS";
+                this.$refs.userInputEmail2.value = this.$refs.userEmail.value;    
+                this.$refs.user_conta2.value = this.$refs.user_conta.value;    
+                this.$refs.primeiro_nome2.value = this.$refs.primeiro_nome.value;    
+                this.$refs.ultimo_nome2.value = this.$refs.ultimo_nome.value;
+                this.$refs.userTel2.value = this.$refs.userTel.value;
+                this.$refs.user_numero_contribuinte2.value = this.$refs.user_numero_contribuinte.value;
+                this.$refs.userMorada2.value = this.$refs.userMorada.value;
+                this.$refs.userCidade2.value = this.$refs.userCidade.value;
+                this.$refs.userCod_Postal_3.value = this.$refs.userCod_Postal_1.value;
+                this.$refs.userCod_Postal_4.value = this.$refs.userCod_Postal_2.value;
+                this.$refs.pais2.value = this.$refs.pais.value;
+                document.getElementById("image_do_utilizador2").src = this.$refs.redUploadImagem.value;
+                
+            } 
         
             this.showTab(this.current_tab);
         },
 
         switchSelect(event) {
-            if (event.target.value === "consumidor") {
+            if (event.target.value === "Consumidor") {
                 this.clientConsumer = true;
+                
             } else {
                 this.clientConsumer = false;
             }
@@ -292,11 +308,7 @@ let app = Vue.createApp({
         finalizarRegisto(e) {
             e.preventDefault();
 
-            this.$refs.text_message.style.display = "block";
-            this.$refs.next_previous.style.display = "none";
-            this.$refs.all_steps.style.display = "none";
-            this.$refs.tab_imagem.style.display = "none";
-            this.$refs.header.innerHTML = "";
+            this.$refs.loading.style.display = "block";
 
             document.getElementById('user_input_email').disabled = false;
 
@@ -305,6 +317,8 @@ let app = Vue.createApp({
                 document.getElementById("regForm").submit();
                 
             }, 3000)
+
+            
         },
 
         validateForm() {
@@ -335,4 +349,6 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 
 function alterarImagemUser(event) {
     document.getElementById("image_do_utilizador").src=URL.createObjectURL(event.target.files[0]);
+    document.getElementById('nextBtn').disabled = false;
+
 }

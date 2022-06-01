@@ -19,6 +19,11 @@ Session::put('login_ou_registo', "registo");
     
     <link rel="stylesheet" href="css/page_default.css">
 
+        <div class="div_final" ref="loading" style="display:none;">
+            <div class="spinner-border d-flex justify-content-center"  id="loading"  role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
         <section class="h-100">
 
             @if(session()->get('user_google_id')!=null) 
@@ -33,38 +38,45 @@ Session::put('login_ou_registo', "registo");
                         <form @submit.prevent="finalizarRegisto" id="regForm" class="form-signin" method="post"  action="{{ route('register-controller') }}" enctype="multipart/form-data">
                             @csrf
                             <h1 ref="header" id="registar">REGISTAR</h1> <br>
-                            <div ref="all_steps" id="all-steps"> <span class="step"></span> <span class="step"></span> <span class="step"></span>  <span class="step"></span> </div>
+                            
+                            <div ref="all_steps" id="all-steps"> <span class="step"></span> <span class="step"></span> <span class="step"></span>  <span class="step"></span> <span class="step"></span></div>
                             
                             <div class="tab" id="tab_1">
+                                <p class="d-flex justify-content-center">Registar-me com a minha conta Google</p>
                                 <div class="row d-flex justify-content-center">
-
+                                    
                                     <div class="google_wrap">
                                         <a href="{{ route('auth/google') }}">
                                             <button type="button" class="google_button">
-                                            <img id="icon_google" src="images/google.png"> <p class="google_msg">Registar com o Google</p>
+                                            <img id="icon_google" src="images/google.png"> <p class="google_msg">Registar com o Google </p>
                                             </button>
                                         </a>
+                                        
                                     </div>
-
-                                    <hr id="separar_tipo_login">
                                     
-                                    <div class="form-outline col-sm-7">
+                                    <div class="or-container"><div class="line-separator"></div> <div class="or-label">ou</div><div class="line-separator"></div></div>
+
+                                    
+                                    <p class="d-flex justify-content-center">Registar-me com o meu email</p>
+                                    <div class="form-outline col-sm-4">
                                         <i class="ms-1 text-danger" aria-hidden="true"></i>
+                                        <label class="form-label">Email</label>
                                         <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
                                     </div>
                                 </div>
+                                
                             </div>
                             
                             <div class="tab">
 
                                 <br><br>
-                                <h3>Dados Principais</h3>
+                                <h4>Dados Principais</h4>
                                 <hr class="my-4">
 
                                 <div class="row">
                                     <div class="form-outline mb-4">
                                         <label for="nome" class="form-label">Tipo de conta a registar</label>
-                                        <select @change="switchSelect($event)" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
+                                        <select @change="switchSelect($event)" ref="user_conta" class="form-select" name="selectedOption" aria-label="Tipo de Utilizador">
                                             <option selected value="consumidor">Consumidor</option>
                                             <option value="transportadora">Transportadora</option>
                                             <option value="fornecedor">Fornecedor</option>
@@ -133,7 +145,7 @@ Session::put('login_ou_registo', "registo");
                                 </div>
 
                                 <br>
-                                <h3>Morada Principal</h3>
+                                <h4>Morada Principal</h4>
                                 <hr class="my-4">
 
                                 <div class="row">
@@ -175,7 +187,7 @@ Session::put('login_ou_registo', "registo");
                                     </div>
                                     <div class="col-md-4 mb-4">
                                         <label for="pais" class="form-label">País</label>
-                                        <select class="form-control"  name="pais">
+                                        <select class="form-control" ref="pais" name="pais">
                                             <option selected>Portugal</option>
                                         </select>
                                     </div>
@@ -184,19 +196,21 @@ Session::put('login_ou_registo', "registo");
                             </div>
                         
                             <div class="tab" style="display:none;">
-                                <div class="row">
-                                    <div class="form-outline mb-4">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="form-outline col-sm-4 mb-4">
                                         <label for="password" class="form-label">Palavra-passe</label>
                                         <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
-                                            <input v-model="password" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" autocomplete="off">
+                                            <input v-model="password" class="form-control" @input="validPasswords()" type="password" id="password" name ="password" class="form-control mb-2 me-1" placeholder="Introduza a sua password" autocomplete="off">
                                             <i v-show="strong_password === 'no'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" 
                                             title="Pelo menos 8 caracteres<br>Pelo menos um número<br>Pelo menos uma maiúscula<br>Pelo menos um carácter especial"></i>
                                             <i v-show="strong_password === 'yes'" class="bi bi-check check-icon"></i>
                                         </div>
-                                        
+                                        <br>
+                                        <label class="form-label">Repita a sua palavra-passe</label>
+                                        <i class="bi-asterisk ms-1 asterisk-icon text-danger" aria-hidden="true"></i>
                                         <div class="inline-icon">
-                                            <input v-model="password2" @input="validPasswords()" type="password" id="password2" name ="password2" class="form-control me-1" placeholder="Confirme a password" autocomplete="off">
+                                            <input v-model="password2" class="form-control" @input="validPasswords()" type="password" id="password2" name ="password2" class="form-control me-1" placeholder="Confirme a password" autocomplete="off">
                                             <i v-show="diff_password === 'yes'" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="As duas passwords não coincidem!"></i>
                                             <i v-show="diff_password === 'no'" class="bi bi-check check-icon"></i>
                                         </div>
@@ -222,10 +236,113 @@ Session::put('login_ou_registo', "registo");
                                 @endif
 
                             </div>
-                            
-                            <div ref="text_message" class="thanks-message text-center" id="text-message"> <img src="https://i.imgur.com/O18mJ1K.png" width="100" class="mb-4">
-                                <h3>Conta criada com sucesso!</h3> <span>Pode agora desfrutar das funcionalidades todas do site!</span>
+
+                            <div ref="last_tab" class="tab">
+                                <h3>Verique se todos os dados introduzidos estão corretos!</h3>
+
+                                
+                                <div class="row">
+                                    <div class="form-outline mb-4 text-center">
+                                        <br>
+                                        <img ref="redUploadImagem2" id="image_do_utilizador2" width="200" class="d-grid mx-auto" alt="">
+                                    
+                                    </div>
+                                </div>
+                                <h4>Dados Principais</h4>
+                                <hr class="my-4">
+                                <div class="row">
+                                    <div class="form-outline mb-4">
+                                        <label for="nome2" class="form-label">Tipo de conta a registar</label>
+                                        <input @change="switchSelect($event)" ref="user_conta2" class="form-control" aria-label="Tipo de Utilizador" disabled>
+                                    </div> 
+                                </div>
+                                
+                                <div class="row"> 
+                                    <div class="form-outline mb-4">
+                                        <label for="nome2" class="form-label">Email</label>
+                                        <input ref="userInputEmail2" type="text" id="user_input_email" class="form-control" value="<?php echo session()->get('user_email')?>" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label for="primeiro_nome2" class="form-label">Primeiro Nome</label>
+                                        <div class="inline-icon">
+                                                <input @input="checkForm()" ref="primeiro_nome2" type="text" id="primeiro_nome" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="ultimo_nome2" class="form-label">Último Nome</label>
+                                        <div class="inline-icon">
+                                            <input @input="checkForm()" ref="ultimo_nome2" type="text"  class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <label v-if="clientConsumer2" for="telemovel2" class="form-label">Telemóvel</label>
+                                            <label v-else for="telemovel2" class="form-label">Telemóvel da Empresa</label>
+                                            <div class="inline-icon">
+                                                <input @input="checkForm()" ref="userTel2" type="text"  class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <label v-if="clientConsumer2" for="numero_contribuinte2" class="form-label">Número de contribuinte</label>
+                                            <label v-else for="numero_contribuinte2" class="form-label">Número de contribuinte da Empresa</label>
+                                            <div class="inline-icon">
+                                                <input @input="checkForm()" ref="user_numero_contribuinte2" type="text"  class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br>
+                                <h4>Morada Principal</h4>
+                                <hr class="my-4">
+
+                                <div class="row">
+                                    <div class="form-outline mb-4">
+                                        <label v-if="clientConsumer2" for="address2" class="form-label">Morada</label>
+                                        <label v-else for="morada2" class="form-label">Morada Fiscal</label>
+                                        <div class="inline-icon">
+                                            <input @input="checkForm()" ref="userMorada2" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-4">
+                                        <div class="form-outline">
+                                            <label for="cidade2" class="form-label">Cidade</label>
+                                            <div class="inline-icon">
+                                                <input @input="checkForm()" ref="userCidade2" type="text" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="form-outline">
+                                            <label for="codigo_postal2" class="form-label">Código Postal</label>
+                                            <div class="inline-icon">
+                                                <input @input="checkForm()" ref="userCod_Postal_3" type="text" class="form-control" disabled>
+                                                <input @input="checkForm()" ref="userCod_Postal_4" type="text" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <label for="pais2" class="form-label">País</label>
+                                        <input class="form-control" ref="pais2" disabled>
+                                    </div>
+                                </div>
+
                             </div>
+
+                            
+                            
+                            
 
                             <div ref="next_previous" style="overflow:auto;" id="nextprevious">
                                 <div class="gap-2 d-grid mx-auto col-4"> 
@@ -239,8 +356,10 @@ Session::put('login_ou_registo', "registo");
                     </div>
                 </div>
             </div>
-        </section>
 
+            
+        </section>
+        
     <script src="./js/register.js"></script>
     
 @endsection
