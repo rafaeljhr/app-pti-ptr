@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Consumidor;
-use App\Models\Transportadora;
-use App\Models\fornecedor;
+use App\Models\Utilizador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;  
 
 class WebController extends Controller
 {
@@ -23,15 +22,11 @@ class WebController extends Controller
         ]);
 
         $user_data = array(
-            'tipo_conta' => $request->get('tipo_conta'),
             'email' => $request->get('email'),
             'password' => $request->get('password')
         );
 
         if($this->checkLoginDetails($user_data)){
-
-            session()->put('user_email', $user_data['email']);
-            session()->put('tipo_conta', $user_data['tipo_conta']);
 
             return redirect('index');
         }else{
@@ -42,24 +37,16 @@ class WebController extends Controller
     
     function checkLoginDetails(array $user_data){
 
-        if ($user_data['tipo_conta'] == 'consumidor'){
-            $user = Consumidor::where('email', $user_data['email'])->first();
-        }elseif ($user_data['tipo_conta'] == 'transportadora'){
-            $user = Transportadora::where('email', $user_data['email'])->first();
-        }elseif ($user_data['tipo_conta'] == 'fornecedor'){
-            $user = fornecedor::where('email', $user_data['email'])->first();
-        }else{
-            return FALSE;
-        }
-
+        $user = Utilizador::where('email', $user_data['email'])->first();
+        
         if (!$user || !Hash::check($user_data['password'], $user->password)){
-    
+            
             return FALSE;
         }
 
-        session()->put('user_nome', $user['nome']);
         session()->put('user', $user);
-
+        session()->put('user_nome', $user->primeiro_nome);
+        
         return TRUE;
 
     }
@@ -83,16 +70,9 @@ class WebController extends Controller
 
     function GerenateToken(){
 
-        $tipo_conta = session()->get('tipo_conta');
-        $email = session()->get('user_email');
+        $user = session()->get('user');
 
-        if ($tipo_conta == 'consumidor'){
-            $user = Consumidor::where('email', $email)->first();
-        }elseif ($tipo_conta == 'transportadora'){
-            $user = Transportadora::where('email', $email)->first();
-        }elseif ($tipo_conta == 'fornecedor'){
-            $user = fornecedor::where('email', $email)->first();
-        }
+        $tipo_conta = DB::table('tipo_de_conta')->where('id', $user->tipo_de_conta)->value('nome');
 
         $user->tokens()->delete();
 

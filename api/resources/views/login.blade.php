@@ -30,15 +30,7 @@
             @endif
 
             <form method = "post" action="{{ url('checklogin') }}">
-
                 {{ csrf_field() }}
-
-                <label for="tipo_conta" class="form-label">Tipo de conta a autenticar</label>
-                <select class="form-select mb-3" name ="tipo_conta">
-                    <option selected value="consumidor">Consumidor</option>
-                    <option value="fornecedor">Fornecedor</option>
-                    <option value="transportadora">Transportadora</option>
-                </select>
 
                 <div class="form-group">
                     <label>Email</label>
