@@ -8,8 +8,29 @@
 
     
 
-    //dd(session()->all());
+//    dd(session()->all());
 
+
+    $co2 = 0;
+    $kwhCadeias = 0;
+    for($i = 0; $i < sizeOf(session()->get('cadeias_produto_atual'));  $i++){
+        $co2 = $co2 + session()->get('cadeias_produto_atual')[$i]['evento_co2'];
+        $kwhCadeias = $kwhCadeias + session()->get('cadeias_produto_atual')[$i]['evento_kwh'];
+        
+    }
+    
+    
+
+   
+  
+
+
+    $now = time(); // or your date as well
+    $your_date = strtotime(session()->get('produto_atual')['produto_data_insercao_no_site']);
+    $datediff = ceil(($now - $your_date)/86400);
+    $kwhStorage = session()->get('produto_atual')['produto_kwh_consumidos_por_dia'] * $datediff;
+    
+    
     ?>
 
     <link rel="stylesheet" href="css/bases_veiculos.css">
@@ -76,6 +97,27 @@
         <div class="form-div mx-auto my-1 px-3">
 
             <h1 class="h3 mx-auto d-flex justify-content-center font-weight-normal mt-5 mb-5">INFORMAÇÕES DO PRODUTO</h1>
+            
+            <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Kwh consumidos de cadeias: <?php echo  $kwhCadeias  ?></div>
+            
+                  </div>
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Co2 provenientes de cadeias: <?php echo  $co2  ?></div>
+            
+                  </div>
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Kwh consumidos de armazenamento: <?php echo $kwhStorage ?></div>
+
+                  </div>
+                </div>
+              </div>
+            
+            
+
+
 
             <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('produto_atual')['produto_path_imagem'] ?>" referrerpolicy="no-referrer">
             <div class="mt-2 w-25 mx-auto">
