@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 .logo {
     max-width: 50%;
     height: auto;

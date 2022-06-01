@@ -1,49 +1,57 @@
 .bd-placeholder-img {
-  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 body {
-  height: 100vh;
+  overflow: hidden;
 }
 
 #back1 {
-  background-image: url("../images/back1.png");
+  background-image: url("../images/back111.png");
 }
 
 #back2 {
-  background-image: url("../images/back22.png");
+  background-image: url("../images/back222.png");
 }
 
 #back3 {
-  background-image: url("../images/sweat.png");
+  background-image: url("../images/back3.png");
+}
+
+#myCarousel {
+  height: 100%;
+}
+
+.carousel {
+  height: 100vh;
+  width: 100%;
+  overflow:hidden;
 }
 
 .carousel-caption {
   z-index: 10;
 }
 .carousel-inner {
-  height: 100vh;
+  height: 100%;
 }
+
 .carousel-item {
-  height: 100vh;
-  overflow: hidden;
+  height: 94vh;
 }
 
 .carousel-item > img {
   position: absolute;
   top: 0;
   left: 0;
-  min-width: 100%;
+  min-width: 100vh;
   height: 50rem;
 }
 
 .btn-primary {
   background-color: #93BF7E!important;
   border: hidden!important;
-  width: 16%!important;
 }
 
 @media (min-width: 40em) {
