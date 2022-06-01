@@ -11,12 +11,7 @@ let app = Vue.createApp({
             cat:"",
             subcat:"",
 
-            
-
-
-
             editable: false,
-
             nome_valid: true,
             preco_valid: true,
             quantidade_valid: true,
@@ -94,17 +89,6 @@ let app = Vue.createApp({
                 this.nome_valid = false; 
             }
 
-
-            /* for (i = 0; i < document.getElementById("prod-edit").length; i++) {
-                if(i>=11 && i < document.getElementById("prod-edit").length - 4){
-                    if (this.$refs.document.getElementById("prod-edit")[i].name.value.length > 0  && 
-                    this.$refs.document.getElementById("prod-edit")[i].name.value == this.document.getElementById("prod-edit")[i].name ) {
-                        document.getElementById("guardar_alteracoes").disabled = false;
-                    } else {
-                        document.getElementById("guardar_alteracoes").disabled = true;
-                    }
-                }
-            } */
             
 
             if (this.$refs.preco.value > 0) {
@@ -176,14 +160,7 @@ let app = Vue.createApp({
         this.cat = this.$refs.cat.value;
         this.kwh = this.$refs.kwh.value;
         this.info = this.$refs.info.value;
-        /* for (i = 0; i < document.getElementById("prod-edit").length; i++) {
-            if(i>=11 && i < document.getElementById("prod-edit").length - 4){
-                console.log(document.getElementById("prod-edit")[i].name);
-                this.document.getElementById("prod-edit")[i].name = "";
-                this.document.getElementById("prod-edit")[i].name = this.$refs.document.getElementById("prod-edit").name.value;
-            }
-        } */
-        console.log();
+        
         
         
     }

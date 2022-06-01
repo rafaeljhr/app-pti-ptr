@@ -8,7 +8,7 @@
 
     
 
-//    dd(session()->all());
+    //dd(session()->all());
 
 
     $co2 = 0;
@@ -235,6 +235,7 @@
                     <div id="camposExtraNone">
                     <div class="row">
                         @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
+                        
                         <div class ="col">
                             <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
                             <div class="inline-icon">
