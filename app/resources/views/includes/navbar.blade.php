@@ -44,9 +44,15 @@ Session_start();
        
             <div class="dropdown" id="menu_perfil_utilizador">
 
+                <a href="#" style="text-decoration:none; margin-right: 15px;">
+                    <img class="icons_navbar" src="images/favoritos.png">
+                </a>
+
                 <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
+
+                
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="icons_navbar" src="images/notification.png">
