@@ -7,7 +7,7 @@
 
 //dd(session()->all());
 
-
+$filtroArmazem = -1;
 
 ?>
 
@@ -48,6 +48,9 @@
     <br>
     <h2>Parece que não possui nenhum armazém.</h2>
     <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
+    <a id="hideAnchor" href="{{ URL::to('storage')}}">
+    <button type='button' class="btn btn-success"  id="botao_criar">Criar Armazém</button>
+    </a>
   </div>
   
 
@@ -96,11 +99,11 @@
       <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
       <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelCompare()">CANCELAR ALTERAÇÕES</button>
         
-    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+    <div id="prodDisplay" class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
 
-      @include('includes.apresentacao_produtos')
+      @include('apresentacao_produtos')
          
-    </form>
+    
 
           
   </div>

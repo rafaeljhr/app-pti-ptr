@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+
 use App\Models\Produto;
 use App\Models\Armazem;
 use App\Models\Categoria;
@@ -111,10 +113,10 @@ class ProductsController extends Controller
             
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
-                $your_date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff =   $now - $your_date;
+                $date = strtotime($produto['produto_data_insercao_no_site']);
+                $datediff =   ceil(($now - $date)/86400);
 
-                if(round($datediff / (60 * 60 * 24)) < 7){
+                if($datediff < 7){
                     $noti ="O Produto ";
                     $noti .= $produto['produto_nome'];
                     $noti.=" tem apenas ".round($datediff / (60 * 60 * 24))." dias antes de expirar";
@@ -869,88 +871,8 @@ class ProductsController extends Controller
 
     public function filterProduct(Request $request){
 
-        if($request->get('id_armazem') == "reset"){
-            $htmlR =
-            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-            ;
-            for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
-
-                $htmlR=$htmlR."
-                <div class='col'>
-                    <div class='card'>
-                        
-                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
-                        <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
-                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' id='fixSize'  class='imagemProduto card-img-top'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
-                            
-                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
-                            <br>
-                            <button type='button' class='btn btn-outline-primary'>Editar</button>
-    
-                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                    
-                        </div>
-                    </div>
-                </div>"
-                ;
-    
-                if($i > 0 && $i % 3==0) {
-                    $htmlR=$htmlR.
-                    "</div>".
-                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                    ;
-                }
-            }
-            return $htmlR;
-
-
-        }else{
-            $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
-
-            if($produto!=null){
-    
-            $html =
-            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-            ;
-    
-            $i = 0;
-            foreach($produto as $produtos) {
-            $html=$html."
-                <div class='col'>
-                    <div class='card'>
-                        
-                        <h5 class='card-title'>".$produtos->nome."</h5>
-                        <h4 class='card-text text-danger'>".$produtos->preco." €</h4>
-                        <img src='".$produtos->path_imagem."' id='fixSize' class='imagemProduto card-img-top'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title'>".$produtos->informacoes_adicionais."</h5>
-                            
-                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".$produtos->id.")' class='btn btn-outline-primary'>Ver informações do produto</button>
-                            <br>
-                            <button type='button' class='btn btn-outline-primary'>Editar</button>
-    
-                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".$produtos->id.")' class='btn btn-outline-danger'>Apagar</button>
-                    
-                        </div>
-                    </div>
-                </div>"
-                ;
-    
-                if($i > 0 && $i % 3==0) {
-                    $html=$html.
-                    "</div>".
-                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                    ;
-                }
-                $i = $i + 1;
-            }
-            }
-            return  $html;
-        }
-       
-        
+        //View::share('testerView', 'Steve');
+        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')]);
         
     }
 
