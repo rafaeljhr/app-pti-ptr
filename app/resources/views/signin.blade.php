@@ -42,12 +42,6 @@ Session::put('login_ou_registo', "login");
                 <label for="password">Palavra-passe</label>
               </div>
 
-              <div class="checkbox mb-3">
-                <label>
-                  <input type="checkbox" value="remember-me"> Não sou um robô
-                </label>
-              </div>
-
               @if (Session::has('failed_login'))
                 <div class="alert alert-danger" role="alert">
                   <p>A sua conta nao existe ou a sua palavra-passe está incorreta. <br> Se desejar pode <a href="#">alterar a usa palavra-passe</a> ou <a href="{{ route('register-url')}}">criar uma conta nova</a>.</p>

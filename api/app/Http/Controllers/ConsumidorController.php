@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Consumidor;
+use App\Models\Utilizador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ConsumidorController
 {
+
+    public function tipo_conta(){
+        return DB::table('tipo_de_conta')->where('nome', 'consumidor')->value('id');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return Consumidor::all();
+    {   
+        return Utilizador::where('tipo_de_conta', $this->tipo_conta())->get();
+        return DB::table('utilizador')->where('tipo_de_conta', $this->tipo_conta())->get();
     }
 
     /**
@@ -26,31 +33,39 @@ class ConsumidorController
     public function consumidorRegister(Request $request){
 
         $request->validate([
-            'morada'=>'required|string',
-            'telefone'=>'required|string',
-            'nif'=>'required|string',
-            'nome'=>'required|string',
             'email'=>'required|string',
             'password'=>'required|string',
+            'nome'=>'required|string',
+            'apelido'=>'required|string',
+            'telemovel'=>'required|string',
+            'nif'=>'required|string',
+            'codigo_postal'=>'required|string',
+            'morada'=>'required|string',
+            'cidade'=>'required|string',
+            'pais'=>'required|string',
         ]);
 
-        $consumidor = Consumidor::create([
-            'nome' => $request->nome,
-            'telefone' => $request->telefone,
+        $consumidor = Utilizador::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'primeiro_nome' => $request->nome,
+            'ultimo_nome' => $request->apelido,
+            'telemovel' => $request->telemovel,
             'nif' => $request->nif,
             'morada' => $request->morada,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'codigo_postal' => $request->codigo_postal,
+            'cidade' => $request->cidade,
+            'pais' => $request->pais,
+            'tipo_de_conta' => $this->tipo_conta(),
         ]);
 
         $token = $consumidor->createToken('primeirotoken',['consumidor'])-> plainTextToken;
 
-        $response = [
+        return response()->json([
             'consumidor' => $consumidor,
-            'token' => $token
-        ];
-
-        return response($response, 201);
+            'token' => $token,
+            'status' => 404,
+        ]);
     }
 
     /**
@@ -61,7 +76,22 @@ class ConsumidorController
      */
     public function show($id)
     {
-        return Consumidor::findOrFail($id);
+        $user = Utilizador::where('tipo_de_conta', $this->tipo_conta()) ->where('id', $id)->get();
+
+        if($user->isEmpty()){
+
+            return response()->json([
+                'consumidor' => $user,
+                'erro' => 'Não Encontrado',
+                'detalhes' => "Consumidor com o ID $id não foi encontrado",
+                'status' => 404,
+            ]);
+        }
+
+        return response()->json([
+            'consumidor' => $user,
+            'status' => 201,
+        ]);
     }
 
     /**
@@ -74,7 +104,7 @@ class ConsumidorController
     public function update(Request $request, $id)
     {
 
-        $consumidor = Consumidor::findOrFail($id);
+        $consumidor = Utilizador::findOrFail($id);
 
         $user_id = auth()->user()->id;
 

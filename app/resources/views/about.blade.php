@@ -1,9 +1,13 @@
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/bootstrap.min2.css">
+
+
 
 @extends('layouts.page_default')
 
 @section('background')
     @parent
+
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5">
@@ -33,7 +37,7 @@
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Miguel Duarte</h3>
+                            <h3 class="mt-2">Miguel <br> Duarte</h3>
                         </div>
                     </div>
                 </div>
@@ -72,7 +76,7 @@
                             </div>
                         </div>
                         <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Pedro Quintão</h3>
+                            <h3 class="mt-2">Pedro <br> Quintão</h3>
                         </div>
                     </div>
                 </div>
@@ -88,6 +92,8 @@
             <img class="mx-auto mt-4" id="img-logo" src="images/logo5.png" alt="">
         </div>
     </div>
+
+    <script src="js/main.js"></script>
 
     
 @endsection
