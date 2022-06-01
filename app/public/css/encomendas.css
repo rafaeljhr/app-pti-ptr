@@ -39,3 +39,15 @@
 .campo_morada {
     margin-top: -10px !important;
 }
+
+
+.download {
+    float: right;
+    color: black;
+    font-size: 20px;
+    bottom: 0px !important;
+}
+
+.download:hover {
+    color: green;
+  }
