@@ -246,7 +246,7 @@ Session::put('login_ou_registo', "registo");
                                 <div class="row w-100">
                                     <div class="form-outline mb-4">
                                         <label for="nome2" class="form-label">Tipo de conta a registar</label>
-                                        <input @change="switchSelect($event)" ref="user_conta2" class="form-control" aria-label="Tipo de Utilizador" disabled>
+                                        <input ref="user_conta2" class="form-control" aria-label="Tipo de Utilizador" disabled>
                                     </div> 
                                 </div>
                                 
@@ -261,13 +261,13 @@ Session::put('login_ou_registo', "registo");
                                     <div class="col-md-6 mb-4">
                                         <label for="primeiro_nome2" class="form-label">Primeiro Nome</label>
                                         <div class="inline-icon">
-                                                <input @input="checkForm()" ref="primeiro_nome2" type="text" id="primeiro_nome" class="form-control" disabled>
+                                                <input ref="primeiro_nome2" type="text" id="primeiro_nome" class="form-control" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label for="ultimo_nome2" class="form-label">Último Nome</label>
                                         <div class="inline-icon">
-                                            <input @input="checkForm()" ref="ultimo_nome2" type="text"  class="form-control" disabled>
+                                            <input ref="ultimo_nome2" type="text"  class="form-control" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -278,7 +278,7 @@ Session::put('login_ou_registo', "registo");
                                             <label v-if="clientConsumer2" for="telemovel2" class="form-label">Telemóvel</label>
                                             <label v-else for="telemovel2" class="form-label">Telemóvel da Empresa</label>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userTel2" type="text"  class="form-control" disabled>
+                                                <input ref="userTel2" type="text"  class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -287,7 +287,7 @@ Session::put('login_ou_registo', "registo");
                                             <label v-if="clientConsumer2" for="numero_contribuinte2" class="form-label">Número de contribuinte</label>
                                             <label v-else for="numero_contribuinte2" class="form-label">Número de contribuinte da Empresa</label>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="user_numero_contribuinte2" type="text"  class="form-control" disabled>
+                                                <input ref="user_numero_contribuinte2" type="text"  class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -302,7 +302,7 @@ Session::put('login_ou_registo', "registo");
                                         <label v-if="clientConsumer2" for="address2" class="form-label">Morada</label>
                                         <label v-else for="morada2" class="form-label">Morada Fiscal</label>
                                         <div class="inline-icon">
-                                            <input @input="checkForm()" ref="userMorada2" type="text" class="form-control" disabled>
+                                            <input ref="userMorada2" type="text" class="form-control" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +312,7 @@ Session::put('login_ou_registo', "registo");
                                         <div class="form-outline">
                                             <label for="cidade2" class="form-label">Cidade</label>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userCidade2" type="text" class="form-control" disabled>
+                                                <input ref="userCidade2" type="text" class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -320,8 +320,8 @@ Session::put('login_ou_registo', "registo");
                                         <div class="form-outline">
                                             <label for="codigo_postal2" class="form-label">Código Postal</label>
                                             <div class="inline-icon">
-                                                <input @input="checkForm()" ref="userCod_Postal_3" type="text" class="form-control" disabled>
-                                                <input @input="checkForm()" ref="userCod_Postal_4" type="text" class="form-control" disabled>
+                                                <input ref="userCod_Postal_3" type="text" class="form-control" disabled>
+                                                <input ref="userCod_Postal_4" type="text" class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>
