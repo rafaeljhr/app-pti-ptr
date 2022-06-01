@@ -1,7 +1,7 @@
-@if($filtroArmazem != -1)  
+@if($filtroArmazem != -1  && $filtroCat  == "")  
 @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
 
-  @if($filtroArmazem == (int)session()->get('all_fornecedor_produtos')[$i]['produto_id_armazem'])  
+  @if($filtroArmazem == (int)session()->get('all_fornecedor_produtos')[$i]['produto_id_armazem'] || $filtroCat  ==  session()->get('all_fornecedor_produtos')[$i]['produto_nome_categoria'])  
         <?php
         $comCadeia = 0;
         $id = session()->get('all_fornecedor_produtos')[$i]['produto_id'];

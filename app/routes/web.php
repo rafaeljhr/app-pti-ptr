@@ -169,6 +169,7 @@ Route::post('/product-warning-controller', [ProductsController::class, "deleteWa
 Route::post('/product-add-cadeia-controller', [ProductsController::class, "cadeiaPage"])->name('product-cadeia-page');
 
 Route::post('/product-filter', [ProductsController::class, "filterProduct"])->name('product-filter');
+Route::post('/cat-filter', [ProductsController::class, "searchCat"])->name('search-cat-controller');
 Route::post('/product-categories', [ProductsController::class, "changeSub"])->name('product-changeSub');
 
 Route::post('/product-register-controller', [ProductsController::class, "productRegister"])->name('product-register-controller');

@@ -98,7 +98,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
-                "estado" => $produto_state,
+                "pronto_a_vender" => $produto_state,
             ];
 
 
@@ -109,36 +109,44 @@ class ProductsController extends Controller
 
         if(session()->get('notificado') == null){
             $now = time(); 
-
+            $dataVals = Produto_campos_extra::where('campo_extra', 'data_validade')->get();
             
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
-                $date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff =   ceil(($now - $date)/86400);
-
-                if($datediff < 7){
-                    $noti ="O Produto ";
-                    $noti .= $produto['produto_nome'];
-                    $noti.=" tem apenas ".round($datediff / (60 * 60 * 24))." dias antes de expirar";
-
-                    $notis = Notificacao::create([
-                        'id_utilizador'=>session()->get('user_id'),
-                        'mensagem'=>$noti,
-                        'estado'=>1,
-                    ]);
-                    
-                    $atributos_notificacao = [
-                        "notificacao_id" => $notis->id,
-                        "notificacao_id_utilizador" => $notis->id_utilizador,
-                        "notificacao_mensagem" => $notis->mensagem,
-                        "notificacao_estado" => $notis->estado,
-                    ];
+                foreach($dataVals as $dataVal){
+                    $id = $dataVal->id_produto;
+                    if($produto['produto_id'] == $id){
+                        $date = strtotime($dataVal->valor_campo);
+                        $datediff = ceil(($date - $now)/86400);
+                        if($datediff < 7 && $datediff > 0){
+                            $noti ="O Produto ";
+                            $noti .= $produto['produto_nome'];
+                            $noti.=" tem apenas ".$datediff." dias antes de expirar";
+        
+                            $notis = Notificacao::create([
+                                'id_utilizador'=>session()->get('user_id'),
+                                'mensagem'=>$noti,
+                                'estado'=>1,
+                            ]);
+                            
+                            $atributos_notificacao = [
+                                "notificacao_id" => $notis->id,
+                                "notificacao_id_utilizador" => $notis->id_utilizador,
+                                "notificacao_mensagem" => $notis->mensagem,
+                                "notificacao_estado" => $notis->estado,
+                            ];
+                        
+                            session()->push('notificacoes', $atributos_notificacao);
+                        }
+                    }
                 
-                    session()->push('notificacoes', $atributos_notificacao);
-                }
+
+                
+            }
+            
+
             }
             session()->put('notificado', 1);
-
         }
 
         if(!(session()->has('categories'))){
@@ -872,9 +880,19 @@ class ProductsController extends Controller
     public function filterProduct(Request $request){
 
         //View::share('testerView', 'Steve');
-        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')]);
+        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')],['filtroCat' => ""]);
         
     }
+
+    public function searchCat(Request $request){
+
+        //View::share('testerView', 'Steve');
+        return view("apresentacao_produtos",['filtroCat' => $request->get('categoria')], ['filtroArmazem' => -1]);
+        
+    }
+
+
+
 
     public function changeSub(Request $request){
 
