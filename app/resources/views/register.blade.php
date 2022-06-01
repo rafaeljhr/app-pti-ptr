@@ -19,6 +19,11 @@ Session::put('login_ou_registo', "registo");
     
     <link rel="stylesheet" href="css/page_default.css">
 
+        <div class="div_final" ref="loading" style="display:none;">
+            <div class="spinner-border d-flex justify-content-center"  id="loading"  role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
         <section class="h-100">
 
             @if(session()->get('user_google_id')!=null) 
@@ -39,7 +44,7 @@ Session::put('login_ou_registo', "registo");
                             <div class="tab" id="tab_1">
                                 <p class="d-flex justify-content-center">Registar-me com a minha conta Google</p>
                                 <div class="row d-flex justify-content-center">
-
+                                    
                                     <div class="google_wrap">
                                         <a href="{{ route('auth/google') }}">
                                             <button type="button" class="google_button">
@@ -232,7 +237,7 @@ Session::put('login_ou_registo', "registo");
 
                             </div>
 
-                            <div class="tab">
+                            <div ref="last_tab" class="tab">
                                 <h3>Verique se todos os dados introduzidos estão corretos!</h3>
 
                                 
@@ -334,10 +339,10 @@ Session::put('login_ou_registo', "registo");
                                 </div>
 
                             </div>
+
                             
-                            <div ref="text_message" class="thanks-message text-center" id="text-message"> <img src="https://i.imgur.com/O18mJ1K.png" width="100" class="mb-4">
-                                <h3>Conta criada com sucesso!</h3> <span>Pode agora desfrutar das funcionalidades todas do site!</span>
-                            </div>
+                            
+                            
 
                             <div ref="next_previous" style="overflow:auto;" id="nextprevious">
                                 <div class="gap-2 d-grid mx-auto col-4"> 
@@ -351,8 +356,10 @@ Session::put('login_ou_registo', "registo");
                     </div>
                 </div>
             </div>
-        </section>
 
+            
+        </section>
+        
     <script src="./js/register.js"></script>
     
 @endsection

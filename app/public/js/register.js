@@ -308,11 +308,7 @@ let app = Vue.createApp({
         finalizarRegisto(e) {
             e.preventDefault();
 
-            this.$refs.text_message.style.display = "block";
-            this.$refs.next_previous.style.display = "none";
-            this.$refs.all_steps.style.display = "none";
-            this.$refs.tab_imagem.style.display = "none";
-            this.$refs.header.innerHTML = "";
+            this.$refs.loading.style.display = "block";
 
             document.getElementById('user_input_email').disabled = false;
 
@@ -321,6 +317,8 @@ let app = Vue.createApp({
                 document.getElementById("regForm").submit();
                 
             }, 3000)
+
+            
         },
 
         validateForm() {
