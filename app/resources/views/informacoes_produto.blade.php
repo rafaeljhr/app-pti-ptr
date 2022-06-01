@@ -127,7 +127,7 @@
             <br>
 
             <div class="px-4">
-                <form method="post" action="{{ route('product-edit-controller') }}">
+                <form id="prod-edit" method="post" action="{{ route('product-edit-controller') }}">
                     @csrf
 
                     <div class="row">
@@ -180,12 +180,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col">
-                            <label for="pais" class="mb-2">País</label>
-                            <select class="form-control" ref="pais" name="pais" :disabled="!editable">
-                                <option selected>Portugal</option>
-                            </select>
-                        </div> --}}
+                        
 
                     </div>
 
@@ -243,7 +238,8 @@
                         <div class ="col">
                             <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
                             <div class="inline-icon">
-                                <input type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
+                                <input oninput="checkCampoExtra()" type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
+                                
                             </div>
 
                         </div>
@@ -293,7 +289,6 @@
                     {{-- ////////////////////////////////////////////////////////// --}}
                     {{-- ////////////////////////////////////////////////////////// --}}
                     {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}{{-- ////////////////////////////////////////////////////////// --}}
                     {{-- ////////////////////////////////////////////////////////// --}}
                     {{-- ////////////////////////////////////////////////////////// --}}
                     {{-- ////////////////////////////////////////////////////////// --}}

@@ -102,7 +102,7 @@ let app = Vue.createApp({
             xhr1.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
                     document.getElementById("prodDisplay").innerHTML = xhr1.responseText;
-                    console.log('mudou');
+                    
 
 
                 } else if (this.status >= 400) {

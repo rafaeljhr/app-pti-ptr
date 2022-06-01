@@ -28,6 +28,18 @@ CREATE TABLE utilizador (
 );
 
 
+CREATE TABLE fornecedor_historico_poluicao (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_fornecedor INTEGER NOT NULL,
+  poluicao_co2_produzida DECIMAL(10,2) DEFAULT NULL,
+  kwh_consumidos DECIMAL(10,2) DEFAULT NULL,
+        
+  CONSTRAINT fk_fornecedor_historico_poluicao_id_fornecedor
+    FOREIGN KEY (id_fornecedor)
+    REFERENCES utilizador(id)
+);
+
+
 CREATE TABLE notificacoes (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_utilizador INTEGER NOT NULL,
