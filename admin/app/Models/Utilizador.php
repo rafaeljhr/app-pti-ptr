@@ -8,6 +8,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Utilizador extends Model
 {
+    public $timestamps = false;
+    
 	protected $table = 'utilizador';
 
     protected $fillable = [
