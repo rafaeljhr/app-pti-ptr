@@ -305,8 +305,7 @@ let app = Vue.createApp({
             }
         },
 
-        finalizarRegisto(e) {
-            e.preventDefault();
+        finalizarRegisto() {
 
             this.$refs.loading.style.display = "block";
 
@@ -333,11 +332,6 @@ let app = Vue.createApp({
                 if (valid) { 
                     this.steps[this.current_tab].className +=" finish" ; } 
                     return valid;
-        }, 
-
-        submitFormRegister() {
-
-            document.getElementById("regForm").submit();
         }
         
         
@@ -355,5 +349,4 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 function alterarImagemUser(event) {
     document.getElementById("image_do_utilizador").src=URL.createObjectURL(event.target.files[0]);
     document.getElementById('nextBtn').disabled = false;
-
 }
