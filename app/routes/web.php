@@ -47,6 +47,10 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout-url'); 
 
+Route::get('/api-documentacao', function () {
+    return view('api_documentacao');
+})->name('api-documentacao'); 
+
 Route::get('/storage', function () {
     NotificationController::obter_notificacoes_do_utilizador();
 
