@@ -1010,6 +1010,118 @@ class ProductsController extends Controller
         }   
     }
 
+    public function compareProds(Request $request){
+        //dd($request->has(77));
+        $prods = array();
+            
+        for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++){
+            if($request->has(session()->get('all_fornecedor_produtos')[$i]['produto_id']) == true){
+                array_push($prods, session()->get('all_fornecedor_produtos')[$i]['produto_id']);
+            }
+        }
+        $produto = Produto::where('id', $prods[0])->first();
+        if($produto->pronto_a_vender != 0){
+            $eventos = Evento::where('id_produto', $prods[0])->get();
+            $co2 = 0;
+            $kwh = 0;
+            foreach($eventos as $evento){
+                $co2 = $co2 + $evento->poluicao_co2_produzida;
+                $kwh = $kwh + $evento->kwh_consumidos;
+                
+            }
+            $sum  = $co2 +  $kwh;
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => $co2,
+                'poluicao_evento_kwh'  => $kwh,
+            ];
+        }else{
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => 0,
+                'poluicao_evento_kwh'  => 0,
+            ];
+        }
+        session()->put('produto_comparar1', $atributos_produto);
+
+
+        
+
+        $produto = Produto::where('id', $prods[1])->first();
+        if($produto->pronto_a_vender != 0){
+            $evento = Evento::where('id_produto', $prods[1])->get();
+            $co2 = 0;
+            $kwh = 0;
+            foreach($eventos as $evento){
+                $co2  =  $co2 + $evento->poluicao_co2_produzida;
+                $kwh  =  $kwh + $evento->kwh_consumidos;
+                
+            }
+            
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => $co2,
+                'poluicao_evento_kwh'  => $kwh,
+            ];
+        }else{
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => 0,
+                'poluicao_evento_kwh'  => 0,
+            ];
+        }
+        session()->put('produto_comparar2', $atributos_produto);
+        return redirect('/comparar-prods');
+    }
+
     
     public function productAddCarrinho(Request $request) {
         

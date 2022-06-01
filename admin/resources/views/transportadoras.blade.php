@@ -25,8 +25,8 @@
     @include('navbar')
 
     <div class="container content">
-        <h1>Consumidores</h1>
-        <a class="btn btn-success" href="javascript:void(0)" id="botaoCriar">Criar Consumidor</a>
+        <h1>Transportadoras</h1>
+        <a class="btn btn-success" href="javascript:void(0)" id="botaoCriar">Criar Transportadora</a>
         <table class="table table-bordered data-table tabela">
             <thead>
                 <tr>
@@ -53,8 +53,8 @@
                     <h4 class="modal-title" id="modalHeading"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="consumidorForm" name="consumidorForm" class="form-horizontal">
-                        <input type="hidden" name="consumidor_id" id="consumidor_id" />
+                    <form id="transportadoraForm" name="transportadoraForm" class="form-horizontal">
+                        <input type="hidden" name="transportadora_id" id="transportadora_id" />
                         
                         <div class="form-group">
                             Email: <br>
@@ -114,7 +114,7 @@
             var table = $(".data-table").DataTable({
                 processing:true,
                 serverSide:true,
-                ajax:"{{route('consumidores.index')}}",
+                ajax:"{{route('transportadoras.index')}}",
                 columns:[
                     {data: 'id', name:'ID'},
                     {data: 'email', name:'Email'},
@@ -130,9 +130,9 @@
 
             $("#botaoCriar").click(function(){
                 $("#saveBtn").html("Criar");
-                $("#consumidor_id").val("");
-                $("#modalHeading").html("Criar Consumidor");
-                $("#consumidorForm").trigger("reset");
+                $("#transportadora_id").val("");
+                $("#modalHeading").html("Criar Transportadora");
+                $("#transportadoraForm").trigger("reset");
                 $('#ajaxModel').modal("show");
             });
 
@@ -140,12 +140,12 @@
                 e.preventDefault();
 
                 $.ajax({
-                    data:$("#consumidorForm").serialize(),
-                    url:"{{route('consumidores.store')}}",
+                    data:$("#transportadoraForm").serialize(),
+                    url:"{{route('transportadoras.store')}}",
                     type:"POST",
                     dataType:"json",
                     success:function(data){
-                        $("#consumidorForm").trigger("reset");
+                        $("#transportadoraForm").trigger("reset");
                         $('#ajaxModel').modal("hide");
                         table.draw();
                     },
@@ -155,12 +155,12 @@
                 });
             });
 
-            $('body').on('click', '.deleteConsumidor', function(){
-                var consumidor_id = $(this).data("id");
-                if (confirm("Tem a certeza que deseja apagar este consumidor?")){
+            $('body').on('click', '.deleteTransportadora', function(){
+                var transportadora_id = $(this).data("id");
+                if (confirm("Tem a certeza que deseja apagar este transportadora?")){
                     $.ajax({
                         type:"DELETE",
-                        url:"{{route('consumidores.index')}}" + '/' + consumidor_id,
+                        url:"{{route('transportadoras.index')}}" + '/' + transportadora_id,
                         success: function(data){
                             table.draw();
                         },
@@ -171,13 +171,13 @@
                 }
             });
 
-            $('body').on('click', '.editConsumidor', function(){
-                var consumidor_id = $(this).data("id");
+            $('body').on('click', '.editTransportadora', function(){
+                var transportadora_id = $(this).data("id");
                 $("#saveBtn").html("Guardar");
-                $.get("{{route('consumidores.index')}}" + "/" + consumidor_id + "/edit", function(data){
-                    $("#modalHeading").html("Editar Consumidor");
+                $.get("{{route('transportadoras.index')}}" + "/" + transportadora_id + "/edit", function(data){
+                    $("#modalHeading").html("Editar Transportadora");
                     $("#ajaxModel").modal('show');
-                    $("#consumidor_id").val(data.id);
+                    $("#transportadora_id").val(data.id);
                     $("#email").val(data.email);
                     $("#primeiro_nome").val(data.primeiro_nome);
                     $("#ultimo_nome").val(data.ultimo_nome);

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-<script src="{{asset('./js/navbar.js')}}"></script>
+
 @php
 $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 @endphp
@@ -36,7 +36,7 @@ $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
       <li class="list">
     
     @endif
-      <a href="#">
+    <a href="{{route('fornecedores.index')}}">
         <span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span>
         <span class="title">Fornecedor</span>
       </a>
@@ -48,7 +48,7 @@ $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
       <li class="list">
     
     @endif
-      <a href="#">
+    <a href="{{route('transportadoras.index')}}">
         <span class="icon"><ion-icon name="car-outline"></ion-icon></span>
         <span class="title">Transportadora</span>
       </a>

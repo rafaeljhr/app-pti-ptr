@@ -54,33 +54,37 @@
                     <br>
 
                     <div class="row">
-                        <div class="col">
-                            <h6>Data e Hora</h6>
+                        <div class="col-3">
+                            <h6>Data e Hora da encomenda</h6>
+                        </div>
+
+                        <div class="col-3">
+                            <h6>Data e Hora da entrega</h6>
                         </div>
 
                         @if(session()->get('userType') == "consumidor")
-                        <div class="col">
+                        <div class="col-3">
                             <h6>Fornecedor</h6>
                         </div>
 
-                        <div class="col">
+                        <div class="col-3">
                             <h6>Transportadora</h6>
                         </div>
                         @endif
 
                         @if(session()->get('userType') != "consumidor")
-                        <div class="col">
+                        <div class="col-3">
                             <h6>Cliente</h6>
                         </div>
 
                             @if(session()->get('userType') == "fornecedor")
-                            <div class="col">
+                            <div class="col-3">
                                 <h6>Transportadora</h6>
                             </div>
                             @endif
 
                             @if(session()->get('userType') == "transportadora")
-                            <div class="col">
+                            <div class="col-3">
                                 <h6>Fornecedor</h6>
                             </div>
                             @endif
@@ -90,33 +94,41 @@
                     </div>
 
                     <div class="row">
-                        <div class="col">
+                        <div class="col-3">
                             <p><?php echo session()->get('all_encomendas')[$i]['encomenda_data_realizada']?></p>
+                        </div>
+                        
+                        <div class="col-3">
+                            @if(session()->get('all_encomendas')[$i]['encomenda_data_finalizada'] != null)
+                            <p><?php echo session()->get('all_encomendas')[$i]['encomenda_data_finalizada']?></p>
+                            @else
+                            <p>Por entregar</p>
+                            @endif
                         </div>
 
                         @if(session()->get('userType') == "consumidor")
-                        <div class="col">
+                        <div class="col-3">
                             <p><?php echo session()->get('all_encomendas')[$i]['encomenda_fornecedor_nome']?></p>
                         </div>
 
-                        <div class="col">
+                        <div class="col-3">
                             <p><?php echo session()->get('all_encomendas')[$i]['encomenda_transportadora_nome']?></p>
                         </div>
                         @endif
 
                         @if(session()->get('userType') != "consumidor")
-                        <div class="col">
+                        <div class="col-3">
                             <p><?php echo session()->get('all_encomendas')[$i]['encomenda_consumidor_nome']?></p>
                         </div>
 
                             @if(session()->get('userType') == "fornecedor")
-                            <div class="col">
+                            <div class="col-3">
                                 <p><?php echo session()->get('all_encomendas')[$i]['encomenda_transportadora_nome']?></p>
                             </div>
                             @endif
 
                             @if(session()->get('userType') == "transportadora")
-                            <div class="col">
+                            <div class="col-3">
                                 <p><?php echo session()->get('all_encomendas')[$i]['encomenda_fornecedor_nome']?></p>
                             </div>
                             @endif
@@ -130,7 +142,7 @@
                     <h5 class="text-danger"><?php echo session()->get('all_encomendas')[$i]['encomenda_preco'] ?>€</h5>
                 </div>
 
-                <div class="col mx-auto my-auto">
+                <div class="col-3 mx-auto my-auto">
                     <a href="{{ URL::to('encomenda/'.session()->get('all_encomendas')[$i]['encomenda_id']) }}">
                         <h5 class="detalhes">VER DETALHES</h5>
                     </a>

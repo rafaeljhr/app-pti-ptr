@@ -15,14 +15,17 @@ use App\Http\Controllers\EncomendaController;
 // ##############
 
 Route::get('/', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('home');
 })->name('home-url');
 
 Route::get('/about', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('about');
 })->name('about-url');
 
 Route::get('/contact', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('contact');
 })->name('contact-url');
 
@@ -35,14 +38,17 @@ Route::get('/register', function () {
 })->name('register-url');
 
 Route::get('/profile', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('profile');
 })->name('profile-url'); 
 
 Route::get('/checkout', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('checkout');
 })->name('checkout-url'); 
 
 Route::get('/storage', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
 
     if(session()->has('armazens')){
 
@@ -57,6 +63,7 @@ Route::get('/storage', function () {
 })->name('storage');
 
 Route::get('/inventory', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
 
     if(session()->has('all_fornecedor_produtos')){
 
@@ -74,7 +81,7 @@ Route::get('/inventory', function () {
 
 
 Route::get('/cadeia', function () {
-
+    NotificationController::obter_notificacoes_do_utilizador();
     
     return view('cadeia');
 
@@ -88,6 +95,8 @@ Route::get('/products', [ProductsController::class, "allProducts"])->name('produ
 
 
 Route::get('/bases', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
+
     if(session()->has('bases')){
 
         return view('bases');
@@ -101,6 +110,8 @@ Route::get('/bases', function () {
 })->name('bases');
 
 Route::get('/veiculos', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
+
     if(session()->has('veiculos')){
 
         return view('veiculos');
@@ -132,15 +143,22 @@ Route::get('/produtosEdit/{id}/', [ProductsController::class, "productInfo"]);
 
 
 Route::get('/products-edit', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_produto');
 })->name('info_produto');
 
 Route::get('/campos-extra-edit', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('alterar_cat');
 })->name('campos_extra');
 
+Route::get('/comparar-prods', function () {
+    return view('compare_prods');
+})->name('comparar_prods');
+
 Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
 
+Route::post('/compare-products', [ProductsController::class, 'compareProds'])->name('compare-products');
 
 
 
@@ -184,6 +202,7 @@ Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDe
 Route::get('/storage/{id}/', [ArmazensController::class, "storageInfo"]);
 
 Route::get('/storage-edit', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_armazem');
 })->name('info_armazem');
 
@@ -199,6 +218,7 @@ Route::post('/update-imagem-base-controller', [BasesController::class, 'changeIm
 Route::get('/base/{id}/', [BasesController::class, "baseInformacoes"]);
 
 Route::get('/base', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_base');
 })->name('base');
 
@@ -215,6 +235,7 @@ Route::post('/update-imagem-veiculo-controller', [VeiculosController::class, 'ch
 Route::get('/veiculo/{id}/', [VeiculosController::class, "veiculoInformacoes"]);
 
 Route::get('/veiculo', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_veiculo');
 })->name('veiculo');
 
@@ -262,9 +283,10 @@ Route::post('/delete-notification', [NotificationController::class, 'hideNotific
 // ##############################################
 
 Route::get('/encomendas', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
     EncomendaController::atualizar_encomendas_que_ja_nao_podem_ser_canceladas();
     EncomendaController::encomendasDoUtilizador();
-    return view('encomendas_consumidor');
+    return view('todas_encomendas');
 })->name('encomendas');
 
 Route::post('/cancelar-encomenda', [EncomendaController::class, 'cancelar_encomenda'])->name('cancelar-encomenda');
@@ -275,5 +297,6 @@ Route::get('/encomenda/{id}/', [EncomendaController::class, "encomenda_infos"]);
 
 
 Route::get('/encomenda', function () {
-    return view('informacoes_encomenda');
+    NotificationController::obter_notificacoes_do_utilizador();
+    return view('encomenda');
 })->name('encomenda');

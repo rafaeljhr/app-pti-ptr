@@ -161,7 +161,7 @@ let app = Vue.createApp({
         this.cat = this.$refs.cat.value;
         this.kwh = this.$refs.kwh.value;
         this.info = this.$refs.info.value;
-        console.log(this.cat);
+        
         
     }
 })
