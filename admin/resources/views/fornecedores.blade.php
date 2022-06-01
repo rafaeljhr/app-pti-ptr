@@ -25,8 +25,8 @@
     @include('navbar')
 
     <div class="container content">
-        <h1>Consumidores</h1>
-        <a class="btn btn-success" href="javascript:void(0)" id="botaoCriar">Criar Consumidor</a>
+        <h1>Fornecedores</h1>
+        <a class="btn btn-success" href="javascript:void(0)" id="botaoCriar">Criar Fornecedor</a>
         <table class="table table-bordered data-table tabela">
             <thead>
                 <tr>
@@ -53,8 +53,8 @@
                     <h4 class="modal-title" id="modalHeading"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="consumidorForm" name="consumidorForm" class="form-horizontal">
-                        <input type="hidden" name="consumidor_id" id="consumidor_id" />
+                    <form id="fornecedorForm" name="fornecedorForm" class="form-horizontal">
+                        <input type="hidden" name="fornecedor_id" id="fornecedor_id" />
                         
                         <div class="form-group">
                             Email: <br>
@@ -114,7 +114,7 @@
             var table = $(".data-table").DataTable({
                 processing:true,
                 serverSide:true,
-                ajax:"{{route('consumidores.index')}}",
+                ajax:"{{route('fornecedores.index')}}",
                 columns:[
                     {data: 'id', name:'ID'},
                     {data: 'email', name:'Email'},
@@ -130,9 +130,9 @@
 
             $("#botaoCriar").click(function(){
                 $("#saveBtn").html("Criar");
-                $("#consumidor_id").val("");
-                $("#modalHeading").html("Criar Consumidor");
-                $("#consumidorForm").trigger("reset");
+                $("#fornecedor_id").val("");
+                $("#modalHeading").html("Criar Fornecedor");
+                $("#fornecedorForm").trigger("reset");
                 $('#ajaxModel').modal("show");
             });
 
@@ -140,12 +140,12 @@
                 e.preventDefault();
 
                 $.ajax({
-                    data:$("#consumidorForm").serialize(),
-                    url:"{{route('consumidores.store')}}",
+                    data:$("#fornecedorForm").serialize(),
+                    url:"{{route('fornecedores.store')}}",
                     type:"POST",
                     dataType:"json",
                     success:function(data){
-                        $("#consumidorForm").trigger("reset");
+                        $("#fornecedorForm").trigger("reset");
                         $('#ajaxModel').modal("hide");
                         table.draw();
                     },
@@ -155,12 +155,12 @@
                 });
             });
 
-            $('body').on('click', '.deleteConsumidor', function(){
-                var consumidor_id = $(this).data("id");
-                if (confirm("Tem a certeza que deseja apagar este consumidor?")){
+            $('body').on('click', '.deleteFornecedor', function(){
+                var fornecedor_id = $(this).data("id");
+                if (confirm("Tem a certeza que deseja apagar este fornecedor?")){
                     $.ajax({
                         type:"DELETE",
-                        url:"{{route('consumidores.index')}}" + '/' + consumidor_id,
+                        url:"{{route('fornecedores.index')}}" + '/' + fornecedor_id,
                         success: function(data){
                             table.draw();
                         },
@@ -171,13 +171,13 @@
                 }
             });
 
-            $('body').on('click', '.editConsumidor', function(){
-                var consumidor_id = $(this).data("id");
+            $('body').on('click', '.editFornecedor', function(){
+                var fornecedor_id = $(this).data("id");
                 $("#saveBtn").html("Guardar");
-                $.get("{{route('consumidores.index')}}" + "/" + consumidor_id + "/edit", function(data){
-                    $("#modalHeading").html("Editar Consumidor");
+                $.get("{{route('fornecedores.index')}}" + "/" + fornecedor_id + "/edit", function(data){
+                    $("#modalHeading").html("Editar Fornecedor");
                     $("#ajaxModel").modal('show');
-                    $("#consumidor_id").val(data.id);
+                    $("#fornecedor_id").val(data.id);
                     $("#email").val(data.email);
                     $("#primeiro_nome").val(data.primeiro_nome);
                     $("#ultimo_nome").val(data.ultimo_nome);

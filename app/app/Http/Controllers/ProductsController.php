@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+
 use App\Models\Produto;
 use App\Models\Armazem;
 use App\Models\Categoria;
@@ -96,7 +98,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
-                "estado" => $produto_state,
+                "pronto_a_vender" => $produto_state,
             ];
 
 
@@ -107,36 +109,44 @@ class ProductsController extends Controller
 
         if(session()->get('notificado') == null){
             $now = time(); 
-
+            $dataVals = Produto_campos_extra::where('campo_extra', 'data_validade')->get();
             
 
             foreach(session()->get('all_fornecedor_produtos') as $produto){
-                $your_date = strtotime($produto['produto_data_insercao_no_site']);
-                $datediff =   $now - $your_date;
-
-                if(round($datediff / (60 * 60 * 24)) < 7){
-                    $noti ="O Produto ";
-                    $noti .= $produto['produto_nome'];
-                    $noti.=" tem apenas ".round($datediff / (60 * 60 * 24))." dias antes de expirar";
-
-                    $notis = Notificacao::create([
-                        'id_utilizador'=>session()->get('user_id'),
-                        'mensagem'=>$noti,
-                        'estado'=>1,
-                    ]);
-                    
-                    $atributos_notificacao = [
-                        "notificacao_id" => $notis->id,
-                        "notificacao_id_utilizador" => $notis->id_utilizador,
-                        "notificacao_mensagem" => $notis->mensagem,
-                        "notificacao_estado" => $notis->estado,
-                    ];
+                foreach($dataVals as $dataVal){
+                    $id = $dataVal->id_produto;
+                    if($produto['produto_id'] == $id){
+                        $date = strtotime($dataVal->valor_campo);
+                        $datediff = ceil(($date - $now)/86400);
+                        if($datediff < 7 && $datediff > 0){
+                            $noti ="O Produto ";
+                            $noti .= $produto['produto_nome'];
+                            $noti.=" tem apenas ".$datediff." dias antes de expirar";
+        
+                            $notis = Notificacao::create([
+                                'id_utilizador'=>session()->get('user_id'),
+                                'mensagem'=>$noti,
+                                'estado'=>1,
+                            ]);
+                            
+                            $atributos_notificacao = [
+                                "notificacao_id" => $notis->id,
+                                "notificacao_id_utilizador" => $notis->id_utilizador,
+                                "notificacao_mensagem" => $notis->mensagem,
+                                "notificacao_estado" => $notis->estado,
+                            ];
+                        
+                            session()->push('notificacoes', $atributos_notificacao);
+                        }
+                    }
                 
-                    session()->push('notificacoes', $atributos_notificacao);
-                }
+
+                
+            }
+            
+
             }
             session()->put('notificado', 1);
-
         }
 
         if(!(session()->has('categories'))){
@@ -178,7 +188,8 @@ class ProductsController extends Controller
 
     public function productRegister(Request $request)
     {
-
+        //dd($campos_extra);
+       
         $catField = Categoria_campos_extra::where('nome_categoria', $request->get('nome_categoria'))->get();
 
 
@@ -302,28 +313,46 @@ class ProductsController extends Controller
             'kwh'=>'sometimes|required|string',
             'info'=>'sometimes|required|string',
             'nome_categoria'=> 'sometimes|required|string',
-            'nome_subcategoria'
+            'nome_subcategoria'=>'sometimes|required|string',
         ]);
 
         
         
         $produto = Produto::where('id', session()->get('produto_atual')['produto_id'])->first();
         $catAntiga = $produto->nome_categoria;
-        $atributo_to_update = [
-            'nome' => $request->nome,
-            'preco' => $request->preco,
-            'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
-            'id_fornecedor' => session()->get('user_id'),
-            'quantidade' => $request->quantidade,
-            'nome_categoria' => $request->nome_categoria,
-            'nome_subcategoria' => $request->nome_subcategoria,
-            'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
-            'informacoes_adicionais' => $request->info,
-            'data_producao_do_produto' => $request->data_p,
-            'data_insercao_no_site' => $request->data_i,
-            'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
-            'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
-        ];
+        if($catAntiga == $request->nome_categoria){
+            $atributo_to_update = [
+                'nome' => $request->nome,
+                'preco' => $request->preco,
+                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+                'id_fornecedor' => session()->get('user_id'),
+                'quantidade' => $request->quantidade,
+                'nome_categoria' => $request->nome_categoria,
+                'nome_subcategoria' => session()->get('produto_atual')['produto_nome_subcategoria'],
+                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+                'informacoes_adicionais' => $request->info,
+                'data_producao_do_produto' => $request->data_p,
+                'data_insercao_no_site' => $request->data_i,
+                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+            ];
+        }else{
+            $atributo_to_update = [
+                'nome' => $request->nome,
+                'preco' => $request->preco,
+                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+                'id_fornecedor' => session()->get('user_id'),
+                'quantidade' => $request->quantidade,
+                'nome_categoria' => $request->nome_categoria,
+                'nome_subcategoria' =>  $request->nome_subcategoria,
+                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+                'informacoes_adicionais' => $request->info,
+                'data_producao_do_produto' => $request->data_p,
+                'data_insercao_no_site' => $request->data_i,
+                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+            ];
+        }
 
         $produto->update($atributo_to_update);
         $atributos_produto = [
@@ -374,15 +403,32 @@ class ProductsController extends Controller
             
             foreach($campos_extra as $campo){
                 $name = $campo->campo_extra;
-                $to_update = [   
-                    'id_produto' => session()->get('produto_atual')['produto_id'],
-                    'campo_extra' => $campo->campo_extra,
-                    'valor_campo' => $request->$name,
-                ];
-                $campo->update($to_update);
+                if($campo->valor_campo != $request->$name){
+                    Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])
+                    ->where('campo_extra', $campo->campo_extra)
+                    ->update(array('valor_campo' => $request->$name)) ;
+                }
+                
                 
             }
-           
+            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+            $all_campos_extra_produtos = array();
+            foreach($campos_extra as $campo){
+                $campo_nome = $campo->campo_extra;
+                $campo_valor = $campo->valor_campo;
+                
+
+                $atributos_campo_extra = [
+                    "nome_campo" => $campo_nome,
+                    "valor_campo" => $campo_valor,   
+                ];
+
+
+                array_push($all_campos_extra_produtos, $atributos_campo_extra);
+            }
+
+            session()->put('campos_extra_atuais', $all_campos_extra_produtos);
+            
         }
 
 
@@ -552,6 +598,7 @@ class ProductsController extends Controller
             $produto_data_producao_do_produto = $produto->data_producao_do_produto;
             $produto_data_insercao_no_site = $produto->data_insercao_no_site;
             $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+            $produto_pronto_a_vender = $produto->pronto_a_vender;
 
             $atributos_produto = [
                 "produto_id" => $produto_id,
@@ -567,6 +614,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "pronto_a_vender" => $produto->pronto_a_vender,
             ];
 
 
@@ -831,90 +879,20 @@ class ProductsController extends Controller
 
     public function filterProduct(Request $request){
 
-        if($request->get('id_armazem') == "reset"){
-            $htmlR =
-            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-            ;
-            for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) {
-
-                $htmlR=$htmlR."
-                <div class='col'>
-                    <div class='card'>
-                        
-                        <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_nome']."</h5>
-                        <h4 class='card-text text-danger'>".session()->get('all_fornecedor_produtos')[$i]['produto_preco']." €</h4>
-                        <img src='".session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem']."' id='fixSize'  class='imagemProduto card-img-top'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title'>".session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais']."</h5>
-                            
-                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-primary'>Ver informações do produto</button>
-                            <br>
-                            <button type='button' class='btn btn-outline-primary'>Editar</button>
-    
-                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".session()->get('all_fornecedor_produtos')[$i]['produto_id'].")' class='btn btn-outline-danger'>Apagar</button>
-                    
-                        </div>
-                    </div>
-                </div>"
-                ;
-    
-                if($i > 0 && $i % 3==0) {
-                    $htmlR=$htmlR.
-                    "</div>".
-                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                    ;
-                }
-            }
-            return $htmlR;
-
-
-        }else{
-            $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
-
-            if($produto!=null){
-    
-            $html =
-            "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-            ;
-    
-            $i = 0;
-            foreach($produto as $produtos) {
-            $html=$html."
-                <div class='col'>
-                    <div class='card'>
-                        
-                        <h5 class='card-title'>".$produtos->nome."</h5>
-                        <h4 class='card-text text-danger'>".$produtos->preco." €</h4>
-                        <img src='".$produtos->path_imagem."' id='fixSize' class='imagemProduto card-img-top'>
-                        <div class='card-body text-center'>
-                            <h5 class='card-title'>".$produtos->informacoes_adicionais."</h5>
-                            
-                            <button type='button' id='showProductInfo' name='".route('product-info')."' onclick='showInfoProduct(".$produtos->id.")' class='btn btn-outline-primary'>Ver informações do produto</button>
-                            <br>
-                            <button type='button' class='btn btn-outline-primary'>Editar</button>
-    
-                            <button type='button' id='buttonApagarProduto' name='".route('product-remove')."' onclick='apagarProduto(".$produtos->id.")' class='btn btn-outline-danger'>Apagar</button>
-                    
-                        </div>
-                    </div>
-                </div>"
-                ;
-    
-                if($i > 0 && $i % 3==0) {
-                    $html=$html.
-                    "</div>".
-                    "<div class='row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4'>"
-                    ;
-                }
-                $i = $i + 1;
-            }
-            }
-            return  $html;
-        }
-       
-        
+        //View::share('testerView', 'Steve');
+        return view("apresentacao_produtos",['filtroArmazem' => $request->get('id_armazem')],['filtroCat' => ""]);
         
     }
+
+    public function searchCat(Request $request){
+
+        //View::share('testerView', 'Steve');
+        return view("apresentacao_produtos",['filtroCat' => $request->get('categoria')], ['filtroArmazem' => -1]);
+        
+    }
+
+
+
 
     public function changeSub(Request $request){
 
@@ -925,7 +903,7 @@ class ProductsController extends Controller
 
         if($request->get('categoria') != null){
             $html="<label for='nome_subcategoria' class='form-label'>Subcategorias de ".$request->get('categoria')."</label>
-            <select class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             foreach($subCat as $sub){
                 $html=$html."
@@ -936,7 +914,7 @@ class ProductsController extends Controller
             
         }else{
             $html="<label for='nome_subcategoria' class='form-label'>Selecione uma categoria</label>
-            <select disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
+            <select ref='subcat' disabled class='form-control' name='nome_subcategoria' id='novo_produto_subcategoria' required>
                 <option default value=''>-- Selecione uma subcategoria --</option>";
             
         }
@@ -952,7 +930,7 @@ class ProductsController extends Controller
             $htmlC=$htmlC."
                 <div class='col'>
                    <label for='".$camposExtras->campo_extra."' class='form-label'> ".$camposExtras->nome_campo_extra.":</label>
-                   <input name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
+                   <input  name='".$camposExtras->campo_extra."' class='form-control' type='text' required>
                 </div>"
                 ;
     
@@ -970,6 +948,118 @@ class ProductsController extends Controller
 
         return array($html,$htmlC);
         }   
+    }
+
+    public function compareProds(Request $request){
+        //dd($request->has(77));
+        $prods = array();
+            
+        for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++){
+            if($request->has(session()->get('all_fornecedor_produtos')[$i]['produto_id']) == true){
+                array_push($prods, session()->get('all_fornecedor_produtos')[$i]['produto_id']);
+            }
+        }
+        $produto = Produto::where('id', $prods[0])->first();
+        if($produto->pronto_a_vender != 0){
+            $eventos = Evento::where('id_produto', $prods[0])->get();
+            $co2 = 0;
+            $kwh = 0;
+            foreach($eventos as $evento){
+                $co2 = $co2 + $evento->poluicao_co2_produzida;
+                $kwh = $kwh + $evento->kwh_consumidos;
+                
+            }
+            $sum  = $co2 +  $kwh;
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => $co2,
+                'poluicao_evento_kwh'  => $kwh,
+            ];
+        }else{
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => 0,
+                'poluicao_evento_kwh'  => 0,
+            ];
+        }
+        session()->put('produto_comparar1', $atributos_produto);
+
+
+        
+
+        $produto = Produto::where('id', $prods[1])->first();
+        if($produto->pronto_a_vender != 0){
+            $evento = Evento::where('id_produto', $prods[1])->get();
+            $co2 = 0;
+            $kwh = 0;
+            foreach($eventos as $evento){
+                $co2  =  $co2 + $evento->poluicao_co2_produzida;
+                $kwh  =  $kwh + $evento->kwh_consumidos;
+                
+            }
+            
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => $co2,
+                'poluicao_evento_kwh'  => $kwh,
+            ];
+        }else{
+            $atributos_produto = [
+                'produto_id' => $produto->id,
+                'produto_nome' => $produto->nome,
+                'produto_preco' => $produto->preco,
+                'produto_id_armazem' => $produto->id_armazem,
+                'produto_id_fornecedor' => $produto->id_fornecedor,
+                'produto_quantidade' => $produto->quantidade,
+                'produto_nome_categoria' => $produto->nome_categoria,
+                'produto_path_imagem' => $produto->path_imagem,
+                'produto_nome_subcategoria' => $produto->nome_subcategoria,
+                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
+                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
+                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
+                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
+                'poluicao_evento_co2'  => 0,
+                'poluicao_evento_kwh'  => 0,
+            ];
+        }
+        session()->put('produto_comparar2', $atributos_produto);
+        return redirect('/comparar-prods');
     }
 
     
@@ -991,7 +1081,8 @@ class ProductsController extends Controller
         $produto_informacoes_adicionais = $produto->informacoes_adicionais;
         $produto_data_producao_do_produto = $produto->data_producao_do_produto;
         $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-        $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia;
+        $produto_kwh_consumidos_por_dia_no_armazem = $produto->kwh_consumidos_por_dia_no_armazem;
+        $produto_pronto_a_vender = $produto->pronto_a_vender;
 
         $atributos_produto = [
             "produto_id" => $produto_id,
@@ -1006,7 +1097,8 @@ class ProductsController extends Controller
             "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
             "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
             "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+            "produto_kwh_consumidos_por_dia_no_armazem" => $produto_kwh_consumidos_por_dia_no_armazem,
+            "produto_pronto_a_vender" => $produto_pronto_a_vender,
         ];
 
         if(session()->has('carrinho_produtos')){

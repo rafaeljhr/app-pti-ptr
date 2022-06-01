@@ -8,8 +8,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Utilizador extends Model
 {
-    public $timestamps = false;
-    
 	protected $table = 'utilizador';
 
     protected $fillable = [
@@ -21,6 +19,15 @@ class Utilizador extends Model
         'google_id',
         'updated_at',
         'created_at',
+        'numero_contribuinte',
+        'cidade',
+        'tipo_de_conta',
+        'codigo_postal',
+        'morada',
+        'numero_telemovel',
+        'longitude',
+        'latitude',
+        'password'
     ];
 	
     use HasApiTokens, HasFactory;

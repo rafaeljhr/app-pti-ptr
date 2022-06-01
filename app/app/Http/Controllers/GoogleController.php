@@ -63,34 +63,7 @@ class GoogleController extends Controller
                     session()->put('user_pais', $utilizador->pais);
                     session()->put('user_google_id', $utilizador->google_id);
 
-
-                    // put all user notifications on session
-                    // $notificacoes = Notificacao::where('id_utilizador', $utilizador->id)->where('estado','1');
-                    // $notificacoes = Notificacao::where('id_utilizador', $utilizador->id);
-                    $notificacoes = Notificacao::where('id_utilizador', $utilizador->id)->where('estado','1')->get();
-                    //return $notificacoes->estado;
-                    
-
-                    $all_notificacoes = array();
-
-                    foreach($notificacoes as $notificacao) {
-
-                        $notificacao_id = $notificacao->id;
-                        $notificacao_id_utilizador = $notificacao->id_utilizador;
-                        $notificacao_mensagem = $notificacao->mensagem;
-                        $notificacao_estado = $notificacao->id;
-
-                        $atributos_notificacao = [
-                            "notificacao_id" => $notificacao_id,
-                            "notificacao_id_utilizador" => $notificacao_id_utilizador,
-                            "notificacao_mensagem" => $notificacao_mensagem,
-                            "notificacao_estado" => $notificacao_estado,
-                        ];
-
-                        array_push($all_notificacoes, $atributos_notificacao);
-                    }
-
-                    session()->put('notificacoes', $all_notificacoes);
+                    NotificationController::obter_notificacoes_do_utilizador();
 
                     return redirect('/');
                     

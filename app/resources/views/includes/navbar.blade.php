@@ -44,9 +44,15 @@ Session_start();
        
             <div class="dropdown" id="menu_perfil_utilizador">
 
+                <a href="#" style="text-decoration:none; margin-right: 15px;">
+                    <img class="icons_navbar" src="images/favoritos.png">
+                </a>
+
                 <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 15px;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
+
+                
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="icons_navbar" src="images/notification.png">
@@ -62,7 +68,7 @@ Session_start();
                     <hr class="dropdown-divider" style="width: 90%; margin: auto;">
 
 
-                    @if(Session::get('notificacoes') == [])
+                    @if(Session::get('notificacoes') == [] || Session::get('notificacoes') == null)
 
                         <li class='notificationElement mt-3 text-center'>
                             <p class='textoNotificacao'>Não possui notificações!</p>
@@ -117,17 +123,17 @@ Session_start();
                     <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
-                    <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     <li><a class="dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
-                    <li><a class="dropdown-item text-center" href="#">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('bases') }}">BASES</a></li>
                     <li><a class="dropdown-item text-center" href="{{ route('veiculos') }}">VEÍCULOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'consumidor')
-                    <li><a class="dropdown-item text-center" href="{{ route('encomenda-consumidor') }}">ENCOMENDAS</a></li>
+                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     @endif
 
                     <li><hr class="dropdown-divider"></li>

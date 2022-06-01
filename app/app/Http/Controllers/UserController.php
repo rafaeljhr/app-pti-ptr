@@ -46,6 +46,8 @@ class UserController extends Controller
             session()->put('user_codigo_postal', $utilizador->codigo_postal);
             session()->put('user_cidade', $utilizador->cidade);
             session()->put('user_pais', $utilizador->pais);
+
+            NotificationController::obter_notificacoes_do_utilizador();
             
             return redirect('/');
         }

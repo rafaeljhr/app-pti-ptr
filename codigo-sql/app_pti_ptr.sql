@@ -10,13 +10,15 @@ CREATE TABLE utilizador (
   password VARCHAR(255) NOT NULL,
   primeiro_nome VARCHAR(255) NOT NULL,
   ultimo_nome VARCHAR(255) NOT NULL,
-  path_imagem VARCHAR(255) DEFAULT NULL UNIQUE,
+  path_imagem VARCHAR(255) DEFAULT NULL,
   numero_telemovel VARCHAR(9) DEFAULT NULL,
   numero_contribuinte VARCHAR(9) DEFAULT NULL,
   morada VARCHAR(255) DEFAULT NULL,
   codigo_postal VARCHAR(255) DEFAULT NULL,
   cidade varchar(255) DEFAULT NULL,
   pais varchar(255) DEFAULT NULL,
+  latitude VARCHAR(255) DEFAULT NULL,
+  longitude VARCHAR(255) DEFAULT NULL,
   google_id varchar(255) DEFAULT NULL,
   tipo_de_conta INTEGER NOT NULL,
         
@@ -64,6 +66,8 @@ CREATE TABLE base (
   codigo_postal VARCHAR(255) DEFAULT NULL,
   cidade varchar(255) DEFAULT NULL,
   pais varchar(255) DEFAULT NULL,
+  latitude VARCHAR(255) DEFAULT NULL,
+  longitude VARCHAR(255) DEFAULT NULL,
   nome VARCHAR(255) NOT NULL,
   id_transportadora INTEGER NOT NULL,
   path_imagem VARCHAR(255) NOT NULL,
@@ -115,6 +119,8 @@ CREATE TABLE armazem (
   codigo_postal VARCHAR(255) DEFAULT NULL,
   cidade varchar(255) DEFAULT NULL,
   pais varchar(255) DEFAULT NULL,
+  latitude VARCHAR(255) DEFAULT NULL,
+  longitude VARCHAR(255) DEFAULT NULL,
   nome VARCHAR(255) NOT NULL,
   path_imagem VARCHAR(255) NOT NULL,
 
@@ -182,6 +188,7 @@ CREATE TABLE produto (
 CREATE TABLE categoria_campos_extra(
   campo_extra VARCHAR(255) NOT NULL,
   nome_categoria VARCHAR(255) NOT NULL,
+  nome_campo_extra VARCHAR(255) NOT NULL,
 
   CONSTRAINT pk_categoria_campo_extra
         PRIMARY KEY (campo_extra),
@@ -212,6 +219,7 @@ CREATE TABLE produto_campos_extra(
 CREATE TABLE eventos_da_cadeia_logistica_do_produto (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_produto INTEGER NOT NULL,
+  id_fornecedor INTEGER NOT NULL,
   nome VARCHAR(255) NOT NULL,
   poluicao_co2_produzida DECIMAL(10,2) DEFAULT NULL,
   kwh_consumidos DECIMAL(10,2) DEFAULT NULL,
@@ -220,6 +228,10 @@ CREATE TABLE eventos_da_cadeia_logistica_do_produto (
     CONSTRAINT fk_eventos_id_produto
         FOREIGN KEY (id_produto)
         REFERENCES produto(id)
+        
+    CONSTRAINT fk_encomenda_id_fornecedor
+        FOREIGN KEY (id_fornecedor)
+        REFERENCES utilizador(id),
 );
 
 
@@ -231,6 +243,7 @@ CREATE TABLE estado_encomenda (
 CREATE TABLE encomenda (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   preco DECIMAL(10,2) NOT NULL,
+  preco_transporte DECIMAL(10,2) NOT NULL,
   morada VARCHAR(255) NOT NULL,
   codigo_postal VARCHAR(255) NOT NULL,
   cidade varchar(255) NOT NULL,
@@ -241,6 +254,7 @@ CREATE TABLE encomenda (
   id_consumidor INTEGER NOT NULL,
   id_produto INTEGER NOT NULL,
   id_transportadora INTEGER NOT NULL,
+  id_base INTEGER NOT NULL,
   id_fornecedor INTEGER NOT NULL,
   estado_encomenda VARCHAR(255) NOT NULL,
 
@@ -255,6 +269,10 @@ CREATE TABLE encomenda (
     CONSTRAINT fk_encomenda_id_transportadora
         FOREIGN KEY (id_transportadora)
         REFERENCES utilizador(id),
+        
+    CONSTRAINT fk_encomenda_id_base
+        FOREIGN KEY (id_base)
+        REFERENCES base(id),
        
     CONSTRAINT fk_encomenda_id_fornecedor
         FOREIGN KEY (id_fornecedor)

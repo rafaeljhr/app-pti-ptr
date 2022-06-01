@@ -7,7 +7,8 @@
 
 //dd(session()->all());
 
-
+$filtroArmazem = -1;
+$filtroCat = "";
 
 ?>
 
@@ -48,6 +49,9 @@
     <br>
     <h2>Parece que não possui nenhum armazém.</h2>
     <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
+    <a id="hideAnchor" href="{{ URL::to('storage')}}">
+    <button type='button' class="btn btn-success"  id="botao_criar">Criar Armazém</button>
+    </a>
   </div>
   
 
@@ -61,6 +65,33 @@
 
 
 <div class="container p-0 mt-5 mb-5">
+  <div class="row">
+    <div class="col">
+  {{-- dropdown menu para selecionar o armazem --}}
+  <label for="nome_categoria" class="form-label">Filtrar por armazém</label>
+  <select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
+    <option default value="reset">-- Todos os armazens --</option>
+    @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
+    <?php $category= session()->get('armazens')[$i] ?>
+    <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
+    @endfor
+  </select>
+</div>
+<div class="col">
+  <form @submit.prevent="searchCat" method = "post" action="{{ route('search-cat-controller')}}">  
+  <label for="categoria" class="form-label">Pesquisar por categoria</label>
+  <div class="input-group mb-3">
+    <input class="form-control" name ="categoria" type="text" placeholder="Pesquise qualquer produto por categoria...">
+     <div class="input-group-append">
+      <button type="submit"  class="w-20 btn btn-primary" >Pesquisar</button>
+    </div>
+  </div>
+</form>
+
+
+
+</div>
+</div>
 
   <div class="row w-100 mt-4 mb-4">
     <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
@@ -68,15 +99,7 @@
       <h5>Aqui pode ver todos os produtos que se encontram associados à sua conta de momento </h5> 
     </div>
     
-    {{-- dropdown menu para selecionar o armazem --}}
-    <label for="nome_categoria" class="form-label">Filtrar por armazém</label>
-    <select class="form-control" @change="filterStorage($event)" name="{{ route('product-filter') }}" id="filtroA" required>
-      <option default value="reset">-- Todos os armazens --</option>
-      @for($i = 0; $i < sizeOf(session()->get('armazens')); $i++)
-      <?php $category= session()->get('armazens')[$i] ?>
-      <option value='<?php echo session()->get('armazens')[$i]['armazem_id'] ?>'><?php echo session()->get('armazens')[$i]['armazem_nome'] ?></option>              
-      @endfor
-    </select>
+    
 
     <div class="float-right">
       <button type="submit" @click ="mostrarCriarProduto()" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
@@ -90,70 +113,28 @@
 
 
   <div id='todosProdutos'>
+    <form id="compareForm" method="post" action="{{ route('compare-products')}}">
+      @csrf
+      <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">COMPARAR PRODUTOS</button>
+      <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
+      <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelCompare()">CANCELAR ALTERAÇÕES</button>
+        
+    <div id="prodDisplay" class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
 
-    <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-
-      
-        @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
-        <?php
-        $comCadeia = 0;
-        $id  = session()->get('all_fornecedor_produtos')[$i]['produto_id'];
-        if(session()->get('produto_cadeia_logistica')  !=  null)
-          for($c = 0; $c < sizeOf(session()->get('produto_cadeia_logistica')); $c++)
-            if($id == session()->get('produto_cadeia_logistica')[$c]['evento_id_produto']) 
-              $comCadeia = 1;
-        ?>
-        <div>
-          @if($comCadeia == 0)
-          <div id ="displayWarning">
-            
-            <p>Este produto não possui cadeias logisticas</p>
-            <img src="images/warning.png" class="warning card-img-top" alt="...">
-          </div>
-          @else
-          <div id ="displayNoWarning">
-          </div>
-          @endif
-          <div class="col">
-            <div class="card">
-              <img src='<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top" alt="...">
-              <h5 class="card-title mt-3 text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>
-              <h4 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
-              
-              <div class="card-body text-center">
-                <h5 class="card-title"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
-                <a id="hideAnchor" href="{{ URL::to('produtosEdit/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
-                <button type="button" id="showProductInfo"  class="btn btn-outline-primary">Ver informações do produto</button>
-                </a>
-                <br>
-                
-                <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
-                <button type="button" id="addCadeia" class="btn btn-info">Adicionar cadeias</button>
-                </a>
-                <br>
-                <button type="button" id='buttonApagarProdutoWarning' name="{{ route('product-delete-warning')}}" onclick="deleteWarning('<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>','<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?>')" data-bs-toggle="modal" data-bs-target="#modalApagar" class="btn btn-outline-danger">Apagar</button>
-                
-              </div>
-
-            </div>
-          
-        </div>
-
-        </div>
-
-          @if($i > 0 && $i % 3==0)
-            </div>
-            <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-          @endif
-          @endfor
+      @include('apresentacao_produtos')
+         
+    
 
           
-      </div>
-    </div>
-    </div>
-    @endif
   </div>
 </div>
+</div>
+@endif
+</div>
+
+
+        
+  </div>
 
 
 

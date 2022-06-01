@@ -8,8 +8,29 @@
 
     
 
-    //dd(session()->all());
+//    dd(session()->all());
 
+
+    $co2 = 0;
+    $kwhCadeias = 0;
+    for($i = 0; $i < sizeOf(session()->get('cadeias_produto_atual'));  $i++){
+        $co2 = $co2 + session()->get('cadeias_produto_atual')[$i]['evento_co2'];
+        $kwhCadeias = $kwhCadeias + session()->get('cadeias_produto_atual')[$i]['evento_kwh'];
+        
+    }
+    
+    
+
+   
+  
+
+
+    $now = time(); // or your date as well
+    $your_date = strtotime(session()->get('produto_atual')['produto_data_insercao_no_site']);
+    $datediff = ceil(($now - $your_date)/86400);
+    $kwhStorage = session()->get('produto_atual')['produto_kwh_consumidos_por_dia'] * $datediff;
+    
+    
     ?>
 
     <link rel="stylesheet" href="css/bases_veiculos.css">
@@ -27,7 +48,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Tem a certeza que deseja apagar a sua base?</p>
+                    <p>Tem a certeza que deseja apagar o seu produto?</p>
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -76,6 +97,27 @@
         <div class="form-div mx-auto my-1 px-3">
 
             <h1 class="h3 mx-auto d-flex justify-content-center font-weight-normal mt-5 mb-5">INFORMAÇÕES DO PRODUTO</h1>
+            
+            <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Kwh consumidos de cadeias: <?php echo  $kwhCadeias  ?></div>
+            
+                  </div>
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Co2 provenientes de cadeias: <?php echo  $co2  ?></div>
+            
+                  </div>
+                  <div class="col-sm">
+                    <div class="d-inline p-2 bg-primary text-white">Kwh consumidos de armazenamento: <?php echo $kwhStorage ?></div>
+
+                  </div>
+                </div>
+              </div>
+            
+            
+
+
 
             <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('produto_atual')['produto_path_imagem'] ?>" referrerpolicy="no-referrer">
             <div class="mt-2 w-25 mx-auto">
@@ -173,7 +215,7 @@
                     <div class="row" >
                         <div class="col">
                           <label for="nome_categoria" class="form-label">Categoria do produto</label>
-                          <select ref="info" class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" value="<?php echo session()->get('produto_atual')['produto_nome_categoria'] ?>" :disabled="!editable" required>
+                          <select ref="cat" @input="checkForm()" class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" value="<?php echo session()->get('produto_atual')['produto_nome_categoria'] ?>" :disabled="!editable" required>
                             <option value="">-- Selecione uma categoria --</option>
                             @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
                             <?php $category= session()->get('categories')[$i] ?>
@@ -186,7 +228,7 @@
                           <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
                           <div id="toChangeOnCmd">
                             <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
-                          <select class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria" required>
+                          <select ref="subcat" class="form-control" name="nome_subcategoria" id="novo_produto_subcategoria"  disabled required>
                               <option selected value="<?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?>"><?php echo session()->get('produto_atual')['produto_nome_subcategoria'] ?></option>
                             </select>
                         </div>       
@@ -195,20 +237,19 @@
                       </div>
 
                    
-
+                    <div id="camposExtraNone">
                     <div class="row">
                         @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
-
                         <div class ="col">
                             <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
                             <div class="inline-icon">
-                                <input type="text" {{-- id="campoExtra" --}} name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
+                                <input type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
                             </div>
 
                         </div>
                         @endfor
 
-                        
+                    </div>    
                     </div>
 
                     <br> <br>
