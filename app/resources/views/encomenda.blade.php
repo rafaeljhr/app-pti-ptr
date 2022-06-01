@@ -148,7 +148,7 @@
                         <label for="estado" class="form-label">ESTADO</label>
                     </div>
                     <div class="col my-auto">
-                        <select onchange="atribuir_estado_ao_input()" class="form-select" id='estado_selecionado' required data-bs-toggle="modal" data-bs-target="#modalAlterarEstadoEncomenda">
+                        <select onchange="atribuir_estado_ao_input()" class="form-select" id='estado_selecionado'>
                             <option selected value="<?php echo session()->get('encomenda')['encomenda_estado_encomenda']?>"><?php echo session()->get('encomenda')['encomenda_estado_encomenda']?></option>
                             @for($i = 0; $i < sizeOf(session()->get('all_estados')); $i++)
 
