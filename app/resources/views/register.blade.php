@@ -332,9 +332,6 @@ Session::put('login_ou_registo', "registo");
                                 </div>
 
                             </div>
-
-                            
-                            
                             
 
                             <div ref="next_previous" style="overflow:auto;" id="nextprevious">

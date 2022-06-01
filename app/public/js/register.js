@@ -126,7 +126,7 @@ let app = Vue.createApp({
                 this.$refs.header.innerHTML = "PALAVRA-PASSE";
             } else if (this.current_tab == 3){
                 this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
-                document.getElementById('nextBtn').disabled = false;
+                this.form_valid = true;
             } else {
                 this.$refs.header.innerHTML = "CONFIRMAR OS DADOS";
                 this.$refs.userInputEmail2.value = this.$refs.userEmail.value;    
