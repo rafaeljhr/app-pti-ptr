@@ -100,7 +100,7 @@
     <h2>Parece que não possui nenhum armazém.</h2>
     <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
     <br>
-    <button class="btn btn-dark" @click="criarUmArmazem()" id="btn-id">Criar armazens</button>
+    <button class="btn btn-dark" onclick="criarUmArmazem()" id="btn-id">Criar armazens</button>
   </div>
   
 
