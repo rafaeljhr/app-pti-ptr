@@ -33,7 +33,7 @@
     </div>
     
     <div class="float-rigth">
-    <button class="btn btn-dark" @click="criarUmArmazem()" id="btn-id">Criar armazens</button>
+    <button class="btn btn-dark" onclick="criarUmArmazem()" id="btn-id">Criar armazens</button>
     </div>
 
   </div>
@@ -100,7 +100,7 @@
     <h2>Parece que não possui nenhum armazém.</h2>
     <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
     <br>
-    <button class="btn btn-dark" @click="criarUmArmazem()" id="btn-id">Criar armazens</button>
+    <button class="btn btn-dark" onclick="criarUmArmazem()" id="btn-id">Criar armazens</button>
   </div>
   
 
@@ -138,7 +138,7 @@
 
 
 <div id="criarUmArmazem" class="armazem">
-  <button type="button" @click="criarUmArmazem()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
+  <button type="button" onclick="criarUmArmazem()" class="btn-close" id="button-close-div" aria-label="Close"></button>
   <form method="post" action="{{ route('armazem-register-controller')}}" enctype="multipart/form-data">
     @csrf
     <h3>Armazem:</h3>

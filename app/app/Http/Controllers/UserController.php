@@ -12,6 +12,7 @@ use App\Models\ProdutoCampoExtra;
 use App\Models\Evento;
 use App\Models\Armazem;
 use App\Models\Veiculo;
+use App\Models\Fornecedor_historico_poluicao;
 use App\Models\Base;
 use App\Models\Tipo_de_conta;
 use Illuminate\Support\Facades\Hash;
@@ -189,6 +190,14 @@ class UserController extends Controller
                 'latitude' => $request->get('latitude'),
                 'longitude' => $request->get('longitude'),
             ]);
+            if($tipo_de_conta_novo_utilizador_id == 5){
+                Fornecedor_historico_poluicao::create([
+                    'id_fornecedor' => $newUtilizador->id,
+                    'poluicao_co2_produzida' => 0,
+                    'kwh_consumidos' => 0,
+                    
+                ]);
+            }
 
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([
@@ -238,6 +247,14 @@ class UserController extends Controller
                 'latitude' => $request->get('latitude'),
                 'longitude' => $request->get('longitude'),
             ]);
+            if($tipo_de_conta_novo_utilizador_id == 5){
+                Fornecedor_historico_poluicao::create([
+                    'id_fornecedor' => $newUtilizador->id,
+                    'poluicao_co2_produzida' => 0,
+                    'kwh_consumidos' => 0,
+                    
+                ]);
+            }
 
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([
@@ -289,7 +306,7 @@ class UserController extends Controller
         // return $request->input();
         $request->validate([
             'email'=>'sometimes|required|string',
-            'primeiro_nome'=>'suser_emailmetimes|required|string',
+            'primeiro_nome'=>'sometimes|required|string',
             'ultimo_nome'=>'sometimes|required|string',
             'telemovel'=>'sometimes|required|integer',
             'numero_contribuinte'=>'sometimes|required|integer',
@@ -328,7 +345,9 @@ class UserController extends Controller
         $utilizador = Utilizador::where('email', session()->get('user_email'))->first();
 
         Notificacao::where('id_utilizador', session()->get('user_id'))->delete();
-
+        if($utilizador->tipo_de_conta == 5){
+            Fornecedor_historico_poluicao::where('id_fornecedor', session()->get('user_id'))->delete();
+        }
         if (session()->get('userType') == "consumidor") {
 
         } else if (session()->get('userType') == "fornecedor") {

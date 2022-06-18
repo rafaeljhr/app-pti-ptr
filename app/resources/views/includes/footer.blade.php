@@ -34,10 +34,10 @@
             <a href="{{ route('products') }}" class="text-reset">Loja de produtos</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">API EcoSmart Store</a>
+            <a href="{{ route('api-documentacao') }}"class="text-reset">API EcoSmart Store</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Obter token API EcoSmart Store</a>
+            <a href="https://api.eco-smart-store.rafaeljhr.pt/login" class="text-reset">Obter token API EcoSmart Store</a>
           </p>
         </div>
 

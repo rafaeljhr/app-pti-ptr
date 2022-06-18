@@ -137,6 +137,14 @@
     
 }
 
+#cadeiaInfo{
+    
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 180px;
+   
+}
+
 #infoAdicional{
     position: absolute;
     background-color: white;

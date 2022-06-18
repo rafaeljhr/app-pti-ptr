@@ -93,7 +93,7 @@
             <h6>DATA E HORA DA ENTREGA</h6>
         </div>
 
-        @if(session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
+        @if(session()->get('userType') == "consumidor" &&  session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
             <div class="col">
             </div>
         @endif

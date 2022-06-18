@@ -64,6 +64,9 @@
                 <div class="card-body text-center">
                   <h5 class="card-title"><?php echo session()->get('produto_cadeia_logistica')[$i]['evento_descricao_do_evento'] ?></h5>
                 </div>
+                <a href="{{ URL::to('cadeiaInfo/'.session()->get('produto_cadeia_logistica')[$i]['evento_id']) }}">
+                  <button id="cadeiaInfo" type="button" class="btn btn-outline-primary">Detalhes da cadeia</button>
+                </a> 
   
               </div>
             </div>

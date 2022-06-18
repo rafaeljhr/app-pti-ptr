@@ -10,6 +10,8 @@ class Utilizador extends Model
 {
 	protected $table = 'utilizador';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'email', 'password', 'primeiro_nome', 'ultimo_nome', 'path_imagem', 'numero_telemovel', 'numero_contribuinte',
         'morada', 'codigo_postal', 'cidade', 'pais', 'tipo_de_conta', 'google_id'
@@ -29,6 +31,22 @@ class Utilizador extends Model
         'latitude',
         'password'
     ];
+
+    public function encomendas(){
+        return $this->hasMany(Encomenda::class, 'id_consumidor', 'id');
+    }
+
+    public function produto(){
+      return $this->hasMany(Produto::class, 'id_fornecedor', 'id');
+    }
+
+    public function armazem(){
+        return $this->hasMany(Armazem::class, 'id_fornecedor', 'id');
+    }
+
+    public function base_transportadora(){
+        return $this->hasMany(base_transportadora::class, 'id_transportadora', 'id');
+    }
 	
     use HasApiTokens, HasFactory;
 }

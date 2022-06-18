@@ -102,7 +102,7 @@ let app = Vue.createApp({
             xhr1.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
                     document.getElementById("prodDisplay").innerHTML = xhr1.responseText;
-                    console.log('mudou');
+                    
 
 
                 } else if (this.status >= 400) {
@@ -118,7 +118,7 @@ let app = Vue.createApp({
 
 
         changeSubcat(cat){
-            console.log(cat.target.value);    
+              
                     
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()
@@ -191,7 +191,6 @@ let app = Vue.createApp({
         },
 
         
-
         criarUmaCadeiaLogistica() {
 
             if (document.getElementById("criarUmaCadeiaLogistica").style.display == "block") {
@@ -208,6 +207,7 @@ let app = Vue.createApp({
             
 
         },
+        
 
         mostrarCriarProduto() {
             

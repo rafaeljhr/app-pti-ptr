@@ -18,7 +18,7 @@ $filtroCat = "";
 
 @section('background') 
 
-<div id="fundoDivOpac" v-show="fundoDivOpac" class="backgroundSee"></div>
+<div id="fundoDivOpac" {{-- v-show="fundoDivOpac" --}} class="backgroundSee"></div>
 <div id="apresentação" class="mx-auto mt-4 mb-4">
 
 @if(session()->get('all_fornecedor_produtos')==null && session()->get('armazens') != null)

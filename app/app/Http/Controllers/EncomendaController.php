@@ -104,9 +104,9 @@ class EncomendaController extends Controller
         if (session()->get('userType') == "consumidor") {
             $encomendas = Encomenda::where('id_consumidor', session()->get('user_id'))->orderBy('data_realizada', 'DESC')->get();
         } else if (session()->get('userType') == "fornecedor") {
-            $encomendas = Encomenda::where('id_fornecedor', session()->get('user_id'))->where('estado_encomenda', '!=', 'Cancelamento disponível')->orderBy('data_realizada', 'DESC')->get();
+            $encomendas = Encomenda::where('id_fornecedor', session()->get('user_id'))->orderBy('data_realizada', 'DESC')->get();
         } else if (session()->get('userType') == "transportadora") {
-            $encomendas = Encomenda::where('id_transportadora', session()->get('user_id'))->where('estado_encomenda', '!=', 'Cancelamento disponível')->orderBy('data_realizada', 'DESC')->get();
+            $encomendas = Encomenda::where('id_transportadora', session()->get('user_id'))->orderBy('data_realizada', 'DESC')->get();
         }
 
         $all_encomendas = array();

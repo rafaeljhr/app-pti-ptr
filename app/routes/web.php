@@ -47,6 +47,10 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout-url'); 
 
+Route::get('/api-documentacao', function () {
+    return view('api_documentacao');
+})->name('api-documentacao'); 
+
 Route::get('/storage', function () {
     NotificationController::obter_notificacoes_do_utilizador();
 
@@ -184,6 +188,18 @@ Route::post('/product-edit-event-controller', [ProductsController::class, "produ
 Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
 Route::post('/product-remove-carrinho-controller', [ProductsController::class, "productRemoveCarrinho"])->name('product-remove-carrinho');
 
+Route::get('/cadeiaInfo/{id}/', [ProductsController::class, "cadeiaInfo"]);
+
+Route::get('/cadeia-edit', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
+    return view('informacoes_cadeia');
+})->name('cadeia_info');
+
+
+Route::post('/cadeia-edit-controller', [ProductsController::class, "cadeiaEdit"])->name('cadeia-edit-controller');
+
+Route::post('/cadeia-delete-controller', [ProductsController::class, "cadeiaDelete"])->name('cadeia-delete-controller');
+
 // ##############################################
 // ARMAZENS RELATED ROUTES
 // ##############################################
@@ -201,6 +217,8 @@ Route::post('/armazem-edit-controller', [ArmazensController::class, "armazemEdit
 Route::post('/armazem-delete-controller', [ArmazensController::class, "armazemDelete"])->name('armazem-delete-controller');
 
 Route::get('/storage/{id}/', [ArmazensController::class, "storageInfo"]);
+
+
 
 Route::get('/storage-edit', function () {
     NotificationController::obter_notificacoes_do_utilizador();
