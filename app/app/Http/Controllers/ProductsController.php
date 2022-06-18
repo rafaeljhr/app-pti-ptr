@@ -499,10 +499,11 @@ class ProductsController extends Controller
         foreach($catField as $catFields){
             
             $name_field = $catFields->campo_extra;
+            $string_check = htmlentities( $request->get($name_field) , ENT_QUOTES, "UTF-8");
             Produto_campos_extra::create([
                 'id_produto' => session()->get('produto_atual')['produto_id'],
                 'campo_extra' => $name_field,
-                'valor_campo' => $request->get($name_field)
+                'valor_campo' => $string_check,
             ]);
         }
 
