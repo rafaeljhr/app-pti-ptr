@@ -18,7 +18,9 @@ use App\Http\Controllers\AdminsController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/', function () {
+    return redirect('/login');
+});
 
 
 
