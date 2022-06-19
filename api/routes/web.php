@@ -17,7 +17,7 @@ use App\Http\Controllers\WebController;
 
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('login');
 });
 
 Route::get('/login', [WebController::class, 'login'])->name('login');
