@@ -195,7 +195,9 @@ Route::get('/cadeia-edit', function () {
     return view('informacoes_cadeia');
 })->name('cadeia_info');
 
+Route::get('/produtosFav/{id}/', [ProductsController::class, "addFav"]);
 
+Route::post('/produtosDelFav', [ProductsController::class, "delFav"])->name('delete-favorito');
 Route::post('/cadeia-edit-controller', [ProductsController::class, "cadeiaEdit"])->name('cadeia-edit-controller');
 
 Route::post('/cadeia-delete-controller', [ProductsController::class, "cadeiaDelete"])->name('cadeia-delete-controller');

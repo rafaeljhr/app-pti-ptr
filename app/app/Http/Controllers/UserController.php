@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notificacao;
+use App\Models\Favoritos;
 use Illuminate\Http\Request;
 use App\Models\Utilizador;
 use App\Models\Produto;
@@ -50,6 +51,7 @@ class UserController extends Controller
 
             NotificationController::obter_notificacoes_do_utilizador();
             
+            ProductsController::obter_favoritos_do_utilizador();
             return redirect('/');
         }
         
@@ -337,7 +339,7 @@ class UserController extends Controller
     public function delete()
     {
         $utilizador = Utilizador::where('email', session()->get('user_email'))->first();
-
+        Favoritos::where('id_utilizador', session()->get('user_id'))->delete();
         Notificacao::where('id_utilizador', session()->get('user_id'))->delete();
         if($utilizador->tipo_de_conta == 5){
             Fornecedor_historico_poluicao::where('id_fornecedor', session()->get('user_id'))->delete();

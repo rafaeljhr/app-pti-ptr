@@ -15,13 +15,13 @@
           <div class="col">
             <div class="card">
               @if($comCadeia == 0)
-              <i  class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Este produto não possui cadeias logisticas"></i>
+              <i class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Este produto não possui cadeias logisticas"></i>
                                                 
               @else
                 <i class="bi bi-check check-icon"></i>
               @endif
               <?php $idProd = session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>
-              <p>Achou  match</p>
+              <p>Achou match</p>
               <input onclick="countCompare(<?php echo $idProd?>)" type="checkbox" name="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id'] ?>" value="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_id']?>":hidden="!editable">
               <img src="<?php echo session()->get('all_fornecedor_produtos')[$i]['produto_path_imagem'] ?>" class="imagemProduto card-img-top" alt="...">
               <h5 class="card-title mt-3 text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_nome'] ?></h5>

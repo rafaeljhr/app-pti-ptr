@@ -58,6 +58,46 @@ Session_start();
                     </h4>
 
                     <hr class="dropdown-divider" style="width: 90%; margin: auto;">
+
+                    @if(Session::get('favoritos') == [] || Session::get('favoritos') == null)
+
+                        <li class='notificationElement mt-3 text-center'>
+                            <p class='textoNotificacao'>Não possui produtos favoritos!</p>
+                        </li>
+
+                    @else 
+
+                        @for($i = 0; $i < sizeOf(session()->get('favoritos')); $i++)
+
+                                <li class='notificationElement mt-3' id="li_<?php echo session()->get('favoritos')[$i]['fav_id'] ?>">
+
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class='textoNotificacao'><?php echo session()->get('favoritos')[$i]['fav_mensagem'] ?></p>
+                                            </div>
+            
+                                            <div class="col align-items-center">
+                                                <a onclick="apagarFavorito('<?php echo session()->get('favoritos')[$i]['fav_id'] ?>', '{{ route('delete-favorito') }}' )" class='anchorNotificacao'>
+                                                    <button type="button" class="dropdown-item btn-close" id="button-close-div" aria-label="Close"></button>
+                                                </a>
+                                            </div>
+            
+                                        </div>
+                                    </div>
+                                    
+                                </li>
+                                
+                                
+                                @if($i+1 < sizeOf(session()->get('favoritos')))
+
+                                    <hr id='hr_<?php echo session()->get('favoritos')[$i]['fav_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
+
+                                @endif  
+
+                            @endfor
+
+                    @endif
                     
                 </ul>
 

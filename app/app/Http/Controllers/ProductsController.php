@@ -15,6 +15,7 @@ use App\Models\Evento;
 use App\Models\Notificacao;
 use App\Models\Categoria_campos_extra;
 use App\Models\Produto_campos_extra;
+use App\Models\Favoritos;
 use App\Models\Fornecedor_historico_poluicao;
 use App\Http\Controllers\ArmazensController;
 
@@ -63,6 +64,32 @@ class ProductsController extends Controller
 
     public static function rebuild_fornecedor_session()
     {
+
+
+        $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
+
+        $all_favs = array();
+
+        foreach($favs as $fav1) {
+
+            $fav_id = $fav1->id;
+            $fav_id_utilizador = $fav1->id_utilizador;
+            $fav_id_produto = $fav1->id_produto;
+            $fav_mensagem = $fav1->mensagem;
+
+            $atributos_favoritos = [
+                "fav_id" => $fav_id,
+                "fav_id_utilizador" => $fav_id_utilizador,
+                "fav_id_produto" => $fav_id_produto,
+                "fav_mensagem" => $fav_mensagem,
+            ];
+
+            array_push($all_favs, $atributos_favoritos);
+        }
+
+        session()->put('favoritos', $all_favs);
+
+
         $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
         
         
@@ -110,14 +137,6 @@ class ProductsController extends Controller
         }
 
         session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
-
-
-
-
-       
-
-        
-
 
 
 
@@ -195,12 +214,6 @@ class ProductsController extends Controller
 
         session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
 
-       
-    
-
-        
-        
-        
 
     }
 
@@ -228,7 +241,6 @@ class ProductsController extends Controller
             'informacoes_adicionais'=>'required|string',
         ]);
 
-        
 
         $filename = "images/default_produto.jpg";
 
@@ -251,7 +263,6 @@ class ProductsController extends Controller
             $filename = 'images/users_images/' . $filename;
             
         }
-
 
         $newProduto = Produto::create([
             'nome' => $request->get('nome'),
@@ -276,7 +287,6 @@ class ProductsController extends Controller
             'kwh_consumidos' => $fornecedor_historico->kwh_consumidos + $newProduto->kwh_consumidos_por_dia_no_armazem,
         ];
         
-
         $fornecedor_historico->update($historico_to_update);
 
         foreach($catField as $catFields){
@@ -332,8 +342,6 @@ class ProductsController extends Controller
 
         return redirect('/inventory');
     }
-
-
 
 
     public function productEdit(Request  $request){
@@ -549,8 +557,6 @@ class ProductsController extends Controller
 
 
 
-
-
     public function deleteWarning(Request $request){
 
         $html="Tem a certeza que deseja apagar o produto ".$request->get('nome_produto')."     
@@ -569,6 +575,33 @@ class ProductsController extends Controller
 
 
     public static function productRemove(Request $request){
+
+        Favoritos::where('id_produto', $request->get('id_produto'))->delete();
+        
+        $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
+
+        $all_favs = array();
+
+        foreach($favs as $fav1) {
+
+            $fav_id = $fav1->id;
+            $fav_id_utilizador = $fav1->id_utilizador;
+            $fav_id_produto = $fav1->id_produto;
+            $fav_mensagem = $fav1->mensagem;
+
+            $atributos_favoritos = [
+                "fav_id" => $fav_id,
+                "fav_id_utilizador" => $fav_id_utilizador,
+                "fav_id_produto" => $fav_id_produto,
+                "fav_mensagem" => $fav_mensagem,
+            ];
+
+            array_push($all_favs, $atributos_favoritos);
+        }
+
+        session()->put('favoritos', $all_favs);
+
+
 
         Evento::where('id_produto', $request->get('id_produto'))->delete();
         Produto_campos_extra::where('id_produto', $request->get('id_produto'))->delete();
@@ -1288,6 +1321,89 @@ class ProductsController extends Controller
         }
     
         return $html;
+    }
+
+
+    public function addFav($id){
+
+        $produto = Produto::where('id', $id)->first();
+
+        $fav = Favoritos::create([
+            'id_utilizador' => session()->get('user_id'),
+            'id_produto' => $id,
+            'mensagem' => $produto->nome,
+        ]);
+
+        $atributos_favoritos = [
+            "fav_id" => $fav->id,
+            "fav_id_utilizador" => $fav->id_utilizador,
+            "fav_id_produto" => $fav->id_produto,
+            "fav_mensagem" => $fav->mensagem,
+        ];
+
+        session()->push('favoritos', $atributos_favoritos);
+        return redirect('/products');
+
+    }
+
+
+    public function delFav(Request  $request){
+        //return $request;
+
+        Favoritos::where('id', $request->get('id'))->delete();
+        
+       
+
+        // rebuild user notification on session
+        $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
+
+        $all_favs = array();
+
+        foreach($favs as $fav1) {
+
+            $fav_id = $fav1->id;
+            $fav_id_utilizador = $fav1->id_utilizador;
+            $fav_id_produto = $fav1->id_produto;
+            $fav_mensagem = $fav1->mensagem;
+
+            $atributos_favoritos = [
+                "fav_id" => $fav_id,
+                "fav_id_utilizador" => $fav_id_utilizador,
+                "fav_id_produto" => $fav_id_produto,
+                "fav_mensagem" => $fav_mensagem,
+            ];
+
+            array_push($all_favs, $atributos_favoritos);
+        }
+
+        session()->put('favoritos', $all_favs);
+    }
+
+    public static function obter_favoritos_do_utilizador() {
+
+        $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
+
+        $all_favs = array();
+
+        foreach($favs as $fav1) {
+
+            $fav_id = $fav1->id;
+            $fav_id_utilizador = $fav1->id_utilizador;
+            $fav_id_produto = $fav1->id_produto;
+            $fav_mensagem = $fav1->mensagem;
+
+            $atributos_favoritos = [
+                "fav_id" => $fav_id,
+                "fav_id_utilizador" => $fav_id_utilizador,
+                "fav_id_produto" => $fav_id_produto,
+                "fav_mensagem" => $fav_mensagem,
+            ];
+
+            array_push($all_favs, $atributos_favoritos);
+        }
+
+        session()->put('favoritos', $all_favs);
+        
     }
 
 

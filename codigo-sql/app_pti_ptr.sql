@@ -40,6 +40,27 @@ CREATE TABLE fornecedor_historico_poluicao (
 );
 
 
+
+CREATE TABLE favoritos (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id_utilizador INTEGER NOT NULL,
+  id_produto INTEGER NOT NULL,
+  mensagem VARCHAR(255) NOT NULL,
+  
+        
+  CONSTRAINT fk_favoritos_id_utilizador
+    FOREIGN KEY (id_utilizador) 
+    REFERENCES utilizador(id),
+
+  CONSTRAINT fk_favoritos_id_produto
+    FOREIGN KEY (id_produto) 
+    REFERENCES produto(id)
+
+    
+)
+
+
+
 CREATE TABLE notificacoes (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   id_utilizador INTEGER NOT NULL,

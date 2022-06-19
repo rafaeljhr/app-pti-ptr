@@ -159,9 +159,6 @@ class ArmazensController extends Controller
 
 
 
-    
-
-
     public function armazemDelete(Request $request){
         
         $produto = Produto::where('id_armazem', $request->get('id_armazem'))->get();
@@ -172,7 +169,9 @@ class ArmazensController extends Controller
                     unlink($produtos->path_imagem); // apagar a imagem do produto
                 }
                 Produto_campos_extra::where('id_produto',  $produtos->id)->delete();
+                Favoritos::where('id_produto', $produtos->id)->delete();
                 $produtos->delete();
+
                 session()->forget('all_fornecedor_produtos');
                 ProductsController::rebuild_fornecedor_session(); // rebuild products on session
             }
