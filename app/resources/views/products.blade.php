@@ -48,7 +48,11 @@ function isInCarrinho($productID) {
                     <h4>{{$produto->nome}}</h4>
                     <p class="price">{{$produto->preco}}€</p>
                     <p><button>Add to Cart</button></p>
+                    <a id="hideAnchor" href="{{ URL::to('produtosFav/'.$produto->id)}}">
+                        <button type="button" class="btn btn-outline-primary mb-2">Adicionar aos favoritos</button>
+                    </a>
                 </div>
+                
 
             @endforeach
 

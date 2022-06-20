@@ -65,7 +65,6 @@ class ProductsController extends Controller
     public static function rebuild_fornecedor_session()
     {
 
-
         $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
 
         $all_favs = array();
