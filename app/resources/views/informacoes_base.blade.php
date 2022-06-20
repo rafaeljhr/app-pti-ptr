@@ -102,6 +102,13 @@
                                 <i v-show="nome_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir um nome"></i>
                             </div>
                         </div>
+                        <div class="col">
+                            <label class="mb-2" for="preco">Preço cobrado por entrega</label>
+                            <div class="inline-icon">
+                                <input @input="checkForm()" ref="preco" type="number" name="preco" class="form-control mb-3" value="<?php echo session()->get('base')['base_preco'] ?>" :disabled="!editable">
+                                <i v-show="preco_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir um preço"></i>
+                            </div>
+                        </div>
 
                     </div>
 

@@ -33,6 +33,7 @@ class BasesController extends Controller
             $base_codigo_postal = $base->codigo_postal;
             $base_cidade = $base->cidade;
             $base_pais = $base->pais;
+            $base_preco = $base->preco;
 
             $atributos_base = [
                 "base_id" => $base_id,
@@ -43,6 +44,7 @@ class BasesController extends Controller
                 "base_codigo_postal" => $base_codigo_postal,
                 "base_cidade" => $base_cidade,
                 "base_pais" => $base_pais,
+                "base_preco" => $base_preco,
             ];
 
             array_push($all_transportadora_bases, $atributos_base);
@@ -117,6 +119,7 @@ class BasesController extends Controller
     {
         $request->validate([
             'nome'=>'required|string',
+            'preco'=>'required|string',
             'morada'=>'required|string',
             'codigo_postal_1'=>'required|string',
             'codigo_postal_2'=>'required|string',
@@ -156,6 +159,7 @@ class BasesController extends Controller
             'pais' => $request->get('morada'),
             'nome' => $request->get('nome'),
             'path_imagem' => $filename,
+            'preco' => $request->get('preco'),
         ]);
 
         $notificacao = Notificacao::create([
@@ -182,6 +186,7 @@ class BasesController extends Controller
             "base_pais" => $newBase->pais,
             "base_nome" => $newBase->nome,
             "base_path_imagem" => $newBase->path_imagem,
+            "base_preco" => $newBase->preco,
         ];
 
 
@@ -212,6 +217,7 @@ class BasesController extends Controller
             "base_pais" => $base->pais,
             "base_nome" => $base->nome,
             "base_path_imagem" => $base->path_imagem,
+            "base_preco" => $base->preco,
         ];
 
         session()->put('base', $atributos_base);
@@ -298,6 +304,7 @@ class BasesController extends Controller
             "base_pais" => $base->pais,
             "base_nome" => $base->nome,
             "base_path_imagem" => $base->path_imagem,
+            "base_preco" => $base->preco,
         ];
 
         session()->put('base', $atributos_base);
@@ -335,6 +342,7 @@ class BasesController extends Controller
             'codigo_postal_1'=>'sometimes|required|integer',
             'codigo_postal_2'=>'sometimes|required|integer',
             'pais'=>'sometimes|required|string',
+            'preco'=>'sometimes|required|string',
         ]);
 
         
@@ -350,6 +358,7 @@ class BasesController extends Controller
             "base_pais" => $base->pais,
             "base_nome" => $base->nome,
             "base_path_imagem" => $base->path_imagem,
+            "base_preco" => $base->preco,
         ];
 
         session()->put('base', $atributos_base);
