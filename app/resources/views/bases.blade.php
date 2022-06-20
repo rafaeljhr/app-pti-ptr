@@ -109,10 +109,21 @@
       @csrf
         <h1 class="text-center mb-3 mt-2">CRIAR BASE</h1>
 
-        <label for="nome" class="form-label">Nome da base</label>
-        <div class="input-group mb-3">  
+        <div class="row">
+          <div class="col">
+            <label for="nome" class="form-label">Nome da base</label>
+            <div class="input-group mb-3">  
             <input type="text" class="form-control" name="nome" id="morada"  aria-describedby="basic-addon1" required>
+          </div>
+          </div>
+          <div class="col">
+            <label for="preco" class="form-label">Preço cobrado por entrega</label>
+            <div class="input-group mb-3">  
+              <input type="number" class="form-control" name="preco" id="preco"  aria-describedby="basic-addon1" required>
+            </div>
+          </div>
         </div>
+        
 
         <label for="image" class="form-label">Imagem da base:</label>
         <div class="input-group mb-3">       

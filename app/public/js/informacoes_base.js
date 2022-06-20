@@ -12,6 +12,7 @@ let app = Vue.createApp({
             morada_valid: true,
             codigo_postal_valid: true,
             cidade_valid: true,
+            preco_valid: true,
         }
     },
 
@@ -24,6 +25,7 @@ let app = Vue.createApp({
             this.$refs.codigo_postal_1.value = this.codigo_postal_1;
             this.$refs.codigo_postal_2.value = this.codigo_postal_2;
             this.$refs.cidade.value = this.cidade;
+            this.$refs.preco.value = this.preco;
         },
 
         checkForm() {
@@ -59,11 +61,18 @@ let app = Vue.createApp({
                 this.cidade_valid = false; 
             }
 
-            if (this.cidade_valid && this.codigo_postal_valid && this.morada_valid &&
+            if (this.$refs.preco.value > 0) {
+                this.preco_valid = true; 
+            } else {
+                this.preco_valid = false; 
+            }
+
+            if (this.preco_valid && this.cidade_valid && this.codigo_postal_valid && this.morada_valid &&
                 this.pais_valid && this.nome_valid &&
                 !(this.$refs.nome.value == this.nome && this.$refs.pais.value == this.pais 
                 && this.$refs.morada.value == this.morada && this.$refs.codigo_postal_1.value == this.codigo_postal_1
-                && this.$refs.codigo_postal_2.value == this.codigo_postal_2 && this.$refs.cidade.value == this.cidade)) {
+                && this.$refs.codigo_postal_2.value == this.codigo_postal_2 && this.$refs.cidade.value == this.cidade
+                && this.$refs.preco.value == this.preco)) {
                     document.getElementById("guardar_alteracoes").disabled = false;
             } else {
                 document.getElementById("guardar_alteracoes").disabled = true;
@@ -78,6 +87,7 @@ let app = Vue.createApp({
         this.codigo_postal_1 = this.$refs.codigo_postal_1.value;
         this.codigo_postal_2 = this.$refs.codigo_postal_2.value;
         this.cidade = this.$refs.cidade.value;
+        this.preco = this.$refs.preco.value;
     }
 })
 
