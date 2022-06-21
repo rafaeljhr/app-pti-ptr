@@ -678,7 +678,7 @@ class EncomendaController extends Controller
 
     }
 
-    public function productRegister(Request $request) {
+    /* public function productRegister(Request $request) {
         
-    }
+    } */
 }
