@@ -24,7 +24,6 @@ let app = Vue.createApp({
 
             //atualizar preço total adicionando o preço de entrega
             this.$refs.totalCost.innerHTML = subTotal + " €";
-
         },
 
         removeProduto(productKey, productName) {

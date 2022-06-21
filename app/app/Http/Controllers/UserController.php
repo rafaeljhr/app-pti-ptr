@@ -48,6 +48,8 @@ class UserController extends Controller
             session()->put('user_codigo_postal', $utilizador->codigo_postal);
             session()->put('user_cidade', $utilizador->cidade);
             session()->put('user_pais', $utilizador->pais);
+            session()->put('user_latitude', $utilizador->latitude);
+            session()->put('user_longitude', $utilizador->longitude);
 
             NotificationController::obter_notificacoes_do_utilizador();
             
@@ -189,6 +191,8 @@ class UserController extends Controller
                 'pais' => $request->get('pais'),
                 'google_id' => session()->get('user_google_id'),
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
+                'latitude' => $request->get('latitude'),
+                'longitude' => $request->get('longitude'),
             ]);
             if($tipo_de_conta_novo_utilizador_id == 5){
                 Fornecedor_historico_poluicao::create([
@@ -244,6 +248,8 @@ class UserController extends Controller
                 'pais' => $request->get('pais'),
                 'google_id' => null,
                 'tipo_de_conta' => $tipo_de_conta_novo_utilizador_id,
+                'latitude' => $request->get('latitude'),
+                'longitude' => $request->get('longitude'),
             ]);
             if($tipo_de_conta_novo_utilizador_id == 5){
                 Fornecedor_historico_poluicao::create([
@@ -275,6 +281,8 @@ class UserController extends Controller
         session()->put('user_codigo_postal', $newUtilizador->codigo_postal);
         session()->put('user_cidade', $newUtilizador->cidade);
         session()->put('user_pais', $newUtilizador->pais);
+        session()->put('user_latitude', $newUtilizador->latitude);
+        session()->put('user_longitude', $newUtilizador->longitude);
         if ($newUtilizador->google_id != null || $newUtilizador->google_id != "NULL" || $newUtilizador->google_id != "null" || $newUtilizador->google_id != "Null") {
             session()->put('user_google_id', $newUtilizador->google_id);
         }
@@ -297,8 +305,7 @@ class UserController extends Controller
 
 
     // Update the information of a consumidor/transportadora/fornecedor
-    public function update(Request $request)
-    {
+    public function update(Request $request) {
         // return $request->input();
         $request->validate([
             'email'=>'sometimes|required|string',
@@ -329,6 +336,8 @@ class UserController extends Controller
         session()->put('user_codigo_postal', $utilizador->codigo_postal);
         session()->put('user_cidade', $utilizador->cidade);
         session()->put('user_pais', $utilizador->pais);
+        session()->put('user_latitude', $utilizador->latitude);
+        session()->put('user_longitude', $utilizador->longitude);
 
         return redirect('/profile');
 

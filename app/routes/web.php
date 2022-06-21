@@ -44,8 +44,11 @@ Route::get('/profile', function () {
 
 Route::get('/checkout', function () {
     NotificationController::obter_notificacoes_do_utilizador();
+    ProductsController::distanceToStorage();
     return view('checkout');
 })->name('checkout-url'); 
+
+/* Route::post('/checkout-submit', [EncomendaController::class, 'registerEncomenda'])->name('submit-nova-encomenda'); */
 
 Route::get('/api-documentacao', function () {
     return view('api_documentacao');

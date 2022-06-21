@@ -166,9 +166,9 @@
           
           <label for="codigo_postal" style="display: table-cell;" class="text-dark">Código Postal</label>
           <div class="inline-icon">
-          <input  type="text" name ="codigo_postal_1" class="form-control w-50" style="display: inline-block;" maxlength="4" placeholder="xxxx">
+          <input  type="text" id ="codigo_postal_1" name ="codigo_postal_1" class="form-control w-50" style="display: inline-block;" maxlength="4" placeholder="xxxx">
         
-          <input  type="text" name ="codigo_postal_2" class="form-control w-50" style="display: inline-block;" maxlength="3" placeholder="xxx">
+          <input  type="text" id ="codigo_postal_2" name ="codigo_postal_2" class="form-control w-50" style="display: inline-block;" maxlength="3" placeholder="xxx">
         </div>
         </div>
 
@@ -187,6 +187,10 @@
           </div>
 
       </div>
+
+      {{-- Hidden inputs para a latitude e longitude da morada do utilizador --}}
+      <input ref="latitude" type="hidden" name ="latitude" value="default">
+      <input ref="longitude" type="hidden" name ="longitude" value="default">
     
   
   <button class="w-100 btn btn-lg btn-primary" id ="but-pad" type="submit">Adicionar armazém</button>
@@ -196,16 +200,6 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
 <script src="./js/storage.js"></script>
 
-    
 @endsection

@@ -146,7 +146,6 @@ class BasesController extends Controller
             }
 
             $filename = 'images/users_images/' . $filename;
-            
         }
 
         $codigo_postal = $request->get('codigo_postal_1') . "-" . $request->get('codigo_postal_2');
@@ -158,6 +157,8 @@ class BasesController extends Controller
             'cidade' => $request->get('cidade'),
             'pais' => $request->get('morada'),
             'nome' => $request->get('nome'),
+            'latitude' => $request->get('latitude'),
+            'longitude' => $request->get('longitude'),
             'path_imagem' => $filename,
             'preco' => $request->get('preco'),
         ]);
@@ -177,7 +178,7 @@ class BasesController extends Controller
 
         session()->push('notificacoes', $atributos_notificacao);
 
-        $atributos_nova_base= [
+        $atributos_nova_base = [
             "base_id" => $newBase->id,
             "base_id_transportadora" => $newBase->id_transportadora,
             "base_morada" => $newBase->morada,
@@ -187,6 +188,8 @@ class BasesController extends Controller
             "base_nome" => $newBase->nome,
             "base_path_imagem" => $newBase->path_imagem,
             "base_preco" => $newBase->preco,
+            "base_latitude" => $newBase->latitude,
+            "base_longitude" => $newBase->longitude,
         ];
 
 
@@ -330,8 +333,6 @@ class BasesController extends Controller
         return redirect('/base');
 
     }
-
-
 
     public function baseEdit(Request $request)
     {

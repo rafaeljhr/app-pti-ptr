@@ -82,6 +82,8 @@ class ArmazensController extends Controller
             'codigo_postal' => $codigo_postal,
             'cidade'=>$request->get('cidade'),
             'pais'=>$request->get('pais'),
+            'latitude' => $request->get('latitude'),
+            'longitude' => $request->get('longitude'),
         ]);
 
         $idArmazem = Armazem::where('morada', $request->get('morada'))->get();
@@ -96,6 +98,8 @@ class ArmazensController extends Controller
             "armazem_zip_code"=> $newArmazem->codigo_postal,
             "armazem_cidade"=> $newArmazem->cidade,
             "armazem_pais"=> $newArmazem->pais,
+            "armazem_latitude"=> $newArmazem->latitude,
+            "armazem_longitude"=> $newArmazem->longitude,
         ];
 
 
@@ -156,8 +160,6 @@ class ArmazensController extends Controller
         
         return array($html, $htmlB);
     }
-
-
 
     public function armazemDelete(Request $request){
         

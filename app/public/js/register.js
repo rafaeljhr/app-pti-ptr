@@ -28,6 +28,7 @@ let app = Vue.createApp({
     },
 
     mounted() {
+
         if (document.getElementById("user_google_id").name == 1) {
             this.current_tab = 1;
         } else {
@@ -84,7 +85,9 @@ let app = Vue.createApp({
                 this.form_valid = false;
             }
 
-            if (n == 1 && !(this.validateForm())) return false;
+            if (n == 1 && !(this.validateForm())) {
+                return false;
+            } 
             this.tabs[this.current_tab].style.display = "none";
             this.current_tab = this.current_tab + n;
         
@@ -208,6 +211,7 @@ let app = Vue.createApp({
         },
 
         checkForm() {
+
             if (this.$refs.primeiro_nome.value.length <= 0) {
                 this.first_name_valid = false;
                 
@@ -297,7 +301,7 @@ let app = Vue.createApp({
         },
         
         checkEmail() {
-            
+   
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.$refs.userEmail.value)){
                 this.form_valid = true;
             } else {
@@ -307,6 +311,27 @@ let app = Vue.createApp({
 
         finalizarRegisto() {
 
+            var url = new URL("https://atlas.microsoft.com/search/address/json");
+            var parameters = { 
+                "subscription-key" : "rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc", 
+                "api-version" : 1.0, 
+                "language" : "pt-PT", 
+                "query" : this.$refs.userMorada.value + "," + this.$refs.userCidade.value + "," + this.$refs.userCod_Postal_1.value + "-" + this.$refs.userCod_Postal_2.value};
+
+            for (var p in parameters) {
+                url.searchParams.append(p, parameters[p]);
+            }
+
+            fetch(url)
+            .then(response => response.json())
+            .then(
+                data => {this.$refs.latitude.value = data["results"][0]["position"]["lat"];
+                         this.$refs.longitude.value = data["results"][0]["position"]["lon"];})
+
+            this.$refs.next_previous.style.display = "none";
+            this.$refs.all_steps.style.display = "none";
+            this.$refs.tab_imagem.style.display = "none";
+            this.$refs.header.innerHTML = "";
             this.$refs.loading.style.display = "block";
 
             document.getElementById('user_input_email').disabled = false;
@@ -328,10 +353,12 @@ let app = Vue.createApp({
             for (var i = 0; i < y.length; i++) { 
                 if (y[i].value=="" ) { 
                     y[i].className +=" invalid" ; valid=false; 
-                }} 
-                if (valid) { 
-                    this.steps[this.current_tab].className +=" finish" ; } 
-                    return valid;
+                }
+            } 
+
+            if (valid) { 
+                this.steps[this.current_tab].className +=" finish" ; } 
+                return valid;
         }
         
         

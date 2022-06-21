@@ -125,6 +125,10 @@
             </div>
         </div>
 
+        <div> {{-- absolute a cobrir tudo --}}
+            {{-- spinner https://getbootstrap.com/docs/4.2/components/spinners/ --}}
+        </div>
+
         <div class="form-div mx-auto my-2 px-3">
 
             <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
@@ -132,7 +136,7 @@
             <h1 class="h3 mb-4 mx-auto d-flex justify-content-center font-weight-normal">O MEU PERFIL</h1>
 
             <div class="px-4">
-                <form method="post" action="{{ route('edit-profile-controller') }}">
+                <form @submit.prevent="saveChanges" id="profileForm" method="post" action="{{ route('edit-profile-controller') }}">
                     @csrf
                     <div class="row">                    
                         <div class="col">
@@ -151,7 +155,6 @@
                                 <i v-show="unome_valid === false && editable === true" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Último nome não pode ficar vazio"></i>
                                 <i v-show="unome_valid === true && editable === true" class="bi bi-check check-icon"></i>
                             </div>
-                            
                         </div>
     
                         <div class="col">
@@ -225,6 +228,10 @@
                                 <i v-show="cidade_valid === false" class="bi bi-x x-icon text-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Tem de introduzir uma cidade"></i>
                             </div>
                         </div>
+
+                        {{-- Hidden inputs para a latitude e longitude da morada do utilizador --}}
+                        <input ref="latitude" type="hidden" name ="latitude" value="default">
+                        <input ref="longitude" type="hidden" name ="longitude" value="default">
 
                     </div>
 

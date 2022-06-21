@@ -678,4 +678,7 @@ class EncomendaController extends Controller
 
     }
 
+    public function productRegister(Request $request) {
+        
+    }
 }
