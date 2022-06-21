@@ -40,4 +40,13 @@ class Utilizador extends Model
     ];
 	
     use HasApiTokens, HasFactory;
+
+    public function favoritos(){
+        return $this->hasmany(Favoritos::class, 'id_utilizador');
+    }
+
+    public function scopegetFavoritos()
+    {
+        return $this->favoritos;
+    }
 }

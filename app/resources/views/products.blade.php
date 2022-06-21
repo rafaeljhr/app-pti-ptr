@@ -1,5 +1,6 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <?php
@@ -34,23 +35,29 @@ function isInCarrinho($productID) {
 
         <div id='todosProdutos' class="Div_Produtos">
 
-            @foreach($produtos as $produto)
+            @foreach($produtos[0] as $produto)
 
                 <?php 
+
+
                     $image_path_filename = $produto->path_imagem;
+                    $tagFavoritos = "fa fa-star";
                     if (!file_exists($image_path_filename)) {
                         $image_path_filename = "images/default_produto.jpg";
+                    }
+                    if(get_class($produtos[1]) != 'Illuminate\Database\Eloquent\Collection' and $produtos[1]->contains($produto->id)) {
+                        $tagFavoritos = "fa fa-star checked";
                     }
                 ?>
                 
                 <div class="carta">
+                    <a id="hideAnchor" class="Estrela_Favoritos" href="{{ URL::to('produtosFav/'.$produto->id)}}">
+                        <span class="{{$tagFavoritos}}"></span>
+                    </a>
                     <img src="{{$image_path_filename}}" style="width:100%" />
                     <h4>{{$produto->nome}}</h4>
                     <p class="price">{{$produto->preco}}€</p>
                     <p><button>Add to Cart</button></p>
-                    <a id="hideAnchor" href="{{ URL::to('produtosFav/'.$produto->id)}}">
-                        <button type="button" class="btn btn-outline-primary mb-2">Adicionar aos favoritos</button>
-                    </a>
                 </div>
                 
 
