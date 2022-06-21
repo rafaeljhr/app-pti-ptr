@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 
 use App\Models\Produto;
 use App\Models\Armazem;
+use App\Models\Base;
 use App\Models\Categoria;
 use App\Models\Subcategoria;
 use App\Models\Evento;
@@ -17,6 +18,7 @@ use App\Models\Categoria_campos_extra;
 use App\Models\Produto_campos_extra;
 use App\Models\Fornecedor_historico_poluicao;
 use App\Http\Controllers\ArmazensController;
+use App\Models\Utilizador;
 
 class ProductsController extends Controller
 {
@@ -1290,4 +1292,93 @@ class ProductsController extends Controller
     }
 
 
+    public static function findClosestBases() {
+        $produtosBases = array();
+
+        //obter coords das Bases
+        $bases = Base::all();
+        $coordsTransportadoras = array();
+
+        foreach ($bases as &$base) {
+            $coordBase = array();
+            array_push($coordBase, $base->id_transportadora);
+            array_push($coordBase, $base->nome);
+            array_push($coordBase, $base->latitude);
+            array_push($coordBase, $base->longitude);
+
+            array_push($coordsTransportadoras, $coordBase);
+        }
+
+        $carrinho = session()->get('carrinho_produtos');
+
+        foreach ($carrinho as &$produto) {
+            $armazem = Armazem::where('id', $produto['produto_id_armazem'])->first();
+
+            $armazemLat = $armazem->latitude;
+            $armazemLon = $armazem->longitude;
+
+            $distanciasTransportadoras = array(); /* here */
+            foreach ($coordsTransportadoras as &$coordsTransportadora) {
+                $distanciaAprox = 0;
+                $distanciaAprox += abs($armazemLat - $coordsTransportadora[2]);
+                $distanciaAprox += abs($armazemLon - $coordsTransportadora[3]);
+
+                $distanciasTransportadoras[] = array("dist" => $distanciaAprox,
+                                                     "id" => $coordsTransportadora[0],
+                                                     "nome" => $coordsTransportadora[1],
+                                                     "lat" => $coordsTransportadora[2],
+                                                     "lon" => $coordsTransportadora[3]);
+            }
+
+            usort($distanciasTransportadoras, 
+                function (array $a, array $b) {
+                    if ($a['dist'] < $b['dist']) {
+                        return -1;
+                    } else if ($a['dist'] > $b['dist']) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            );
+
+            $slicedResult = array_slice($distanciasTransportadoras, 0, 3);
+            array_push($produtosBases, $slicedResult);
+        }
+        
+        return $produtosBases;
+    }
+
+    public static function distanceToStorage() {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+
+        $url = "https://atlas.microsoft.com/route/directions/json?subscription-key=rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc&api-version=1.0&format=json&query=";
+
+        if(session()->has('carrinho_produtos')){
+            $carrinho = session()->get('carrinho_produtos');
+            $produtosBases = self::findClosestBases();
+        }
+           
+        for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++){
+            $armazem = Armazem::where('id', $carrinho[$i]['produto_id_armazem'])->first();
+
+            for ($x = 0; $x < sizeOf($produtosBases[$i]); $x++) {
+                $url .= (strval($armazem->latitude) . ',' . strval($armazem->longitude) . ':' . strval($produtosBases[$i][$x]['lat']  . ',' . strval($produtosBases[$i][$x]['lon'])));
+                curl_setopt($ch, CURLOPT_URL, $url);
+                $response = curl_exec($ch);
+                $response = json_decode($response);
+
+                $produtosBases[$i][$x]['dist'] = $response->routes[0]->summary->lengthInMeters;
+                $url = "https://atlas.microsoft.com/route/directions/json?subscription-key=rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc&api-version=1.0&format=json&query=";
+            }
+        }
+
+        curl_close($ch);
+        session()->put('basesDistancias', $produtosBases);
+    }
 }

@@ -11,6 +11,8 @@ let app = Vue.createApp({
             userCodPostal_1: "",
             userCodPostal_2: "",
             userCidade: "",
+            userLatitude: 0,
+            userLongitude: 0,
             editable: false,
             telephone_valid: true,
             nif_valid: true,
@@ -22,6 +24,22 @@ let app = Vue.createApp({
             codigo_postal_valid: true,
             cidade_valid: true,
         }
+    },
+
+    mounted() {
+        this.userPrimeiroNome = this.$refs.userPrimeiroNome.value;
+        this.userUltimoNome = this.$refs.userUltimoNome.value;
+        this.userEmail = this.$refs.userEmail.value;
+        this.userTel = this.$refs.userTel.value;
+        this.userNumContribuinte = this.$refs.userNumContribuinte.value;
+        this.userPais = this.$refs.userPais.value;
+        this.userMorada = this.$refs.userMorada.value;
+        this.userCodPostal_1 = this.$refs.userCodPostal_1.value;
+        this.userCodPostal_2 = this.$refs.userCodPostal_2.value;
+        this.userCidade = this.$refs.userCidade.value;
+        this.userLatitude = this.$refs.latitude.value;
+        this.userLongitude = this.$refs.longitude.value;
+
     },
 
     methods: {
@@ -37,6 +55,8 @@ let app = Vue.createApp({
             this.$refs.userCodPostal_1.value = this.userCodPostal_1;
             this.$refs.userCodPostal_2.value = this.userCodPostal_2;
             this.$refs.userCidade.value = this.userCidade;
+            this.$refs.userCidade.value = this.userLatitude;
+            this.$refs.userCidade.value = this.userLongitude;
         },
 
         checkForm() {
@@ -93,21 +113,45 @@ let app = Vue.createApp({
             } else {
                 this.cidade_valid = false; 
             }
-        }
-    }, 
+        },
 
-    mounted() {
-        this.userPrimeiroNome = this.$refs.userPrimeiroNome.value;
-        this.userUltimoNome = this.$refs.userUltimoNome.value;
-        this.userEmail = this.$refs.userEmail.value;
-        this.userTel = this.$refs.userTel.value;
-        this.userNumContribuinte = this.$refs.userNumContribuinte.value;
-        this.userPais = this.$refs.userPais.value;
-        this.userMorada = this.$refs.userMorada.value;
-        this.userCodPostal_1 = this.$refs.userCodPostal_1.value;
-        this.userCodPostal_2 = this.$refs.userCodPostal_2.value;
-        this.userCidade = this.$refs.userCidade.value;
-    }
+        saveChanges(e) {
+            e.preventDefault();
+
+            if (this.$refs.userPais.value == this.userPais &&
+                this.$refs.userMorada.value == this.userMorada &&
+                this.$refs.userCodPostal_1.value == this.userCodPostal_1 &&
+                this.$refs.userCodPostal_2.value == this.userCodPostal_2 &&
+                this.$refs.userCidade.value == this.userCidade) {
+
+                    document.getElementById("profileForm").submit();
+            } else {
+                
+                var url = new URL("https://atlas.microsoft.com/search/address/json");
+                var parameters = { 
+                "subscription-key" : "rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc", 
+                "api-version" : 1.0, 
+                "language" : "pt-PT", 
+                "query" : this.$refs.userMorada.value + "," + this.$refs.userCidade.value + "," + this.$refs.userCodPostal_1.value + "-" + this.$refs.userCodPostal_2.value};
+
+                for (var p in parameters) {
+                    url.searchParams.append(p, parameters[p]);
+                }
+
+                fetch(url)
+                .then(response => response.json())
+                .then(
+                    data => {this.$refs.latitude.value = data["results"][0]["position"]["lat"];
+                            this.$refs.longitude.value = data["results"][0]["position"]["lon"];})
+
+                setTimeout(function() {
+
+                    document.getElementById("profileForm").submit();
+                    
+                }, 3000)
+            }
+        },
+    }, 
 })
 
 app.mount('.app')

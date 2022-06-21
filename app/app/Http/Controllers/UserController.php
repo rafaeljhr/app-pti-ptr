@@ -47,6 +47,8 @@ class UserController extends Controller
             session()->put('user_codigo_postal', $utilizador->codigo_postal);
             session()->put('user_cidade', $utilizador->cidade);
             session()->put('user_pais', $utilizador->pais);
+            session()->put('user_latitude', $utilizador->latitude);
+            session()->put('user_longitude', $utilizador->longitude);
 
             NotificationController::obter_notificacoes_do_utilizador();
             
@@ -301,8 +303,7 @@ class UserController extends Controller
 
 
     // Update the information of a consumidor/transportadora/fornecedor
-    public function update(Request $request)
-    {
+    public function update(Request $request) {
         // return $request->input();
         $request->validate([
             'email'=>'sometimes|required|string',
@@ -333,6 +334,8 @@ class UserController extends Controller
         session()->put('user_codigo_postal', $utilizador->codigo_postal);
         session()->put('user_cidade', $utilizador->cidade);
         session()->put('user_pais', $utilizador->pais);
+        session()->put('user_latitude', $utilizador->latitude);
+        session()->put('user_longitude', $utilizador->longitude);
 
         return redirect('/profile');
 

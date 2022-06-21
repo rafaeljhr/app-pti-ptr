@@ -4,9 +4,12 @@
 
 <?php
 $subTotal = 0;
-$custoEntrega = 5;
 $kwhConsumidos = 0;
-/* session()->forget('carrinho_produtos');  */
+$custoEntrega = 5;
+
+$basesDistancias = session()->get('basesDistancias');
+
+/* session()->forget('carrinho_produtos'); */
 /* dd(session()->all()); */
 ?>
 
@@ -36,7 +39,7 @@ $kwhConsumidos = 0;
                     <hr>
 
                     <div id='todosProdutos'>
-            
+                        <form id="checkout" method="post" {{-- action="{{ route('submit-nova-encomenda') }}" --}} enctype="multipart/form-data">
                         @if(session()->get('carrinho_produtos')!=null)
                         @for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) 
 
@@ -55,7 +58,14 @@ $kwhConsumidos = 0;
                                     <h4 class="card-text text-danger"><?php echo session()->get('carrinho_produtos')[$i]['produto_preco'] ?> €</h4>
                                     <h5 class="card-title"><?php echo session()->get('carrinho_produtos')[$i]['produto_informacoes_adicionais'] ?></h5>
                                     <label for="quantity">Qtd.</label>
-                                    <input class="ms-2 mb-2" type="number" id="quantity" name="quantity" min="1" max="99" value="1">
+                                    <input class="ms-2" type="number" id="quantity" name="quantity" min="1" max="99" value="1">
+                                    <br>
+                                    <label for="transportadoras<?php echo $i ?>">Transportadora:</label>
+                                    <select class="mb-2" name="transportadoras<?php echo $i ?>" id="transportadoras<?php echo $i ?>">
+                                        @for($x = 0; $x < (sizeOf($basesDistancias[$i])); $x++)
+                                            <option value="<?php echo $basesDistancias[$i][$x]["id"] ?>">Nome: <?php echo $basesDistancias[$i][$x]["nome"] ?> | Distância: <?php echo $basesDistancias[$i][$x]["dist"] ?>m</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                     
                                 <div class="col-md-2">  
@@ -67,7 +77,6 @@ $kwhConsumidos = 0;
                             </div>
                                 
                         @endfor
-
                         @else
                             
                             <img class="mx-auto emptyCart" src="images/empty_cart.png" alt="Empty Box">
@@ -75,7 +84,7 @@ $kwhConsumidos = 0;
                         @endif
 
                             <img v-show="emptyCart" class="mx-auto emptyCart" src="images/empty_cart.png" alt="Empty Box">
-                
+                        </form>
                     </div>
                 </div>
             </div>
@@ -136,7 +145,7 @@ $kwhConsumidos = 0;
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-success">CHECKOUT</button>
+                <button type="submit" form="checkout" class="btn btn-success">CHECKOUT</button>
                 
             </div>
             

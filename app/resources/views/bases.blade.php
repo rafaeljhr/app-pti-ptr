@@ -30,7 +30,7 @@
           <h1>As suas bases</h1>
         </div>
         <div class="col-auto">
-            <button class="btn btn-success" onclick="criar()" id="botao_criar">Criar base</button>
+            <button class="btn btn-success" @click="criar()" id="botao_criar">Criar base</button>
         </div>
         
       </div>
@@ -91,7 +91,7 @@
         <h2>Parece que não possui bases.</h2>
         <p>As bases são necessárias para possuir veículos, então crie uma primeiramente!</p>
         <br>
-        <button class="btn btn-success" onclick="criar()" id="botao_criar">Criar base</button>
+        <button class="btn btn-success" @click="criar()" id="botao_criar">Criar base</button>
       </div>
       
 
@@ -102,10 +102,9 @@
 
   </div>
   
-
   <div id="criar" class="base">
     <button type="button" onclick="criar()" class="btn-close" id="button-close-div"  aria-label="Close"></button>
-    <form method="post" action="{{ route('base-register-controller')}}" enctype="multipart/form-data">
+    <form @submit.prevent="finishForm" id="baseForm" method="post" action="{{ route('base-register-controller')}}" enctype="multipart/form-data">
       @csrf
         <h1 class="text-center mb-3 mt-2">CRIAR BASE</h1>
 
@@ -131,8 +130,8 @@
                 <div class="form-outline">
                     <label for="codigo_postal" class="form-label">Código postal da base</label>
                     <div class="inline-icon">
-                        <input type="text" name ="codigo_postal_1" class="form-control w-50" maxlength="4" placeholder="xxxx" style="display: inline-block;">
-                        <input type="text" name ="codigo_postal_2" class="form-control w-50" maxlength="3" placeholder="xxx" style="display: inline-block;">
+                        <input type="text" name ="codigo_postal_1" id ="codigo_postal_1" class="form-control w-50" maxlength="4" placeholder="xxxx" style="display: inline-block;">
+                        <input type="text" name ="codigo_postal_2" id ="codigo_postal_2" class="form-control w-50" maxlength="3" placeholder="xxx" style="display: inline-block;">
                     </div>
                 </div>
             </div>
@@ -142,7 +141,7 @@
             <div class="col">
                 <div class="form-outline">
                     <label for="cidade" class="form-label">Cidade</label>
-                    <input type="text" name ="cidade" class="form-control">
+                    <input type="text" id="cidade" name ="cidade" class="form-control">
                 </div>
             </div>
             <div class="col">
@@ -152,6 +151,10 @@
                 </select>
             </div>
         </div>
+
+        {{-- Hidden inputs para a latitude e longitude da morada do utilizador --}}
+        <input ref="latitude" type="hidden" name ="latitude" value="default">
+        <input ref="longitude" type="hidden" name ="longitude" value="default">
     
       <button class="w-100 btn btn-lg btn-success mt-5" id ="but-pad" type="submit">Adicionar base</button>
     </form>

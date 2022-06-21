@@ -328,7 +328,6 @@ let app = Vue.createApp({
                 data => {this.$refs.latitude.value = data["results"][0]["position"]["lat"];
                          this.$refs.longitude.value = data["results"][0]["position"]["lon"];})
 
-            this.$refs.text_message.style.display = "block";
             this.$refs.next_previous.style.display = "none";
             this.$refs.all_steps.style.display = "none";
             this.$refs.tab_imagem.style.display = "none";
