@@ -78,7 +78,7 @@ Session_start();
                                             </div>
             
                                             <div class="col align-items-center">
-                                                <a onclick="apagarFavorito('<?php echo session()->get('favoritos')[$i]['fav_id'] ?>', '{{ route('delete-favorito') }}' )" class='anchorNotificacao'>
+                                                <a onclick="apagarFavorito('<?php echo session()->get('favoritos')[$i]['fav_id'] ?>', '{{ route('Add-Del-Fav') }}' )" class='anchorNotificacao'>
                                                     <button type="button" class="dropdown-item btn-close" id="button-close-div" aria-label="Close"></button>
                                                 </a>
                                             </div>

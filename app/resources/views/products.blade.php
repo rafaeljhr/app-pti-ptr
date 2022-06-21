@@ -51,7 +51,7 @@ function isInCarrinho($productID) {
                 ?>
                 
                 <div class="carta">
-                    <a id="hideAnchor" class="Estrela_Favoritos" href="{{ URL::to('produtosFav/'.$produto->id)}}">
+                    <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
                         <span class="{{$tagFavoritos}}"></span>
                     </a>
                     <img src="{{$image_path_filename}}" style="width:100%" />

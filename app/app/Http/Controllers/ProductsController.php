@@ -1281,59 +1281,24 @@ class ProductsController extends Controller
     }
 
 
-    public function addFav($id){
+    public function AddDelFav(Request  $request){
 
-        $produto = Produto::where('id', $id)->first();
+        $id_prod = $request->id;
+        $id_user = session()->get('user_id');
 
-        $fav = Favoritos::create([
-            'id_utilizador' => session()->get('user_id'),
-            'id_produto' => $id,
-            'mensagem' => $produto->nome,
-        ]);
+        $Favorito = Favoritos::where('id_produto', '=', $id_prod)
+                ->where('id_utilizador', '=', $id_user)
+                ->first();
 
-        $atributos_favoritos = [
-            "fav_id" => $fav->id,
-            "fav_id_utilizador" => $fav->id_utilizador,
-            "fav_id_produto" => $fav->id_produto,
-            "fav_mensagem" => $fav->mensagem,
-        ];
-
-        session()->push('favoritos', $atributos_favoritos);
-        return redirect('/products');
-
-    }
-
-
-    public function delFav(Request  $request){
-        //return $request;
-
-        Favoritos::where('id', $request->get('id'))->delete();
-        
-       
-
-        // rebuild user notification on session
-        $favs = Favoritos::where('id_utilizador', session()->get('user_id'))->get();
-
-        $all_favs = array();
-
-        foreach($favs as $fav1) {
-
-            $fav_id = $fav1->id;
-            $fav_id_utilizador = $fav1->id_utilizador;
-            $fav_id_produto = $fav1->id_produto;
-            $fav_mensagem = $fav1->mensagem;
-
-            $atributos_favoritos = [
-                "fav_id" => $fav_id,
-                "fav_id_utilizador" => $fav_id_utilizador,
-                "fav_id_produto" => $fav_id_produto,
-                "fav_mensagem" => $fav_mensagem,
-            ];
-
-            array_push($all_favs, $atributos_favoritos);
+        if($Favorito == null){
+            $fav = Favoritos::create([
+                'id_utilizador' => $id_user,
+                'id_produto' => $id_prod,
+            ]);
+        }else{
+            $Favorito->delete();
         }
 
-        session()->put('favoritos', $all_favs);
     }
 
     public static function obter_favoritos_do_utilizador() {

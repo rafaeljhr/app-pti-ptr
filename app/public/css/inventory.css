@@ -266,10 +266,20 @@
     text-decoration: none;
 }
 
-.checked{
+.Estrela_Favoritos:hover {
     color: orange;
+    opacity: 0.7;
 }
 
+.checked{
+    color: orange;
+
+}
+
+.checked:hover {
+    opacity: 0.7;
+    color: black;
+}
 
 /* Filtros Produtos na loja */
 
@@ -349,3 +359,4 @@
   .carta button:hover {
     opacity: 0.7;
   }
+
