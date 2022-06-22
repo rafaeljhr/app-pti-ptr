@@ -209,25 +209,6 @@ let app = Vue.createApp({
         },
         
 
-        mostrarCriarProduto() {
-            
-            if (document.getElementById("productForm").style.display == "block") {
-                console.log('aqui');
-                document.getElementById("productForm").style.display = "none";
-            } else {
-                console.log('aqui1');
-                document.getElementById("productForm").style.display = "block";
-            }
-
-
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-        },
-      
 
     },
 })

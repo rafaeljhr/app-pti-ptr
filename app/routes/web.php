@@ -87,6 +87,15 @@ Route::get('/inventory', function () {
 })->name('inventory');
 
 
+Route::get('/prodCreate', function () {
+    
+    
+    return view('createProduct');
+
+    
+});
+
+
 Route::get('/cadeia', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     

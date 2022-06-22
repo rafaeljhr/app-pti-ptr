@@ -7,6 +7,17 @@
     overflow: auto;
 }
 
+#apresentaçãoForm {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    height: auto;
+    width: 80%;
+    background-color: white;
+    max-height: 100%;
+    overflow: hidden;
+    padding: 10px;
+}
+
+
 #noProdutos{
     width: 100%;
     min-height: 600px;
@@ -61,9 +72,7 @@
     max-height: 300px;
 }
 
-#productForm {
-    display: none;
-}
+
 
 
 #todosArmazens {
@@ -202,9 +211,9 @@
 }
 
 
-.forForm{
+/* .forForm{
  
-    position: absolute;
+    
     background-color: white;
     border: solid;
     padding: 10px;
@@ -213,7 +222,7 @@
     z-index: 9;
     width: 55%;
 
-}
+} */
 
 
 .row{
