@@ -56,7 +56,14 @@ function isInCarrinho($productID) {
                             <span class="{{$tagFavoritos}}"></span>
                         </a>
                     @endif
-                    <img src="{{$image_path_filename}}" style="width:100%" />
+                    <a id="hideAnchor" class="Estrela_Favoritos" href="{{ URL::to('produtoDetalhes/'.$produto->id)}}">
+                    
+                        <img src="{{$image_path_filename}}" style="width:100%" />
+                    </a>
+                    <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
+                        <span class="{{$tagFavoritos}}"></span>
+                    </a>
+                    
                     <h4>{{$produto->nome}}</h4>
                     <p class="price">{{$produto->preco}}€</p>
                     <p><button>Add to Cart</button></p>

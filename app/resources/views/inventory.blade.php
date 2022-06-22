@@ -97,7 +97,7 @@ $filtroCat = "";
 </div>
 
   <div class="row w-100 mt-4 mb-4">
-    <h4>Bem vindo <?php echo  session()->get('user_nome')?>!</h4>
+    <h4>Bem vindo <?php echo session()->get('user_nome')?>!</h4>
     <div class="float-left">
       <h5>Aqui pode ver todos os produtos que se encontram associados à sua conta de momento </h5> 
     </div>

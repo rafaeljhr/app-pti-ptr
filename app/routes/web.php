@@ -202,10 +202,17 @@ Route::post('/product-remove-carrinho-controller', [ProductsController::class, "
 
 Route::get('/cadeiaInfo/{id}/', [ProductsController::class, "cadeiaInfo"]);
 
+Route::get('/produtoDetalhes/{id}/', [ProductsController::class, "prodInfo"]);
+
 Route::get('/cadeia-edit', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_cadeia');
 })->name('cadeia_info');
+
+Route::get('/produto-detalhes', function () {
+    
+    return view('produtos_detalhes');
+});
 
 Route::post('/produtosFav', [ProductsController::class, "AddDelFav"])->name('Add-Del-Fav');
 
