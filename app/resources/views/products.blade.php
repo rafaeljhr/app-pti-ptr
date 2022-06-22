@@ -45,15 +45,17 @@ function isInCarrinho($productID) {
                     if (!file_exists($image_path_filename)) {
                         $image_path_filename = "images/default_produto.jpg";
                     }
-                    if(get_class($produtos[1]) != 'Illuminate\Database\Eloquent\Collection' and $produtos[1]->contains($produto->id)) {
+                    if($produtos[1] != 0 and get_class($produtos[1]) != 'Illuminate\Database\Eloquent\Collection' and $produtos[1]->contains($produto->id)) {
                         $tagFavoritos = "fa fa-star checked";
                     }
                 ?>
                 
                 <div class="carta">
-                    <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
-                        <span class="{{$tagFavoritos}}"></span>
-                    </a>
+                    @if ($produtos[1] != 0)
+                        <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
+                            <span class="{{$tagFavoritos}}"></span>
+                        </a>
+                    @endif
                     <img src="{{$image_path_filename}}" style="width:100%" />
                     <h4>{{$produto->nome}}</h4>
                     <p class="price">{{$produto->preco}}€</p>
