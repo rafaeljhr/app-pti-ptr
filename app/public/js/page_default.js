@@ -23,7 +23,7 @@ window.onload = function () {
 };
 
 
-    function AdicionarApagarFavorito(element, id, route){
+    /* function AdicionarApagarFavorito(element, id, route){
 
         var span = element.innerHTML;
 
@@ -54,7 +54,7 @@ window.onload = function () {
     
         xhr.send(data); 
     
-    } 
+    }  */
 
 
 function apagarNotificacao(id, route){

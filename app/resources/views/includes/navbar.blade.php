@@ -48,58 +48,8 @@ Session_start();
                 </a>
                 
 
-                <a href="#" style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="icons_navbar" src="images/favoritos.png">
-                </a>
-                <ul class="dropdown-menu" id='favoritosDiv'>
-
-                    <h4 style="margin-left: 10px;" class="text-center">
-                        <p>Favoritos</p>
-                    </h4>
-
-                    <hr class="dropdown-divider" style="width: 90%; margin: auto;">
-
-                    @if(Session::get('favoritos') == [] || Session::get('favoritos') == null)
-
-                        <li class='notificationElement mt-3 text-center'>
-                            <p class='textoNotificacao'>Não possui produtos favoritos!</p>
-                        </li>
-
-                    @else 
-
-                        @for($i = 0; $i < sizeOf(session()->get('favoritos')); $i++)
-
-                                <li class='notificationElement mt-3' id="li_<?php echo session()->get('favoritos')[$i]['fav_id'] ?>">
-
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <p class='textoNotificacao'><?php echo session()->get('favoritos')[$i]['fav_mensagem'] ?></p>
-                                            </div>
-            
-                                            <div class="col align-items-center">
-                                                <a onclick="apagarFavorito('<?php echo session()->get('favoritos')[$i]['fav_id'] ?>', '{{ route('Add-Del-Fav') }}' )" class='anchorNotificacao'>
-                                                    <button type="button" class="dropdown-item btn-close" id="button-close-div" aria-label="Close"></button>
-                                                </a>
-                                            </div>
-            
-                                        </div>
-                                    </div>
-                                    
-                                </li>
-                                
-                                
-                                @if($i+1 < sizeOf(session()->get('favoritos')))
-
-                                    <hr id='hr_<?php echo session()->get('favoritos')[$i]['fav_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
-
-                                @endif  
-
-                            @endfor
-
-                    @endif
-                    
-                </ul>
+                
+                
 
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
