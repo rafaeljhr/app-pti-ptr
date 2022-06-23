@@ -5,19 +5,17 @@
 
 <?php
 
-function isInCarrinho($productID) {
+function isInCarrinho($produto) {
 
-    if (session()->has('carrinho_produtos')) {
-        for ($x = 0; $x < sizeOf(session()->get('carrinho_produtos')); $x++) {
-            if (session()->get('carrinho_produtos')[$x]['produto_id'] === $productID) {
-                return true;
-            }
+
+    $cart = session()->get('carrinho_produtos');
+    foreach ($cart as $key=>$prod){
+        
+        if ($cart[$key]->id == $produto->id){
+            return true; 
         }
-
-        return false;
-    } else {
-        return false;
-    }
+    } 
+    return false;
 }
 
 ?>
@@ -36,10 +34,7 @@ function isInCarrinho($productID) {
         <div id='todosProdutos' class="Div_Produtos">
 
             @foreach($produtos[0] as $produto)
-
                 <?php 
-
-
                     $image_path_filename = $produto->path_imagem;
                     $tagFavoritos = "fa fa-star";
                     if (!file_exists($image_path_filename)) {
@@ -51,6 +46,7 @@ function isInCarrinho($productID) {
                 ?>
                 
                 <div class="carta">
+
                     @if ($produtos[1] != null)
                         <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
                             <span class="{{$tagFavoritos}}"></span>
@@ -61,11 +57,14 @@ function isInCarrinho($productID) {
                         <img src="{{$image_path_filename}}" style="width:100%" />
                     </a>
 
-                    
-                    
                     <h4>{{$produto->nome}}</h4>
                     <p class="price">{{$produto->preco}}€</p>
-                    <p><button>Add to Cart</button></p>
+                    @if (!isInCarrinho($produto))
+                        <p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produto->id }}', '{{ route('Add-Del-Carrinho') }}')">Adicionar ao Carrinho</button></p>
+                    @else
+                        <p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produto->id }}', '{{ route('Add-Del-Carrinho') }}')">Remover do Carrinho</button></p>
+                    @endif
+                
                 </div>
                 
 

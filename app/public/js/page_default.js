@@ -22,8 +22,43 @@ window.onload = function () {
     
 };
 
+function AdicionarApagarProdutoCarrinho(element, id, route){
 
-    /* function AdicionarApagarFavorito(element, id, route){
+    var BtnText = element.innerHTML;
+
+    if(BtnText.includes("Adicionar ao Carrinho")){
+        element.innerHTML = "Remover do Carrinho";
+        element.style.background = 'red';
+    }else{
+        element.innerHTML = "Adicionar ao Carrinho";
+        element.style.background = 'green';
+    }
+
+    var data = new FormData();
+        
+    data.append("id", id);
+    
+    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+    let xhr = new XMLHttpRequest();
+    
+    xhr.open("POST", route, true);
+    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+    
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+            console.log(xhr.responseText);
+        } else if (this.status >= 400) {
+            console.log(this.status);
+        }
+    };
+    
+    xhr.send(data); 
+
+}
+
+
+     function AdicionarApagarFavorito(element, id, route){
 
         var span = element.innerHTML;
 
@@ -54,7 +89,7 @@ window.onload = function () {
     
         xhr.send(data); 
     
-    }  */
+    }  
 
 
 function apagarNotificacao(id, route){

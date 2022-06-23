@@ -1209,77 +1209,49 @@ class ProductsController extends Controller
     }
 
     
-    public function productAddCarrinho(Request $request) {
-        
-        $html = "".$request->get('nome_produto')." adicionado ao carrinho com sucesso!";
+    public function productAddDelCarrinho(Request $request) {
+  
+        $produto = Produto::where('id', $request->id)->first();
 
-        $produto = Produto::where('id', $request->get('id_produto'))->first();
-
-        $produto_id = $produto->id;
-        $produto_nome = $produto->nome;
-        $produto_preco = $produto->preco;
-        $produto_id_armazem = $produto->id_armazem;
-        $produto_id_fornecedor = $produto->id_fornecedor;
-        $produto_quantidade = $produto->quantidade;
-        $produto_nome_categoria = $produto->nome_categoria;
-        $produto_path_imagem = $produto->path_imagem;
-        $produto_nome_subcategoria = $produto->nome_subcategoria;
-        $produto_informacoes_adicionais = $produto->informacoes_adicionais;
-        $produto_data_producao_do_produto = $produto->data_producao_do_produto;
-        $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-        $produto_kwh_consumidos_por_dia_no_armazem = $produto->kwh_consumidos_por_dia_no_armazem;
-        $produto_pronto_a_vender = $produto->pronto_a_vender;
-
-        $atributos_produto = [
-            "produto_id" => $produto_id,
-            "produto_nome" => $produto_nome,
-            "produto_preco" => $produto_preco,
-            "produto_id_armazem" => $produto_id_armazem,
-            "produto_id_fornecedor" => $produto_id_fornecedor,
-            "produto_quantidade" => $produto_quantidade,
-            "produto_nome_categoria" => $produto_nome_categoria,
-            "produto_path_imagem" => $produto_path_imagem,
-            "produto_nome_subcategoria" => $produto_nome_subcategoria,
-            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia_no_armazem" => $produto_kwh_consumidos_por_dia_no_armazem,
-            "produto_pronto_a_vender" => $produto_pronto_a_vender,
-        ];
-
+        //$html = "".$produto->get('nome_produto')." adicionado ao carrinho com sucesso!";
         if(session()->has('carrinho_produtos')){
-
-            session()->push('carrinho_produtos', $atributos_produto);
-        } else {
-
-            $carrinho = array();
-            array_push($carrinho, $atributos_produto);
-            session()->put('carrinho_produtos', $carrinho);
-        }
-    
-        return $html;
-    }
-
-    public function productRemoveCarrinho(Request $request) {
-        
-        $html = "".$request->get('nome_produto')." removido do carrinho com sucesso!";
-
-        $produtoKey = $request->get('id_produto');
-
-        if(session()->has('carrinho_produtos')){
-
-           $carrinho = session()->get('carrinho_produtos');
-           array_splice($carrinho, $produtoKey, 1);
-
-           session()->put('carrinho_produtos', $carrinho);
             
+            if (!$this->IsProductInCart($produto)){
+                session()->push('carrinho_produtos', $produto);
+            }
+
         } else {
-            $html = "".$request->get("Ocorreu um erro na remoção do produto do carrinho!");
-        }
-    
-        return $html;
+            $carrinho = array();
+            array_push($carrinho, $produto);
+            session()->put('carrinho_produtos', $carrinho);
+        } 
+
+        return session()->get('carrinho_produtos');
+        //return $html;
     }
 
+
+    public function IsProductInCart($produto) {
+
+        $ProdutoArray = array();
+        array_push($ProdutoArray, $produto);
+
+        $cart = session()->get('carrinho_produtos');
+        foreach ($cart as $key=>$prod){
+            if ($cart[$key] == $ProdutoArray[0]){
+                
+                if (count($cart) == 0){
+                    $request->session()->forget('carrinho_produtos');
+                }else{
+                    unset($cart[$key]);
+                    session()->put('carrinho_produtos', $cart);
+                }
+
+                return true; 
+            }
+        } 
+        return false;
+    }
 
     public function AddDelFav(Request  $request){
 
