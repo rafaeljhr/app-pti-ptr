@@ -40,6 +40,7 @@ $basesDistancias = session()->get('basesDistancias');
 
                     <div id='todosProdutos'>
                         <form id="checkout" method="post" action="{{ route('submit-nova-encomenda') }}" enctype="multipart/form-data">
+                            @csrf
                         @if(session()->get('carrinho_produtos')!=null)
                             @for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) 
 

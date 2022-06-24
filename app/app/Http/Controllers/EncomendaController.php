@@ -16,6 +16,7 @@ use DateTime;
 use Response;
 use Illuminate\Filesystem\Filesystem;
 use File;
+use Illuminate\Support\Facades\Date;
 
 class EncomendaController extends Controller
 {
@@ -680,19 +681,42 @@ class EncomendaController extends Controller
 
     public function registerEncomenda(Request $request) {
 
-        $request->input();
+        /* return $request->input(); */
+
         /* $request->validate([
-            'nome'=>'required|string',
-            'id_armazem'=>'required|integer',
-            'nome_categoria'=>'required|string',
-            'nome_subcategoria'=>'required|string',
-            'preco' => 'required|numeric',
-            'data_producao_do_produto'=>'required|string',
-            'data_insercao_no_site'=>'required|string',
-            'kwh_consumidos_por_dia'=>'required|numeric',
-            'quantidade' => 'required|integer',
-            'informacoes_adicionais'=>'required|string',
+            'preco'=>'required|numeric',
+            'preco_transporte'=>'required|numeric',
+            'morada'=>'required|string',
+            'codigo_postal'=>'required|string',
+            'cidade' => 'required|string',
+            'pais'=>'required|string',
+            'quantidade'=>'required|integer',
+            'id_consumidor'=>'required|integer',
+            'id_produto' => 'required|integer',
+            'id_transportadora'=>'required|integer',
+            'id_base'=>'required|integer',
+            'id_fornecedor'=>'required|integer',
         ]); */
         
+        $hoje = date("Y-m-d H:i:s");
+
+        $newEncomenda = Encomenda::create([
+            'preco' => $request->get('preco'),
+            'preco_transporte' => $request->get('preco_transporte'),
+            'morada' => $request->get('morada'),
+            'codigo_postal' => $request->get('codigo_postal'),
+            'quantidade' => $request->get('quantidade'),
+            'cidade' => $request->get('cidade'),
+            'pais' => $request->get('pais'),
+            'data_realizada' => $hoje,
+            'id_consumidor' => $request->get('id_consumidor'),
+            'id_produto' => $request->get('id_produto'),
+            'id_transportadora' => $request->get('id_transportadora0'),
+            'id_base' => $request->get('id_base'),
+            'id_fornecedor' => $request->get('id_fornecedor'),
+            'estado_encomenda' => 'Cancelamento disponível',
+        ]);
+
+        return redirect('/checkout');
     }
 }
