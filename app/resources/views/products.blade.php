@@ -7,15 +7,17 @@
 
 function isInCarrinho($produto) {
 
+    if(session()->get('carrinho_produtos')!=null) {
 
-    $cart = session()->get('carrinho_produtos');
-    foreach ($cart as $key=>$prod){
-        
-        if ($cart[$key]->id == $produto->id){
-            return true; 
-        }
-    } 
-    return false;
+        $cart = session()->get('carrinho_produtos');
+        foreach ($cart as $key=>$prod){
+            
+            if ($cart[$key]->id == $produto->id){
+                return true; 
+            }
+        } 
+        return false;
+    }
 }
 
 ?>

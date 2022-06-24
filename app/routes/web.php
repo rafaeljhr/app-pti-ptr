@@ -48,7 +48,7 @@ Route::get('/checkout', function () {
     return view('checkout');
 })->name('checkout-url'); 
 
-/* Route::post('/checkout-submit', [EncomendaController::class, 'registerEncomenda'])->name('submit-nova-encomenda'); */
+Route::post('/checkout-submit', [EncomendaController::class, 'registerEncomenda'])->name('submit-nova-encomenda');
 
 Route::get('/api-documentacao', function () {
     return view('api_documentacao');

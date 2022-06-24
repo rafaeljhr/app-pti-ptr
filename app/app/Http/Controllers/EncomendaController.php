@@ -678,7 +678,21 @@ class EncomendaController extends Controller
 
     }
 
-    /* public function productRegister(Request $request) {
+    public function registerEncomenda(Request $request) {
+
+        $request->input();
+        /* $request->validate([
+            'nome'=>'required|string',
+            'id_armazem'=>'required|integer',
+            'nome_categoria'=>'required|string',
+            'nome_subcategoria'=>'required|string',
+            'preco' => 'required|numeric',
+            'data_producao_do_produto'=>'required|string',
+            'data_insercao_no_site'=>'required|string',
+            'kwh_consumidos_por_dia'=>'required|numeric',
+            'quantidade' => 'required|integer',
+            'informacoes_adicionais'=>'required|string',
+        ]); */
         
-    } */
+    }
 }

@@ -1314,6 +1314,8 @@ class ProductsController extends Controller
             array_push($coordBase, $base->nome);
             array_push($coordBase, $base->latitude);
             array_push($coordBase, $base->longitude);
+            array_push($coordBase, $base->preco);
+            array_push($coordBase, $base->id);
 
             array_push($coordsTransportadoras, $coordBase);
         }
@@ -1321,7 +1323,7 @@ class ProductsController extends Controller
         $carrinho = session()->get('carrinho_produtos');
 
         foreach ($carrinho as &$produto) {
-            $armazem = Armazem::where('id', $produto['produto_id_armazem'])->first();
+            $armazem = Armazem::where('id', $produto['id_armazem'])->first();
 
             $armazemLat = $armazem->latitude;
             $armazemLon = $armazem->longitude;
@@ -1336,7 +1338,9 @@ class ProductsController extends Controller
                                                      "id" => $coordsTransportadora[0],
                                                      "nome" => $coordsTransportadora[1],
                                                      "lat" => $coordsTransportadora[2],
-                                                     "lon" => $coordsTransportadora[3]);
+                                                     "lon" => $coordsTransportadora[3],
+                                                     "price" => $coordsTransportadora[4],
+                                                     "id_base" => $coordsTransportadora[5]);
             }
 
             usort($distanciasTransportadoras, 
@@ -1371,24 +1375,24 @@ class ProductsController extends Controller
         if(session()->has('carrinho_produtos')){
             $carrinho = session()->get('carrinho_produtos');
             $produtosBases = self::findClosestBases();
-        }
-           
-        for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++){
-            $armazem = Armazem::where('id', $carrinho[$i]['produto_id_armazem'])->first();
+        
+            for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++){
+                $armazem = Armazem::where('id', $carrinho[$i]['id_armazem'])->first();
 
-            for ($x = 0; $x < sizeOf($produtosBases[$i]); $x++) {
-                $url .= (strval($armazem->latitude) . ',' . strval($armazem->longitude) . ':' . strval($produtosBases[$i][$x]['lat']  . ',' . strval($produtosBases[$i][$x]['lon'])));
-                curl_setopt($ch, CURLOPT_URL, $url);
-                $response = curl_exec($ch);
-                $response = json_decode($response);
+                for ($x = 0; $x < sizeOf($produtosBases[$i]); $x++) {
+                    $url .= (strval($armazem->latitude) . ',' . strval($armazem->longitude) . ':' . strval($produtosBases[$i][$x]['lat']  . ',' . strval($produtosBases[$i][$x]['lon'])));
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    $response = curl_exec($ch);
+                    $response = json_decode($response);
 
-                $produtosBases[$i][$x]['dist'] = $response->routes[0]->summary->lengthInMeters;
-                $url = "https://atlas.microsoft.com/route/directions/json?subscription-key=rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc&api-version=1.0&format=json&query=";
+                    $produtosBases[$i][$x]['dist'] = $response->routes[0]->summary->lengthInMeters;
+                    $url = "https://atlas.microsoft.com/route/directions/json?subscription-key=rxjgLgUQ02QSSkv0NKBzj7q3gXP9HPCNyHfoE_DBNRc&api-version=1.0&format=json&query=";
+                }
             }
-        }
 
-        curl_close($ch);
-        session()->put('basesDistancias', $produtosBases);
+            curl_close($ch);
+            session()->put('basesDistancias', $produtosBases);
+        }   
     }
 
     public function prodInfo($id){

@@ -26,13 +26,12 @@ let app = Vue.createApp({
             this.$refs.totalCost.innerHTML = subTotal + " €";
         },
 
-        removeProduto(productKey, productName) {
+        removeProduto(productKey, productID) {
             let route = document.getElementById("removeCartButton").name;
             document.getElementById(productKey).remove();
 
             var data = new FormData()
-            data.append('key_produto', productKey);
-            data.append('nome_produto', productName);
+            data.append('id', productID);
 
             let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
