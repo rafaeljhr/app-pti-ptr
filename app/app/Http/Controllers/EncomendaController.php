@@ -700,22 +700,30 @@ class EncomendaController extends Controller
         
         $hoje = date("Y-m-d H:i:s");
 
-        $newEncomenda = Encomenda::create([
-            'preco' => $request->get('preco'),
-            'preco_transporte' => $request->get('preco_transporte'),
-            'morada' => $request->get('morada'),
-            'codigo_postal' => $request->get('codigo_postal'),
-            'quantidade' => $request->get('quantidade'),
-            'cidade' => $request->get('cidade'),
-            'pais' => $request->get('pais'),
-            'data_realizada' => $hoje,
-            'id_consumidor' => $request->get('id_consumidor'),
-            'id_produto' => $request->get('id_produto'),
-            'id_transportadora' => $request->get('id_transportadora0'),
-            'id_base' => $request->get('id_base'),
-            'id_fornecedor' => $request->get('id_fornecedor'),
-            'estado_encomenda' => 'Cancelamento disponível',
-        ]);
+        for ($i=0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) { 
+
+            $idBase = $request->get('id_base'.strval($i));
+            session()->put("TESTE", 'id_base'.strval($i));
+            $base = Base::where('id', $idBase)->get();
+
+            $newEncomenda = Encomenda::create([
+                'preco' => (session()->get('carrinho_produtos')[$i]["preco"] * $request->get('quantidade'.strval($i))),
+                'preco_transporte' => $base->preco,
+                'morada' => session()->get('user_morada'),
+                'codigo_postal' => session()->get('user_codigo_postal'),
+                'quantidade' => $request->get('quantity'.strval($i)),
+                'cidade' => session()->get('user_cidade'),
+                'pais' => session()->get('user_pais'),
+                'data_realizada' => $hoje,
+                'id_consumidor' => session()->get('user_id'),
+                'id_produto' => session()->get('carrinho_produtos')[$i]["id"],
+                'id_transportadora' => $base->id_transportadora,
+                'id_base' => $idBase,
+                'id_fornecedor' => session()->get('carrinho_produtos')[$i]["id_fornecedor"],
+                'estado_encomenda' => 'Cancelamento disponível',
+            ]);
+        }
+           
 
         return redirect('/checkout');
     }

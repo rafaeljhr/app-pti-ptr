@@ -10,9 +10,8 @@ let app = Vue.createApp({
             var subTotal = 0;
 
             var productRows = document.getElementById("todosProdutos").children;
-            for (var i = 1; i < productRows.length; i++) {
-                console.log(parseFloat(document.getElementsByTagName('h4')[i].innerHTML.slice(0,-2)));
-                subTotal += parseFloat(document.getElementsByTagName('h4')[i].innerHTML.slice(0,-2));
+            for (var i = 0; i < (productRows.length - 1); i++) {
+                subTotal += parseFloat((document.getElementsByClassName("productPrice")[i].innerHTML.slice(0,-2) * document.getElementsByClassName("quantity")[i].value));
             }
 
             if (subTotal === 0) {
@@ -20,14 +19,15 @@ let app = Vue.createApp({
                 this.emptyCart = true;
             }
 
-            this.$refs.subTotal.innerHTML = subTotal + " €";
+            this.$refs.subTotal.innerHTML = subTotal + "€";
 
             //atualizar preço total adicionando o preço de entrega
-            this.$refs.totalCost.innerHTML = subTotal + " €";
+            this.$refs.totalCost.innerHTML = subTotal + "€";
         },
 
         removeProduto(productKey, productID) {
             let route = document.getElementById("removeCartButton").name;
+            let productName = document.getElementById("name" + productKey).innerHTML;
             document.getElementById(productKey).remove();
 
             var data = new FormData()
@@ -42,7 +42,7 @@ let app = Vue.createApp({
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
                     document.getElementById("divAvisoCarrinho").style.display = "block";
-                    document.getElementById("avisoCarrinho").innerHTML = "Produto removido com sucesso!";
+                    document.getElementById("avisoCarrinho").innerHTML = productName + " removido com sucesso!";
                 } else if (this.status >= 400) {
                     console.log(xhr.responseText);
                 }

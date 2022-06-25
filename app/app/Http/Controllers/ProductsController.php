@@ -1218,6 +1218,10 @@ class ProductsController extends Controller
             
             if (!$this->IsProductInCart($produto)){
                 session()->push('carrinho_produtos', $produto);
+            } else {
+                $carrinho = session()->get('carrinho_produtos');
+                $reindexed_carrinho = array_values($carrinho);
+                session()->put('carrinho_produtos', $reindexed_carrinho);
             }
 
         } else {
