@@ -3,25 +3,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<?php
-
-function isInCarrinho($produto) {
-
-    if(session()->get('carrinho_produtos')!=null) {
-
-        $cart = session()->get('carrinho_produtos');
-        foreach ($cart as $key=>$prod){
-            
-            if ($cart[$key]->id == $produto->id){
-                return true; 
-            }
-        } 
-        return false;
-    }
-}
-
-?>
-
 <link rel="stylesheet" href="css/inventory.css">
 
 @extends('layouts.page_default')
@@ -30,47 +11,22 @@ function isInCarrinho($produto) {
 
     {{-- mostrar todos os produtos --}}
         <div class="Div_Filtros_Produtos">
-            ewq
+            <form action="javascript:;" onsubmit="Filtros(this, '{{ route('ProductFilter') }}' )">
+                <h3>Filtros</h3>
+                <br>
+
+                <input type="checkbox" id="favoritos" name="favoritos"
+                checked>
+                <label for="favoritos">Favoritos</label>
+                <br><br>
+                <button type="submit">Pesquisar</button>
+
+            </form>
         </div>
 
         <div id='todosProdutos' class="Div_Produtos">
 
-            @foreach($produtos[0] as $produto)
-                <?php 
-                    $image_path_filename = $produto->path_imagem;
-                    $tagFavoritos = "fa fa-star";
-                    if (!file_exists($image_path_filename)) {
-                        $image_path_filename = "images/default_produto.jpg";
-                    }
-                    if($produtos[1] != null and get_class($produtos[1]) != 'Illuminate\Database\Eloquent\Collection' and $produtos[1]->contains($produto->id)) {
-                        $tagFavoritos = "fa fa-star checked";
-                    }
-                ?>
-                
-                <div class="carta">
-
-                    @if ($produtos[1] != null)
-                        <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
-                            <span class="{{$tagFavoritos}}"></span>
-                        </a>
-                    @endif
-
-                    <a id="hideAnchor" href="{{ URL::to('produtoDetalhes/'.$produto->id)}}">
-                        <img src="{{$image_path_filename}}" style="width:100%" />
-                    </a>
-
-                    <h4>{{$produto->nome}}</h4>
-                    <p class="price">{{$produto->preco}}€</p>
-                    @if (!isInCarrinho($produto))
-                        <p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produto->id }}', '{{ route('Add-Del-Carrinho') }}')">Adicionar ao Carrinho</button></p>
-                    @else
-                        <p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produto->id }}', '{{ route('Add-Del-Carrinho') }}')">Remover do Carrinho</button></p>
-                    @endif
-                
-                </div>
-                
-
-            @endforeach
+            {!! $produtos !!}
 
         </div>
 
@@ -79,9 +35,8 @@ function isInCarrinho($produto) {
         <p id='avisoCarrinho'></p>
         <button type="button" class="btn-close" aria-label="Close" @click="fecharAlerta()"></button>
     </div>
-
+    
     <script src="./js/loja.js"></script>
-
     
 
 @endsection
