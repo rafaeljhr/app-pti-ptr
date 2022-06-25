@@ -703,21 +703,24 @@ class EncomendaController extends Controller
         for ($i=0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) { 
 
             $idBase = $request->get('id_base'.strval($i));
-            session()->put("TESTE", 'id_base'.strval($i));
-            $base = Base::where('id', $idBase)->get();
+            $base = Base::where('id', $idBase)->first();
+            $preco = floatval(session()->get('carrinho_produtos')[$i]["preco"]);
+            $quantidade = $request->get('quantity'.strval($i));
+            $precoTotal = $preco * $quantidade;
+            
 
             $newEncomenda = Encomenda::create([
-                'preco' => (session()->get('carrinho_produtos')[$i]["preco"] * $request->get('quantidade'.strval($i))),
+                'preco' => $precoTotal,
                 'preco_transporte' => $base->preco,
                 'morada' => session()->get('user_morada'),
                 'codigo_postal' => session()->get('user_codigo_postal'),
-                'quantidade' => $request->get('quantity'.strval($i)),
+                'quantidade' => $quantidade,
                 'cidade' => session()->get('user_cidade'),
                 'pais' => session()->get('user_pais'),
                 'data_realizada' => $hoje,
                 'id_consumidor' => session()->get('user_id'),
                 'id_produto' => session()->get('carrinho_produtos')[$i]["id"],
-                'id_transportadora' => $base->id_transportadora,
+                'id_transportadora' =>$base->id_transportadora,
                 'id_base' => $idBase,
                 'id_fornecedor' => session()->get('carrinho_produtos')[$i]["id_fornecedor"],
                 'estado_encomenda' => 'Cancelamento disponível',
