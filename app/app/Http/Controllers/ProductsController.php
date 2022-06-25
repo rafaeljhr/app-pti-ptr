@@ -647,11 +647,39 @@ class ProductsController extends Controller
     }
 
 
+    public function ProductFilter(Request $request){
+
+        if($request->favoritos == "on"){
+            $html = Produto::getHtmlProductStore(Produto::getFavoritesProducts());
+        }else{
+            $html = Produto::getHtmlProductStore(Produto::getAllProducts());
+        }
+
+        return $html;
+        
+    }
 
     public function allProducts() {
 
-        return View::make('products')->with('produtos', Produto::getAllProducts());
+        $html = Produto::getHtmlProductStore(Produto::getAllProducts());
 
+        return View::make('products')->with('produtos', $html);
+
+    }
+
+    function isInCarrinho($produto) {
+
+        if(session()->get('carrinho_produtos')!=null) {
+    
+            $cart = session()->get('carrinho_produtos');
+            foreach ($cart as $key=>$prod){
+                
+                if ($cart[$key]->id == $produto->id){
+                    return true; 
+                }
+            } 
+            return false;
+        }
     }
 
     public function cadeiaPage($id){
@@ -1397,6 +1425,33 @@ class ProductsController extends Controller
 
     public function prodInfo($id){
         $produto = Produto::where('id', $id)->first();
+        $fornecedor_eventos = Evento::where('id_produto', $id)->get();
+
+
+        $all_eventos_produtos = array();
+
+        foreach($fornecedor_eventos as $evento) {
+
+            $evento_nome = $evento->nome;
+            $evento_co2 = $evento->poluicao_co2_produzida;
+            $evento_kwh = $evento->kwh_consumidos;
+            $evento_desc = $evento->descricao_do_evento;
+            
+
+            $atributos_evento = [
+                "evento_nome" => $evento_nome,
+                "evento_co2" => $evento_co2,   
+                "evento_kwh" => $evento_kwh,
+                "evento_desc" => $evento_desc,   
+            ];
+
+
+            array_push($all_eventos_produtos, $atributos_evento);
+        }
+
+        session()->put('cadeias_produto_info', $all_eventos_produtos);
+
+
 
         $produto_id = $produto->id;
         $produto_nome = $produto->nome;
