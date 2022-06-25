@@ -647,11 +647,39 @@ class ProductsController extends Controller
     }
 
 
+    public function ProductFilter(Request $request){
+
+        if($request->favoritos == "on"){
+            $html = Produto::getHtmlProductStore(Produto::getFavoritesProducts());
+        }else{
+            $html = Produto::getHtmlProductStore(Produto::getAllProducts());
+        }
+
+        return $html;
+        
+    }
 
     public function allProducts() {
 
-        return View::make('products')->with('produtos', Produto::getAllProducts());
+        $html = Produto::getHtmlProductStore(Produto::getAllProducts());
 
+        return View::make('products')->with('produtos', $html);
+
+    }
+
+    function isInCarrinho($produto) {
+
+        if(session()->get('carrinho_produtos')!=null) {
+    
+            $cart = session()->get('carrinho_produtos');
+            foreach ($cart as $key=>$prod){
+                
+                if ($cart[$key]->id == $produto->id){
+                    return true; 
+                }
+            } 
+            return false;
+        }
     }
 
     public function cadeiaPage($id){
