@@ -1,12 +1,31 @@
 
-<link rel="stylesheet" href="css/inventory.css">
-<?php 
-//dd(session()->all());
-?>
+
 @extends('layouts.page_default')
 
 @section('background') 
 
+<?php
+$produtoAtual = session()->get('produto_detalhes')['produto_id'];
+
+
+function isInCarrinho() {
+
+    if(session()->get('carrinho_produtos')!=null) {
+
+        $cart = session()->get('carrinho_produtos');
+        foreach ($cart as $key=>$prod){
+            
+            if ($cart[$key]->id == session()->get('produto_detalhes')['produto_id']){
+                return true; 
+            }
+        } 
+        return false;
+    }
+}
+
+?>
+<link rel="stylesheet" href="css/inventory.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 {{-- /////////////////////////////////////////////////////////////////// --}}
 <div id="apresentaçãoForm" class="mx-auto mt-4 mb-4">
@@ -39,46 +58,58 @@
 
 
 
-                    {{--   ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    @if(Session::get('cadeias_produto_info') != [])
-                    
+  {{--   ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  @if(Session::get('cadeias_produto_info') != [])
+  
 
-                        <h3 class="mt-3 mb-5 text-center">Cadeias associadas ao produto</h3>
+      <h3 class="mt-3 mb-5 text-center">Cadeias associadas ao produto</h3>
 
-                        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-                          
-                            @for($i = 0; $i < sizeOf(session()->get('cadeias_produto_info')); $i++)
-                            <div class="col">
-                                <div class="evento-size card">
-                                  <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_nome'] ?></h5>
-                                  <h4 class="card-text ">CO2 criados: <?php echo session()->get('cadeias_produto_info')[$i]['evento_co2'] ?></h4>             
-                                  <h4 class="card-text ">Kwh consumidos: <?php echo session()->get('cadeias_produto_info')[$i]['evento_kwh'] ?></h4>
-                                  <div class="card-body text-center">
-                                    <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_desc'] ?></h5>
-                                  </div>
-                    
-                                </div>
-                              </div>
-                            @endfor
-                  
-                        
-                      </div>
-                      @else
-                      <h3 class="mt-3 mb-5 text-center">Este produto nao possui cadeias associadas</h3>
-                      @endif
+      <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+        
+          @for($i = 0; $i < sizeOf(session()->get('cadeias_produto_info')); $i++)
+          <div class="col">
+              <div class="evento-size card">
+                <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_nome'] ?></h5>
+                <h4 class="card-text ">CO2 criados: <?php echo session()->get('cadeias_produto_info')[$i]['evento_co2'] ?></h4>             
+                <h4 class="card-text ">Kwh consumidos: <?php echo session()->get('cadeias_produto_info')[$i]['evento_kwh'] ?></h4>
+                <div class="card-body text-center">
+                  <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_desc'] ?></h5>
+                </div>
+  
+              </div>
+            </div>
+          @endfor
+
+      
+    </div>
+    @else
+    <h3 class="mt-3 mb-5 text-center">Este produto nao possui cadeias associadas</h3>
+    @endif
+    {{--   ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+  {{-- ////////////////////////////////////////////////////////// --}}
+
+@if (!isInCarrinho())
+    <p><button id="buttonAdd" class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Adicionar ao Carrinho</button></p>
+@else
+    <p><button id="buttonDel" class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Remover do Carrinho</button></p>
+@endif
+</div>
+
+                   
+
 </div>
 
 
-
-</div>
-
-
-  <script src="./js/inventory.js"></script>
+<script src="./js/loja.js"></script>
 
     
 @endsection

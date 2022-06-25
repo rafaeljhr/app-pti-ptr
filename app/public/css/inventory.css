@@ -359,12 +359,43 @@
     color: white;
     background-color: green;
     text-align: center;
-    cursor: pointer;
     width: 100%;
     font-size: 18px;
   }
   
   .carta button:hover {
+    opacity: 0.7;
+  }
+
+  /* /################################## */
+
+  #buttonAdd {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: green;
+    text-align: center;
+    width: 20%;
+    font-size: 18px;
+  }
+
+  #buttonAdd:hover {
+    opacity: 0.7;
+  }
+
+  #buttonDel {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: red;
+    text-align: center;
+    width: 20%;
+    font-size: 18px;
+  }
+
+  #buttonDel:hover {
     opacity: 0.7;
   }
 
