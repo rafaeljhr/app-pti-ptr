@@ -114,6 +114,15 @@ Route::get('/veiculoCreate', function () {
 });
 
 
+Route::get('/eventoLogisticoCreate', function () {
+    
+    
+    return view('criar_evento_logistico');
+
+    
+});
+
+
 Route::get('/cadeia', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     

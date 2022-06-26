@@ -23,10 +23,7 @@ let app = Vue.createApp({
     },
 
     methods: {
-
-
         
-
         changeSubcat(cat){
                
                     
@@ -133,9 +130,6 @@ let app = Vue.createApp({
                 this.info_valid = false; 
             }
 
-
-      
-
             if (this.data_p_valid && this.quantidade_valid && this.preco_valid &&
                 this.info_valid && this.nome_valid &&  this.data_i_valid && this.kwh_valid &&
                 !(this.$refs.nome.value == this.nome && this.$refs.preco.value == this.preco 
@@ -160,9 +154,6 @@ let app = Vue.createApp({
         this.cat = this.$refs.cat.value;
         this.kwh = this.$refs.kwh.value;
         this.info = this.$refs.info.value;
-        
-        
-        
     }
 })
 

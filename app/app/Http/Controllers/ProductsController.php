@@ -909,12 +909,9 @@ class ProductsController extends Controller
             "co2_cadeia" => $cadeia->poluicao_co2_produzida,
             "kwh_cadeia" => $cadeia->kwh_consumidos,
             "descricao_cadeia" => $cadeia->descricao_do_evento,
-            
         ];
 
         session()->put('cadeia_atual', $atributos_cadeia);
-
-
         
         return redirect('/cadeia-edit');
     }

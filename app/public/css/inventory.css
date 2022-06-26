@@ -52,7 +52,8 @@
 
 #noCadeias{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -399,3 +400,25 @@
     opacity: 0.7;
   }
 
+#botao_criar {
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+
+.botao_cadeia {
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 170px;
+}
+
+.detalhes {
+    float: right;
+    text-decoration: underline;
+    color: black;
+}
+
+.voltar {
+    text-decoration: underline;
+    color: black;
+}

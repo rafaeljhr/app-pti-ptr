@@ -91,7 +91,7 @@
 <div id="noBases">
 
   <div align="center">
-    <img src="images/armazens.png" class="sem_bases_img" alt="">
+    <img src="images/armazens.png" class="sem_bases_img">
     <br>
     <br>
     <h2>Parece que não possui bases.</h2>
