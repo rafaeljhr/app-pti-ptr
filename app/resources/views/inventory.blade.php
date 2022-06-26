@@ -32,8 +32,7 @@ $filtroCat = "";
     <h2>Parece que não possui nenhum produto.</h2>
     <p>Pode criar um produto nesta página usando o botão abaixo!.</p>
     <a id="hideAnchor" href="{{ URL::to('/prodCreate')}}">
-                    
-      <button type="submit" class="btn btn-dark" id="btn-id" >Adicionar produto</button>
+      <button type="submit" class="btn btn-dark" id="btn-id">Adicionar produto</button>
     </a>
   </div>
   

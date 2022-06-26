@@ -25,6 +25,8 @@ let app = Vue.createApp({
 
         finishForm(e) {
             e.preventDefault();
+
+            document.getElementById("loader").style.display = "block";
             
             var url = new URL("https://atlas.microsoft.com/search/address/json");
             var parameters = { 

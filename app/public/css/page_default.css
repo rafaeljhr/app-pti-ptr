@@ -128,8 +128,8 @@ body {
 }
 
 #notificationsDiv, #favoritosDiv {
-  max-width: 500px;
-  min-width: 350px;
+  max-width: 600px;
+  min-width: 450px;
   max-height: 400px;
   overflow:auto;
 }
@@ -154,10 +154,12 @@ body {
 .badge {
   font-size: 13px !important;
   color: black !important;
+  border: solid;
+  position: fixed !important;
+  text-shadow: 0 0 7px black;
+  top: 7px;
   border-radius: 50% !important;
-  top: -2px !important;
-  left: 145px !important;
-  position: absolute !important;
+  right: 95px;
   border: 1px solid black !important;
   background-color: white !important;
  }
@@ -224,4 +226,19 @@ body {
   width: 100%;
   /* Height of the footer*/ 
   background: grey;
+}
+
+
+.nav_element {
+  color: white !important;
+  font-size: 20px;
+
+}
+
+.apagar_todas_nots {
+  cursor: pointer;
+}
+
+#limpar:hover {
+  color: black;
 }

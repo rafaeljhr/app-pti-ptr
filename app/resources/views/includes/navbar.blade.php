@@ -19,24 +19,24 @@ Session_start();
 
     <nav id="navbarPrincipal" class="container d-flex flex-column flex-md-row justify-content-between">  
         {{-- <a href="{{ route('home-url') }}"><img src="images/logo6.png" class="main-logo" width="140"/></a> --}}
-        <a class="py-2 d-none d-md-inline-block" href="{{ route('home-url') }}">HOME</a>
-        <a class="py-2 d-none d-md-inline-block" href="{{ route('products') }}">LOJA</a>
+        <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('home-url') }}">HOME</a>
+        <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('products') }}">LOJA</a>
 
         @if(Session::get('loggedIn') != null)
             <a href="{{ route('home-url') }}"><img class="navbar_image" src="images/imagem_tab.png"/></a>
         @endif
 
-        <a class="py-2 d-none d-md-inline-block" href="{{ route('about-url') }}">SOBRE</a>
+        <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('about-url') }}">SOBRE</a>
 
         @if(Session::get('loggedIn') == null)
             <a href="{{ route('home-url') }}"><img class="navbar_image" src="images/imagem_tab.png"/></a>
         @endif
 
-        <a class="py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
+        <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('contact-url') }}">CONTACTOS</a>
 
         @if(Session::get('loggedIn') == null)
-            <a class="py-2 d-none d-md-inline-block" href="{{ route('signin-url') }}">ENTRAR</a>
-            <a class="py-2 d-none d-md-inline-block" href="{{ route('register-url') }}">REGISTAR</a>
+            <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('signin-url') }}">ENTRAR</a>
+            <a class="nav_element text-decoration-none py-2 d-none d-md-inline-block" href="{{ route('register-url') }}">REGISTAR</a>
         @endif
 
 
@@ -53,57 +53,70 @@ Session_start();
 
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="icons_navbar" src="images/notification.png">
                     <span id='numNotificacoes' class="badge badge-light"><?php echo sizeOf(session()->get('notificacoes')) ?></span>
+                    <img class="icons_navbar" src="images/notification.png">
                 </a>
                 <ul class="dropdown-menu" id='notificationsDiv'>
+                    <br>
+                    <div class="row w-100">
+                        <div class="col-9" style="margin-left: 20px;">
+                            <h4>
+                                <p>As suas notificações</p>
+                            </h4>
+                        </div>
+                        @if(Session::get('notificacoes') != [] || Session::get('notificacoes') != null || sizeOf(session()->get('notificacoes')) != 0)
+                            <div class="col">
+                                <a onclick="apagarTodasNotificacoes('{{ route('delete-all-notifications') }}')" class="apagar_todas_nots">
+                                    <u id="limpar">Limpar</u>
+                                </a>
+                                
+                            </div>
+                        @endif
+                    </div>
 
-                    <h4 style="margin-left: 10px;" class="text-center">
-                        <p>As suas notificações</p>
-                    </h4>
+                    <hr class="dropdown-divider mt-3" style="width: 90%; margin: auto;">
 
-                    <hr class="dropdown-divider" style="width: 90%; margin: auto;">
+                    <div class="lis" id="lis">
+                        @if(Session::get('notificacoes') == [] || Session::get('notificacoes') == null)
 
+                            <li class='notificationElement mt-3'>
+                                <p class='textoNotificacao' style="margin-left: 10px;"">Não possui notificações!</p>
+                            </li>
 
-                    @if(Session::get('notificacoes') == [] || Session::get('notificacoes') == null)
+                        @else 
 
-                        <li class='notificationElement mt-3 text-center'>
-                            <p class='textoNotificacao'>Não possui notificações!</p>
-                        </li>
+                            @for($i = 0; $i < sizeOf(session()->get('notificacoes')); $i++)
 
-                    @else 
+                                    <li class='notificationElement mt-3' id="li_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>">
 
-                        @for($i = 0; $i < sizeOf(session()->get('notificacoes')); $i++)
-
-                                <li class='notificationElement mt-3' id="li_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>">
-
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
+                                                </div>
+                
+                                                <div class="col align-items-center">
+                                                    <a onclick="apagarNotificacao('<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>', '{{ route('delete-notification') }}' )" class='anchorNotificacao'>
+                                                        <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
+                                                    </a>
+                                                </div>
+                
                                             </div>
-            
-                                            <div class="col align-items-center">
-                                                <a onclick="apagarNotificacao('<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>', '{{ route('delete-notification') }}' )" class='anchorNotificacao'>
-                                                    <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
-                                                </a>
-                                            </div>
-            
                                         </div>
-                                    </div>
+                                        
+                                    </li>
                                     
-                                </li>
-                                
-                                
-                                @if($i+1 < sizeOf(session()->get('notificacoes')))
+                                    
+                                    @if($i+1 < sizeOf(session()->get('notificacoes')))
 
-                                    <hr id='hr_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
+                                        <hr id='hr_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
 
-                                @endif  
+                                    @endif  
 
-                            @endfor
+                                @endfor
 
-                    @endif
+                        @endif
+                    </div>
                     
                 </ul>
                     
@@ -134,6 +147,7 @@ Session_start();
                     @endif
 
                     <li><hr class="dropdown-divider"></li>
+
                     <li><a class="dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
                 </ul>
         @else

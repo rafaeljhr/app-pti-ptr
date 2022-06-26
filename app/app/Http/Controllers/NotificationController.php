@@ -70,5 +70,18 @@ class NotificationController extends Controller
 
     }
 
+    public function hideAllNotification()
+    {
+        $notificacoes = Notificacao::where('id_utilizador', session()->get('user_id'))->get();
+
+        foreach ($notificacoes as $not) {
+            $not->estado = 0;
+            $not->save();
+        }
+
+        session()->forget('notificacoes');
+
+    }
+
 
 }

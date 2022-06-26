@@ -96,6 +96,24 @@ Route::get('/prodCreate', function () {
 });
 
 
+Route::get('/baseCreate', function () {
+    
+    
+    return view('createBase');
+
+    
+});
+
+
+Route::get('/veiculoCreate', function () {
+    
+    
+    return view('createVeiculo');
+
+    
+});
+
+
 Route::get('/cadeia', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     
@@ -318,6 +336,8 @@ Route::get('/forget-google-user', function () {
 // ##############################################
 
 Route::post('/delete-notification', [NotificationController::class, 'hideNotification'])->name('delete-notification');
+
+Route::post('/delete-all-notifications', [NotificationController::class, 'hideAllNotification'])->name('delete-all-notifications');
 
 
 

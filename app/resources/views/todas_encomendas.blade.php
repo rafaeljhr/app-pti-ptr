@@ -163,7 +163,7 @@
     @else 
 
         <br><br>
-        <h5>Não possui qualquer encomenda realizada!</h5>
+        <h5>Não possui qualquer encomenda!</h5>
 
     @endif
 

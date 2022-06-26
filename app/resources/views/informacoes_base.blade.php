@@ -244,8 +244,6 @@
         </div>    
     </div>
 
-    @include('includes.footer')
-
     <script src="./js/informacoes_base.js"></script>
         
 @endsection
