@@ -89,7 +89,7 @@
 
   <div id="noBases">
 
-    <div align="center" class="mx-auto">
+    <div align="center">
       <img src="images/armazens.png" class="sem_bases_img" alt="">
       <br>
       <br>

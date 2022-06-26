@@ -155,10 +155,12 @@ select[disabled] {
 
 #noBases{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
+
     display: flex;
     align-items: center;
-    justify-content: centerç
+    justify-content: center;
 }
 
 .sem_bases_img {
