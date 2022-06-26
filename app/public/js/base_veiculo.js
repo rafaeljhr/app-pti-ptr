@@ -1,10 +1,5 @@
 let app = Vue.createApp({
 
-    data: function() {
-        return {
-        }
-    },
-
     methods: {
         criar() {
 
@@ -55,4 +50,4 @@ let app = Vue.createApp({
 
 })
 
-app.mount('.app')
+app.mount('app')
