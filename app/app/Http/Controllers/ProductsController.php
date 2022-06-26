@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use URL;
 
 use App\Models\Produto;
 use App\Models\Armazem;
@@ -646,13 +647,104 @@ class ProductsController extends Controller
         return redirect('/inventory'); //devolver a cadeia logistica do produto
     }
 
+    public function getHtmlProductStore($produtos){
+
+        $html = "";
+
+        $favoritos = Produto::getFavoritesProductsIDs();
+
+        foreach($produtos as $produto){
+            
+            $image_path_filename = $produto->path_imagem;
+
+            $tagFavoritos = "fa fa-star";
+            if (!file_exists($image_path_filename)) {
+                $image_path_filename = "images/default_produto.jpg";
+            }
+            if($favoritos != null and $favoritos->contains($produto->id)) {
+                $tagFavoritos = "fa fa-star checked";
+            }
+
+            $html .= '<div class="carta">';
+
+            if (session()->has("user_id")){
+                $html .=  '<a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, ' . $produto->id  . ',' . "'" . route('Add-Del-Fav') . "'" . ' )">';
+                $html .= '<span class="' . $tagFavoritos . '"></span>';
+                $html .= "</a>";
+            }
+
+            $html .= '<a id="hideAnchor" href="' .  URL::to('produtoDetalhes/'.$produto->id) . '">';
+            $html .= '<img src="' . $image_path_filename . '" style="width:100%" />';
+            $html .= "</a>";
+            $html .= '<h4>' . $produto->nome . '</h4>';
+            $html .= '<p class="price">' . $produto->preco . '€</p>';
+
+            if (session()->has("user_id")){
+                $result = $this->isInCarrinho($produto);
+
+                if (!$result){
+                    $html .= '<p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id .',' . "'" . route('Add-Del-Carrinho') . "'" . ')">Adicionar ao Carrinho</button></p>';
+                }else{
+                    $html .= '<p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id  . ', ' . route('Add-Del-Carrinho') . ')">Remover do Carrinho</button></p>';
+                }
+            }
+
+            $html .= "</div>";
+
+        }
+        
+        return $html;
+
+    }
+
+    public function CategoriasHtml(){
+
+        $html = '<label for="Categorias">Categorias:</label>';
+
+        $html .= '<select name="Categorias" id="Categorias" onChange="CreateSubCatOptions(' . "'" . route("HtmlSubCategoria") . "'" . ')">';
+
+        $html .= '<option selected value=""> -- Selecionar uma opção -- </option>';
+
+        $categorias = Categoria::all();
+
+        foreach ($categorias as $opcao) {
+            $html .= '<option value="' . $opcao->nome . '">' . $opcao->nome . '</option>';
+        }
+
+        $html .= "</select>";
+
+        return $html;
+    }
+
+    public function SubCategoriasHtml(Request $request){
+
+        $html = '<label for="SubCategoria">SubCategoria:</label>';
+
+        $html .= '<select name="SubCategoria" id="SubCategoria">';
+
+        $html .= '<option selected value=""> -- Selecionar uma opção -- </option>';
+
+        $subcategorias = Subcategoria::where('nome_categoria', $request->categoria)->get();
+
+        foreach ($subcategorias as $opcao) {
+            $html .= '<option value="' . $opcao->nome . '">' . $opcao->nome . '</option>';
+        }
+
+        $html .= "</select>";
+
+        return $html;
+    }
 
     public function ProductFilter(Request $request){
 
         if($request->favoritos == "on"){
-            $html = Produto::getHtmlProductStore(Produto::getFavoritesProducts());
+            if($request->Categorias != ""){
+
+            }
+
+            $html = $this->getHtmlProductStore();
         }else{
-            $html = Produto::getHtmlProductStore(Produto::getAllProducts());
+            $html = $this->getHtmlProductStore(Produto::getAllProducts());
         }
 
         return $html;
@@ -661,9 +753,16 @@ class ProductsController extends Controller
 
     public function allProducts() {
 
-        $html = Produto::getHtmlProductStore(Produto::getAllProducts());
+        $html = $this->getHtmlProductStore(Produto::getAllProducts());
 
-        return View::make('products')->with('produtos', $html);
+        $categorias = $this->CategoriasHtml();
+
+        $data = [
+            'produtos' => $html,
+            'categorias' => $categorias,
+        ];
+
+        return View::make('products')->with('data', $data);
 
     }
 
@@ -1489,9 +1588,6 @@ class ProductsController extends Controller
             
         ];
 
-        
-
-        
         session()->put('produto_detalhes', $atributos_produto);
         return redirect('/produto-detalhes');
             

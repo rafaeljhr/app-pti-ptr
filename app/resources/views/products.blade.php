@@ -14,19 +14,28 @@
             <form action="javascript:;" onsubmit="Filtros(this, '{{ route('ProductFilter') }}' )">
                 <h3>Filtros</h3>
                 <br>
-
-                <input type="checkbox" id="favoritos" name="favoritos"
-                checked>
-                <label for="favoritos">Favoritos</label>
-                <br><br>
                 <button type="submit">Pesquisar</button>
+                <br>
+                @if (session()->has("user_id"))
+                    <br>
+                    <input type="checkbox" id="favoritos" name="favoritos" checked>
+                    <label for="favoritos">Favoritos</label>
+                    <br>
+                @endif
+                <br>
+                <div id = "Div_Categorias">
+                    {!! $data['categorias'] !!}
+                </div>
+                <br>
+                <div id = "Div_SubCategorias">
 
+                </div>
             </form>
         </div>
 
         <div id='todosProdutos' class="Div_Produtos">
 
-            {!! $produtos !!}
+            {!! $data['produtos'] !!}
 
         </div>
 

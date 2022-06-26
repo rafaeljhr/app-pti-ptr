@@ -11,5 +11,6 @@ class Subcategoria extends Model
     protected $fillable = [
         'nome', 'nome_categoria',
     ];
+    
  
 }

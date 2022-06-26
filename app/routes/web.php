@@ -222,6 +222,8 @@ Route::post('/cadeia-delete-controller', [ProductsController::class, "cadeiaDele
 
 Route::post('/product/filter', [ProductsController::class, "ProductFilter"])->name('ProductFilter');
 
+Route::post('/product/SubCategoria', [ProductsController::class, "SubCategoriasHtml"])->name('HtmlSubCategoria');
+
 // ##############################################
 // ARMAZENS RELATED ROUTES
 // ##############################################
