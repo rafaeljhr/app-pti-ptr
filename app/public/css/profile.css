@@ -75,3 +75,16 @@ input[disabled] {
     font-size: 2rem;
     color: green;
 }
+
+
+.imagemProduto {
+
+    height: 300px !important;
+
+}
+
+.botao_cadeia {
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 170px;
+}

@@ -210,20 +210,6 @@
 }
 
 
-/* .forForm{
- 
-    
-    background-color: white;
-    border: solid;
-    padding: 10px;
-    top: 25%;
-    left: 25%;
-    z-index: 9;
-    width: 55%;
-
-} */
-
-
 .row{
 
     margin: 15px;
@@ -248,7 +234,6 @@
 .imagemProduto {
 
     height: 300px !important;
-    
 
 }
 

@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="css/profile.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bases_veiculos.css">
+
 @extends('layouts.page_default')
 
 @section('background')
@@ -20,11 +22,23 @@
 
     ?>
 
-    <link rel="stylesheet" href="css/bases_veiculos.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-
 
     <div class="container py-5">
+
+        <!-- Modal Não pode apagar Base -->
+        <div class="modal fade" id="modalNaoApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNaoApagarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalApagarLabel">Atenção!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Não pode apagar um armazém que possua produtos!</p>
+                </div>
+            </div>
+            </div>
+        </div>
 
         <!-- Modal Apagar Base -->
         <div class="modal fade" id="modalApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalApagarLabel" aria-hidden="true">
@@ -149,60 +163,47 @@
                     </div>
 
                     <br>
+                    
 
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
                     @if(Session::get('armazem_actual_produtos') != [])
-                    <div id='todosArmazens'>
+                    <br>
+                        <div id='todosArmazens'>
 
-                        <h3 class="mt-3 mb-5 text-center">Produtos associados ao seu armazém</h3>
+                            <h3 class="mt-3 mb-5 text-center">Produtos associados ao seu armazém</h3>
 
-                        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-                          
-                            @for($i = 0; $i < sizeOf(session()->get('armazem_actual_produtos')); $i++)
-                              <div class="col">
-                                <div class="card">
-                                  <img class="card-img-top imagem_da_card" src='<?php echo session()->get('armazem_actual_produtos')[$i]['produto_path_imagem'] ?>' alt="Card image cap">
-                  
-                                  <h4 class="card-title mt-3 text-center"><?php echo session()->get('armazem_actual_produtos')[$i]['produto_nome'] ?></h4>
-                  
-                                  <div class="card-body text-center">
-                                    <div class="row">
-                                      <p class="ml-2"><?php echo session()->get('armazem_actual_produtos')[$i]['produto_preco']?>€</p>
+                            <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+                            
+                                @for($i = 0; $i < sizeOf(session()->get('armazem_actual_produtos')); $i++)
+                                <div class="col">
+                                    <div class="card">
+                                    @if(!file_exists(session()->get('armazem_actual_produtos')[$i]['produto_path_imagem']))
+                                        <a href="{{ URL::to('produtosEdit/'.session()->get('armazem_actual_produtos')[$i]['produto_id']) }}">
+                                            <img src="images/default_produto.jpg" class="imagemProduto card-img-top">
+                                        </a>
+                                    @else
+                                        <a href="{{ URL::to('produtosEdit/'.session()->get('armazem_actual_produtos')[$i]['produto_id']) }}">
+                                            <img src="<?php echo session()->get('armazem_actual_produtos')[$i]['produto_path_imagem'] ?>" class="imagemProduto card-img-top">
+                                        </a>
+                                    @endif
+                    
+                                    <h4 class="card-title mt-3 text-center"><?php echo session()->get('armazem_actual_produtos')[$i]['produto_nome'] ?></h4>
+                                    <h5 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h5>
+
+                                    <div class="card-body text-center">
+                    
+                                        <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
+                                          <button type="button" id="addCadeia" class="btn btn-info botao_cadeia">Cadeia Logística</button>
+                                        </a>
+                    
+                                      </div>
+                        
                                     </div>
-                  
-                                    <div class="row">
-                                      <p> Descrição: <?php echo session()->get('armazem_actual_produtos')[$i]['produto_informacoes_adicionais'] ?></p>
-                                    </div>             
-                                    
-                                  </div>
-                    
                                 </div>
-                              </div>
-                            @endfor
-                  
-                        </div>
-                      </div>
-                      @endif
+                                @endfor
                     
-
-
-
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}{{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
+                            </div>
+                        </div>
+                      @endif
 
                     <br><br>
 
@@ -210,7 +211,12 @@
                         <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">EDITAR ARMAZEM</button>
                         <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>GUARDAR ALTERAÇÕES</button>
                         <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelChanges()">CANCELAR ALTERAÇÕES</button>
-                        <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">APAGAR ARMAZEM</button>
+                        @if(Session::get('armazem_actual_produtos') != [])
+                            <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalNaoApagar">APAGAR ARMAZEM</button>
+                        @else
+                            <button type="button" class="btn btn-danger position-absolute end-0" data-bs-toggle="modal" data-bs-target="#modalApagar">APAGAR ARMAZEM</button>
+                        @endif
+                        
                     </div>
 
                 </form>

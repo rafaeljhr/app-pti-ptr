@@ -105,7 +105,13 @@
                   <h4 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h4>
                   
                   <div class="card-body text-center">
-                    
+
+                    @if (session()->get('all_fornecedor_produtos')[$i]['produto_tem_eventos_logisticos'] == 0)
+                      <p><span style="color: yellow;">&#9888;</span> <br> Crie a cadeia logística do produto, para que o mesmo fique à venda!</p>
+                    @else
+                      <p><span style="color: green;">&#10003;</span> <br> Este produto encontra-se atualmente à venda a consumidores!</p>
+                    @endif
+
                     <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
                       <button type="button" id="addCadeia" class="btn btn-info botao_cadeia">Cadeia Logística</button>
                     </a>

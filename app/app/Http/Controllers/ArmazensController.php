@@ -327,7 +327,6 @@ class ArmazensController extends Controller
 
         session()->push('notificacoes', $atributos_notificacao);
 
-
         self::getAllArmazens(); // put all session bases and veiculos up to date
 
         return redirect('/storage-edit');

@@ -1,40 +1,29 @@
 <link rel="stylesheet" href="css/profile.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bases_veiculos.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
 @extends('layouts.page_default')
 
 @section('background')
     
     <?php
 
-    
-
     //dd(session()->all());
-
 
     $co2 = 0;
     $kwhCadeias = 0;
     for($i = 0; $i < sizeOf(session()->get('cadeias_produto_atual'));  $i++){
         $co2 = $co2 + session()->get('cadeias_produto_atual')[$i]['evento_co2'];
         $kwhCadeias = $kwhCadeias + session()->get('cadeias_produto_atual')[$i]['evento_kwh'];
-        
     }
-    
-    
-
-   
-  
-
 
     $now = time(); // or your date as well
     $your_date = strtotime(session()->get('produto_atual')['produto_data_insercao_no_site']);
     $datediff = ceil(($now - $your_date)/86400);
     $kwhStorage = session()->get('produto_atual')['produto_kwh_consumidos_por_dia'] * $datediff;
     
-    
     ?>
-
-    <link rel="stylesheet" href="css/bases_veiculos.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
 
 
     <div class="container py-5">
@@ -116,9 +105,6 @@
               </div>
             
             
-
-
-
             <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('produto_atual')['produto_path_imagem'] ?>" referrerpolicy="no-referrer">
             <div class="mt-2 w-25 mx-auto">
                 <button type="button" class="btn form-control alterar_imagem_botao" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">ALTERAR IMAGEM</button>
@@ -233,30 +219,26 @@
 
                    
                     <div id="camposExtraNone">
-                    <div class="row">
-                        @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
-                        
-                        <div class ="col">
-                            <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?></label>
-                            <div class="inline-icon">
-                                <input oninput="checkCampoExtra()" type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
-                                
-                            </div>
+                        <div class="row">
+                            @for($i = 0; $i < sizeOf(session()->get('campos_extra_atuais')); $i++)
+                                <div class ="col">
+                                    <label class="mb-2" for="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo_extra'] ?>"><?php echo session()->get('campos_extra_atuais')[$i]['nome_campo_extra'] ?></label>
+                                    <div class="inline-icon">
+                                        <input oninput="checkCampoExtra()" type="text" name="<?php echo session()->get('campos_extra_atuais')[$i]['nome_campo_extra'] ?>" class="form-control mb-3" value="<?php echo session()->get('campos_extra_atuais')[$i]['valor_campo'] ?>" :disabled="!editable" required>
+                                    </div>
+                                </div>
 
-                        </div>
-                        @endfor
+                                @if($i%3==0)
+                                </div>
+                                <div class="row">
+                                @endif
 
-                    </div>    
+                            @endfor
+                        </div>    
                     </div>
 
                     <br> <br>
 
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
                     @if(Session::get('cadeias_produto_atual') != [])
                     
 
@@ -281,20 +263,6 @@
                         
                       </div>
                       @endif
-                    
-
-
-
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
-                    {{-- ////////////////////////////////////////////////////////// --}}
 
                     <br><br>
 

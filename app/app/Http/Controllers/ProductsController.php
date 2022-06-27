@@ -94,11 +94,18 @@ class ProductsController extends Controller
 
         $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
         
-        
         $all_fornecedor_produtos = array();
     
         $kwh_sum = 0;
         foreach($fornecedor_produtos as $produto) {
+
+            $eventos_logisticos = Evento::where('id_produto', $produto->id)->get();
+
+            if (sizeOf($eventos_logisticos) > 0) {
+                $tem_eventos_logisticos = 1;
+            } else {
+                $tem_eventos_logisticos = 0;
+            }
 
             $produto_id = $produto->id;
             $produto_nome = $produto->nome;
@@ -131,6 +138,7 @@ class ProductsController extends Controller
                 "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
                 "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
                 "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "produto_tem_eventos_logisticos" => $tem_eventos_logisticos,
                 "pronto_a_vender" => $produto_state,
             ];
 
@@ -139,8 +147,6 @@ class ProductsController extends Controller
         }
 
         session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
-
-
 
         if(session()->get('notificado') == null){
             $now = time(); 
@@ -191,30 +197,6 @@ class ProductsController extends Controller
         if(!(session()->has('armazens'))){
             (new ArmazensController)->getAllArmazens(); // put all armazens of fornecedor in session
         }
-
-        
-        $fornecedor_eventos = Evento::where('id_fornecedor', session()->get('user_id'))->get();
-
-        $all_fornecedor_eventos = array();
-        
-        foreach($fornecedor_eventos as $evento) {
-            
-            $atributos_novo_evento = [
-                "evento_id" =>  $evento->id,
-                "evento_id_produto" => $evento->id_produto,
-                "evento_nome" => $evento->nome,
-                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
-                "evento_kwh_consumidos" => $evento->kwh_consumidos,
-                "evento_descricao_do_evento" => $evento->descricao_do_evento,
-                "id_fornecedor" => $evento->id_fornecedor,
-            ];
-            
-
-
-            array_push($all_fornecedor_eventos, $atributos_novo_evento);
-        }
-
-        session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
 
 
     }
@@ -772,7 +754,9 @@ class ProductsController extends Controller
     }
 
     public function cadeiaPage($id){
+
         $produto = Produto::where('id', $id)->first();
+
         if(session()->get('prod_cadeia_actual') == null){
             session()->put('prod_cadeia_actual', $produto->id);
             session()->put('prod_nome_cadeia_actual', $produto->nome);
@@ -782,9 +766,29 @@ class ProductsController extends Controller
             session()->forget('prod_nome_cadeia_actual');
             session()->put('prod_nome_cadeia_actual', $produto->nome);
         }
+
+        $fornecedor_eventos = Evento::where('id_produto', $produto->id)->get();
+
+        $all_fornecedor_eventos = array();
+        
+        foreach($fornecedor_eventos as $evento) {
+            
+            $atributos_novo_evento = [
+                "evento_id" =>  $evento->id,
+                "evento_id_produto" => $evento->id_produto,
+                "evento_nome" => $evento->nome,
+                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
+                "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                "id_fornecedor" => $evento->id_fornecedor,
+            ];
+            
+            array_push($all_fornecedor_eventos, $atributos_novo_evento);
+        }
+
+        session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
        
         return redirect('/cadeia');
-        
     }
 
 
@@ -798,9 +802,6 @@ class ProductsController extends Controller
             'descricaoCadeia'=>'required|string',
         ]);
 
-        
-
-
         $newEvento = Evento::create([
             'id_produto' => session()->get('prod_cadeia_actual'),
             'nome' => $request->get('nomeCadeia'),
@@ -810,21 +811,7 @@ class ProductsController extends Controller
             'id_fornecedor' => session()->get('user_id'),
         ]);
 
-
-
-        $fornecedor_historico = Fornecedor_historico_poluicao::where('id_fornecedor', session()->get('user_id'))->first();
-        $historico_to_update = [
-            'id_fornecedor' => session()->get('user_id'),
-            'poluicao_co2_produzida' => $fornecedor_historico->poluicao_co2_produzida  + $newEvento->poluicao_co2_produzida,
-            'kwh_consumidos' => $fornecedor_historico->kwh_consumidos + $newEvento->kwh_consumidos,
-        ];
-        $fornecedor_historico->update($historico_to_update);
-
-
-
-
         $produto = Produto::where('id', session()->get('prod_cadeia_actual'))->first();
-
 
         $atributos_update_produto = [
             "produto_id" => $produto->id,
@@ -843,9 +830,6 @@ class ProductsController extends Controller
             "pronto_a_vender" => 1,
         ];
         $produto->update($atributos_update_produto);
-        
-        
-
 
         $atributos_novo_evento = [
             "evento_id"  => $newEvento->id,
@@ -876,7 +860,6 @@ class ProductsController extends Controller
        
         session()->push('notificacoes', $atributos_notificacao);
 
-
         if(session()->has('produto_cadeia_logistica')){
             session()->push('produto_cadeia_logistica', $atributos_novo_evento);
         } else {
@@ -884,7 +867,6 @@ class ProductsController extends Controller
             array_push($produto_cadeia_logistica, $atributos_novo_evento);
             session()->put('produto_cadeia_logistica', $produto_cadeia_logistica);
         }
-
 
         return redirect('/cadeia'); //devolver a cadeia logistica do produto
 
@@ -895,6 +877,7 @@ class ProductsController extends Controller
 
         $atributos_cadeia= [
             "cadeia_id" => $id,
+            "cadeia_id_produto" => $cadeia->id_produto,
             "nome_cadeia" => $cadeia->nome,
             "co2_cadeia" => $cadeia->poluicao_co2_produzida,
             "kwh_cadeia" => $cadeia->kwh_consumidos,
@@ -909,12 +892,29 @@ class ProductsController extends Controller
     public function cadeiaDelete(Request $request){
 
         $cadeia = Evento::where('id', $request->get('id_cadeia'))->first();
-        
-
-        
         $cadeia->delete();
-         // rebuild armazens of fornecedor in session
-        self::rebuild_fornecedor_session();
+
+         // rebuild cadeia logistica
+        $fornecedor_eventos = Evento::where('id_produto', session()->get('cadeia_atual')['cadeia_id_produto'])->get();
+
+        $all_fornecedor_eventos = array();
+        
+        foreach($fornecedor_eventos as $evento) {
+            
+            $atributos_novo_evento = [
+                "evento_id" =>  $evento->id,
+                "evento_id_produto" => $evento->id_produto,
+                "evento_nome" => $evento->nome,
+                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
+                "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                "id_fornecedor" => $evento->id_fornecedor,
+            ];
+            
+            array_push($all_fornecedor_eventos, $atributos_novo_evento);
+        }
+        session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
+
 
         $noti ="A cadeia ";
         $noti .= $cadeia->nome;
@@ -941,34 +941,29 @@ class ProductsController extends Controller
         
         $request->validate([
             'nome'=>'sometimes|required|string',
-            'co2'=>'sometimes|required',
-            'kwh'=>'sometimes|required',
+            'co2'=>'sometimes|required|string',
+            'kwh'=>'sometimes|required|string',
             'desc'=>'sometimes|required|string',
-           
         ]);
-        //dd($request->all());
-
         
-        
-        $evento = Evento::where('id', session()->get('cadeia_atual')['cadeia_id'])->first();
-        
-        $historico_to_update = [
-            //'id_produto' => session()->get('prod_cadeia_actual'),
-            'nome' => $request->get('nome'),
-            'poluicao_co2_produzida' => $request->get('co2'),
-            'kwh_consumidos' => $request->get('kwh'),
-            'descricao_do_evento' => $request->get('desc'),
+        $to_update = [
+            'nome' => $request->nome,
+            'poluicao_co2_produzida' => $request->co2,
+            'kwh_consumidos' => $request->kwh,
+            'descricao_do_evento' => $request->desc,
         ];
-        $evento->update($historico_to_update);
+
+        $evento = Evento::where('id', session()->get('cadeia_atual')['cadeia_id'])->first();
+        $evento->update($to_update);
         
         $atributos_cadeia= [
-            "cadeia_id" => session()->get('cadeia_atual')['cadeia_id'],
+            "cadeia_id" => $evento->id,
+            "cadeia_id_produto" => $evento->id_produto,
             "nome_cadeia" => $evento->nome,
             "co2_cadeia" => $evento->poluicao_co2_produzida,
             "kwh_cadeia" => $evento->kwh_consumidos,
             "descricao_cadeia" => $evento->descricao_do_evento,
         ];
-
         session()->put('cadeia_atual', $atributos_cadeia);
 
         $notificacao = Notificacao::create([
@@ -983,11 +978,28 @@ class ProductsController extends Controller
             "notificacao_mensagem" => $notificacao->mensagem,
             "notificacao_estado" => $notificacao->estado,
         ];
-
         session()->push('notificacoes', $atributos_notificacao);
 
+        // rebuild cadeia logistica
+        $fornecedor_eventos = Evento::where('id_produto', session()->get('cadeia_atual')['cadeia_id_produto'])->get();
 
-        self::rebuild_fornecedor_session(); // put all session bases and veiculos up to date
+        $all_fornecedor_eventos = array();
+        
+        foreach($fornecedor_eventos as $evento) {
+            
+            $atributos_novo_evento = [
+                "evento_id" =>  $evento->id,
+                "evento_id_produto" => $evento->id_produto,
+                "evento_nome" => $evento->nome,
+                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
+                "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                "id_fornecedor" => $evento->id_fornecedor,
+            ];
+            
+            array_push($all_fornecedor_eventos, $atributos_novo_evento);
+        }
+        session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
 
         return redirect('/cadeia-edit');
     }
@@ -996,8 +1008,8 @@ class ProductsController extends Controller
     public function productInfo($id){
 
         $produto = Produto::where('id', $id)->first();
-        $campo_extra = Produto_campos_extra::where('id_produto',  $id)->get();
-        $cadeias  = Evento::where('id_produto', $id)->get();
+        $campo_extra = Produto_campos_extra::where('id_produto', $id)->get();
+
         $atributos_produto = [
             "produto_id" => $produto->id,
             "produto_nome" => $produto->nome,
@@ -1014,50 +1026,22 @@ class ProductsController extends Controller
             "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
             "pronto_a_vender" => $produto->pronto_a_vender,
         ];
+
         session()->put('produto_atual', $atributos_produto);
 
         $all_campos_extra_produtos = array();
 
         foreach($campo_extra as $campo) {
 
-            $campo_nome = $campo->campo_extra;
-            $campo_valor = $campo->valor_campo;
-            
-
             $atributos_campo_extra = [
-                "nome_campo" => $campo_nome,
-                "valor_campo" => $campo_valor,   
+                "nome_campo_extra" => $campo->nome_campo_extra,
+                "valor_campo" => $campo->valor_campo,   
             ];
-
 
             array_push($all_campos_extra_produtos, $atributos_campo_extra);
         }
 
         session()->put('campos_extra_atuais', $all_campos_extra_produtos);
-
-
-        $all_eventos_produtos = array();
-
-        foreach($cadeias as $evento) {
-
-            $evento_nome = $evento->nome;
-            $evento_co2 = $evento->poluicao_co2_produzida;
-            $evento_kwh = $evento->kwh_consumidos;
-            $evento_desc = $evento->descricao_do_evento;
-            
-
-            $atributos_evento = [
-                "evento_nome" => $evento_nome,
-                "evento_co2" => $evento_co2,   
-                "evento_kwh" => $evento_kwh,
-                "evento_desc" => $evento_desc,   
-            ];
-
-
-            array_push($all_eventos_produtos, $atributos_evento);
-        }
-
-        session()->put('cadeias_produto_atual', $all_eventos_produtos);
        
         return redirect('/products-edit');
     }
