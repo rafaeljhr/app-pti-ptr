@@ -1,6 +1,3 @@
-
-
-
 <link rel="stylesheet" href="css/bases_veiculos.css">
 
 @extends('layouts.page_default')

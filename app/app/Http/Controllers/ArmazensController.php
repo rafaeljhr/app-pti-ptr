@@ -284,9 +284,20 @@ class ArmazensController extends Controller
             'pais'=>'sometimes|required|string',
         ]);
 
+        $codigo_postal_completo = $request->codigo_postal_1."-".$request->codigo_postal_2;
+
+        $toUpdate= [
+            "nome" => $request->nome,
+            "morada" => $request->morada,
+            "cidade" => $request->cidade,
+            "codigo_postal" => $codigo_postal_completo,
+            "pais" => $request->pais,
+            "preco" => $request->preco,
+        ];
+
         
         $armazem = Armazem::where('id', session()->get('armazem_atual')['armazem_id'])->first();
-        $armazem->update($request->all());
+        $armazem->update($toUpdate);
         
         $atributos_armazem= [
             "armazem_id" => $armazem->id,

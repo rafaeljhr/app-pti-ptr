@@ -282,15 +282,6 @@ class ProductsController extends Controller
             'pronto_a_vender' => 0,
         ]);
 
-        $fornecedor_historico = Fornecedor_historico_poluicao::where('id_fornecedor', session()->get('user_id'))->first();
-        $historico_to_update = [
-            'id_fornecedor' => session()->get('user_id'),
-            'poluicao_co2_produzida' => $fornecedor_historico->poluicao_co2_produzida,
-            'kwh_consumidos' => $fornecedor_historico->kwh_consumidos + $newProduto->kwh_consumidos_por_dia_no_armazem,
-        ];
-        
-        $fornecedor_historico->update($historico_to_update);
-
         foreach($catField as $catFields){
             
             $name_field = $catFields->campo_extra;
@@ -340,7 +331,6 @@ class ProductsController extends Controller
         session()->push('notificacoes', $atributos_notificacao);
 
         session()->push('all_fornecedor_produtos', $atributos_novo_produto);
-        
 
         return redirect('/inventory');
     }

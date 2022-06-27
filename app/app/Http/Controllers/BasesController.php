@@ -346,11 +346,21 @@ class BasesController extends Controller
             'preco'=>'sometimes|required|string',
         ]);
 
+        $codigo_postal_completo = $request->codigo_postal_1."-".$request->codigo_postal_2;
+
+        $toUpdate= [
+            "nome" => $request->nome,
+            "morada" => $request->morada,
+            "cidade" => $request->cidade,
+            "codigo_postal" => $codigo_postal_completo,
+            "pais" => $request->pais,
+            "preco" => $request->preco,
+        ];
         
         $base = Base::where('id', session()->get('base')['base_id'])->first();
-        $base->update($request->all());
+        $base->update($toUpdate);
         
-        $atributos_base= [
+        $atributos_base = [
             "base_id" => $base->id,
             "base_id_transportadora" => $base->id_transportadora,
             "base_morada" => $base->morada,

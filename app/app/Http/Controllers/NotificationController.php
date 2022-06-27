@@ -79,7 +79,9 @@ class NotificationController extends Controller
             $not->save();
         }
 
-        session()->forget('notificacoes');
+        // limpar o array de notificacoes
+        $all_notificacoes = array();
+        session()->put('notificacoes', $all_notificacoes);
 
     }
 

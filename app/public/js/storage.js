@@ -1,33 +1,3 @@
-function deleteWarning(id, nome){
-    
-    let route = document.getElementById("buttonApagarArmazemWarning").name;
-    var data = new FormData()
-   
-    data.append('id_armazem', id);
-    data.append('nome_armazem', nome);
-
-    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', route, true)
-    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-            
-            document.getElementById("fraseWarning").innerHTML = JSON.parse(xhr.responseText)[0];
-            document.getElementById("buttonApagar").innerHTML = JSON.parse(xhr.responseText)[1];
-            
-        } else if (this.status >= 400) {
-            console.log(xhr.responseText);
-        }
-};
-
-    xhr.send(data);
-    
-}
-
-
 let app = Vue.createApp({
     data: function() {
         return {
@@ -38,6 +8,8 @@ let app = Vue.createApp({
 
         finishForm(e) {
             e.preventDefault();
+
+            document.getElementById("loader").style.display = "block";
             
             var url = new URL("https://atlas.microsoft.com/search/address/json");
             var parameters = { 

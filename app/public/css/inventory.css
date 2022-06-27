@@ -20,20 +20,17 @@
 
 #noProdutos{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .evento-size{
 
     width: 250px;
     height: 250px
-}
-#botao_criar {
-    font-size: 20px;
-    padding: 10px 20px;
 }
 
 .sem_cadeias_img {
@@ -66,7 +63,8 @@
     align-items: center;
     justify-content: center
 }
-.sem_bases_img {
+
+.sem_produtos_img {
     height: auto;
     width: auto;
     max-width: 400px;
@@ -421,4 +419,8 @@
 .voltar {
     text-decoration: underline;
     color: black;
+}
+
+.card {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
 }

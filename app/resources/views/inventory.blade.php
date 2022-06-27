@@ -12,22 +12,24 @@
 
 @section('background') 
 
-@if(session()->get('all_fornecedor_produtos')==null && session()->get('armazens') != null)
+@if(sizeOf(session()->get('all_fornecedor_produtos')) <=0 && session()->get('armazens') != null)
 
   <div id="noProdutos">
 
     <div align="center">
-      <img src="images/armazens.png" class="sem_bases_img" alt="">
+      <img src="images/armazens.png" class="sem_produtos_img">
       <br>
       <br>
-      <h2>Parece que não possui nenhum produto.</h2>
-      <p>Pode criar um produto nesta página usando o botão abaixo!.</p>
+      <h2>Parece que não possui produtos!</h2>
+      <p>Pode criar um usando o botão abaixo!</p>
+      <br>
       <a id="hideAnchor" href="{{ URL::to('/prodCreate')}}">
-        <button type="submit" class="btn btn-dark" id="btn-id">Adicionar produto</button>
+        <button class="btn btn-success" id="botao_criar">Criar produto</button>
       </a>
+      
     </div>
     
-
+  
   </div>
 
 
@@ -37,17 +39,19 @@
   <div id="noProdutos">
 
     <div align="center">
-      <img src="images/armazens.png" class="sem_bases_img" alt="">
+      <img src="images/armazens.png" class="sem_produtos_img">
       <br>
       <br>
-      <h2>Parece que não possui nenhum armazém.</h2>
-      <p>Armazéns são necessários para criar produtos, então crie um primeiramente.</p>
-      <a id="hideAnchor" href="{{ URL::to('storage')}}">
-        <button type='button' class="btn btn-success"  id="botao_criar">Criar Armazém</button>
+      <h2>Parece que não armazéns!</h2>
+      <p>Armazéns são necessários para possuir produtos, então crie um primeiramente!</p>
+      <br>
+      <a id="hideAnchor" href="{{ URL::to('/armazemCreate')}}">
+        <button class="btn btn-success" id="botao_criar">Criar armazém</button>
       </a>
+      
     </div>
     
-
+  
   </div>
 
 @else

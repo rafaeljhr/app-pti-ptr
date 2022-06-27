@@ -220,8 +220,6 @@
 
     </div>
 
-@include('includes.footer')
-
 <script src="./js/informacoes_armazem.js"></script>
     
 @endsection
