@@ -383,7 +383,7 @@
     opacity: 0.7;
   }
 
-#botao_criar {
+.botao_criar {
     font-size: 20px;
     padding: 10px 20px;
 }

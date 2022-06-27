@@ -64,8 +64,11 @@
         <h1>Os seus produtos</h1>
       </div>
       <div class="col-auto">
+        <button class="btn btn-success botao_criar" id="botao_comparar">Comparar produtos</button>
+      </div>
+      <div class="col-auto">
         <a id="hideAnchor" href="{{ URL::to('/prodCreate')}}">
-          <button class="btn btn-success" id="botao_criar">Criar produto</button>
+          <button class="btn btn-success botao_criar" id="botao_criar">Criar produto</button>
         </a>
       </div>
       
@@ -76,13 +79,6 @@
   {{-- MOSTRAR PRODUTOS --}}
 
     <div id='todosProdutos'>
-      <form id="compareForm" method="post" action="{{ route('compare-products')}}">
-        @csrf
-
-        <button v-show="!editable" type="button" class="btn btn-long btn-success" @click="editable = true">COMPARAR PRODUTOS</button>
-        <button v-show="editable" type="submit" class="btn btn-long btn-warning me-3" id="guardar_alteracoes" disabled>FAZER COMPARAÇÃO</button>
-        <button v-show="editable" type="button" class="btn btn-long btn-primary" @click="cancelCompare()">CANCELAR COMPARAÇÃO</button>
-          
         <div id="prodDisplay" class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
 
           @for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++) 
@@ -130,7 +126,7 @@
           @endfor
 
         </div>
-    </div>
+      </div>
 
   </div>
 
