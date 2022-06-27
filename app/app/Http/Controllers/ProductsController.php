@@ -331,46 +331,24 @@ class ProductsController extends Controller
             'nome_categoria'=> 'sometimes|required|string',
             'nome_subcategoria'=>'sometimes|required|string',
         ]);
-
-        
         
         $produto = Produto::where('id', session()->get('produto_atual')['produto_id'])->first();
-        $catAntiga = $produto->nome_categoria;
-        if($catAntiga == $request->nome_categoria){
-            $atributo_to_update = [
-                'nome' => $request->nome,
-                'preco' => $request->preco,
-                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
-                'id_fornecedor' => session()->get('user_id'),
-                'quantidade' => $request->quantidade,
-                'nome_categoria' => $request->nome_categoria,
-                'nome_subcategoria' => session()->get('produto_atual')['produto_nome_subcategoria'],
-                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
-                'informacoes_adicionais' => $request->info,
-                'data_producao_do_produto' => $request->data_p,
-                'data_insercao_no_site' => $request->data_i,
-                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
-                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
-            ];
-        }else{
-            $atributo_to_update = [
-                'nome' => $request->nome,
-                'preco' => $request->preco,
-                'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
-                'id_fornecedor' => session()->get('user_id'),
-                'quantidade' => $request->quantidade,
-                'nome_categoria' => $request->nome_categoria,
-                'nome_subcategoria' =>  $request->nome_subcategoria,
-                'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
-                'informacoes_adicionais' => $request->info,
-                'data_producao_do_produto' => $request->data_p,
-                'data_insercao_no_site' => $request->data_i,
-                'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
-                'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
-            ];
-        }
-
+        $atributo_to_update = [
+            'nome' => $request->nome,
+            'preco' => $request->preco,
+            'id_armazem' => session()->get('produto_atual')['produto_id_armazem'],
+            'id_fornecedor' => session()->get('user_id'),
+            'quantidade' => $request->quantidade,
+            'nome_subcategoria' => session()->get('produto_atual')['produto_nome_subcategoria'],
+            'path_imagem' => session()->get('produto_atual')['produto_path_imagem'],       
+            'informacoes_adicionais' => $request->info,
+            'data_producao_do_produto' => $request->data_p,
+            'data_insercao_no_site' => $request->data_i,
+            'kwh_consumidos_por_dia_no_armazem' => $request->kwh,
+            'pronto_a_vender' => session()->get('produto_atual')['pronto_a_vender'],
+        ];
         $produto->update($atributo_to_update);
+
         $atributos_produto = [
             'produto_id' => $produto->id,
             'produto_nome' => $produto->nome,
@@ -388,69 +366,40 @@ class ProductsController extends Controller
             'pronto_a_vender' => $produto->pronto_a_vender,
         ];
         session()->put('produto_atual', $atributos_produto);
-        if($catAntiga  != $produto-> nome_categoria){
-            $campos = Categoria_campos_extra::where('nome_categoria', $produto-> nome_categoria)->get();
-            $all_campos_extra_produtos = array();
+        
+        $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+        
+        foreach($campos_extra as $campo){
+            $name = $campo->campo_extra;
+            $string_check = htmlentities( $campo->valor_campo , ENT_QUOTES, "UTF-8");
+        
+            if($campo->valor_campo != $request->$name){
 
-            foreach($campos as $campo) {
-
-                $campo_nome = $campo->nome_campo_extra;
-                $campo_extra = $campo->campo_extra;
-                $campo_cat = $campo->nome_categoria;
-                
-
-                $atributos_campo_extra = [
-                    "nome_campo" => $campo_nome,
-                    "campo" => $campo_extra,   
-                    "nome_cat" => $campo_cat,   
+                $atributos_produto = [
+                    'valor_campo' => $request->$name,  
                 ];
 
-
-                array_push($all_campos_extra_produtos, $atributos_campo_extra);
+                Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])
+                ->where('campo_extra', $campo->campo_extra)
+                ->update($atributos_produto) ;
             }
-
-            session()->put('cat_selected', $all_campos_extra_produtos);
-            session()->put('cat_now', $produto-> nome_categoria);
-            
-            
-            return redirect('/campos-extra-edit');
-        }else{//update  de campos  extra
-            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
-            
-            foreach($campos_extra as $campo){
-                $name = $campo->campo_extra;
-                $string_check = htmlentities( $campo->valor_campo , ENT_QUOTES, "UTF-8");
-            
-                if($campo->valor_campo != $request->$name){
-                    Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])
-                    ->where('campo_extra', $campo->campo_extra)
-                    ->update(array('valor_campo' => $string_check)) ;
-                }
-                
-                
-            }
-            $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
-            $all_campos_extra_produtos = array();
-            foreach($campos_extra as $campo){
-                $campo_nome = $campo->campo_extra;
-                $campo_valor = $campo->valor_campo;
-                
-
-                $atributos_campo_extra = [
-                    "nome_campo" => $campo_nome,
-                    "valor_campo" => $campo_valor,   
-                ];
-
-
-                array_push($all_campos_extra_produtos, $atributos_campo_extra);
-            }
-
-            session()->put('campos_extra_atuais', $all_campos_extra_produtos);
-            
         }
 
+        $campos_extra = Produto_campos_extra::where('id_produto', session()->get('produto_atual')['produto_id'])->get();
+        $all_campos_extra_produtos = array();
+        foreach($campos_extra as $campo){
 
-        
+            $campo_extra_nome = Categoria_campos_extra::where('campo_extra', $campo->campo_extra)->first();
+
+            $atributos_campo_extra = [
+                "nome_campo_extra" => $campo_extra_nome->nome_campo_extra,
+                "campo_extra" => $campo->campo_extra,
+                "valor_campo" => $campo->valor_campo,   
+            ];
+
+            array_push($all_campos_extra_produtos, $atributos_campo_extra);
+        }
+        session()->put('campos_extra_atuais', $all_campos_extra_produtos);
 
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
@@ -464,11 +413,7 @@ class ProductsController extends Controller
             "notificacao_mensagem" => $notificacao->mensagem,
             "notificacao_estado" => $notificacao->estado,
         ];
-
-        session()->push('notificacoes', $atributos_notificacao);
-
-
-        self::rebuild_fornecedor_session(); 
+        session()->push('notificacoes', $atributos_notificacao); 
 
         return redirect('/products-edit');
     }
@@ -1029,12 +974,30 @@ class ProductsController extends Controller
 
         session()->put('produto_atual', $atributos_produto);
 
+        $produto_armazem = Armazem::where('id', $produto->id_armazem)->first();
+
+        $atributos_armazem = [
+            "armazem_id" => $produto_armazem->id,
+            "armazem_id_fornecedor" => $produto_armazem->id_fornecedor,
+            "armazem_morada" => $produto_armazem->morada,
+            "armazem_nome" => $produto_armazem->nome,
+            "armazem_path_imagem" => $produto_armazem->path_imagem,
+            "armazem_latitude" => $produto_armazem->latitude,
+            "armazem_longitude" => $produto_armazem->longitude,
+        ];
+
+        session()->put('produto_atual_armazem', $atributos_armazem);
+
+
         $all_campos_extra_produtos = array();
 
         foreach($campo_extra as $campo) {
 
+            $campo_extra_nome = Categoria_campos_extra::where('campo_extra', $campo->campo_extra)->first();
+
             $atributos_campo_extra = [
-                "nome_campo_extra" => $campo->nome_campo_extra,
+                "nome_campo_extra" => $campo_extra_nome->nome_campo_extra,
+                "campo_extra" => $campo->campo_extra,
                 "valor_campo" => $campo->valor_campo,   
             ];
 
@@ -1042,6 +1005,28 @@ class ProductsController extends Controller
         }
 
         session()->put('campos_extra_atuais', $all_campos_extra_produtos);
+
+
+        // rebuild cadeia logistica do produto em sessao
+        $produto_eventos = Evento::where('id_produto', $produto->id)->get();
+
+        $all_produto_eventos = array();
+        
+        foreach($produto_eventos as $evento) {
+            
+            $atributos_novo_evento = [
+                "evento_id" =>  $evento->id,
+                "evento_id_produto" => $evento->id_produto,
+                "evento_nome" => $evento->nome,
+                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
+                "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                "id_fornecedor" => $evento->id_fornecedor,
+            ];
+            
+            array_push($all_produto_eventos, $atributos_novo_evento);
+        }
+        session()->put('cadeias_produto_atual', $all_produto_eventos);
        
         return redirect('/products-edit');
     }

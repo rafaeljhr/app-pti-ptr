@@ -63,17 +63,8 @@ Route::get('/storage', function () {
 Route::get('/inventory', function () {
     NotificationController::obter_notificacoes_do_utilizador();
 
-    if(session()->has('all_fornecedor_produtos')){
-
-        return view('inventory');
-
-    } else {
-
-        ProductsController::rebuild_fornecedor_session();
-        return view('inventory'); 
-
-    }
-
+    ProductsController::rebuild_fornecedor_session();
+    return view('inventory');
     
 })->name('inventory');
 
