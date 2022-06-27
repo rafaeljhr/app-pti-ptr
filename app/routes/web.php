@@ -56,17 +56,8 @@ Route::get('/api-documentacao', function () {
 
 Route::get('/storage', function () {
     NotificationController::obter_notificacoes_do_utilizador();
-
-    if(session()->has('armazens')){
-
-        return view('storage');
-
-    } else {
-
-        ArmazensController::getAllArmazens();
-        return view('storage');
-
-    }
+    ArmazensController::getAllArmazens();
+    return view('storage');
 })->name('storage');
 
 Route::get('/inventory', function () {
@@ -91,6 +82,15 @@ Route::get('/prodCreate', function () {
     
     
     return view('createProduct');
+
+    
+});
+
+
+Route::get('/armazemCreate', function () {
+    
+    
+    return view('createArmazem');
 
     
 });

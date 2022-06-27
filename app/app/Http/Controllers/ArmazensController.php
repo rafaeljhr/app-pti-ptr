@@ -124,20 +124,15 @@ class ArmazensController extends Controller
 
         foreach($fornecedor_armazens as $armazem) {
 
-            $armazem_id = $armazem->id;
-            $armazem_id_fornecedor = $armazem->id_fornecedor;
-            $armazem_morada = $armazem->morada;
-            $armazem_nome = $armazem->nome;
-            $armazem_path_imagem = $armazem->path_imagem;
-
             $atributos_armazem = [
-                "armazem_id" => $armazem_id,
-                "armazem_id_fornecedor" => $armazem_id_fornecedor,
-                "armazem_morada" => $armazem_morada,
-                "armazem_nome" => $armazem_nome,
-                "armazem_path_imagem" => $armazem_path_imagem,
+                "armazem_id" => $armazem->id,
+                "armazem_id_fornecedor" => $armazem->id_fornecedor,
+                "armazem_morada" => $armazem->morada,
+                "armazem_nome" => $armazem->nome,
+                "armazem_path_imagem" => $armazem->path_imagem,
+                "armazem_latitude" => $armazem->latitude,
+                "armazem_longitude" => $armazem->longitude,
             ];
-
 
             array_push($all_fornecedor_armazens, $atributos_armazem);
         }

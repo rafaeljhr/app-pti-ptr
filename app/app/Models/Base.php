@@ -11,7 +11,7 @@ class Base extends Model
 	protected $table = 'base';
 
     protected $fillable = [
-        'id_transportadora', 'morada', 'codigo_postal', 'cidade', 'pais', 'nome', 'path_imagem', 'preco', 'latitude', 'longitude'
+        'id_transportadora', 'morada', 'codigo_postal', 'cidade', 'pais', 'nome', 'path_imagem', 'preco', 'latitude', 'longitude',
     ];
  
 }

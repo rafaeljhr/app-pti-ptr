@@ -11,7 +11,7 @@ class Armazem extends Model
 	protected $table = 'armazem';
 
     protected $fillable = [
-        'id_fornecedor', 'morada', 'nome', 'path_imagem', 'codigo_postal', 'cidade', 'pais', 'latitude', 'longitude'
+        'id_fornecedor', 'morada', 'nome', 'path_imagem', 'codigo_postal', 'cidade', 'pais', 'latitude', 'longitude',
     ];
  
 }

@@ -17,16 +17,22 @@
 
 #noStorage{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
-.sem_bases_img {
+.sem_armazens_img {
     height: auto;
     width: auto;
     max-width: 400px;
     max-height: 300px;
+}
+
+#botao_criar {
+    font-size: 20px;
+    padding: 10px 20px;
 }
 
 #todosArmazens {

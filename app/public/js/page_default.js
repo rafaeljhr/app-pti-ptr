@@ -59,9 +59,11 @@ function apagarTodasNotificacoes(route) {
 
     document.getElementById("numNotificacoes").innerHTML = 0;
 
-    document.getElementById("lis").innerHTML = '';
+    document.getElementById("limpar").style.display = "none";
 
-    var ul = document.getElementById("lis");
+    document.getElementById("lista_todas_notificacoes").innerHTML = '';
+
+    var ul = document.getElementById("lista_todas_notificacoes");
 
     var li = document.createElement("li");
     li.classList.add('notificationElement', 'mt-3', 'text-center');

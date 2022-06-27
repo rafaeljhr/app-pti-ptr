@@ -136,7 +136,6 @@ body {
 
 .notificationElement {
   font-size: 15px; 
-
 }
 
 .textoNotificacao {
@@ -144,6 +143,7 @@ body {
   white-space: normal !important;
   width: 100% !important;
   max-width: 25em !important;
+  margin-left: 10px;
 }
 
 .anchorNotificacao {

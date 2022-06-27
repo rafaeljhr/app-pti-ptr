@@ -64,7 +64,7 @@ Session_start();
                                 <p>As suas notificações</p>
                             </h4>
                         </div>
-                        @if(Session::get('notificacoes') != [] || Session::get('notificacoes') != null || sizeOf(session()->get('notificacoes')) != 0)
+                        @if(sizeOf(session()->get('notificacoes')) > 0)
                             <div class="col">
                                 <a onclick="apagarTodasNotificacoes('{{ route('delete-all-notifications') }}')" class="apagar_todas_nots">
                                     <u id="limpar">Limpar</u>
@@ -76,44 +76,44 @@ Session_start();
 
                     <hr class="dropdown-divider mt-3" style="width: 90%; margin: auto;">
 
-                    <div class="lis" id="lis">
-                        @if(Session::get('notificacoes') == [] || Session::get('notificacoes') == null)
-
-                            <li class='notificationElement mt-3'>
-                                <p class='textoNotificacao' style="margin-left: 10px;"">Não possui notificações!</p>
-                            </li>
-
-                        @else 
+                    <div class="lis" id="lista_todas_notificacoes">
+                        @if(sizeOf(session()->get('notificacoes')) > 0)
 
                             @for($i = 0; $i < sizeOf(session()->get('notificacoes')); $i++)
 
-                                    <li class='notificationElement mt-3' id="li_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>">
+                                <li class='notificationElement mt-3' id="li_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>">
 
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-9">
-                                                    <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
-                                                </div>
-                
-                                                <div class="col align-items-center">
-                                                    <a onclick="apagarNotificacao('<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>', '{{ route('delete-notification') }}' )" class='anchorNotificacao'>
-                                                        <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
-                                                    </a>
-                                                </div>
-                
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class='textoNotificacao'><?php echo session()->get('notificacoes')[$i]['notificacao_mensagem'] ?></p>
                                             </div>
+            
+                                            <div class="col align-items-center">
+                                                <a onclick="apagarNotificacao('<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>', '{{ route('delete-notification') }}' )" class='anchorNotificacao'>
+                                                    <button type="button" class="dropdown-item btn-close" id="button-close-div"  aria-label="Close"></button>
+                                                </a>
+                                            </div>
+            
                                         </div>
-                                        
-                                    </li>
+                                    </div>
                                     
-                                    
-                                    @if($i+1 < sizeOf(session()->get('notificacoes')))
+                                </li>
+                                
+                                
+                                @if($i+1 < sizeOf(session()->get('notificacoes')))
 
-                                        <hr id='hr_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
+                                    <hr id='hr_<?php echo session()->get('notificacoes')[$i]['notificacao_id'] ?>' class="dropdown-divider" style="width: 90%; margin: auto;">
 
-                                    @endif  
+                                @endif  
 
-                                @endfor
+                            @endfor
+
+                        @else 
+
+                            <li class='notificationElement mt-3'>
+                                <p class='textoNotificacao'>Não possui notificações!</p>
+                            </li>
 
                         @endif
                     </div>
@@ -121,7 +121,11 @@ Session_start();
                 </ul>
                     
                 <a style="text-decoration:none;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img id="foto_navbar" src="<?php echo session()->get('user_path_imagem') ?>" referrerpolicy="no-referrer">
+                    @if(!file_exists(session()->get('user_path_imagem')))
+                        <img id="foto_navbar" src='images/default_user.png' referrerpolicy="no-referrer">
+                    @else
+                        <img id="foto_navbar" src='<?php echo session()->get('user_path_imagem') ?>' referrerpolicy="no-referrer">
+                    @endif
                 </a>
                 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

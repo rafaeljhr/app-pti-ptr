@@ -1,25 +1,3 @@
-function  criarUmArmazem(){
-
-    if (document.getElementById("fundoDivOpac").style.display == "block") {
-        console.log('ola1');
-        document.getElementById("fundoDivOpac").style.display = "none";
-    } else {
-        document.getElementById("fundoDivOpac").style.display = "block";
-    }
-
-    if (document.getElementById("criarUmArmazem").style.display == "block") {
-        console.log('ola');
-        document.getElementById("criarUmArmazem").style.display = "none";
-    } else {
-        
-        document.getElementById("but-pad").style.display = "block";
-        document.getElementById("criarUmArmazem").style.display = "block";
-    }
-
-  
-};
-
-
 function deleteWarning(id, nome){
     
     let route = document.getElementById("buttonApagarArmazemWarning").name;
@@ -57,18 +35,6 @@ let app = Vue.createApp({
         }
     },
     methods: {
-        
-
-
-        closeInfo(){
-            document.getElementById("fundoDivOpac").style.display = "none";
-            document.getElementById("storage_info").style.display = "none";
-        },
-
-        closeSuccess(){
-
-            document.getElementById("successCreate").style.display = "none";
-        },
 
         finishForm(e) {
             e.preventDefault();
