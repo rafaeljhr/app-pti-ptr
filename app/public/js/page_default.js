@@ -3,22 +3,6 @@ window.onload = function () {
     if (document.getElementById("menu_perfil_utilizador")) {
         document.getElementById("menu_perfil_utilizador").style.display = "block";
     }
-
-
-    // var body = document.body,
-    // html = document.documentElement;
-
-    // var height = Math.max( body.scrollHeight, body.offsetHeight, 
-    //                    html.clientHeight, html.scrollHeight, html.offsetHeight );
-
-    // if (height == window.innerHeight) {
-    //     document.getElementById("footer_principal").style.display = "block";
-    //     document.getElementById("footer_principal").style.position= "fixed";
-        
-    // } else {
-    //     document.getElementById("footer_principal").style.position = "block";
-    //     document.getElementById("footer_principal").style.position = "relative";
-    // }
     
 };
 

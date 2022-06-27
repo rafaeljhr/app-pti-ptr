@@ -63,7 +63,7 @@ let app = Vue.createApp({
     },
 })
 
-app.mount('app')
+app.mount('.app')
 
 function AdicionarApagarProdutoCarrinho(element, id, route){
 

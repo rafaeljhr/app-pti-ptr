@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="css/profile.css">
 <link rel="stylesheet" href="css/bootstrap.min.css">
+
 @extends('layouts.page_default')
 
 @section('background')
@@ -33,9 +34,6 @@
     // dd(session()->all());
 
     ?>
-
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
 
     <div class="container py-5">
 
@@ -263,9 +261,8 @@
             </div>
         </div>    
     </div>
-
-    @include('includes.footer')
-
+    
+    
     <script src="./js/profile.js"></script>
         
 @endsection
