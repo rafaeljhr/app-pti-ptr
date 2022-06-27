@@ -86,7 +86,9 @@ let app = Vue.createApp({
             }
 
             if (n == 1 && !(this.validateForm())) {
+                document.getElementById('all-steps').style = "block";
                 return false;
+                
             } 
             this.tabs[this.current_tab].style.display = "none";
             this.current_tab = this.current_tab + n;

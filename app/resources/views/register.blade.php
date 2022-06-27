@@ -54,7 +54,8 @@ Session::put('login_ou_registo', "registo");
                                         
                                     </div>
                                     
-                                    <div class="or-container"><div class="line-separator"></div> <div class="or-label">ou</div><div class="line-separator"></div></div>
+                                    <!-- <div class="or-container"><div class="line-separator"></div> <div class="or-label">ou</div><div class="line-separator"></div></div> -->
+                                    <p class="d-flex justify-content-center"><br>ou</p>
 
                                     
                                     <p class="d-flex justify-content-center">Registar-me com o meu email</p>

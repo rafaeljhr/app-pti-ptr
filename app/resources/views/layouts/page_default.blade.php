@@ -31,7 +31,6 @@
                 @section('background')
                 @show
 
-                @include('includes.footer')
             </div>
         </div>
     </body>

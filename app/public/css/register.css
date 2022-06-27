@@ -38,7 +38,6 @@ body {
 }
 
 #regForm {
-    background-color: #ffffff;
     margin: auto;
     padding: 50px;
     border-radius: 10px;
@@ -102,7 +101,8 @@ button:hover {
     background-color: #93BF7E;
 }
 
-.all-steps {
+#all-steps {
+    display: none;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px
