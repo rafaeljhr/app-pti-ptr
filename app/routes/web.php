@@ -63,7 +63,6 @@ Route::get('/storage', function () {
 
 Route::get('/inventory', function () {
     NotificationController::obter_notificacoes_do_utilizador();
-
     ProductsController::rebuild_fornecedor_session();
     return view('inventory');
     
