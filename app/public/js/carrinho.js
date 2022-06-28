@@ -96,13 +96,7 @@ paypal.Buttons({
     // Finalize the transaction after payer approval
     onApprove: (data, actions) => {
     return actions.order.capture().then(function(orderData) {
-        setTimeout(function() {
-
-            document.getElementById('checkout').submit();
-
-        }, 3000)
-
-        actions.redirect(document.getElementById("paypal-button-container").dataset.redirect);
+        document.getElementById('checkout').submit();
     });
     }
 }).render('#paypal-button-container');
