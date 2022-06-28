@@ -299,9 +299,7 @@
     margin-right: 15px;
     margin-left: 15px;
     position: relative;
-}
 
-.carta {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;
     max-height: 335px;

@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -616,7 +617,7 @@ class ProductsController extends Controller
 
     public function CategoriasHtml(){
 
-        $html = '<label for="Categorias">Categorias:</label>';
+        $html = '<label for="Categorias">Categorias:&nbsp;</label>';
 
         $html .= '<select name="Categorias" id="Categorias" onChange="CreateSubCatOptions(' . "'" . route("HtmlSubCategoria") . "'" . ')">';
 
@@ -635,7 +636,7 @@ class ProductsController extends Controller
 
     public function SubCategoriasHtml(Request $request){
 
-        $html = '<label for="SubCategoria">SubCategoria:</label>';
+        $html = '<label for="SubCategoria">SubCategoria:&nbsp;</label>';
 
         $html .= '<select name="SubCategoria" id="SubCategoria">';
 
@@ -655,14 +656,31 @@ class ProductsController extends Controller
     public function ProductFilter(Request $request){
 
         if($request->favoritos == "on"){
-            if($request->Categorias != ""){
-
-            }
-
-            $html = $this->getHtmlProductStore();
+            $produtos = Produto::getFavoritesProducts();
         }else{
-            $html = $this->getHtmlProductStore(Produto::getAllProducts());
+            $produtos = Produto::getAllProducts();
         }
+
+        $temp = Produto::where('preco', '<', $request->Preco)->get();
+        $produtos = $this->IntersectArrays($produtos, $temp);
+
+        if ($request->Nome != ""){
+
+            $temp = Produto::where('nome', 'like', '%' . $request->Nome . '%')->get();
+            $produtos = $this->IntersectArrays($produtos, $temp);
+        }
+        
+        if($request->Categorias != ""){
+            $temp = $this->SqlCategoria($request->Categorias);
+            $produtos = $this->IntersectArrays($produtos, $temp);
+
+            if ($request->SubCategoria != ""){
+                $temp = $this->SqlSubCategoria($request->SubCategoria);
+                $produtos = $this->IntersectArrays($temp, $produtos);
+            }
+        }
+
+        $html = $this->getHtmlProductStore($produtos);
 
         return $html;
         
@@ -680,6 +698,55 @@ class ProductsController extends Controller
         ];
 
         return View::make('products')->with('data', $data);
+
+    }
+
+    public function IntersectArrays($array1, $array2){
+
+        $collection = collect();
+
+        foreach ($array1 as $array1Item) {
+            foreach ($array2 as $array2Item) {
+                if ($array1Item->id == $array2Item->id){
+                    $collection->push($array1Item);
+                }
+            }
+        }
+
+        return $collection;
+    }
+
+    public function SqlCategoria (String $Categoria){
+
+        $produtos = DB::table("produto")
+            ->select("produto.id", "produto.nome", "produto.preco", "produto.path_imagem", "produto.quantidade","utilizador.ultimo_nome")
+            ->leftjoin("utilizador", function ($join) {
+                $join->on("produto.id_fornecedor", "=", "utilizador.id");
+            })
+            ->where("produto.nome_categoria", "=", $Categoria)
+            ->orderby("produto.quantidade", "desc")
+            ->orderby("utilizador.ultimo_nome", "desc")
+            ->groupby("produto.id")
+            ->get();
+
+        return $produtos;
+
+    }
+
+    public function SqlSubCategoria (String $SubCategoria){
+
+        $produtos = DB::table("produto")
+            ->select("produto.id", "produto.nome", "produto.preco", "produto.path_imagem", "produto.quantidade","utilizador.ultimo_nome")
+            ->leftjoin("utilizador", function ($join) {
+                $join->on("produto.id_fornecedor", "=", "utilizador.id");
+            })
+            ->where("produto.nome_subcategoria", "=", $SubCategoria)
+            ->orderby("produto.quantidade", "desc")
+            ->orderby("utilizador.ultimo_nome", "desc")
+            ->groupby("produto.id")
+            ->get();
+
+        return $produtos;
 
     }
 
