@@ -1179,116 +1179,133 @@ class ProductsController extends Controller
         }   
     }
 
-    public function compareProds(Request $request){
-        //dd($request->has(77));
-        $prods = array();
-            
-        for($i = 0; $i < sizeOf(session()->get('all_fornecedor_produtos')); $i++){
-            if($request->has(session()->get('all_fornecedor_produtos')[$i]['produto_id']) == true){
-                array_push($prods, session()->get('all_fornecedor_produtos')[$i]['produto_id']);
-            }
-        }
-        $produto = Produto::where('id', $prods[0])->first();
-        if($produto->pronto_a_vender != 0){
-            $eventos = Evento::where('id_produto', $prods[0])->get();
-            $co2 = 0;
-            $kwh = 0;
-            foreach($eventos as $evento){
-                $co2 = $co2 + $evento->poluicao_co2_produzida;
-                $kwh = $kwh + $evento->kwh_consumidos;
-                
-            }
-            $sum  = $co2 +  $kwh;
-            $atributos_produto = [
-                'produto_id' => $produto->id,
-                'produto_nome' => $produto->nome,
-                'produto_preco' => $produto->preco,
-                'produto_id_armazem' => $produto->id_armazem,
-                'produto_id_fornecedor' => $produto->id_fornecedor,
-                'produto_quantidade' => $produto->quantidade,
-                'produto_nome_categoria' => $produto->nome_categoria,
-                'produto_path_imagem' => $produto->path_imagem,
-                'produto_nome_subcategoria' => $produto->nome_subcategoria,
-                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
-                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
-                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
-                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
-                'poluicao_evento_co2'  => $co2,
-                'poluicao_evento_kwh'  => $kwh,
-            ];
-        }else{
-            $atributos_produto = [
-                'produto_id' => $produto->id,
-                'produto_nome' => $produto->nome,
-                'produto_preco' => $produto->preco,
-                'produto_id_armazem' => $produto->id_armazem,
-                'produto_id_fornecedor' => $produto->id_fornecedor,
-                'produto_quantidade' => $produto->quantidade,
-                'produto_nome_categoria' => $produto->nome_categoria,
-                'produto_path_imagem' => $produto->path_imagem,
-                'produto_nome_subcategoria' => $produto->nome_subcategoria,
-                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
-                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
-                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
-                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
-                'poluicao_evento_co2'  => 0,
-                'poluicao_evento_kwh'  => 0,
-            ];
-        }
-        session()->put('produto_comparar1', $atributos_produto);
+    public function compararProdutos(Request $request){
+
+        session()->put('categoria_a_comparar', $request->comparar_categoria);
+
+        return view('comparar_produtos');
+    }
 
 
-        
+    public function compararDoisProdutos(Request $request){
 
-        $produto = Produto::where('id', $prods[1])->first();
-        if($produto->pronto_a_vender != 0){
-            $evento = Evento::where('id_produto', $prods[1])->get();
-            $co2 = 0;
-            $kwh = 0;
-            foreach($eventos as $evento){
-                $co2  =  $co2 + $evento->poluicao_co2_produzida;
-                $kwh  =  $kwh + $evento->kwh_consumidos;
-                
-            }
-            
-            $atributos_produto = [
-                'produto_id' => $produto->id,
-                'produto_nome' => $produto->nome,
-                'produto_preco' => $produto->preco,
-                'produto_id_armazem' => $produto->id_armazem,
-                'produto_id_fornecedor' => $produto->id_fornecedor,
-                'produto_quantidade' => $produto->quantidade,
-                'produto_nome_categoria' => $produto->nome_categoria,
-                'produto_path_imagem' => $produto->path_imagem,
-                'produto_nome_subcategoria' => $produto->nome_subcategoria,
-                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
-                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
-                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
-                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
-                'poluicao_evento_co2'  => $co2,
-                'poluicao_evento_kwh'  => $kwh,
+        $Produto1 = Produto::where('id', $request->produto1)->first();
+        $campo_extra_produto1 = Produto_campos_extra::where('id_produto', $Produto1->id)->get();
+
+        $fornecedor1 = Utilizador::where('id', $Produto1->id_fornecedor)->first();
+        $fornecedor1_nome = $fornecedor1->primeiro_nome . " " . $fornecedor1->ultimo_nome;
+
+        $atributos_produto1 = [
+            "produto_id" => $Produto1->id,
+            "produto_nome" => $Produto1->nome,
+            "produto_preco" => $Produto1->preco,
+            "produto_id_armazem" => $Produto1->id_armazem,
+            "produto_id_fornecedor" => $Produto1->id_fornecedor,
+            "produto_id_fornecedor_nome" => $fornecedor1_nome,
+            "produto_quantidade" => $Produto1->quantidade,
+            "produto_nome_categoria" => $Produto1->nome_categoria,
+            "produto_path_imagem" => $Produto1->path_imagem,
+            "produto_nome_subcategoria" => $Produto1->nome_subcategoria,
+            "produto_informacoes_adicionais" => $Produto1->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $Produto1->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $Produto1->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $Produto1->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => $Produto1->pronto_a_vender,
+        ];
+
+        session()->put('produto_1_atributos', $atributos_produto1);
+
+        $produto1_armazem = Armazem::where('id', $Produto1->id_armazem)->first();
+
+        $produto_1_atributos_armazem = [
+            "armazem_id" => $produto1_armazem->id,
+            "armazem_id_fornecedor" => $produto1_armazem->id_fornecedor,
+            "armazem_morada" => $produto1_armazem->morada,
+            "armazem_nome" => $produto1_armazem->nome,
+            "armazem_path_imagem" => $produto1_armazem->path_imagem,
+            "armazem_latitude" => $produto1_armazem->latitude,
+            "armazem_longitude" => $produto1_armazem->longitude,
+        ];
+
+        session()->put('produto_1_atual_armazem', $produto_1_atributos_armazem);
+
+        $all_campos_extra_produto1 = array();
+
+        foreach($campo_extra_produto1 as $campo) {
+
+            $campo_extra_nome = Categoria_campos_extra::where('campo_extra', $campo->campo_extra)->first();
+
+            $atributos_campo_extra = [
+                "nome_campo_extra" => $campo_extra_nome->nome_campo_extra,
+                "campo_extra" => $campo->campo_extra,
+                "valor_campo" => $campo->valor_campo,   
             ];
-        }else{
-            $atributos_produto = [
-                'produto_id' => $produto->id,
-                'produto_nome' => $produto->nome,
-                'produto_preco' => $produto->preco,
-                'produto_id_armazem' => $produto->id_armazem,
-                'produto_id_fornecedor' => $produto->id_fornecedor,
-                'produto_quantidade' => $produto->quantidade,
-                'produto_nome_categoria' => $produto->nome_categoria,
-                'produto_path_imagem' => $produto->path_imagem,
-                'produto_nome_subcategoria' => $produto->nome_subcategoria,
-                'produto_informacoes_adicionais' => $produto->informacoes_adicionais,
-                'produto_data_producao_do_produto' => $produto->data_producao_do_produto,
-                'produto_data_insercao_no_site' => $produto->data_insercao_no_site,
-                'produto_kwh_consumidos_por_dia' => $produto->kwh_consumidos_por_dia_no_armazem,
-                'poluicao_evento_co2'  => 0,
-                'poluicao_evento_kwh'  => 0,
-            ];
+
+            array_push($all_campos_extra_produto1, $atributos_campo_extra);
         }
-        session()->put('produto_comparar2', $atributos_produto);
-        return redirect('/comparar-prods');
+
+        session()->put('campos_extra_produto_1', $all_campos_extra_produto1);
+
+
+
+        $Produto2 = Produto::where('id', $request->produto2)->first();
+        $campo_extra_produto2 = Produto_campos_extra::where('id_produto', $Produto2->id)->get();
+
+        $fornecedor2 = Utilizador::where('id', $Produto2->id_fornecedor)->first();
+        $fornecedor2_nome = $fornecedor2->primeiro_nome . " " . $fornecedor2->ultimo_nome;
+
+        $atributos_produto2 = [
+            "produto_id" => $Produto2->id,
+            "produto_nome" => $Produto2->nome,
+            "produto_preco" => $Produto2->preco,
+            "produto_id_armazem" => $Produto2->id_armazem,
+            "produto_id_fornecedor" => $Produto2->id_fornecedor,
+            "produto_id_fornecedor_nome" => $fornecedor2_nome,
+            "produto_quantidade" => $Produto2->quantidade,
+            "produto_nome_categoria" => $Produto2->nome_categoria,
+            "produto_path_imagem" => $Produto2->path_imagem,
+            "produto_nome_subcategoria" => $Produto2->nome_subcategoria,
+            "produto_informacoes_adicionais" => $Produto2->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $Produto2->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $Produto2->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia" => $Produto2->kwh_consumidos_por_dia_no_armazem,
+            "pronto_a_vender" => $Produto2->pronto_a_vender,
+        ];
+
+        session()->put('produto_2_atributos', $atributos_produto2);
+
+        $produto2_armazem = Armazem::where('id', $Produto2->id_armazem)->first();
+
+        $produto_2_atributos_armazem = [
+            "armazem_id" => $produto2_armazem->id,
+            "armazem_id_fornecedor" => $produto2_armazem->id_fornecedor,
+            "armazem_morada" => $produto2_armazem->morada,
+            "armazem_nome" => $produto2_armazem->nome,
+            "armazem_path_imagem" => $produto2_armazem->path_imagem,
+            "armazem_latitude" => $produto2_armazem->latitude,
+            "armazem_longitude" => $produto2_armazem->longitude,
+        ];
+
+        session()->put('produto_2_atual_armazem', $produto_2_atributos_armazem);
+
+        $all_campos_extra_produto2 = array();
+
+        foreach($campo_extra_produto2 as $campo) {
+
+            $campo_extra_nome = Categoria_campos_extra::where('campo_extra', $campo->campo_extra)->first();
+
+            $atributos_campo_extra = [
+                "nome_campo_extra" => $campo_extra_nome->nome_campo_extra,
+                "campo_extra" => $campo->campo_extra,
+                "valor_campo" => $campo->valor_campo,   
+            ];
+
+            array_push($all_campos_extra_produto2, $atributos_campo_extra);
+        }
+
+        session()->put('campos_extra_produto_2', $all_campos_extra_produto2);
+
+        return view('comparar_2_produtos');
     }
 
     

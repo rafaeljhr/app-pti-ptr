@@ -262,7 +262,7 @@
 
                                     }
             
-                                    echo 'Nº de produtos no armazém: ' . $num_produtos;
+                                    echo 'Quantidade de produtos no armazém: ' . $num_produtos;
             
                                     ?>
                                 </p>

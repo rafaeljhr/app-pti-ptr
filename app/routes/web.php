@@ -174,8 +174,6 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::get('/produtosEdit/{id}/', [ProductsController::class, "productInfo"]);
 
-
-
 Route::get('/products-edit', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_produto');
@@ -186,15 +184,13 @@ Route::get('/campos-extra-edit', function () {
     return view('alterar_cat');
 })->name('campos_extra');
 
-Route::get('/comparar-prods', function () {
-    return view('compare_prods');
-})->name('comparar_prods');
+
+Route::post('/comparar-produtos', [ProductsController::class, 'compararProdutos'])->name('comparar-produtos');
+
+Route::post('/comparar-2-produtos', [ProductsController::class, 'compararDoisProdutos'])->name('comparar-2-produtos');
+
 
 Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
-
-Route::post('/compare-products', [ProductsController::class, 'compareProds'])->name('compare-products');
-
-
 
 Route::post('/update-imagem-produto-controller', [ProductsController::class, 'changeImgProd'])->name('update-imagem-produto-controller');
 

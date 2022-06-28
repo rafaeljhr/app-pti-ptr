@@ -1,0 +1,12 @@
+.glowing-border {
+    border: 1px green solid !important;
+    box-shadow: 0 0 15px green;
+}
+
+.produto_select {
+    cursor: pointer;
+}
+
+#comparar {
+    display: none;
+}

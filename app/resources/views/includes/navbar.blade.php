@@ -46,11 +46,6 @@ Session_start();
                 <a href="{{ route('checkout-url') }}" style="text-decoration:none; margin-right: 20px;">
                     <img class="icons_navbar" src="images/carrinho_de_compras.png">
                 </a>
-                
-
-                
-                
-
 
                 <a style="text-decoration:none; margin-right: 15px;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span id='numNotificacoes' class="badge badge-light"><?php echo sizeOf(session()->get('notificacoes')) ?></span>
@@ -134,25 +129,25 @@ Session_start();
 
                     <li><hr class="dropdown-divider"></li>
 
-                    <li><a class="dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('profile-url') }}">PERFIL</a></li>
 
                     @if(Session::get('userType') == 'fornecedor')
-                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
-                    <li><a class="dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
-                    <li><a class="dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
+                    <li><a class="text-dark dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
-                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
-                    <li><a class="dropdown-item text-center" href="{{ route('bases') }}">BASES</a></li>
-                    <li><a class="dropdown-item text-center" href="{{ route('veiculos') }}">VEÍCULOS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('bases') }}">BASES</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('veiculos') }}">VEÍCULOS</a></li>
                     @endif
                     @if(Session::get('userType') == 'consumidor')
-                    <li><a class="dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     @endif
 
                     <li><hr class="dropdown-divider"></li>
 
-                    <li><a class="dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('logout-controller') }}">LOGOUT</a></li>
                 </ul>
         @else
             <div class="dropdown" id="menu_perfil_utilizador">
