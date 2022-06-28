@@ -56,7 +56,7 @@ $basesDistancias = session()->get('basesDistancias');
 
                             <div id="<?php echo $i ?>" class="row px-2">
                                 <div class="col-md-4 mb-2">
-                                    <img src='<?php echo session()->get('carrinho_produtos')[$i]['produto_path_imagem'] ?>' class="imagemProduto card-img-top">
+                                    <img src='<?php echo session()->get('carrinho_produtos')[$i]['path_imagem'] ?>' class="imagemProduto card-img-top">
                                 </div>
 
                                 <div class="col-md-6">
