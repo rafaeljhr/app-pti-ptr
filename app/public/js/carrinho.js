@@ -35,7 +35,7 @@ let app = Vue.createApp({
 
             this.$refs.kwConsumed.innerHTML = totalKwh + " kWh";
 
-            this.$refs.subTotal.innerHTML = subTotal + " €";
+            this.$refs.subTotal.innerHTML = Number(subTotal).toFixed(2) + " €";
 
             this.$refs.custoEntrega.innerHTML = totalEntregas + " €";
         
