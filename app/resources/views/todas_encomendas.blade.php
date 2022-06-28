@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="col-3">
-                            <h6>Data e Hora da entrega</h6>
+                            <h6>Data e Hora finalizada</h6>
                         </div>
 
                         @if(session()->get('userType') == "consumidor")

@@ -455,7 +455,6 @@ class EncomendaController extends Controller
         if (!$match) {
             return "Tentativa de colocação de estado inválido na encomenda";
         }
-        
 
         $encomenda = Encomenda::where('id', session()->get('encomenda')['encomenda_id'])->first();
 
@@ -464,6 +463,20 @@ class EncomendaController extends Controller
         if ($request->estado == "Concluída") {
             $hoje = date("Y-m-d H:i:s");
             $encomenda->data_finalizada = $hoje;
+
+
+        } else if ($request->estado == "Encomenda estragou-se") {
+
+            $produto = Produto::where('id', $encomenda->id_produto)->first();
+
+            $atributo_to_update = [
+                'quantidade_produto_incidentes_transporte' => $encomenda->quantidade,
+            ];
+            $produto->update($atributo_to_update);
+
+            $hoje = date("Y-m-d H:i:s");
+            $encomenda->data_finalizada = $hoje;
+
         }
 
         $encomenda->save();
@@ -635,6 +648,29 @@ class EncomendaController extends Controller
             $notificacao_transportadora = Notificacao::create([
                 'id_utilizador' => $encomenda->id_transportadora,
                 'mensagem' => "A encomenda de nº ".$encomenda->id." foi entregue!",
+                'estado' => 1,
+            ]);
+
+        } else if ($request->estado == "Encomenda estragou-se") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "Infelizmente, a sua encomenda nº ".$encomenda->id." estragou-se! Em breve receberá um reembolso.",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "Infelizmente, a encomenda de nº ".$encomenda->id." estragou-se! Deve ser emitido um reembolso ao consumidor.",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi declarada como estragada!",
                 'estado' => 1,
             ]);
 

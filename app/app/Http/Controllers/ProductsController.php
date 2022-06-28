@@ -196,11 +196,11 @@ class ProductsController extends Controller
                 "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
                 "produto_tem_eventos_logisticos" => $tem_eventos_logisticos,
                 "pronto_a_vender" => $produto->pronto_a_vender,
-                "pronto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
-                "pronto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
+                "produto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
+                "produto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
             ];
 
-            if ($produto->quantidade_produto_expirada > 0) {
+            if ($produto->quantidade_produto_expirada > 0 || $produto->quantidade_produto_incidentes_transporte > 0) {
                 array_push($all_fornecedor_produtos_incidentes, $atributos_produto);
             } else {
                 array_push($all_fornecedor_produtos, $atributos_produto);
