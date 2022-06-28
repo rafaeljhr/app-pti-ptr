@@ -1,23 +1,3 @@
-countProds = [];
-
-function countCompare(id){
-    
-    console.log(this.editable);
-    if(document.getElementsByName(id)[0].checked == true){
-        countProds.push(id);
-    }else{
-        index = countProds.indexOf(id);
-        countProds.splice(index, 1);
-    }
-    console.log(countProds);
-    if(countProds.length < 2 || countProds.length > 2){
-        document.getElementById("guardar_alteracoes").disabled = true;
-    }else{
-        document.getElementById("guardar_alteracoes").disabled = false;
-    }
-}
-
-
 let app = Vue.createApp({
 
 
@@ -67,7 +47,7 @@ let app = Vue.createApp({
 
 
         changeSubcat(cat){
-            console.log(cat.target.value);    
+             
                     
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()
@@ -82,6 +62,7 @@ let app = Vue.createApp({
         
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("header_campos_extra").style.display = "block";
                     document.getElementById("toChangeOnCmd").innerHTML = JSON.parse(xhr.responseText)[0];
                     document.getElementById("camposExtra").innerHTML = JSON.parse(xhr.responseText)[1];
         

@@ -14,7 +14,7 @@
       @csrf
       <h1 class="text-center mb-4 mt-4">CRIAR PRODUTO</h1>
 
-      <div class="row">
+      <div class="row w-100">
         <div class="col">
           <label for="nome" class="form-label">Nome do produto:</label>
           <div class="input-group mb-3">
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="row" >
+      <div class="row w-100" >
 
         <div class="col">
           <label for="path_imagem_produto" class="form-label">Imagem do produto:</label>
@@ -54,40 +54,7 @@
 
       </div>
 
-
-      <div class="row" >
-
-        <div class="col">
-          <label for="nome_categoria" class="form-label">Categoria do produto</label>
-          <div class="input-group mb-3">
-            <select class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" required>
-              <option value="">-- Selecione uma categoria --</option>
-              @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
-              <?php $category= session()->get('categories')[$i] ?>
-              <option value='<?php echo session()->get('categories')[$i]['category_nome'] ?>'><?php echo session()->get('categories')[$i]['category_nome'] ?></option>              
-              @endfor
-            </select>
-          </div>
-        </div>
-
-        <div class="col">
-          <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
-          <div id="toChangeOnCmd">
-            <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
-            <div class="input-group mb-3">
-              <select class="form-control" disabled name="nome_subcategoria" id="novo_produto_subcategoria" required>
-                <option default value="">-- Selecione uma subcategoria --</option>
-              </select>
-            </div>
-          </div>       
-        </div>
-
-      </div>
-        
-      {{-- Campos extra do produto consoante a categoria --}}
-      <div id="camposExtra"></div>
-
-      <div class="row">
+      <div class="row w-100">
         <div class="col">
           <label for="data_producao_do_produto" class="form-label">Data de fabrico do produto:</label>
           <input name="data_producao_do_produto" class="form-control" type="date" id="novo_produto_data_fabrico" required>
@@ -118,10 +85,44 @@
       <div class="row">
         <div class="input-group mb-3">
           <span class="input-group-text">Informações complementares</span>
-          <textarea name="informacoes_adicionais" class="form-control" aria-label="Informações adicionais" rows="5" id="novo_produto_infos_adicionais" required></textarea>
+          <textarea name="informacoes_adicionais" class="form-control" aria-label="Informações adicionais" rows="3" id="novo_produto_infos_adicionais" required></textarea>
         </div>
       </div>
 
+      <div class="row w-100" >
+
+        <div class="col">
+          <label for="nome_categoria" class="form-label">Categoria do produto</label>
+          <div class="input-group mb-3">
+            <select class="form-control" @change="changeSubcat($event)" name="nome_categoria" id="novo_produto_categoria" required>
+              <option value="">-- Selecione uma categoria --</option>
+              @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
+              <?php $category= session()->get('categories')[$i] ?>
+              <option value='<?php echo session()->get('categories')[$i]['category_nome'] ?>'><?php echo session()->get('categories')[$i]['category_nome'] ?></option>              
+              @endfor
+            </select>
+          </div>
+        </div>
+
+        <div class="col">
+          <input id="routeSubCat" name="{{ route('product-changeSub') }}" hidden>           
+          <div id="toChangeOnCmd">
+            <label for="nome_subcategoria" class="form-label">Selecione uma subcategoria</label>
+            <div class="input-group mb-3">
+              <select class="form-control" disabled name="nome_subcategoria" id="novo_produto_subcategoria" required>
+                <option default value="">-- Selecione uma subcategoria --</option>
+              </select>
+            </div>
+          </div>       
+        </div>
+
+      </div>
+
+      <br>
+        
+      <h3 id='header_campos_extra' style="display: none;">Campos específicos da categoria do produto</h3>
+      {{-- Campos extra do produto consoante a categoria --}}
+      <div id="camposExtra"></div>
 
       <button type="submit" class="w-100 btn btn-lg btn-success mt-3">Criar produto</button>
     
