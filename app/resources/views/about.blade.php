@@ -104,10 +104,15 @@
             <h3>O objectivo da EcoSmart Store é ser transparente com os nossos clientes
             e com o ambiente.
             Quando compra na EcoSmart Store saberá o histórico de poluição do produto 
-            que encomenda, desde a produção à entrega. Desta forma saberá de forma
-            consciente se se encontra a fazer compras verdadeiramente eco-friendly!
+            que encomenda, desde a produção à entrega. Desta forma fará de forma
+            consciente as compras verdadeiramente eco-friendly!
             <br><i>"Be smart, be EcoSmart"</i> </h3>
 
+        </div>
+
+        <h4 class="text-center mx-auto section-title mt-2">Fale connosco</h4>
+        <div class="d-flex justify-content-center mx-auto mt-5">
+            <a href="mailto:storecosmart@gmail.com"><button type="button" class="btn about-btn mailto btn-dark section-title mt-3 mb-4">Enviar email</button></a>
         </div>
         
         <div class="d-flex justify-content-center mx-auto mt-5">
@@ -115,9 +120,10 @@
             <a href="{{ route('contact-url') }}" ><button type="button" class="btn about-btn btn-dark">Loja de produtos</button></a>
             <a href="{{ route('api-documentacao') }}"><button type="button" class="btn about-btn btn-dark">API EcoSmart Store</button></a>
             <a href="https://api.eco-smart-store.rafaeljhr.pt/login"><button type="button" class="btn about-btn btn-dark">Obter token API EcoSmart Store</button></a>
+            
         </div>
      
-
+        
         
     </div>
 

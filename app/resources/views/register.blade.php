@@ -62,7 +62,7 @@ Session::put('login_ou_registo', "registo");
                                     <div class="form-outline col-sm-4">
                                         <i class="ms-1 text-danger" aria-hidden="true"></i>
                                         <label class="form-label">Email</label>
-                                        <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control mt-2 mb-2" placeholder="Introduza o seu email">
+                                        <input @input="checkEmail()" ref="userEmail" type="text" name="email_first" id="email" class="form-control input-email mt-2 mb-2" placeholder="Introduza o seu email">
                                     </div>
                                 </div>
                                 
@@ -340,8 +340,8 @@ Session::put('login_ou_registo', "registo");
                             
 
                             <div ref="next_previous" style="overflow:auto;" id="nextprevious">
-                                <div class="gap-2 d-grid mx-auto col-4"> 
-                                    <button ref="prevBtn" type="button" class="btn" id="prevBtn" @click="back_track = true; nextPrev(-1);">Anterior</button> 
+                                <div class="gap-2 mx-auto col-4 d-flex justify-content-center"> 
+                                    <button ref="prevBtn" type="button" class="btn btn-prev" id="prevBtn" @click="back_track = true; nextPrev(-1);">Anterior</button> 
                                     <button ref="nextBtn" :disabled="!form_valid" type="button" class="btn btn-color" id="nextBtn" @click="nextPrev(1)">Seguinte</button>
                                     <button ref="btn_finalizar" type="button" class="btn btn-color" id="btn-finalizar" @click="finalizarRegisto()">Finalizar</button>
                                 </div>

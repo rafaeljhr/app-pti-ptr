@@ -1,3 +1,4 @@
+
 let app = Vue.createApp({
     data: function() {
         return {
@@ -43,13 +44,20 @@ let app = Vue.createApp({
 
             this.tabs[n].style.display = "block";
         
-            if (n == 0) {
+            if (n == 0 ) {
                 this.$refs.prevBtn.style.display = "none";
                 this.$refs.all_steps.style.display = "none";
+                document.body.style.overflow = 'hidden';
+        
+            } else if (n==2 || n == 3) {
+                this.$refs.prevBtn.style.display = "block";
+                this.$refs.all_steps.style.display = "block";
+                document.body.style.overflow = 'hidden';
         
             } else {
                 this.$refs.prevBtn.style.display = "block";
                 this.$refs.all_steps.style.display = "block";
+                document.body.style.overflow = 'visible';
         
             }
         
@@ -95,7 +103,7 @@ let app = Vue.createApp({
         
             if (this.current_tab == 0) {
                 this.$refs.header.innerHTML = "REGISTAR"; 
-        
+                
                 this.$refs.userEmail.value = "";
         
                 let current_url = window.location.href;
