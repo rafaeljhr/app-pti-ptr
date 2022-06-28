@@ -140,6 +140,7 @@ let app = Vue.createApp({
             } else if (this.current_tab == 3){
                 this.$refs.header.innerHTML = "ADICIONE UMA FOTOGRAFIA";
                 this.form_valid = true;
+                document.getElementById('nextBtn').disabled = false;
             } else {
                 this.$refs.header.innerHTML = "CONFIRMAR OS DADOS";
                 this.$refs.userInputEmail2.value = this.$refs.userInputEmail.value;    
@@ -362,7 +363,9 @@ let app = Vue.createApp({
             var y = this.tabs[this.current_tab].getElementsByTagName("input");
             for (var i = 0; i < y.length; i++) { 
                 if (y[i].value=="" ) { 
-                    y[i].className +=" invalid" ; valid=false; 
+                    if (this.current_tab != 3) {
+                        y[i].className +=" invalid" ; valid=false; 
+                    }
                 }
             } 
 

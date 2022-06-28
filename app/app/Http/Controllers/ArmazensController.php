@@ -124,20 +124,15 @@ class ArmazensController extends Controller
 
         foreach($fornecedor_armazens as $armazem) {
 
-            $armazem_id = $armazem->id;
-            $armazem_id_fornecedor = $armazem->id_fornecedor;
-            $armazem_morada = $armazem->morada;
-            $armazem_nome = $armazem->nome;
-            $armazem_path_imagem = $armazem->path_imagem;
-
             $atributos_armazem = [
-                "armazem_id" => $armazem_id,
-                "armazem_id_fornecedor" => $armazem_id_fornecedor,
-                "armazem_morada" => $armazem_morada,
-                "armazem_nome" => $armazem_nome,
-                "armazem_path_imagem" => $armazem_path_imagem,
+                "armazem_id" => $armazem->id,
+                "armazem_id_fornecedor" => $armazem->id_fornecedor,
+                "armazem_morada" => $armazem->morada,
+                "armazem_nome" => $armazem->nome,
+                "armazem_path_imagem" => $armazem->path_imagem,
+                "armazem_latitude" => $armazem->latitude,
+                "armazem_longitude" => $armazem->longitude,
             ];
-
 
             array_push($all_fornecedor_armazens, $atributos_armazem);
         }
@@ -233,48 +228,37 @@ class ArmazensController extends Controller
 
         session()->put('armazem_atual', $atributos_armazem);
 
-
         $armazem_produtos = Produto::where('id_armazem', $id)->get();
 
         $all_armazem_produtos = array();
 
         foreach($armazem_produtos as $produto) {
 
-            $produto_id = $produto->id;
-            $produto_nome = $produto->nome;
-            $produto_preco = $produto->preco;
-            $produto_id_armazem = $produto->id_armazem;
-            $produto_id_fornecedor = $produto->id_fornecedor;
-            $produto_quantidade = $produto->quantidade;
-            $produto_nome_categoria = $produto->nome_categoria;
-            $produto_path_imagem = $produto->path_imagem;
-            $produto_nome_subcategoria = $produto->nome_subcategoria;
-            $produto_informacoes_adicionais = $produto->informacoes_adicionais;
-            $produto_data_producao_do_produto = $produto->data_producao_do_produto;
-            $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia_no_armazem;
-
             $atributos_produto = [
-                "produto_id" => $produto_id,
-                "produto_nome" => $produto_nome,
-                "produto_preco" => $produto_preco,
-                "produto_id_armazem" => $produto_id_armazem,
-                "produto_id_fornecedor" => $produto_id_fornecedor,
-                "produto_quantidade" => $produto_quantidade,
-                "produto_nome_categoria" => $produto_nome_categoria,
-                "produto_path_imagem" => $produto_path_imagem,
-                "produto_nome_subcategoria" => $produto_nome_subcategoria,
-                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "produto_id" => $produto->id,
+                "produto_nome" => $produto->nome,
+                "produto_preco" => $produto->preco,
+                "produto_id_armazem" => $produto->id_armazem,
+                "produto_id_fornecedor" => $produto->id_fornecedor,
+                "produto_quantidade" => $produto->quantidade,
+                "produto_nome_categoria" => $produto->nome_categoria,
+                "produto_path_imagem" => $produto->path_imagem,
+                "produto_nome_subcategoria" => $produto->nome_subcategoria,
+                "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+                "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+                "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+                "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+                "pronto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
+                "pronto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
             ];
 
-
-            array_push($all_armazem_produtos, $atributos_produto);
+            if ($produto->quantidade >  0) {
+                array_push($all_armazem_produtos, $atributos_produto);
+            }
         }
 
         session()->put('armazem_actual_produtos', $all_armazem_produtos);
+        
         return redirect('/storage-edit');
     }
 
@@ -289,9 +273,20 @@ class ArmazensController extends Controller
             'pais'=>'sometimes|required|string',
         ]);
 
+        $codigo_postal_completo = $request->codigo_postal_1."-".$request->codigo_postal_2;
+
+        $toUpdate= [
+            "nome" => $request->nome,
+            "morada" => $request->morada,
+            "cidade" => $request->cidade,
+            "codigo_postal" => $codigo_postal_completo,
+            "pais" => $request->pais,
+            "preco" => $request->preco,
+        ];
+
         
         $armazem = Armazem::where('id', session()->get('armazem_atual')['armazem_id'])->first();
-        $armazem->update($request->all());
+        $armazem->update($toUpdate);
         
         $atributos_armazem= [
             "armazem_id" => $armazem->id,
@@ -320,7 +315,6 @@ class ArmazensController extends Controller
         ];
 
         session()->push('notificacoes', $atributos_notificacao);
-
 
         self::getAllArmazens(); // put all session bases and veiculos up to date
 

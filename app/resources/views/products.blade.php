@@ -3,25 +3,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<?php
-
-function isInCarrinho($productID) {
-
-    if (session()->has('carrinho_produtos')) {
-        for ($x = 0; $x < sizeOf(session()->get('carrinho_produtos')); $x++) {
-            if (session()->get('carrinho_produtos')[$x]['produto_id'] === $productID) {
-                return true;
-            }
-        }
-
-        return false;
-    } else {
-        return false;
-    }
-}
-
-?>
-
 <link rel="stylesheet" href="css/inventory.css">
 
 @extends('layouts.page_default')
@@ -30,38 +11,45 @@ function isInCarrinho($productID) {
 
     {{-- mostrar todos os produtos --}}
         <div class="Div_Filtros_Produtos">
-            ewq
+            <form action="javascript:;" onsubmit="Filtros(this, '{{ route('ProductFilter') }}' )">
+                <h3>Filtros</h3>
+                <br>
+                <button type="submit">Pesquisar</button>
+                <br>
+                @if (session()->has("user_id"))
+                    <br>
+                    <input type="checkbox" id="favoritos" name="favoritos" checked>
+                    <label for="favoritos">Favoritos</label>
+                    <br>
+                @endif
+                <br>
+                <label for="Nome">Nome &nbsp;</label>
+                <input type="text" id="Nome" name="Nome">
+
+                <br>
+                <br>
+
+                <label for="Preco">Preço&nbsp;</label>
+                <input type="range" id="Preco" name="Preco" step="10" min="1" max="1000" value="500" oninput="this.nextElementSibling.value = this.value">
+                &nbsp; 
+                <output>500</output>
+
+                <br>
+                <br>
+
+                <div id = "Div_Categorias">
+                    {!! $data['categorias'] !!}
+                </div>
+                <br>
+                <div id = "Div_SubCategorias">
+
+                </div>
+            </form>
         </div>
 
         <div id='todosProdutos' class="Div_Produtos">
 
-            @foreach($produtos[0] as $produto)
-
-                <?php 
-
-
-                    $image_path_filename = $produto->path_imagem;
-                    $tagFavoritos = "fa fa-star";
-                    if (!file_exists($image_path_filename)) {
-                        $image_path_filename = "images/default_produto.jpg";
-                    }
-                    if(get_class($produtos[1]) != 'Illuminate\Database\Eloquent\Collection' and $produtos[1]->contains($produto->id)) {
-                        $tagFavoritos = "fa fa-star checked";
-                    }
-                ?>
-                
-                <div class="carta">
-                    <a id="hideAnchor" class="Estrela_Favoritos" onclick="AdicionarApagarFavorito(this, '{{ $produto->id }}', '{{ route('Add-Del-Fav') }}')">
-                        <span class="{{$tagFavoritos}}"></span>
-                    </a>
-                    <img src="{{$image_path_filename}}" style="width:100%" />
-                    <h4>{{$produto->nome}}</h4>
-                    <p class="price">{{$produto->preco}}€</p>
-                    <p><button>Add to Cart</button></p>
-                </div>
-                
-
-            @endforeach
+            {!! $data['produtos'] !!}
 
         </div>
 
@@ -70,9 +58,8 @@ function isInCarrinho($productID) {
         <p id='avisoCarrinho'></p>
         <button type="button" class="btn-close" aria-label="Close" @click="fecharAlerta()"></button>
     </div>
-
+    
     <script src="./js/loja.js"></script>
-
     
 
 @endsection

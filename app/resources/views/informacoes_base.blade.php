@@ -82,7 +82,13 @@
 
             <h1 class="h3 mx-auto d-flex justify-content-center font-weight-normal mt-5 mb-5">INFORMAÇÕES DA BASE</h1>
 
-            <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('base')['base_path_imagem'] ?>" referrerpolicy="no-referrer">
+            
+            @if(!file_exists(session()->get('base')['base_path_imagem']))
+                <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="images/default_base.jpg" referrerpolicy="no-referrer">
+            @else
+                <img class="logo mx-auto my-3 d-flex justify-content-center" id="foto" src="<?php echo session()->get('base')['base_path_imagem'] ?>" referrerpolicy="no-referrer">
+            @endif
+
             <div class="mt-2 w-25 mx-auto">
                 <button type="button" class="btn form-control alterar_imagem_botao" data-bs-toggle="modal" data-bs-target="#modalMudarAvatar">ALTERAR IMAGEM</button>
             </div>
@@ -164,7 +170,13 @@
                             @for($i = 0; $i < sizeOf(session()->get('base_veiculos')); $i++)
                               <div class="col">
                                 <div class="card">
-                                  <img class="card-img-top imagem_da_card" src='<?php echo session()->get('base_veiculos')[$i]['veiculo_path_imagem'] ?>' alt="Card image cap">
+
+                                    @if(!file_exists(session()->get('base_veiculos')[$i]['veiculo_path_imagem']))
+                                        <img class="card-img-top imagem_da_card" src='images/default_veiculo.png'>
+                                    @else
+                                        <img class="card-img-top imagem_da_card" src='<?php echo session()->get('base_veiculos')[$i]['veiculo_path_imagem'] ?>'>
+                                    @endif
+                                  
                   
                                   <h4 class="card-title mt-3 text-center"><?php echo session()->get('base_veiculos')[$i]['veiculo_nome'] ?></h4>
                   
@@ -231,8 +243,6 @@
             </div>
         </div>    
     </div>
-
-    @include('includes.footer')
 
     <script src="./js/informacoes_base.js"></script>
         

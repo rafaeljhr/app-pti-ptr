@@ -228,7 +228,7 @@ Session::put('login_ou_registo', "registo");
                                     <div class="form-outline mb-4 text-center">
                                         <br>
                                         <h3>O seu avatar</h3>
-                                        <img src="images/default_user.png" id="image_do_utilizador" width="200" class="d-grid mx-auto" alt="">
+                                        <img src="images/default_user.png" id="image_do_utilizador" width="200" class="d-grid mx-auto">
                                     
                                         <input onchange="alterarImagemUser(event)" ref="redUploadImagem" type="file" id='path_imagem' name="path_imagem" class="w-25 adicionar-foto d-grid mx-auto">
                                     </div>

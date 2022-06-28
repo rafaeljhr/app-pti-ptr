@@ -90,7 +90,7 @@
         </div>
 
         <div class="col">
-            <h6>DATA E HORA DA ENTREGA</h6>
+            <h6>DATA E HORA FINALIZADA</h6>
         </div>
 
         @if(session()->get('userType') == "consumidor" &&  session()->get('encomenda')['encomenda_estado_encomenda'] == "Cancelamento disponível")
@@ -185,7 +185,7 @@
                             @for($i = 0; $i < sizeOf(session()->get('all_estados')); $i++)
 
                                 @if(session()->get('all_estados')[$i]['estado_nome'] != session()->get('encomenda')['encomenda_estado_encomenda'])
-                                    @if(session()->get('all_estados')[$i]['estado_nome'] == "Em recolha pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Recolhida pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Em distribuição"  || session()->get('all_estados')[$i]['estado_nome'] == "Concluída")
+                                    @if(session()->get('all_estados')[$i]['estado_nome'] == "Em recolha pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Recolhida pela transportadora" || session()->get('all_estados')[$i]['estado_nome'] == "Em distribuição" || session()->get('all_estados')[$i]['estado_nome'] == "Concluída" || session()->get('all_estados')[$i]['estado_nome'] == "Encomenda estragou-se")
                                         <option value="<?php echo session()->get('all_estados')[$i]['estado_nome']?>"><?php echo session()->get('all_estados')[$i]['estado_nome']?></option>
                                     @endif
                                 @endif

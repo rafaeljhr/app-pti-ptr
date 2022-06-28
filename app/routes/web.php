@@ -45,10 +45,11 @@ Route::get('/profile', function () {
 Route::get('/checkout', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     ProductsController::distanceToStorage();
+    ProductsController::calculatePollution();
     return view('checkout');
 })->name('checkout-url'); 
 
-/* Route::post('/checkout-submit', [EncomendaController::class, 'registerEncomenda'])->name('submit-nova-encomenda'); */
+Route::post('/checkout-submit', [EncomendaController::class, 'registerEncomenda'])->name('submit-nova-encomenda');
 
 Route::get('/api-documentacao', function () {
     return view('api_documentacao');
@@ -56,35 +57,69 @@ Route::get('/api-documentacao', function () {
 
 Route::get('/storage', function () {
     NotificationController::obter_notificacoes_do_utilizador();
-
-    if(session()->has('armazens')){
-
-        return view('storage');
-
-    } else {
-
-        ArmazensController::getAllArmazens();
-        return view('storage');
-
-    }
+    ArmazensController::getAllArmazens();
+    return view('storage');
 })->name('storage');
 
 Route::get('/inventory', function () {
     NotificationController::obter_notificacoes_do_utilizador();
-
-    if(session()->has('all_fornecedor_produtos')){
-
-        return view('inventory');
-
-    } else {
-
-        ProductsController::rebuild_fornecedor_session();
-        return view('inventory'); 
-
-    }
-
+    ProductsController::rebuild_fornecedor_session();
+    return view('inventory');
     
 })->name('inventory');
+
+
+Route::get('/inventory-incidentes', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
+    ProductsController::rebuild_fornecedor_session();
+    return view('inventory-incidentes');
+    
+})->name('inventory-incidentes');
+
+
+Route::get('/prodCreate', function () {
+    
+    
+    return view('createProduct');
+
+    
+});
+
+
+Route::get('/armazemCreate', function () {
+    
+    
+    return view('createArmazem');
+
+    
+});
+
+
+Route::get('/baseCreate', function () {
+    
+    
+    return view('createBase');
+
+    
+});
+
+
+Route::get('/veiculoCreate', function () {
+    
+    
+    return view('createVeiculo');
+
+    
+});
+
+
+Route::get('/eventoLogisticoCreate', function () {
+    
+    
+    return view('criar_evento_logistico');
+
+    
+});
 
 
 Route::get('/cadeia', function () {
@@ -147,8 +182,6 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 
 Route::get('/produtosEdit/{id}/', [ProductsController::class, "productInfo"]);
 
-
-
 Route::get('/products-edit', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_produto');
@@ -159,15 +192,13 @@ Route::get('/campos-extra-edit', function () {
     return view('alterar_cat');
 })->name('campos_extra');
 
-Route::get('/comparar-prods', function () {
-    return view('compare_prods');
-})->name('comparar_prods');
+
+Route::post('/comparar-produtos', [ProductsController::class, 'compararProdutos'])->name('comparar-produtos');
+
+Route::post('/comparar-2-produtos', [ProductsController::class, 'compararDoisProdutos'])->name('comparar-2-produtos');
+
 
 Route::post('/update-campos-extra', [ProductsController::class, 'alterarCamposExtras'])->name('product-edit-campos-extra');
-
-Route::post('/compare-products', [ProductsController::class, 'compareProds'])->name('compare-products');
-
-
 
 Route::post('/update-imagem-produto-controller', [ProductsController::class, 'changeImgProd'])->name('update-imagem-produto-controller');
 
@@ -188,21 +219,32 @@ Route::post('/product-add-event-controller', [ProductsController::class, "produc
 Route::post('/product-edit-event-controller', [ProductsController::class, "productEditEvent"])->name('product-edit-event-controller');
 
 
-Route::post('/product-add-carrinho-controller', [ProductsController::class, "productAddCarrinho"])->name('product-add-carrinho');
-Route::post('/product-remove-carrinho-controller', [ProductsController::class, "productRemoveCarrinho"])->name('product-remove-carrinho');
+Route::post('/product-add-del-carrinho', [ProductsController::class, "productAddDelCarrinho"])->name('Add-Del-Carrinho');
 
 Route::get('/cadeiaInfo/{id}/', [ProductsController::class, "cadeiaInfo"]);
+
+Route::get('/produtoDetalhes/{id}/', [ProductsController::class, "prodInfo"]);
 
 Route::get('/cadeia-edit', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     return view('informacoes_cadeia');
 })->name('cadeia_info');
 
+Route::get('/produto-detalhes', function () {
+    
+    return view('produtos_detalhes');
+});
+
 Route::post('/produtosFav', [ProductsController::class, "AddDelFav"])->name('Add-Del-Fav');
 
 Route::post('/cadeia-edit-controller', [ProductsController::class, "cadeiaEdit"])->name('cadeia-edit-controller');
 
 Route::post('/cadeia-delete-controller', [ProductsController::class, "cadeiaDelete"])->name('cadeia-delete-controller');
+
+
+Route::post('/product/filter', [ProductsController::class, "ProductFilter"])->name('ProductFilter');
+
+Route::post('/product/SubCategoria', [ProductsController::class, "SubCategoriasHtml"])->name('HtmlSubCategoria');
 
 // ##############################################
 // ARMAZENS RELATED ROUTES
@@ -298,6 +340,8 @@ Route::get('/forget-google-user', function () {
 // ##############################################
 
 Route::post('/delete-notification', [NotificationController::class, 'hideNotification'])->name('delete-notification');
+
+Route::post('/delete-all-notifications', [NotificationController::class, 'hideAllNotification'])->name('delete-all-notifications');
 
 
 

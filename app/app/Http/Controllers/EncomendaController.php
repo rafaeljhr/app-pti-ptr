@@ -16,6 +16,7 @@ use DateTime;
 use Response;
 use Illuminate\Filesystem\Filesystem;
 use File;
+use Illuminate\Support\Facades\Date;
 
 class EncomendaController extends Controller
 {
@@ -454,7 +455,6 @@ class EncomendaController extends Controller
         if (!$match) {
             return "Tentativa de colocação de estado inválido na encomenda";
         }
-        
 
         $encomenda = Encomenda::where('id', session()->get('encomenda')['encomenda_id'])->first();
 
@@ -463,6 +463,20 @@ class EncomendaController extends Controller
         if ($request->estado == "Concluída") {
             $hoje = date("Y-m-d H:i:s");
             $encomenda->data_finalizada = $hoje;
+
+
+        } else if ($request->estado == "Encomenda estragou-se") {
+
+            $produto = Produto::where('id', $encomenda->id_produto)->first();
+
+            $atributo_to_update = [
+                'quantidade_produto_incidentes_transporte' => $encomenda->quantidade,
+            ];
+            $produto->update($atributo_to_update);
+
+            $hoje = date("Y-m-d H:i:s");
+            $encomenda->data_finalizada = $hoje;
+
         }
 
         $encomenda->save();
@@ -637,6 +651,29 @@ class EncomendaController extends Controller
                 'estado' => 1,
             ]);
 
+        } else if ($request->estado == "Encomenda estragou-se") {
+
+            // notificacao de estado ao consumidor
+            $notificacao_consumidor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_consumidor,
+                'mensagem' => "Infelizmente, a sua encomenda nº ".$encomenda->id." estragou-se! Em breve receberá um reembolso.",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado ao fornecedor
+            $notificacao_fornecedor = Notificacao::create([
+                'id_utilizador' => $encomenda->id_fornecedor,
+                'mensagem' => "Infelizmente, a encomenda de nº ".$encomenda->id." estragou-se! Deve ser emitido um reembolso ao consumidor.",
+                'estado' => 1,
+            ]);
+
+            // notificacao de estado a transportadora
+            $notificacao_transportadora = Notificacao::create([
+                'id_utilizador' => $encomenda->id_transportadora,
+                'mensagem' => "A encomenda de nº ".$encomenda->id." foi declarada como estragada!",
+                'estado' => 1,
+            ]);
+
         } else {
             return "Erro na criacao de notificacoes sobre o novo estado da encomenda.";
         }
@@ -678,7 +715,46 @@ class EncomendaController extends Controller
 
     }
 
-    /* public function productRegister(Request $request) {
-        
-    } */
+    public function registerEncomenda(Request $request) {
+
+        /* return $request->input(); */
+
+        $hoje = date("Y-m-d H:i:s");
+
+        for ($i=0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) { 
+            $idBase = $request->get('id_base'.strval($i));
+            $base = Base::where('id', $idBase)->first();
+            $preco = floatval(session()->get('carrinho_produtos')[$i]["preco"]);
+            $quantidade = $request->get('quantity'.strval($i));
+            $precoTotal = $preco * $quantidade;
+
+            $novaQuantidade = session()->get('carrinho_produtos')[$i]["quantidade"] - $quantidade;
+            $carrinho = session()->get('carrinho_produtos');
+            $carrinho[$i]["quantidade"] = $novaQuantidade;
+            session()->forget('carrinho_produtos');
+            session()->put('carrinho_produtos', $carrinho);
+
+            Produto::where('id', session()->get('carrinho_produtos')[$i]["id"])->update(array('quantidade' => $novaQuantidade));
+
+            $newEncomenda = Encomenda::create([
+                'preco' => $precoTotal,
+                'preco_transporte' => $base->preco,
+                'morada' => session()->get('user_morada'),
+                'codigo_postal' => session()->get('user_codigo_postal'),
+                'quantidade' => $quantidade,
+                'cidade' => session()->get('user_cidade'),
+                'pais' => session()->get('user_pais'),
+                'data_realizada' => $hoje,
+                'id_consumidor' => session()->get('user_id'),
+                'id_produto' => session()->get('carrinho_produtos')[$i]["id"],
+                'id_transportadora' =>$base->id_transportadora,
+                'id_base' => $idBase,
+                'id_fornecedor' => session()->get('carrinho_produtos')[$i]["id_fornecedor"],
+                'estado_encomenda' => 'Cancelamento disponível',
+            ]);
+        }
+           
+
+        return redirect('/encomendas');
+    }
 }

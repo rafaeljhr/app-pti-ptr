@@ -212,8 +212,6 @@
         </div>    
     </div>
 
-    @include('includes.footer')
-
     <script src="./js/informacoes_veiculo.js"></script>
         
 @endsection

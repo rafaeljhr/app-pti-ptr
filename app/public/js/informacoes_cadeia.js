@@ -19,7 +19,6 @@ let app = Vue.createApp({
             this.$refs.nome.value = this.nome;
             this.$refs.co2.value = this.co2;
             this.$refs.kwh.value = this.kwh;
-            
             this.$refs.cidade.value = this.cidade;
         },
 
@@ -42,8 +41,6 @@ let app = Vue.createApp({
             } else {
                 this.kwh_valid = false; 
             }
-
-            
 
             if (this.$refs.desc.value.length > 0) {
                 this.desc_valid = true; 

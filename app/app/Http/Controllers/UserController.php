@@ -194,14 +194,6 @@ class UserController extends Controller
                 'latitude' => $request->get('latitude'),
                 'longitude' => $request->get('longitude'),
             ]);
-            if($tipo_de_conta_novo_utilizador_id == 5){
-                Fornecedor_historico_poluicao::create([
-                    'id_fornecedor' => $newUtilizador->id,
-                    'poluicao_co2_produzida' => 0,
-                    'kwh_consumidos' => 0,
-                    
-                ]);
-            }
 
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([
@@ -251,14 +243,6 @@ class UserController extends Controller
                 'latitude' => $request->get('latitude'),
                 'longitude' => $request->get('longitude'),
             ]);
-            if($tipo_de_conta_novo_utilizador_id == 5){
-                Fornecedor_historico_poluicao::create([
-                    'id_fornecedor' => $newUtilizador->id,
-                    'poluicao_co2_produzida' => 0,
-                    'kwh_consumidos' => 0,
-                    
-                ]);
-            }
 
             // notificacao de bem-vindo 
             $primeira_notificacao = Notificacao::create([

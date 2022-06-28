@@ -2,6 +2,8 @@
 
 namespace App\Models;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ProductsController;
+
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,10 +14,22 @@ class Produto extends Model
 	protected $table = 'produto';
 
     protected $fillable = [
-        'nome', 'preco', 'id_armazem', 'id_fornecedor', 'quantidade', 'nome_categoria', 'path_imagem', 'nome_subcategoria', 'informacoes_adicionais', 'data_producao_do_produto', 'data_insercao_no_site', 'kwh_consumidos_por_dia_no_armazem', 'pronto_a_vender',
-    ];
-
-    
+        'nome',
+        'preco',
+        'id_armazem',
+        'id_fornecedor',
+        'quantidade',
+        'nome_categoria',
+        'path_imagem',
+        'nome_subcategoria',
+        'informacoes_adicionais',
+        'data_producao_do_produto',
+        'data_insercao_no_site',
+        'kwh_consumidos_por_dia_no_armazem',
+        'pronto_a_vender',
+        'quantidade_produto_expirada',
+        'quantidade_produto_incidentes_transporte',
+    ];  
 
     public function scopegetAllProducts(){
 
@@ -29,16 +43,41 @@ class Produto extends Model
                     ->groupby("produto.id")
                     ->get();
 
+        return $produtos;
+    }
+
+    public function scopegetFavoritesProducts(){
+
         $id = session()->get('user_id');
 
-        $favoritos = 0;
+        $favoritos = DB::table("produto")
+                    ->select("produto.id", "produto.nome", "produto.preco", "produto.path_imagem", "produto.quantidade")
+                    ->leftjoin("favoritos", function ($join) {
+                        $join->on("produto.id", "=", "favoritos.id_produto");
+                    })
+                    ->where("favoritos.id_utilizador", "=", $id)
+                    ->orderby("produto.quantidade", "desc")
+                    ->groupby("produto.id")
+                    ->get();
 
-        if($id != null){
-            $utilizador = Utilizador::findOrFail($id);
-            $favoritos = $utilizador->favoritos->pluck('id_produto');
-        }
+        return $favoritos;
+    }
 
-        return [$produtos, $favoritos];
+    public function scopegetFavoritesProductsIDs(){
+
+        $id = session()->get('user_id');
+
+        $favoritos = DB::table("produto")
+                    ->select("produto.id")
+                    ->leftjoin("favoritos", function ($join) {
+                        $join->on("produto.id", "=", "favoritos.id_produto");
+                    })
+                    ->where("favoritos.id_utilizador", "=", $id)
+                    ->orderby("produto.quantidade", "desc")
+                    ->groupby("produto.id")
+                    ->get();
+
+        return $favoritos->pluck("id");
     }
 }
             

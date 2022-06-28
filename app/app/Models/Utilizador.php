@@ -28,7 +28,7 @@ class Utilizador extends Model
         'google_id', 
         'tipo_de_conta',
         'latitude',
-        'longitude'
+        'longitude',
     ];
 
     protected $hidden = [
@@ -40,7 +40,7 @@ class Utilizador extends Model
         'cidade',
         'google_id',
         'latitude',
-        'longitude'
+        'longitude',
     ];
 	
     use HasApiTokens, HasFactory;

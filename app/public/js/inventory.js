@@ -1,58 +1,3 @@
-countProds = [];
-
-
-function deleteWarning(id, nome){
-    
-    route = document.getElementById("buttonApagarProdutoWarning").name;
-    data = new FormData()
-    console.log(id);
-    console.log(nome);
-    data.append('id_produto', id);
-    data.append('nome_produto', nome);
-
-    let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', route, true)
-    xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-            
-            document.getElementById("fraseWarning").innerHTML = JSON.parse(xhr.responseText)[0];
-            document.getElementById("buttonApagar").innerHTML = JSON.parse(xhr.responseText)[1];
-            
-        } else if (this.status >= 400) {
-            console.log(xhr.responseText);
-        }
-};
-
-    xhr.send(data);
-    
-}
-
-function countCompare(id){
-    
-    console.log(this.editable);
-    if(document.getElementsByName(id)[0].checked == true){
-        countProds.push(id);
-    }else{
-        index = countProds.indexOf(id);
-        countProds.splice(index, 1);
-    }
-    console.log(countProds);
-    if(countProds.length < 2 || countProds.length > 2){
-        document.getElementById("guardar_alteracoes").disabled = true;
-    }else{
-        document.getElementById("guardar_alteracoes").disabled = false;
-    }
-}
-
- 
-
-
-
-
 let app = Vue.createApp({
 
 
@@ -64,25 +9,9 @@ let app = Vue.createApp({
             fundoDivOpac:false,
             cadeiaDiv:false,
             editable: false,
-            computadores:false,
-            mobilidade:false,
-            componentes:false,
-            perifericos:false,
         }
     },
     methods: {
-
-
-       
-
-        cancelCompare(){
-            this.editable = false;
-            console.log(this.editable);
-            document.getElementById("compareForm").reset();
-            countProds.splice(0, countProds.length)
-            
-        },
-
 
         searchCat(e){
             
@@ -118,7 +47,7 @@ let app = Vue.createApp({
 
 
         changeSubcat(cat){
-              
+             
                     
             let route = document.getElementById("routeSubCat").name;
             var data = new FormData()
@@ -133,6 +62,7 @@ let app = Vue.createApp({
         
             xhr.onreadystatechange = function() {
                 if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                    document.getElementById("header_campos_extra").style.display = "block";
                     document.getElementById("toChangeOnCmd").innerHTML = JSON.parse(xhr.responseText)[0];
                     document.getElementById("camposExtra").innerHTML = JSON.parse(xhr.responseText)[1];
         
@@ -143,92 +73,43 @@ let app = Vue.createApp({
         
             xhr.send(data);
 
-                      
-            
-        },
-        
-
-        hideShowInfoProduct(){
-            document.getElementById("fundoDivOpac").style.display = "none";
-            document.getElementById("infoAdicional").style.display = "none";
-
         },
 
-        
-
-
-        filterStorage(filter){
+        cancelCompare(){
+            this.editable = false;
+            console.log(this.editable);
+            document.getElementById("compareForm").reset();
+            countProds.splice(0, countProds.length)
             
-            let route = filter.target.name;
-            
-            var data = new FormData()
-            console.log(filter.target.value);
-            if(filter.target.value == 'reset'){
-                data.append('id_armazem', -1);
-            }else{
-                data.append('id_armazem', filter.target.value);
+        },
+
+        selecionarProduto(id){
+            if(document.getElementById("card_"+id).classList.contains('glowing-border')) {
+                document.getElementById("card_"+id).classList.remove('glowing-border');
+            } else {
+                document.getElementById("card_"+id).classList.add('glowing-border');
             }
-            
 
-            let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (document.getElementsByClassName("glowing-border").length == 2) {
+                document.getElementById('comparar').style.display = 'block';
 
-            let xhr = new XMLHttpRequest();
-            xhr.open('POST', route, true)
-            xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+                var slides = document.getElementsByClassName("inputs_produto");
+                var slides2 = document.getElementsByClassName("glowing-border");
+                for (var i = 0; i < slides.length; i++) {
 
-            xhr.onreadystatechange = function() {
-                if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                    document.getElementById("prodDisplay").innerHTML = xhr.responseText;
-                    
+                    const myArray = slides2.item(i).id.split("_");
+                    let id_produto = myArray[1];
 
-                } else if (this.status >= 400) {
-                    console.log(xhr.responseText);
+                    console.log(id_produto);
+
+                    document.getElementById('produto'+i).value = id_produto;
+
                 }
-            };
 
-            xhr.send(data);
-
+            } else {
+                document.getElementById('comparar').style.display = 'none';
+            }
         },
-
-        
-        criarUmaCadeiaLogistica() {
-
-            if (document.getElementById("criarUmaCadeiaLogistica").style.display == "block") {
-                document.getElementById("criarUmaCadeiaLogistica").style.display = "none";
-            } else {
-                document.getElementById("criarUmaCadeiaLogistica").style.display = "block";
-            }
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-            
-
-        },
-        
-
-        mostrarCriarProduto() {
-            
-            if (document.getElementById("productForm").style.display == "block") {
-                console.log('aqui');
-                document.getElementById("productForm").style.display = "none";
-            } else {
-                console.log('aqui1');
-                document.getElementById("productForm").style.display = "block";
-            }
-
-
-            if (document.getElementById("fundoDivOpac").style.display == "block") {
-                document.getElementById("fundoDivOpac").style.display = "none";
-            } else {
-                document.getElementById("fundoDivOpac").style.display = "block";
-            }
-
-        },
-      
-
     },
 })
 

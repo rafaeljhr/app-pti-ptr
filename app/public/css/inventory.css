@@ -7,22 +7,30 @@
     overflow: auto;
 }
 
+
+#apresentaçãoForm {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+    
+    width: 80%;
+    background-color: white;
+    overflow: hidden;
+    padding: 10px;
+}
+
+
 #noProdutos{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
     display: flex;
     align-items: center;
-    justify-content: center
+    justify-content: center;
 }
 
 .evento-size{
 
     width: 250px;
     height: 250px
-}
-#botao_criar {
-    font-size: 20px;
-    padding: 10px 20px;
 }
 
 .sem_cadeias_img {
@@ -41,7 +49,8 @@
 
 #noCadeias{
     width: 100%;
-    min-height: 600px;
+    min-height: 90%;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,16 +63,15 @@
     align-items: center;
     justify-content: center
 }
-.sem_bases_img {
+
+.sem_produtos_img {
     height: auto;
     width: auto;
     max-width: 400px;
     max-height: 300px;
 }
 
-#productForm {
-    display: none;
-}
+
 
 
 #todosArmazens {
@@ -202,20 +210,6 @@
 }
 
 
-.forForm{
- 
-    position: absolute;
-    background-color: white;
-    border: solid;
-    padding: 10px;
-    top: 25%;
-    left: 25%;
-    z-index: 9;
-    width: 55%;
-
-}
-
-
 .row{
 
     margin: 15px;
@@ -240,7 +234,6 @@
 .imagemProduto {
 
     height: 300px !important;
-    
 
 }
 
@@ -285,7 +278,8 @@
 
 .Div_Filtros_Produtos{
     text-align:center;
-    border: 5px solid red;
+    border: 2px solid darkgray;
+    background-color: white;
     float: left;
     max-width: 20%;
     width: 20%;
@@ -297,19 +291,15 @@
 
 .Div_Produtos{
     text-align:center;
-    border: 2px solid black;
     float: right;
     max-width: 80%;
 }
 
 .carta {
-    
     margin-right: 15px;
     margin-left: 15px;
     position: relative;
-}
 
-.carta {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 200px;
     max-height: 335px;
@@ -326,7 +316,7 @@
     background-color: #fff;
 
     margin-top: 15px;
-    padding: 5px;
+    padding: 2px;
 
     font-size: 1.5vw;
     white-space: nowrap;
@@ -349,9 +339,8 @@
     outline: 0;
     padding: 12px;
     color: white;
-    background-color: #000;
+    background-color: green;
     text-align: center;
-    cursor: pointer;
     width: 100%;
     font-size: 18px;
   }
@@ -360,3 +349,61 @@
     opacity: 0.7;
   }
 
+  /* /################################## */
+
+  #buttonAdd {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: green;
+    text-align: center;
+    width: 20%;
+    font-size: 18px;
+  }
+
+  #buttonAdd:hover {
+    opacity: 0.7;
+  }
+
+  #buttonDel {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: red;
+    text-align: center;
+    width: 20%;
+    font-size: 18px;
+  }
+
+  #buttonDel:hover {
+    opacity: 0.7;
+  }
+
+.botao_criar {
+    font-size: 20px;
+    padding: 10px 20px;
+}
+
+
+.botao_cadeia {
+    background-color: #008B8B !important;
+    color: white !important;
+    width: 170px;
+}
+
+.detalhes {
+    float: right;
+    text-decoration: underline;
+    color: black;
+}
+
+.voltar {
+    text-decoration: underline;
+    color: black;
+}
+
+.card {
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
