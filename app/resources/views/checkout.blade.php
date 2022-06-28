@@ -63,10 +63,9 @@ $basesDistancias = session()->get('basesDistancias');
                                     <h5 id="name<?php echo $i ?>" class="card-title"><?php echo session()->get('carrinho_produtos')[$i]['nome'] ?></h5>
                                     <h4 data-pollution="<?php echo session()->get('poluicaoProdutos')[$i] ?>" class="card-text text-danger d-none pollution"><?php echo session()->get('poluicaoProdutos')[$i] ?> kg de CO2</h4>
                                     <h4 data-kwh="<?php echo session()->get('carrinho_produtos')[$i]['kwh_consumidos_por_dia_no_armazem'] ?>" class="card-text text-danger d-none kwh"><?php echo session()->get('carrinho_produtos')[$i]['kwh_consumidos_por_dia_no_armazem'] ?> kWh em armazém</h4>
-                                    <h4 class="card-text text-success productPrice"><?php echo session()->get('carrinho_produtos')[$i]['preco'] ?> €</h4>
-                                    <h5 class="card-title"><?php echo session()->get('carrinho_produtos')[$i]['informacoes_adicionais'] ?></h5>
+                                    <h4 class="card-text text-success productPrice mb-4"><?php echo session()->get('carrinho_produtos')[$i]['preco'] ?> €</h4>
                                     <label for="quantidade">Qtd.</label>
-                                    <input @input="calculatePrices" class="ms-2 quantity" type="number" id="quantity<?php echo $i ?>" name="quantity<?php echo $i ?>" min="1" max="99" value="1">
+                                    <input @input="calculatePrices" class="ms-2 mb-3 quantity" type="number" id="quantity<?php echo $i ?>" name="quantity<?php echo $i ?>" min="1" max="<?php echo session()->get('carrinho_produtos')[$i]['quantidade'] ?>" value="1"> 
                                     <br>
                                     <label for="transportadoras<?php echo $i ?>">Base de Transporte:</label>
                                     <select @change="calculatePrices" class="mb-2 deliveryPrice" name="id_base<?php echo $i ?>" id="base<?php echo $i ?>">

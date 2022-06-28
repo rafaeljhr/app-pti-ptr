@@ -683,31 +683,22 @@ class EncomendaController extends Controller
 
         /* return $request->input(); */
 
-        /* $request->validate([
-            'preco'=>'required|numeric',
-            'preco_transporte'=>'required|numeric',
-            'morada'=>'required|string',
-            'codigo_postal'=>'required|string',
-            'cidade' => 'required|string',
-            'pais'=>'required|string',
-            'quantidade'=>'required|integer',
-            'id_consumidor'=>'required|integer',
-            'id_produto' => 'required|integer',
-            'id_transportadora'=>'required|integer',
-            'id_base'=>'required|integer',
-            'id_fornecedor'=>'required|integer',
-        ]); */
-        
         $hoje = date("Y-m-d H:i:s");
 
         for ($i=0; $i < sizeOf(session()->get('carrinho_produtos')); $i++) { 
-
             $idBase = $request->get('id_base'.strval($i));
             $base = Base::where('id', $idBase)->first();
             $preco = floatval(session()->get('carrinho_produtos')[$i]["preco"]);
             $quantidade = $request->get('quantity'.strval($i));
             $precoTotal = $preco * $quantidade;
-            
+
+            $novaQuantidade = session()->get('carrinho_produtos')[$i]["quantidade"] - $quantidade;
+            $carrinho = session()->get('carrinho_produtos');
+            $carrinho[$i]["quantidade"] = $novaQuantidade;
+            session()->forget('carrinho_produtos');
+            session()->put('carrinho_produtos', $carrinho);
+
+            Produto::where('id', session()->get('carrinho_produtos')[$i]["id"])->update(array('quantidade' => $novaQuantidade));
 
             $newEncomenda = Encomenda::create([
                 'preco' => $precoTotal,
@@ -728,6 +719,6 @@ class EncomendaController extends Controller
         }
            
 
-        return redirect('/checkout');
+        return redirect('/encomendas');
     }
 }
