@@ -25,7 +25,7 @@
 
     <div class="container py-5">
 
-        <!-- Modal Não pode apagar Base -->
+        <!-- Modal Não pode apagar armazem -->
         <div class="modal fade" id="modalNaoApagar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalNaoApagarLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -165,8 +165,9 @@
                     <br>
                     
 
-                    @if(Session::get('armazem_actual_produtos') != [])
-                    <br>
+                    @if(sizeOf(session()->get('armazem_actual_produtos')) > 0)
+                    
+                        <br>
                         <div id='todosArmazens'>
 
                             <h3 class="mt-3 mb-5 text-center">Produtos associados ao seu armazém</h3>
@@ -187,15 +188,15 @@
                                     @endif
                     
                                     <h4 class="card-title mt-3 text-center"><?php echo session()->get('armazem_actual_produtos')[$i]['produto_nome'] ?></h4>
-                                    <h5 class="card-text text-center"><?php echo session()->get('all_fornecedor_produtos')[$i]['produto_preco'] ?> €</h5>
+                                    <h5 class="card-text text-center"><?php echo session()->get('armazem_actual_produtos')[$i]['produto_preco'] ?> €</h5>
 
                                     <div class="card-body text-center">
                     
-                                        <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">
-                                          <button type="button" id="addCadeia" class="btn btn-info botao_cadeia">Cadeia Logística</button>
+                                        <a id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('armazem_actual_produtos')[$i]['produto_id']) }}">
+                                            <button type="button" id="addCadeia" class="btn btn-info botao_cadeia">Cadeia Logística</button>
                                         </a>
                     
-                                      </div>
+                                        </div>
                         
                                     </div>
                                 </div>
@@ -203,7 +204,7 @@
                     
                             </div>
                         </div>
-                      @endif
+                    @endif
 
                     <br><br>
 

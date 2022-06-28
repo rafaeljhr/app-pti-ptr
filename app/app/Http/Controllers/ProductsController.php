@@ -97,6 +97,8 @@ class ProductsController extends Controller
         $fornecedor_produtos = Produto::where('id_fornecedor', session()->get('user_id'))->get();
         
         $all_fornecedor_produtos = array();
+
+        $all_fornecedor_produtos_incidentes = array();
     
         foreach($fornecedor_produtos as $produto) {
 
@@ -105,54 +107,66 @@ class ProductsController extends Controller
             foreach($campo_extra as $campo) {
                 if ($campo->campo_extra == 'prazo_de_validade') {
 
-                    list($day, $month, $year) = explode('/', $campo->valor_campo);
-                    $validade = $year."-".$month."-".$day;
-                    $validade_real = strtotime($validade);
-                    
-                    $atual = new DateTime();
-                    $hoje = strtotime($atual->format('Y-m-d'));
+                    $produto = Produto::where('id', $campo->id_produto)->first();
 
-                    $datediff = $validade_real - $hoje;
+                    if ($produto->quantidade_produto_expirada == 0) {
 
-                    $diffInDays = round($datediff / (60 * 60 * 24));
-
-                    if($diffInDays < 10 && ($diffInDays > 0)) {
-                        $produto = Produto::where('id', $campo->id_produto)->first();
-
-                        $notis = Notificacao::create([
-                            'id_utilizador'=>session()->get('user_id'),
-                            'mensagem'=>"O produto " . $produto->nome . " tem apenas mais " . $diffInDays . " dias de validade!",
-                            'estado'=>1,
-                        ]);
+                        list($day, $month, $year) = explode('/', $campo->valor_campo);
+                        $validade = $year."-".$month."-".$day;
+                        $validade_real = strtotime($validade);
                         
-                        $atributos_notificacao = [
-                            "notificacao_id" => $notis->id,
-                            "notificacao_id_utilizador" => $notis->id_utilizador,
-                            "notificacao_mensagem" => $notis->mensagem,
-                            "notificacao_estado" => $notis->estado,
-                        ];
-                    
-                        session()->push('notificacoes', $atributos_notificacao);
+                        $atual = new DateTime();
+                        $hoje = strtotime($atual->format('Y-m-d'));
 
-                    } else if ($diffInDays <= 0) {
+                        $datediff = $validade_real - $hoje;
 
-                        $produto = Produto::where('id', $campo->id_produto)->first();
+                        $diffInDays = round($datediff / (60 * 60 * 24));
 
-                        $notis = Notificacao::create([
-                            'id_utilizador'=>session()->get('user_id'),
-                            'mensagem'=>"O produto " . $produto->nome . "expirou o prazo de validade!",
-                            'estado'=>1,
-                        ]);
+                        if($diffInDays < 10 && ($diffInDays > 0)) {
+
+                            $notis = Notificacao::create([
+                                'id_utilizador'=>session()->get('user_id'),
+                                'mensagem'=>"O produto " . $produto->nome . " tem apenas mais " . $diffInDays . " dias de validade!",
+                                'estado'=>1,
+                            ]);
+                            
+                            $atributos_notificacao = [
+                                "notificacao_id" => $notis->id,
+                                "notificacao_id_utilizador" => $notis->id_utilizador,
+                                "notificacao_mensagem" => $notis->mensagem,
+                                "notificacao_estado" => $notis->estado,
+                            ];
                         
-                        $atributos_notificacao = [
-                            "notificacao_id" => $notis->id,
-                            "notificacao_id_utilizador" => $notis->id_utilizador,
-                            "notificacao_mensagem" => $notis->mensagem,
-                            "notificacao_estado" => $notis->estado,
-                        ];
-                    
-                        session()->push('notificacoes', $atributos_notificacao);
+                            session()->push('notificacoes', $atributos_notificacao);
 
+                        } else if ($diffInDays <= 0) {
+
+                            if ($produto->quantidade > 0) {
+
+                                $atributo_to_update = [
+                                    'quantidade' => 0,
+                                    'quantidade_produto_expirada' => $produto->quantidade,
+                                ];
+                                $produto->update($atributo_to_update);
+
+                                $notis = Notificacao::create([
+                                    'id_utilizador'=>session()->get('user_id'),
+                                    'mensagem'=>"O produto " . $produto->nome . " expirou o prazo de validade e foi movido para 'Incidentes'!",
+                                    'estado'=>1,
+                                ]);
+                                
+                                $atributos_notificacao = [
+                                    "notificacao_id" => $notis->id,
+                                    "notificacao_id_utilizador" => $notis->id_utilizador,
+                                    "notificacao_mensagem" => $notis->mensagem,
+                                    "notificacao_estado" => $notis->estado,
+                                ];
+                            
+                                session()->push('notificacoes', $atributos_notificacao);
+
+                            }
+
+                        }
                     }
                 }
             }
@@ -182,13 +196,21 @@ class ProductsController extends Controller
                 "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
                 "produto_tem_eventos_logisticos" => $tem_eventos_logisticos,
                 "pronto_a_vender" => $produto->pronto_a_vender,
+                "pronto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
+                "pronto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
             ];
 
+            if ($produto->quantidade_produto_expirada > 0) {
+                array_push($all_fornecedor_produtos_incidentes, $atributos_produto);
+            } else {
+                array_push($all_fornecedor_produtos, $atributos_produto);
+            }
 
-            array_push($all_fornecedor_produtos, $atributos_produto);
+            
         }
 
         session()->put('all_fornecedor_produtos', $all_fornecedor_produtos);
+        session()->put('all_fornecedor_produtos_incidentes', $all_fornecedor_produtos_incidentes);
 
         if(!(session()->has('categories'))){
             self::getAllCategoriesAndSubcategories(); // put all categories and subcategories in session

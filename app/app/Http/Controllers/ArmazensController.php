@@ -228,48 +228,37 @@ class ArmazensController extends Controller
 
         session()->put('armazem_atual', $atributos_armazem);
 
-
         $armazem_produtos = Produto::where('id_armazem', $id)->get();
 
         $all_armazem_produtos = array();
 
         foreach($armazem_produtos as $produto) {
 
-            $produto_id = $produto->id;
-            $produto_nome = $produto->nome;
-            $produto_preco = $produto->preco;
-            $produto_id_armazem = $produto->id_armazem;
-            $produto_id_fornecedor = $produto->id_fornecedor;
-            $produto_quantidade = $produto->quantidade;
-            $produto_nome_categoria = $produto->nome_categoria;
-            $produto_path_imagem = $produto->path_imagem;
-            $produto_nome_subcategoria = $produto->nome_subcategoria;
-            $produto_informacoes_adicionais = $produto->informacoes_adicionais;
-            $produto_data_producao_do_produto = $produto->data_producao_do_produto;
-            $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-            $produto_kwh_consumidos_por_dia = $produto->kwh_consumidos_por_dia_no_armazem;
-
             $atributos_produto = [
-                "produto_id" => $produto_id,
-                "produto_nome" => $produto_nome,
-                "produto_preco" => $produto_preco,
-                "produto_id_armazem" => $produto_id_armazem,
-                "produto_id_fornecedor" => $produto_id_fornecedor,
-                "produto_quantidade" => $produto_quantidade,
-                "produto_nome_categoria" => $produto_nome_categoria,
-                "produto_path_imagem" => $produto_path_imagem,
-                "produto_nome_subcategoria" => $produto_nome_subcategoria,
-                "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-                "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-                "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-                "produto_kwh_consumidos_por_dia" => $produto_kwh_consumidos_por_dia,
+                "produto_id" => $produto->id,
+                "produto_nome" => $produto->nome,
+                "produto_preco" => $produto->preco,
+                "produto_id_armazem" => $produto->id_armazem,
+                "produto_id_fornecedor" => $produto->id_fornecedor,
+                "produto_quantidade" => $produto->quantidade,
+                "produto_nome_categoria" => $produto->nome_categoria,
+                "produto_path_imagem" => $produto->path_imagem,
+                "produto_nome_subcategoria" => $produto->nome_subcategoria,
+                "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+                "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+                "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+                "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+                "pronto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
+                "pronto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
             ];
 
-
-            array_push($all_armazem_produtos, $atributos_produto);
+            if ($produto->quantidade >  0) {
+                array_push($all_armazem_produtos, $atributos_produto);
+            }
         }
 
         session()->put('armazem_actual_produtos', $all_armazem_produtos);
+        
         return redirect('/storage-edit');
     }
 

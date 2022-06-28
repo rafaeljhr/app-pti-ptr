@@ -69,6 +69,14 @@ Route::get('/inventory', function () {
 })->name('inventory');
 
 
+Route::get('/inventory-incidentes', function () {
+    NotificationController::obter_notificacoes_do_utilizador();
+    ProductsController::rebuild_fornecedor_session();
+    return view('inventory-incidentes');
+    
+})->name('inventory-incidentes');
+
+
 Route::get('/prodCreate', function () {
     
     

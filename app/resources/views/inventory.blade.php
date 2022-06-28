@@ -12,7 +12,7 @@
 
 @section('background') 
 
-<!-- Modal Apagar Base -->
+<!-- Modal Comparar produtos -->
 <div class="modal fade" id="modalComparar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCompararProdutos" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
   <div class="modal-content">
@@ -76,7 +76,7 @@
       <img src="images/armazens.png" class="sem_produtos_img">
       <br>
       <br>
-      <h2>Parece que não armazéns!</h2>
+      <h2>Parece que não possui armazéns!</h2>
       <p>Armazéns são necessários para possuir produtos, então crie um primeiramente!</p>
       <br>
       <a id="hideAnchor" href="{{ URL::to('/armazemCreate')}}">
@@ -136,10 +136,18 @@
                   
                   <div class="card-body text-center">
 
-                    @if (session()->get('all_fornecedor_produtos')[$i]['produto_tem_eventos_logisticos'] == 0)
-                      <p><span style="color: yellow;">&#9888;</span> <br> Crie a cadeia logística do produto, para que o mesmo fique à venda!</p>
+                    @if (session()->get('all_fornecedor_produtos')[$i]['produto_quantidade'] == 0)
+
+                      <p><span style="color: red;">&#9888;</span> <br> O produto ficou sem quantidade em stock para venda!</p>
+                      
                     @else
-                      <p><span style="color: green;">&#10003;</span> <br> Este produto encontra-se atualmente à venda a consumidores!</p>
+
+                      @if (session()->get('all_fornecedor_produtos')[$i]['produto_tem_eventos_logisticos'] == 0)
+                        <p><span style="color: yellow;">&#9888;</span> <br> Crie a cadeia logística do produto, para que o mesmo fique à venda!</p>
+                      @else
+                        <p><span style="color: green;">&#10003;</span> <br> Este produto encontra-se atualmente à venda a consumidores!</p>
+                      @endif
+
                     @endif
 
                     <a class="text-decoration-none" id="hideAnchor" href="{{ URL::to('cadeias/'.session()->get('all_fornecedor_produtos')[$i]['produto_id']) }}">

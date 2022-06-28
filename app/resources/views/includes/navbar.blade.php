@@ -133,6 +133,7 @@ Session_start();
                     <li><a class="text-dark dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
                     <li><a class="text-dark dropdown-item text-center"  href="{{ route('storage') }}" >ARMAZÉNS</a></li>
                     <li><a class="text-dark dropdown-item text-center" href="{{ route('inventory') }}">PRODUTOS</a></li>
+                    <li><a class="text-dark dropdown-item text-center" href="{{ route('inventory-incidentes') }}">INCIDENTES</a></li>
                     @endif
                     @if(Session::get('userType') == 'transportadora')
                     <li><a class="text-dark dropdown-item text-center" href="{{ route('encomendas') }}">ENCOMENDAS</a></li>
