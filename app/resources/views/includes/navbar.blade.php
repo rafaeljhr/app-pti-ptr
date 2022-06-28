@@ -2,8 +2,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 
-
-
 <?php
 Session_start();
 //session()->flush();

@@ -1429,14 +1429,14 @@ class ProductsController extends Controller
         foreach ($carrinho as &$produto) {
             $armazem = Armazem::where('id', $produto['id_armazem'])->first();
 
-            $armazemLat = $armazem->latitude;
-            $armazemLon = $armazem->longitude;
+            $armazemLat = floatval($armazem->latitude);
+            $armazemLon = floatval($armazem->longitude);
 
-            $distanciasTransportadoras = array(); /* here */
+            $distanciasTransportadoras = array();
             foreach ($coordsTransportadoras as &$coordsTransportadora) {
                 $distanciaAprox = 0;
-                $distanciaAprox += abs($armazemLat - $coordsTransportadora[2]);
-                $distanciaAprox += abs($armazemLon - $coordsTransportadora[3]);
+                $distanciaAprox += abs($armazemLat - floatval($coordsTransportadora[2]));
+                $distanciaAprox += abs($armazemLon - floatval($coordsTransportadora[3]));
 
                 $distanciasTransportadoras[] = array("dist" => $distanciaAprox,
                                                      "id" => $coordsTransportadora[0],
@@ -1497,6 +1497,27 @@ class ProductsController extends Controller
             curl_close($ch);
             session()->put('basesDistancias', $produtosBases);
         }   
+    }
+
+    public static function calculatePollution() {
+
+        if(session()->has('carrinho_produtos')){
+            $poluicaoProdutos = array();
+            $carrinho = session()->get('carrinho_produtos');
+        
+            for($i = 0; $i < sizeOf(session()->get('carrinho_produtos')); $i++){
+                $eventos = Evento::where('id_produto', $carrinho[$i]['id'])->get();
+                $poluicaoProduto = 0;
+
+                for ($x = 0; $x < sizeOf($eventos); $x++) {
+                    $poluicaoProduto += $eventos[$x]['poluicao_co2_produzida'];
+                }
+
+                array_push($poluicaoProdutos, $poluicaoProduto);
+            }
+
+            session()->put('poluicaoProdutos', $poluicaoProdutos);
+        } 
     }
 
     public function prodInfo($id){

@@ -45,6 +45,7 @@ Route::get('/profile', function () {
 Route::get('/checkout', function () {
     NotificationController::obter_notificacoes_do_utilizador();
     ProductsController::distanceToStorage();
+    ProductsController::calculatePollution();
     return view('checkout');
 })->name('checkout-url'); 
 
