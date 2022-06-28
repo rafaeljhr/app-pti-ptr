@@ -262,8 +262,3 @@ hr {
     height: 100vh;
     position: fixed;
 }
-
-.scrollbar-hidden::-webkit-scrollbar {
-    display: none;
-    overflow: auto;
-}
