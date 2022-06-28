@@ -29,8 +29,6 @@ class Produto extends Model
                     ->groupby("produto.id")
                     ->get();
 
-        $id = session()->get('user_id');
-
         return $produtos;
     }
 

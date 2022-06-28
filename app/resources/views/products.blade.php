@@ -23,6 +23,20 @@
                     <br>
                 @endif
                 <br>
+                <label for="Nome">Nome &nbsp;</label>
+                <input type="text" id="Nome" name="Nome">
+
+                <br>
+                <br>
+
+                <label for="Preco">Preço&nbsp;</label>
+                <input type="range" id="Preco" name="Preco" step="10" min="1" max="1000" value="500" oninput="this.nextElementSibling.value = this.value">
+                &nbsp; 
+                <output>500</output>
+
+                <br>
+                <br>
+
                 <div id = "Div_Categorias">
                     {!! $data['categorias'] !!}
                 </div>
