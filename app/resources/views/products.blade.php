@@ -71,7 +71,7 @@
                         <br>
     
                         <label for="Preco">Preço&nbsp;</label>
-                        <input type="range" id="Preco" name="Preco" step="10" min="1" max="1000000" value="750" oninput="this.nextElementSibling.value = this.value">
+                        <input type="range" id="Preco" name="Preco" step="10" min="1" max="2000" value="750" oninput="this.nextElementSibling.value = this.value">
                         &nbsp; 
                         <output>750</output>
                     
