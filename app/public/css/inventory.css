@@ -276,6 +276,7 @@
 /* Filtros Produtos na loja */
 
 .Div_Filtros_Produtos{
+    overflow: auto;
     border: 2px solid darkgray;
     background-color: white;
     float: left;
