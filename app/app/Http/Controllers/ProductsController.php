@@ -423,6 +423,10 @@ class ProductsController extends Controller
         }
         session()->put('campos_extra_atuais', $all_campos_extra_produtos);
 
+
+        self::rebuild_fornecedor_session();
+
+
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
             'mensagem' => "A  informação do produto '".$produto->nome."' foi atualizada!",
