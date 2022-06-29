@@ -148,6 +148,20 @@ class UserController extends Controller
             return $request->input();
         }
 
+        $request->validate([
+            'email'=>'required|string',
+            'primeiro_nome'=>'required|string',
+            'ultimo_nome'=>'required|string',
+            'telemovel'=>'required|integer',
+            'numero_contribuinte'=>'required|integer',
+            'morada'=>'required|string',
+            'cidade'=>'required|string',
+            'codigo_postal_1'=>'required|integer',
+            'codigo_postal_2'=>'required|integer',
+            'pais'=>'required|string',
+            'password'=>'required|string',
+        ]);
+
 
         $codigo_postal = $request->get('codigo_postal_1') . "-" . $request->get('codigo_postal_2');
 
