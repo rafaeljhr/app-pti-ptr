@@ -6,6 +6,7 @@
 @section('background') 
 
 <?php
+//dd(session()->all());
 $produtoAtual = session()->get('produto_detalhes')['produto_id'];
 function isInCarrinho() {
 
@@ -190,15 +191,80 @@ $kwh_consumidos = $kwhCadeias + $kwhStorage;
 
                 <br>
 
-                <div class="position-relative my-1 text-center">
-                    @if (!isInCarrinho())
-                        <p><button id="buttonAdd" class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Adicionar ao Carrinho</button></p>
-                    @else
-                        <p><button id="buttonDel" class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Remover do Carrinho</button></p>
+                @if(Session::get('cadeias_produto_info') != [])
+  
+                <h2 class="text-center"><?php $produtoAtual ?> Evento(s) logistíco(s)</h2>
+
+                @for($i = 0; $i < sizeOf(session()->get('cadeias_produto_info')); $i++)
+
+                    @if($i == 0)
+
+                    <div class="row mt-4 mx-auto w-100">
+
+                    @else 
+
+                    <div class="row mx-auto w-100">
+
                     @endif
+
+                    <div class="col">
+                        <h5>Evento logístico Nº <?php echo $i+1 ?> - <?php echo session()->get('cadeias_produto_info')[$i]['evento_nome'] ?></h5>
+                        <br>
+                    <div class="row">
+                        <div class="col-4">
+                            <h6>CO2(kg) produzido pelo evento</h6>
+                        </div>
+        
+                        <div class="col-4">
+                            <h6>KWh consumidos pelo evento</h6>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_co2'] ?> kg</p>
+                        </div>
+        
+                        <div class="col-4">
+                            <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_kwh'] ?> KWh</p>
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                      <h6>Descrição</h6>
+                    </div>
+        
+                    <div class="row">
+                      <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_desc'] ?></p>
+                    </div>
                 </div>
+        
+            </div>
+
+            <br>
+
+            <hr class="dropdown-divider" style="margin: auto;">
+        
+            <br>
+            @endfor
+            @else
+            <h3 class="mt-3 mb-5 text-center">Este produto nao possui cadeias associadas</h3>
+            @endif
+
+
+
+
+            
+                
 
             </form>
+            <div class="position-relative my-1 text-center">
+                @if (!isInCarrinho())
+                    <p><button id="buttonAdd" class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Adicionar ao Carrinho</button></p>
+                @else
+                    <p><button id="buttonDel" class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, '{{ $produtoAtual }}', '{{ route('Add-Del-Carrinho') }}')">Remover do Carrinho</button></p>
+                @endif
+            </div>
             </div>
         </div>
     </div>  
