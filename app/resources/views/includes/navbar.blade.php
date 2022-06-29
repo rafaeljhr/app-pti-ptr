@@ -114,11 +114,7 @@ Session_start();
                 </ul>
                     
                 <a style="text-decoration:none;" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if(!file_exists(session()->get('user_path_imagem')))
-                        <img id="foto_navbar" src='images/default_user.png' referrerpolicy="no-referrer">
-                    @else
-                        <img id="foto_navbar" src='<?php echo session()->get('user_path_imagem') ?>' referrerpolicy="no-referrer">
-                    @endif
+                    <img id="foto_navbar" src='<?php echo session()->get('user_path_imagem') ?>' referrerpolicy="no-referrer">
                 </a>
                 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
