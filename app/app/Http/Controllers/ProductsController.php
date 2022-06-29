@@ -589,6 +589,10 @@ class ProductsController extends Controller
     public function getHtmlProductStore($produtos){
 
         $html = "";
+        
+        if ($produtos == []){
+            return $html;
+        }
 
         $favoritos = Produto::getFavoritesProductsIDs();
 
@@ -640,7 +644,7 @@ class ProductsController extends Controller
 
         $html = '<label for="Categorias">Categorias:&nbsp;</label>';
 
-        $html .= '<select name="Categorias" id="Categorias" onChange="CreateSubCatOptions(' . "'" . route("HtmlSubCategoria") . "'" . ')">';
+        $html .= '<select name="Categorias" id="Categorias" onChange="CreateSubCatOptions(' . "'" . route("HtmlSubCategoria") . "'" . ', ' . "'" . route("HtmlCamposExtras") . "'" . ')">';
 
         $html .= '<option selected value=""> -- Selecionar uma opção -- </option>';
 
@@ -674,6 +678,23 @@ class ProductsController extends Controller
         return $html;
     }
 
+    public function CamposExtrasHtml(Request $request){
+
+        $html = "";
+
+        $CamposExtra = Categoria_campos_extra::where('nome_categoria', $request->categoria)->get();
+
+        foreach ($CamposExtra as $campoExtra) {
+            $html .= '<label for="'. $campoExtra->campo_extra .'">' . $campoExtra->nome_campo_extra . ':</label>';
+
+            $html .= '<input type="text" id="'. $campoExtra->campo_extra .'" name="'. $campoExtra->campo_extra .'"><br><br>';
+
+        }
+
+        return $html;
+
+    }
+
     public function ProductFilter(Request $request){
 
         if($request->favoritos == "on"){
@@ -683,6 +704,9 @@ class ProductsController extends Controller
         }
 
         $temp = Produto::where('preco', '<', $request->Preco)->get();
+        $produtos = $this->IntersectArrays($produtos, $temp);
+
+        $temp = Produto::where('quantidade', '>', '0')->get();
         $produtos = $this->IntersectArrays($produtos, $temp);
 
         if ($request->Nome != ""){
@@ -701,10 +725,45 @@ class ProductsController extends Controller
             }
         }
 
+        $produtos = $this->FiltroCamposExtra($produtos, $request->Categorias, $request);
+    
         $html = $this->getHtmlProductStore($produtos);
 
         return $html;
         
+    }
+
+    public function FiltroCamposExtra($produtos, $categoria, Request $request) {
+
+        $data = $request->all();
+        $campos_extra = Categoria_campos_extra::where('nome_categoria', $categoria)->get();
+
+        foreach ($data as $key => $campo){
+            foreach($campos_extra as $campo_extra){
+
+                if ($key == $campo_extra->campo_extra and $campo != "" and $campo != null){
+                    
+                    $temp = DB::table("produto")
+                        ->select("produto.id", "produto.nome", "produto.preco", "produto.path_imagem", "produto.quantidade")
+                        ->leftjoin("produto_campos_extra", function ($join) {
+                            $join->on("produto.id", "=", "produto_campos_extra.id_produto");
+                        })
+                        ->where("produto_campos_extra.campo_extra", "=", $campo_extra->campo_extra)
+                        ->where("produto_campos_extra.valor_campo", "=", $campo)
+                        ->orderby("produto.quantidade", "desc")
+                        ->groupby("produto.id")
+                        ->get();
+                    
+                    if (!$temp->isEmpty()){
+                        $produtos = $this->IntersectArrays($produtos, $temp);
+                    }else{
+                        return [];
+                    }
+                }
+            }
+        }
+
+        return $produtos;
     }
 
     public function allProducts() {

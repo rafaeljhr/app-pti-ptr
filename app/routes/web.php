@@ -246,6 +246,10 @@ Route::post('/product/filter', [ProductsController::class, "ProductFilter"])->na
 
 Route::post('/product/SubCategoria', [ProductsController::class, "SubCategoriasHtml"])->name('HtmlSubCategoria');
 
+Route::post('/product/CamposExtras', [ProductsController::class, "CamposExtrasHtml"])->name('HtmlCamposExtras');
+
+
+
 // ##############################################
 // ARMAZENS RELATED ROUTES
 // ##############################################

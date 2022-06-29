@@ -38,6 +38,7 @@ class Produto extends Model
                     ->leftjoin("utilizador", function ($join) {
                         $join->on("produto.id_fornecedor", "=", "utilizador.id");
                     })
+                    ->where('quantidade', '>', '0')
                     ->orderby("produto.quantidade", "desc")
                     ->orderby("utilizador.ultimo_nome", "desc")
                     ->groupby("produto.id")

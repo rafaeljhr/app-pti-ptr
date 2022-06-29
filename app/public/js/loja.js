@@ -158,14 +158,45 @@ function Filtros(form, route){
 
 }
 
-function CreateSubCatOptions(route){
+function CreateSubCatOptions(routeSubCat, routeCamposExtra){
 
     var DivSubCategoria = document.getElementById("Div_SubCategorias");
     var select = document.getElementById('Categorias');
     var value = select.options[select.selectedIndex].value;
 
+    CreateCamposExtra(routeCamposExtra, value);
+
     if (value == ""){
         DivSubCategoria.innerHTML = "";
+
+    }else{
+        var data = new FormData();
+
+        data.append("categoria", value);
+        let csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let xhr = new XMLHttpRequest();
+    
+        xhr.open("POST", routeSubCat, true);
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrf);
+    
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
+                DivSubCategoria.innerHTML = xhr.responseText;
+            } else if (this.status >= 400) {
+                console.log(this.status);
+            }
+        };
+    
+        xhr.send(data); 
+    }
+}
+
+function CreateCamposExtra(route, value){
+
+    var Div = document.getElementById("Div_CamposExtra");
+
+    if (value == ""){
+        Div.innerHTML = "";
 
     }else{
         var data = new FormData();
@@ -179,7 +210,7 @@ function CreateSubCatOptions(route){
     
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && (this.status == 200 || this.status == 201)) {
-                DivSubCategoria.innerHTML = xhr.responseText;
+                Div.innerHTML = xhr.responseText;
             } else if (this.status >= 400) {
                 console.log(this.status);
             }
