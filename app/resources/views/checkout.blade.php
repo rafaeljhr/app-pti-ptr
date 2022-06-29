@@ -11,7 +11,7 @@ $custoEntrega = 0;
 $basesDistancias = session()->get('basesDistancias');
 
 /* session()->forget('carrinho_produtos'); */
-dd(session()->all());
+/* dd(session()->all()); */
 ?>
 
 <link rel="stylesheet" href="css/carrinho.css">
