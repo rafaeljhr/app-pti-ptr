@@ -623,7 +623,7 @@ class ProductsController extends Controller
             if (!$result){
                 $html .= '<p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id .',' . "'" . route('Add-Del-Carrinho') . "'" . ')">Adicionar ao Carrinho</button></p>';
             }else{
-                $html .= '<p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id  . ', ' . route('Add-Del-Carrinho') . ')">Remover do Carrinho</button></p>';
+                $html .= '<p><button class="BtnAddDelProd" style="background-color:red;" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id .',' . "'" . route('Add-Del-Carrinho') . "'" . ')">Remover do Carrinho</button></p>';
             }
 
             $html .= "</div>";
