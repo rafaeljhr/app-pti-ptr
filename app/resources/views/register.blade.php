@@ -39,7 +39,7 @@ Session::put('login_ou_registo', "registo");
             <div class="container-form">
                 <div class="row w-100">
                     <div class="col"> <br><br>
-                        <form id="regForm" class="form-signin" method="post"  action="{{ route('register-controller') }}" enctype="multipart/form-data">
+                        <form @submit.prevent="finalizarRegisto" id="regForm" class="form-signin" method="post"  action="{{ route('register-controller') }}" enctype="multipart/form-data">
                             @csrf
                             <h1 ref="header" id="registar">REGISTAR</h1> <br>
                             
@@ -347,7 +347,7 @@ Session::put('login_ou_registo', "registo");
                                 <div class="gap-2 mx-auto col-4 d-flex justify-content-center"> 
                                     <button ref="prevBtn" type="button" class="btn btn-prev" id="prevBtn" @click="back_track = true; nextPrev(-1);">Anterior</button> 
                                     <button ref="nextBtn" :disabled="!form_valid" type="button" class="btn btn-color" id="nextBtn" @click="nextPrev(1)">Seguinte</button>
-                                    <button ref="btn_finalizar" type="button" class="btn btn-color" id="btn-finalizar" @click="finalizarRegisto()">Finalizar</button>
+                                    <button ref="btn_finalizar" type="submit" class="btn btn-color" id="btn-finalizar">Finalizar</button>
                                 </div>
                             </div>
                         </form>
