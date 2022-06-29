@@ -236,14 +236,14 @@ class ProductsController extends Controller
         }
         $request->validate([
             'nome'=>'required|string',
-            'id_armazem'=>'required|integer',
+            'id_armazem'=>'required|string',
             'nome_categoria'=>'required|string',
             'nome_subcategoria'=>'required|string',
             'preco' => 'required|numeric',
             'data_producao_do_produto'=>'required|string',
             'data_insercao_no_site'=>'required|string',
             'kwh_consumidos_por_dia'=>'required|numeric',
-            'quantidade' => 'required|integer',
+            'quantidade' => 'required|string',
             'informacoes_adicionais'=>'required|string',
         ]);
 
@@ -345,7 +345,7 @@ class ProductsController extends Controller
         $request->validate([
             'nome'=>'sometimes|required|string',
             'preco'=>'sometimes|required|string',
-            'quantidade'=>'sometimes|required|integer',
+            'quantidade'=>'sometimes|required|string',
             'data_p'=>'sometimes|required|string',
             'data_i'=>'sometimes|required|string',
             'kwh'=>'sometimes|required|string',

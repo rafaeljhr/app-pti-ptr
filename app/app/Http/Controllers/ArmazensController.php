@@ -268,8 +268,8 @@ class ArmazensController extends Controller
             'nome'=>'sometimes|required|string',
             'morada'=>'sometimes|required|string',
             'cidade'=>'sometimes|required|string',
-            'codigo_postal_1'=>'sometimes|required|integer',
-            'codigo_postal_2'=>'sometimes|required|integer',
+            'codigo_postal_1'=>'sometimes|required|string',
+            'codigo_postal_2'=>'sometimes|required|string',
             'pais'=>'sometimes|required|string',
         ]);
 
