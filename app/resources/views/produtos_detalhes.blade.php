@@ -38,19 +38,19 @@ function isInCarrinho() {
                    
 ?>
 
-<p class="text-center"><img src="{{$image_path_filename}}" ></p>
+<p class="text-center"><img class="imagemProduto"  src="{{$image_path_filename}}" ></p>
 <div class="row">
     <div class="col">
-        <p>Preço: <?php echo session()->get('produto_detalhes')['produto_preco']?></p>
-        <p>Quantidade disponivel: <?php echo session()->get('produto_detalhes')['produto_quantidade']?></p>
-        <p>Categoria: <?php echo session()->get('produto_detalhes')['produto_nome_categoria']?></p>
-        <p>Subcategoria: <?php echo session()->get('produto_detalhes')['produto_nome_subcategoria']?></p>
+        <p><b>Preço: </b><?php echo session()->get('produto_detalhes')['produto_preco']?></p>
+        <p><b>Quantidade disponivel: </b> <?php echo session()->get('produto_detalhes')['produto_quantidade']?></p>
+        <p><b>Categoria: </b> <?php echo session()->get('produto_detalhes')['produto_nome_categoria']?></p>
+        <p><b>Subcategoria: </b> <?php echo session()->get('produto_detalhes')['produto_nome_subcategoria']?></p>
     </div>
     <div class="col">
-        <p>Data de produção: <?php echo session()->get('produto_detalhes')['produto_data_producao_do_produto']?></p>
-        <p>Data de inserção no site: <?php echo session()->get('produto_detalhes')['produto_data_insercao_no_site']?></p>
-        <p>KWH que consome no armazém em que se encontra: <?php echo session()->get('produto_detalhes')['produto_kwh_consumidos_por_dia_no_armazem']?></p>
-        <p>Informações adicionais: <?php echo session()->get('produto_detalhes')['produto_informacoes_adicionais']?></p>
+        <p><b>Data de produção: </b> <?php echo session()->get('produto_detalhes')['produto_data_producao_do_produto']?></p>
+        <p><b>Data de inserção no site: </b> <?php echo session()->get('produto_detalhes')['produto_data_insercao_no_site']?></p>
+        <p><b>KWH que consome no armazém em que se encontra: </b> <?php echo session()->get('produto_detalhes')['produto_kwh_consumidos_por_dia_no_armazem']?></p>
+        <p><b>Informações adicionais: </b><?php echo session()->get('produto_detalhes')['produto_informacoes_adicionais']?></p>
     </div>
 </div>
 
@@ -65,31 +65,69 @@ function isInCarrinho() {
   {{-- ////////////////////////////////////////////////////////// --}}
   {{-- ////////////////////////////////////////////////////////// --}}
   @if(Session::get('cadeias_produto_info') != [])
-  
+  <h2 class="text-center"><?php $produtoAtual ?> Evento(s) logistíco(s)</h2>
 
-      <h3 class="mt-3 mb-5 text-center">Cadeias associadas ao produto</h3>
+  @for($i = 0; $i < sizeOf(session()->get('cadeias_produto_info')); $i++)
 
-      <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
-        
-          @for($i = 0; $i < sizeOf(session()->get('cadeias_produto_info')); $i++)
-          <div class="col">
-              <div class="evento-size card">
-                <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_nome'] ?></h5>
-                <h4 class="card-text ">CO2 criados: <?php echo session()->get('cadeias_produto_info')[$i]['evento_co2'] ?></h4>             
-                <h4 class="card-text ">Kwh consumidos: <?php echo session()->get('cadeias_produto_info')[$i]['evento_kwh'] ?></h4>
-                <div class="card-body text-center">
-                  <h5 class="card-title"><?php echo session()->get('cadeias_produto_info')[$i]['evento_desc'] ?></h5>
+    @if($i == 0)
+
+      <div class="row mt-4 mx-auto w-100">
+
+    @else 
+
+      <div class="row mx-auto w-100">
+
+    @endif
+
+        <div class="col">
+            <h5>Evento logístico Nº <?php echo $i+1 ?> - <?php echo session()->get('cadeias_produto_info')[$i]['evento_nome'] ?></h5>
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <h6>CO2(kg) produzido pelo evento</h6>
                 </div>
-  
-              </div>
-            </div>
-          @endfor
 
-      
+                <div class="col-4">
+                    <h6>KWh consumidos pelo evento</h6>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_co2'] ?> kg</p>
+                </div>
+
+                <div class="col-4">
+                    <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_kwh'] ?> KWh</p>
+                </div>
+            </div>
+
+            <div class="row">
+              <h6>Descrição</h6>
+            </div>
+
+            <div class="row">
+              <p><?php echo session()->get('cadeias_produto_info')[$i]['evento_desc'] ?></p>
+            </div>
+        </div>
+
     </div>
-    @else
+
+    <br>
+
+    <hr class="dropdown-divider" style="margin: auto;">
+
+    <br>
+@endfor
+@else
     <h3 class="mt-3 mb-5 text-center">Este produto nao possui cadeias associadas</h3>
     @endif
+
+
+
+ 
+  
+
     {{--   ////////////////////////////////////////////////////////// --}}
   {{-- ////////////////////////////////////////////////////////// --}}
   {{-- ////////////////////////////////////////////////////////// --}}
