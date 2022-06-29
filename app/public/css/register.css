@@ -15,6 +15,22 @@ body {
     border: 2px solid rgba(0,0,0,.2);
 }
 
+.page-name {
+    background-color: #93bf7e83;
+    width: 100%;
+    height: 60px;
+    padding-top: 13px;
+    margin-bottom: 3%; 
+}
+
+.section-title {
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
 .inline-icon {
     display: flex;
     justify-content: space-between;
@@ -38,7 +54,6 @@ body {
 }
 
 #regForm {
-    background-color: #ffffff;
     margin: auto;
     padding: 50px;
     border-radius: 10px;
@@ -66,6 +81,15 @@ input.invalid {
 .btn-color {
     background-color: #05591A!important;
     color: white!important;
+    width: 100%!important;
+}
+
+.btn-prev {
+    width: 100%!important;
+}
+
+.input-email {
+    width: 400px!important;
 }
 
 i {
@@ -102,7 +126,8 @@ button:hover {
     background-color: #93BF7E;
 }
 
-.all-steps {
+#all-steps {
+    display: none;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px
@@ -120,7 +145,7 @@ button:hover {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none
+    user-select: none;
 }
 
 .container-form input[type="radio"] {

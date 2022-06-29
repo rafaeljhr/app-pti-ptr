@@ -8,6 +8,8 @@
 @extends('layouts.page_default')
 
 @section('background') 
+    
+        
 
 <!-- Modal Comparar produtos -->
 <div class="modal fade" id="modalComparar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalCompararProdutos" aria-hidden="true">

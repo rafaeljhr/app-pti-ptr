@@ -553,11 +553,43 @@ h6,
 }
 
 #div-about {
-    background-color: #FFF;
     padding: 2%;
 
 }
 
 #img-logo {
     width: 500px;
+}
+
+.about-btn {
+    border-radius: 0px!important;
+    width: 100%;
+    background-color: #93BF7E!important;
+    border: #93BF7E!important;
+    height: 60px!important;
+    font-size: larger!important;
+    margin-right: 100px!important;
+    border-right: 2px solid #05591A!important;
+    color: black!important;
+}
+
+.about-left-btn {
+    border-left: 2px solid #05591A!important;
+}
+
+.about-btn:hover {
+    background-color: #05591A!important;
+    color: white!important;
+}
+
+.about-btn.mailto {
+    background-color: #05591A!important;
+    color: white!important;
+    border: none!important;
+
+}
+
+.about-btn.mailto:hover {
+    background-color: #93BF7E!important;
+    color: black!important;
 }
