@@ -34,11 +34,15 @@ class Produto extends Model
     public function scopegetAllProducts(){
 
         $produtos = DB::table("produto")
-                    ->select("produto.id", "produto.nome", "produto.preco", "produto.path_imagem", "produto.quantidade","utilizador.ultimo_nome")
+                    ->select("produto.id", "produto.nome", "produto.preco", "produto.id_armazem", "produto.id_fornecedor", "produto.quantidade", "produto.nome_categoria", "produto.nome_subcategoria",  "produto.path_imagem", "produto.informacoes_adicionais", "produto.data_producao_do_produto",  "produto.data_insercao_no_site", "produto.kwh_consumidos_por_dia_no_armazem", "produto.pronto_a_vender", "produto.quantidade_produto_expirada", "produto.quantidade_produto_incidentes_transporte", "utilizador.ultimo_nome")
                     ->leftjoin("utilizador", function ($join) {
                         $join->on("produto.id_fornecedor", "=", "utilizador.id");
                     })
                     ->where('quantidade', '>', '0')
+                    ->where(function ($query) {
+                        $query->where('quantidade_produto_expirada', '=', 0)
+                            ->orWhereNull('quantidade_produto_expirada');
+                        })
                     ->orderby("produto.quantidade", "desc")
                     ->orderby("utilizador.ultimo_nome", "desc")
                     ->groupby("produto.id")

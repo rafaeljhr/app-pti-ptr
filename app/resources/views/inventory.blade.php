@@ -27,7 +27,7 @@
   
             <label for="comparar_categoria" class="form-label">Qual a categoria de produtos que deseja comparar?</label>
             <div class="input-group mb-3">
-              <select class="form-control" @change="changeSubcat($event)" name="comparar_categoria" id="novo_produto_categoria" required>
+              <select class="form-control" name="comparar_categoria" id="novo_produto_categoria" required>
                 <option value="">-- Selecione uma categoria --</option>
                 @for($i = 0; $i < sizeOf(session()->get('categories')); $i++)
                 <?php $category= session()->get('categories')[$i] ?>
@@ -143,9 +143,9 @@
                     @else
 
                       @if (session()->get('all_fornecedor_produtos')[$i]['produto_tem_eventos_logisticos'] == 0)
-                        <p><span style="color: yellow;">&#9888;</span> <br> Crie a cadeia logística do produto, para que o mesmo fique à venda!</p>
+                        <p><span style="color: yellow;">&#9888;</span> <br> Crie a cadeia logística do produto!</p>
                       @else
-                        <p><span style="color: green;">&#10003;</span> <br> Este produto encontra-se atualmente à venda a consumidores!</p>
+                        <p><span style="color: green;">&#10003;</span> <br> Produto atualmente à venda!</p>
                       @endif
 
                     @endif

@@ -576,11 +576,6 @@ class ProductsController extends Controller
         ];
        
         session()->push('notificacoes', $atributos_notificacao);
-
-        
-        //
-        // Constucao da cadeia logistica para ser mostrada no html
-        //
         
 
         return redirect('/inventory'); //devolver a cadeia logistica do produto
@@ -595,7 +590,7 @@ class ProductsController extends Controller
         }
 
         $favoritos = Produto::getFavoritesProductsIDs();
-
+        
         foreach($produtos as $produto){
             
             $image_path_filename = $produto->path_imagem;
@@ -622,14 +617,13 @@ class ProductsController extends Controller
             $html .= '<h4>' . $produto->nome . '</h4>';
             $html .= '<p class="price">' . $produto->preco . '€</p>';
 
-            if (session()->has("user_id")){
-                $result = $this->isInCarrinho($produto);
+            
+            $result = $this->isInCarrinho($produto);
 
-                if (!$result){
-                    $html .= '<p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id .',' . "'" . route('Add-Del-Carrinho') . "'" . ')">Adicionar ao Carrinho</button></p>';
-                }else{
-                    $html .= '<p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id  . ', ' . route('Add-Del-Carrinho') . ')">Remover do Carrinho</button></p>';
-                }
+            if (!$result){
+                $html .= '<p><button class="BtnAddDelProd" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id .',' . "'" . route('Add-Del-Carrinho') . "'" . ')">Adicionar ao Carrinho</button></p>';
+            }else{
+                $html .= '<p><button class="BtnAddDelProd" style="background-color:red" onclick="AdicionarApagarProdutoCarrinho(this, ' . $produto->id  . ', ' . route('Add-Del-Carrinho') . ')">Remover do Carrinho</button></p>';
             }
 
             $html .= "</div>";
@@ -767,6 +761,7 @@ class ProductsController extends Controller
     }
 
     public function allProducts() {
+        $this->getAllCategoriesAndSubcategories();
 
         $html = $this->getHtmlProductStore(Produto::getAllProducts());
 
@@ -933,13 +928,9 @@ class ProductsController extends Controller
             "id_fornecedor" => $newEvento->id_fornecedor,
         ];
 
-        $noti ="A cadeia logistica ";
-        $noti .= $request->get('nomeCadeia');
-        $noti.=" foi criada com sucesso";
-
         $notis = Notificacao::create([
             'id_utilizador'=>session()->get('user_id'),
-            'mensagem'=>$noti,
+            'mensagem'=>"O evento logístico " . $request->get('nomeCadeia') . " foi criado com sucesso!",
             'estado'=>1,
         ]);
         
@@ -1007,14 +998,9 @@ class ProductsController extends Controller
         }
         session()->put('produto_cadeia_logistica', $all_fornecedor_eventos);
 
-
-        $noti ="A cadeia ";
-        $noti .= $cadeia->nome;
-        $noti.=" foi apagada com sucesso";
-
         $notis = Notificacao::create([
             'id_utilizador'=>session()->get('user_id'),
-            'mensagem'=>$noti,
+            'mensagem'=>"O evento logístico " . $cadeia->nome . " foi apagado com sucesso",
             'estado'=>1,
         ]);
         
@@ -1060,7 +1046,7 @@ class ProductsController extends Controller
 
         $notificacao = Notificacao::create([
             'id_utilizador' => session()->get('user_id'),
-            'mensagem' => "A  informação da cadeia '".$evento->nome."' foi atualizada!",
+            'mensagem' => "A informação do evento logístico '".$evento->nome."' foi atualizada!",
             'estado' => 1,
         ]);
 
@@ -1361,6 +1347,49 @@ class ProductsController extends Controller
     }
 
 
+    public function compararProdutosLoja(Request $request){
+
+        $categoria = $request->comparar_categoria;
+
+        session()->put('categoria_a_comparar', $categoria);
+
+        $produtos = Produto::getAllProducts();
+
+        $all_produtos = array();
+
+        foreach($produtos as $produto) {
+
+            if ($produto->nome_categoria == $categoria) {
+                $atributos_produto = [
+                    "produto_id" => $produto->id,
+                    "produto_nome" => $produto->nome,
+                    "produto_preco" => $produto->preco,
+                    "produto_id_armazem" => $produto->id_armazem,
+                    "produto_id_fornecedor" => $produto->id_fornecedor,
+                    "produto_quantidade" => $produto->quantidade,
+                    "produto_nome_categoria" => $produto->nome_categoria,
+                    "produto_path_imagem" => $produto->path_imagem,
+                    "produto_nome_subcategoria" => $produto->nome_subcategoria,
+                    "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+                    "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+                    "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+                    "produto_kwh_consumidos_por_dia" => $produto->kwh_consumidos_por_dia_no_armazem,
+                    "pronto_a_vender" => $produto->pronto_a_vender,
+                    "produto_quantidade_produto_expirada" => $produto->quantidade_produto_expirada,
+                    "produto_quantidade_produto_incidentes_transporte" => $produto->quantidade_produto_incidentes_transporte,
+                ];
+    
+                array_push($all_produtos, $atributos_produto);
+            }
+            
+        }
+
+        session()->put('produtos_comparar', $all_produtos);
+
+        return view('comparar_produtos_loja');
+    }
+
+
     public function compararDoisProdutos(Request $request){
 
         $Produto1 = Produto::where('id', $request->produto1)->first();
@@ -1487,7 +1516,6 @@ class ProductsController extends Controller
   
         $produto = Produto::where('id', $request->id)->first();
 
-        //$html = "".$produto->get('nome_produto')." adicionado ao carrinho com sucesso!";
         if(session()->has('carrinho_produtos')){
             
             if (!$this->IsProductInCart($produto)){
@@ -1505,7 +1533,6 @@ class ProductsController extends Controller
         } 
 
         return session()->get('carrinho_produtos');
-        //return $html;
     }
 
 
@@ -1722,39 +1749,62 @@ class ProductsController extends Controller
 
         session()->put('cadeias_produto_info', $all_eventos_produtos);
 
-
-
-        $produto_id = $produto->id;
-        $produto_nome = $produto->nome;
-        $produto_preco = $produto->preco;
-        $produto_id_armazem = $produto->id_armazem;
-        $produto_id_fornecedor = $produto->id_fornecedor;
-        $produto_quantidade = $produto->quantidade;
-        $produto_nome_categoria = $produto->nome_categoria;
-        $produto_path_imagem = $produto->path_imagem;
-        $produto_nome_subcategoria = $produto->nome_subcategoria;
-        $produto_informacoes_adicionais = $produto->informacoes_adicionais;
-        $produto_data_producao_do_produto = $produto->data_producao_do_produto;
-        $produto_data_insercao_no_site = $produto->data_insercao_no_site;
-        $produto_kwh_consumidos_por_dia_no_armazem = $produto->kwh_consumidos_por_dia_no_armazem;
-        
-
         $atributos_produto = [
-            "produto_id" => $produto_id,
-            "produto_nome" => $produto_nome,
-            "produto_preco" => $produto_preco,
-            "produto_id_armazem" => $produto_id_armazem,
-            "produto_id_fornecedor" => $produto_id_fornecedor,
-            "produto_quantidade" => $produto_quantidade,
-            "produto_nome_categoria" => $produto_nome_categoria,
-            "produto_path_imagem" => $produto_path_imagem,
-            "produto_nome_subcategoria" => $produto_nome_subcategoria,
-            "produto_informacoes_adicionais" => $produto_informacoes_adicionais,
-            "produto_data_producao_do_produto" => $produto_data_producao_do_produto,
-            "produto_data_insercao_no_site" => $produto_data_insercao_no_site,
-            "produto_kwh_consumidos_por_dia_no_armazem" => $produto_kwh_consumidos_por_dia_no_armazem,
+            "produto_id" => $produto->id,
+            "produto_nome" => $produto->nome,
+            "produto_preco" => $produto->preco,
+            "produto_id_armazem" => $produto->id_armazem,
+            "produto_id_fornecedor" => $produto->id_fornecedor,
+            "produto_quantidade" => $produto->quantidade,
+            "produto_nome_categoria" => $produto->nome_categoria,
+            "produto_path_imagem" => $produto->path_imagem,
+            "produto_nome_subcategoria" => $produto->nome_subcategoria,
+            "produto_informacoes_adicionais" => $produto->informacoes_adicionais,
+            "produto_data_producao_do_produto" => $produto->data_producao_do_produto,
+            "produto_data_insercao_no_site" => $produto->data_insercao_no_site,
+            "produto_kwh_consumidos_por_dia_no_armazem" => $produto->kwh_consumidos_por_dia_no_armazem,
             
         ];
+
+        $campo_extra = Produto_campos_extra::where('id_produto', $id)->get();
+
+        $all_campos_extra_produtos = array();
+
+        foreach($campo_extra as $campo) {
+
+            $campo_extra_nome = Categoria_campos_extra::where('campo_extra', $campo->campo_extra)->first();
+
+            $atributos_campo_extra = [
+                "nome_campo_extra" => $campo_extra_nome->nome_campo_extra,
+                "campo_extra" => $campo->campo_extra,
+                "valor_campo" => $campo->valor_campo,   
+            ];
+
+            array_push($all_campos_extra_produtos, $atributos_campo_extra);
+        }
+
+        session()->put('campos_extra_atuais', $all_campos_extra_produtos);
+
+        // rebuild cadeia logistica do produto em sessao
+        $produto_eventos = Evento::where('id_produto', $produto->id)->get();
+
+        $all_produto_eventos = array();
+        
+        foreach($produto_eventos as $evento) {
+            
+            $atributos_novo_evento = [
+                "evento_id" =>  $evento->id,
+                "evento_id_produto" => $evento->id_produto,
+                "evento_nome" => $evento->nome,
+                "evento_co2_produzido" => $evento->poluicao_co2_produzida,
+                "evento_kwh_consumidos" => $evento->kwh_consumidos,
+                "evento_descricao_do_evento" => $evento->descricao_do_evento,
+                "id_fornecedor" => $evento->id_fornecedor,
+            ];
+            
+            array_push($all_produto_eventos, $atributos_novo_evento);
+        }
+        session()->put('cadeias_produto_atual', $all_produto_eventos);
 
         session()->put('produto_detalhes', $atributos_produto);
         return redirect('/produto-detalhes');

@@ -194,6 +194,7 @@ Route::get('/campos-extra-edit', function () {
 
 
 Route::post('/comparar-produtos', [ProductsController::class, 'compararProdutos'])->name('comparar-produtos');
+Route::post('/comparar-produtos-loja', [ProductsController::class, 'compararProdutosLoja'])->name('comparar-produtos-loja');
 
 Route::post('/comparar-2-produtos', [ProductsController::class, 'compararDoisProdutos'])->name('comparar-2-produtos');
 
