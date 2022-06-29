@@ -24,6 +24,10 @@ Session::put('login_ou_registo', "registo");
                 <span class="sr-only"></span>
             </div>
         </div>
+
+        <div class="page-name">
+            <h4 class="text-center mx-auto section-title name mb-5">registar</h4>
+        </div>
         <section class="h-100">
 
             @if(session()->get('user_google_id')!=null) 

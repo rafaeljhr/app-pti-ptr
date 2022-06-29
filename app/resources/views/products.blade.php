@@ -8,8 +8,13 @@
 @extends('layouts.page_default')
 
 @section('background') 
+    
+        
 
     {{-- mostrar todos os produtos --}}
+    <div class="page-name">
+            <h4 class="text-center mx-auto section-title name mb-5">loja</h4>
+        </div>
         <div class="Div_Filtros_Produtos">
             <form action="javascript:;" onsubmit="Filtros(this, '{{ route('ProductFilter') }}' )">
                 <h3>Filtros</h3>

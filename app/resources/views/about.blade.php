@@ -120,7 +120,6 @@
             <a href="{{ route('contact-url') }}" ><button type="button" class="btn about-btn btn-dark">Loja de produtos</button></a>
             <a href="{{ route('api-documentacao') }}"><button type="button" class="btn about-btn btn-dark">API EcoSmart Store</button></a>
             <a href="https://api.eco-smart-store.rafaeljhr.pt/login"><button type="button" class="btn about-btn btn-dark">Obter token API EcoSmart Store</button></a>
-            
         </div>
      
         

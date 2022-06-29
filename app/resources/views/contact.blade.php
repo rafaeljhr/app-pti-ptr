@@ -4,42 +4,102 @@
     
     <link rel="stylesheet" href="css/contactos.css">
     <link rel="stylesheet" href="css/page_default.css">
-    <link href="bootstrap.min.css" rel="stylesheet">
 
     <section>
 
+    <div class="page-name">
+        <h4 class="text-center mx-auto section-title name mb-5">Contactos</h4>
+    </div>
+
+    <div class="div-mail">
+        <h4 class="section-title text-center">Fale connosco</h4>
+        <a href="mailto:storecosmart@gmail.com"><button type="button" class="btn about-btn mailto btn-dark section-title mt-3 mb-4">Enviar email</button></a>
+    </div>
+
+    <div class="mx-auto ml-3 mb-4">
+        
+        <div class="div-mapa">
+            <h4 class="text-center mx-auto section-title mb-5">Onde nos encontramos</h4>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.312781936158!2d-9.15756908431068!3d38.75652946283964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1932fc1d6c5e9b%3A0xe04b42461bdb164c!2sFaculdade%20de%20Ci%C3%AAncias%20da%20Universidade%20de%20Lisboa!5e0!3m2!1spt-PT!2sbe!4v1652910537787!5m2!1spt-PT!2sbe" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        </div>
+    <div class="texto">
+    <h4 class="section-title text-center">Perguntas mais frequentes</h4>
+    </div>
     <div class="div-contact">
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    Accordion Item #1
+                    Cancelar uma encomenda ou pré-encomenda
                 </button>
                 </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                <div class="accordion-body">Se comprou um produto na EcoSmart Store, pode pedir uma devolução. Nessa altura, irá descobrir se o seu produto é elegível para devolução.</div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    Accordion Item #2
+                    Devolver ou trocar itens
                 </button>
                 </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                <div class="accordion-body">Se comprou algo na EcoSmart Store, pode cancelar a encomenda na totalidade ou apenas um item antes de o processo de faturação ou envio ser iniciado. </div>
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingThree">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                    Accordion Item #3
+                    Estado de uma devolução e reembolso
                 </button>
                 </h2>
                 <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                <div class="accordion-body">Quando solicita um reembolso de algo que comprou na EcoSmart Store, é possível monitorizar o estado online do pedido:
+                                            <br><br>
+                                            1. Inscreva-se na sua conta EcoSmart e veja o seu Histórico de encomendas.
+                                            <br><br>
+                                            2. Localize o produto. Incluirá o estado da devolução e do reembolso.
+                                            <br><br>  
+                                            3. Se vir que emitimos o reembolso, mas o dinheiro não foi creditado no seu fornecedor de pagamentos, aguarde alguns dias. Dependendo do banco, o reembolso pode demorar alguns dias a ser processado.</div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                    Envio, custos e prazos de entrega
+                </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">Em todas as encomendas efetuadas na EcoSmart Store é indicado para quando está previsto o envio, quais os custos e qual a estimativa de entrega. 
+                                            Estes dados dependende de vários fatores como a disponibilidade do produto ou a distância que os armazéns se encontra do local de entrega, por exemplo.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                    Ver histórico de encomendas
+                </button>
+                </h2>
+                <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">Para ver encomendas e compras anteriores, utilize os filtros Mostrar e Encomendado em.
+                                            <br><br>
+                                            Se tiver alguma pergunta sobre as suas encomendas, selecione Enviar Email depois das perguntas.</div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                    Monitorizar a sua encomenda
+                </button>
+                </h2>
+                <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">Se o estado da sua encomenda for Enviado, verifique se existe uma ligação Monitorização do Envio abaixo do estado. Os pedidos pendentes podem requerer informações atualizadas ou a alteração do método de pagamento.
+                                            <br><br>
+                                            É possível não seja atribuído um estado de imediato às compras recentes. Verifique novamente mais tarde para ver o progresso da sua encomenda.</div>
+                </div>
+            </div>
+
         </div>
     </div>
 

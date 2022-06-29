@@ -15,6 +15,22 @@ body {
     border: 2px solid rgba(0,0,0,.2);
 }
 
+.page-name {
+    background-color: #93bf7e83;
+    width: 100%;
+    height: 60px;
+    padding-top: 13px;
+    margin-bottom: 3%; 
+}
+
+.section-title {
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
 .inline-icon {
     display: flex;
     justify-content: space-between;

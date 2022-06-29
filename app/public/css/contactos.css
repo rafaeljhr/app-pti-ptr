@@ -3,7 +3,103 @@ body{
 }
 
 .div-contact {
-  width: 70%;
+  width: 30%;
   margin: auto;
+  margin-top: 0px;
+  margin-left: 51%;
+}
+
+.accordion-button:focus {
+  border-color: #192413!important;
+}
+
+.accordion-button:not(.collapsed) {
+  color: #000000!important;
+  background-color: #93BF7E!important;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url(../images/seta.svg);
+}
+
+.texto{
+  background-color: white;
+  width: 30%;
   margin-top: 60px;
+  margin-left: 51%;
+  padding-top: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  font-size: larger;
+}
+
+.section-title {
+  color: var(--primary);
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #93BF7E;
+}
+
+.div-mail {
+  position: absolute;
+  width: 30%;
+  margin: auto;
+  margin-top: 0px;
+  margin-left: 18%;
+  padding-top: 30px;
+  padding-left: 20px;
+  background-color: white;
+  height: 20%;
+}
+
+.section-title.name {
+  color: #000000;
+}
+.about-btn:hover {
+  background-color: #05591A!important;
+  color: white!important;
+}
+
+.about-btn.mailto {
+  background-color: #05591A!important;
+  color: white!important;
+  border: none!important;
+
+}
+
+.about-btn.mailto:hover {
+  background-color: #93BF7E!important;
+  color: black!important;
+}
+
+.about-btn {
+  border-radius: 0px!important;
+  width: 60%;
+  background-color: #93BF7E!important;
+  border: #93BF7E!important;
+  height: 60px!important;
+  font-size: larger!important;
+  margin-left: 19%;
+  border-right: 2px solid #05591A!important;
+  color: black!important;
+}
+
+.div-mapa {
+  position: absolute;
+  margin-left: 18%;
+  margin-top: 13%;
+  width: 30%;
+  height: 35%;
+  background-color: white;
+  padding-top: 30px;
+}
+
+.page-name {
+  background-color: #93bf7e83;
+  width: 100%;
+  height: 60px;
+  padding-top: 13px;
+  margin-bottom: 3%;
 }
