@@ -48,6 +48,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
 
 		//Encomendas
 		Route::get('/consumidores/{id}/encomendas', [ConsumidorController::class, 'show_orders']);
+		Route::get('/consumidores/{id}/encomendas/{id_order}', [ConsumidorController::class, 'show_specific_order']);
+
+		Route::delete('/consumidores/{id}/encomendas/{id_order}', [ConsumidorController::class, 'remove_order']);
+
 	});
 
 	//fornecedor

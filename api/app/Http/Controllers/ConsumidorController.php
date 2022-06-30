@@ -174,4 +174,48 @@ class ConsumidorController
 
         return response($response, 403);
     }
+
+    public function show_specific_order($id, $id_order)
+    {
+        $consumidor = Utilizador::findOrFail($id);
+
+        $user_id = auth()->user()->id;
+
+        if ($user_id == $consumidor->id and $consumidor->tipo_de_conta == $this->tipo_conta()){
+
+            $encomeda = Encomenda::findOrFail($id_order);
+
+            return response()->json([
+                'encomendas' => $encomeda,
+                'status' => 200,
+            ], 200);
+        }
+
+        $response = [
+            'erro' => 'Não Autorizado',
+            'detalhes' => 'O token fornecido não possui permissões para aceder ao recurso',
+            'status' => 403
+        ];
+
+        return response($response, 403);
+    }
+
+    public function remove_order($id, $id_order)
+    {   
+        $consumidor = Utilizador::findOrFail($id);
+
+        $user_id = auth()->user()->id;
+
+        if ($user_id == $consumidor->id and $consumidor->tipo_de_conta == $this->tipo_conta()){
+            return Encomenda::destroy($id_order);
+        }
+
+        $response = [
+            'erro' => 'Não Autorizado',
+            'detalhes' => 'O token fornecido não possui permissões para aceder ao recurso',
+            'status' => 403
+        ];
+
+        return response($response, 403);
+    }
 }

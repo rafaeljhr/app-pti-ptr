@@ -15,7 +15,7 @@ class WebController extends Controller
     }
 
     function checklogin(Request $request){
-
+ 
         $this-> validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:1'
@@ -25,6 +25,8 @@ class WebController extends Controller
             'email' => $request->get('email'),
             'password' => $request->get('password')
         );
+
+        
 
         if($this->checkLoginDetails($user_data)){
 
