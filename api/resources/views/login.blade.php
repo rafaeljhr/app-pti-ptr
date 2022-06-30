@@ -30,7 +30,7 @@
             @endif
 
             <form method = "post" action="{{ url('checklogin') }}">
-                {{ csrf_field() }}
+                @csrf
 
                 <div class="form-group">
                     <label>Email</label>
