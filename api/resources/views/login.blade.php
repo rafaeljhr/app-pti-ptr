@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form method = "post" action="{{ url('checklogin') }}">
+            <form method="post" action="{{ url('checklogin') }}">
                 @csrf
 
                 <div class="form-group">
